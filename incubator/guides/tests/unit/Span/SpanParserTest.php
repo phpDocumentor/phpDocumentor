@@ -67,6 +67,8 @@ final class SpanParserTest extends TestCase
         return [
             'Literal start without end' => ['This text is an example of `` mis-used.'],
             'Backtick without end' => ['This text is an example of `  ` mis-used.'],
+            'Interpreted text without end' => ['This text is an example of :role:`foo mis-used.'],
+            'Just a colon in a text' => ['This text is an example of role: mis-used.'],
             'Embedded url start outside context' => ['This text is an example of <a>'],
         ];
     }
@@ -248,6 +250,71 @@ TEXT
             ],
             $token->getTokenData()
         );
+    }
+
+    /**
+     * @dataProvider crossReferenceProvider
+     */
+    public function testInterpretedTextIsParsedIntoCrossReferenceNode(
+        string $span,
+        string $replaced,
+        string $url,
+        string $role = 'ref',
+        ?string $domain = null,
+        ?string $anchor = null,
+        ?string $text = null
+    ): void {
+        $result = $this->spanProcessor->process($this->parserContext->reveal(), $span);
+        $token = current($this->spanProcessor->getTokens());
+
+        self::assertStringNotContainsString($replaced, $result);
+        self::assertInstanceOf(CrossReferenceNode::class, $token);
+        self::assertEquals($url, $token->getLiteral());
+        self::assertEquals($role, $token->getRole());
+        self::assertEquals($domain, $token->getDomain());
+        self::assertEquals($anchor, $token->getAnchor());
+        self::assertEquals($text ?? $url, $token->getText());
+    }
+
+    public function crossReferenceProvider(): array
+    {
+        return [
+            'interpreted text without role' => [
+                'span' => 'Some `title ref` in text.',
+                'replaced' => '`title ref`',
+                'url' => 'title ref',
+            ],
+            'interpreted text with role' => [
+                'span' => 'Some :doc:`title ref` in text.',
+                'replaced' => ':doc:`title ref`',
+                'url' => 'title ref',
+                'role' => 'doc',
+            ],
+            'interpreted text with role and anchor' => [
+                'span' => 'Some :doc:`foo/subdoc#anchor` in text.',
+                'replaced' => ':doc:`foo/subdoc#anchor`',
+                'url' => 'foo/subdoc',
+                'role' => 'doc',
+                'domain' => null,
+                'anchor' => 'anchor',
+            ],
+            'interpreted text with role, anchor and custom text' => [
+                'span' => 'Some :doc:`link <foo/subdoc#anchor>` in text.',
+                'replaced' => ':doc:`link <foo/subdoc#anchor>`',
+                'url' => 'foo/subdoc',
+                'role' => 'doc',
+                'domain' => null,
+                'anchor' => 'anchor',
+                'text' => 'link',
+            ],
+            'interpreted text with domain and role' => [
+                'span' => 'Some :php:class:`title ref` in text.',
+                'replaced' => ':php:class:`title ref`',
+                'url' => 'title ref',
+                'role' => 'class',
+                'domain' => 'php',
+            ],
+        ];
     }
 
     public function testNoReplacementsAreDoneWhenNotNeeded(): void

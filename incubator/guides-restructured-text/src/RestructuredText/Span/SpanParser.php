@@ -7,10 +7,10 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\Span\LiteralToken;
+use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Guides\Span\SpanToken;
 
 use function mt_rand;
-use function preg_match;
 use function preg_replace;
 use function preg_replace_callback;
 use function sha1;
@@ -46,7 +46,6 @@ class SpanParser
     public function process(ParserContext $parserContext, string $span): string
     {
         $span = $this->replaceLiterals($span);
-        $span = $this->replaceReferences($parserContext, $span);
 
         $this->lexer->setInput($span);
         $this->lexer->moveNext();
@@ -125,43 +124,21 @@ class SpanParser
         return $id;
     }
 
-    private function replaceReferences(ParserContext $parserContext, string $span): string
+    private function createCrossReference(ParserContext $parserContext, string $link, ?string $url = null): string
     {
-        return preg_replace_callback(
-            '/:(?:([a-z0-9]+):)?([a-z0-9]+):`(.+)`/mUsi',
-            function ($match) use ($parserContext) {
-                [, $domain, $section, $url] = $match;
+        // the link may have a new line in it, so we need to strip it
+        // before setting the link and adding a token to be replaced
+        $link = str_replace("\n", ' ', $link);
+        $link = trim(preg_replace('/\s+/', ' ', $link));
 
-                $id = $this->generateId();
-                $anchor = null;
-
-                $text = null;
-                if (preg_match('/^(.+)<(.+)>$/mUsi', $url, $match) > 0) {
-                    $text = $match[1];
-                    $url = $match[2];
-                }
-
-                if (preg_match('/^(.+)#(.+)$/mUsi', $url, $match) > 0) {
-                    $url = $match[1];
-                    $anchor = $match[2];
-                }
-
-                $tokenData = [
-                    'domain' => $domain,
-                    'section' => $section,
-                    'url' => $url,
-                    'text' => $text,
-                    'anchor' => $anchor,
-                ];
-
-                $this->addToken(SpanToken::TYPE_REFERENCE, $id, $tokenData);
-
-                $this->referenceRegistry->found($parserContext->getCurrentFileName(), $section, $tokenData);
-
-                return $id;
-            },
-            $span
+        $id = $this->generateId();
+        $this->tokens[$id] = new CrossReferenceNode(
+            $id,
+            'ref',
+            $link
         );
+
+        return $id;
     }
 
     private function replaceStandaloneHyperlinks(string $span): string
@@ -252,6 +229,9 @@ class SpanParser
                 case SpanLexer::INTERNAL_REFERENCE_START:
                     $result .= $this->parseInternalReference($parserContext);
                     break;
+                case SpanLexer::COLON:
+                    $result .= $this->parseInterpretedText();
+                    break;
                 case SpanLexer::BACKTICK:
                     $link = $this->parseNamedReference($parserContext);
                     $result .= $link;
@@ -288,6 +268,69 @@ class SpanParser
         return $text;
     }
 
+    private function parseInterpretedText(): string
+    {
+        $startPosition = $this->lexer->token['position'];
+        $domain = null;
+        $role = null;
+        $anchor = null;
+        $text = null;
+        $part = '';
+        $inText = false;
+
+        while ($this->lexer->moveNext()) {
+            $token = $this->lexer->token;
+            switch ($token['type']) {
+                case SpanLexer::COLON:
+                    if ($role !== null) {
+                        $domain = $role;
+                        $role = $part;
+                        $part = '';
+                        break;
+                    }
+
+                    $role = $part;
+                    $part = '';
+                    break;
+                case SpanLexer::EMBEDED_URL_START:
+                    $text = trim($part);
+                    $part = '';
+                    break;
+                case SpanLexer::EMBEDED_URL_END:
+                    break;
+                case SpanLexer::OCTOTHORPE:
+                    $anchor = $this->parseAnchor();
+                    break;
+                case SpanLexer::BACKTICK:
+                    if ($inText) {
+                        $id = $this->generateId();
+                        $this->tokens[$id] = new CrossReferenceNode(
+                            $id,
+                            $role,
+                            trim($part),
+                            $anchor,
+                            $text,
+                            $domain
+                        );
+
+                        //TODO: do we need this call?
+                        //$this->referenceRegistry->found($parserContext->getCurrentFileName(), $section, $tokenData);
+
+                        return $id;
+                    }
+
+                    $inText = true;
+                    break;
+                default:
+                    $part .= $token['value'];
+            }
+        }
+
+        $this->rollback($startPosition);
+
+        return ':';
+    }
+
     private function parseNamedReference(ParserContext $parserContext): string
     {
         $startPosition = $this->lexer->token['position'];
@@ -298,6 +341,17 @@ class SpanParser
         while (true) {
             $token = $this->lexer->token;
             switch ($token['type']) {
+                case SpanLexer::BACKTICK:
+                    if (trim($text) === '') {
+                        $this->lexer->resetPosition($startPosition);
+                        $this->lexer->moveNext();
+                        $this->lexer->moveNext();
+
+                        return '`';
+                    }
+
+                    return $this->createCrossReference($parserContext, $text, $url);
+
                 case SpanLexer::NAMED_REFERENCE_END:
                     return $this->createNamedReference($parserContext, $text, $url);
 
@@ -362,5 +416,26 @@ class SpanParser
         $this->lexer->resetPosition($position);
         $this->lexer->moveNext();
         $this->lexer->moveNext();
+    }
+
+    private function parseAnchor(): string
+    {
+        $anchor = '';
+        while ($this->lexer->moveNext()) {
+            $token = $this->lexer->token;
+            switch ($token['type']) {
+                case SpanLexer::BACKTICK:
+                case SpanLexer::EMBEDED_URL_END:
+                    $this->lexer->resetPosition($token['position']);
+
+                    return $anchor;
+
+                default:
+                    $anchor .= $token['value'];
+                    break;
+            }
+        }
+
+        return $anchor;
     }
 }

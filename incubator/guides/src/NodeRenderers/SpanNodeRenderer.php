@@ -20,6 +20,7 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -163,6 +164,42 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     private function renderTokens(SpanNode $node, string $span, RenderContext $environment): string
     {
         foreach ($node->getTokens() as $token) {
+            if ($token instanceof CrossReferenceNode) {
+                $role = $token->getRole();
+                if ($token->getDomain() !== null) {
+                    $role = $token->getDomain() . ':' . $role;
+                }
+
+                $reference = $this->referenceRegistry->resolve(
+                    $environment,
+                    $role,
+                    $token->getLiteral(),
+                    $environment->getMetaEntry()
+                );
+
+                if ($reference === null) {
+                    $this->referenceRegistry->addInvalidLink(new InvalidLink($token->getLiteral()));
+
+                    $span = str_replace($token->getId(), $token->getText(), $span);
+                    continue;
+                }
+
+                $span = str_replace(
+                    $token->getId(),
+                    $this->renderer->render(
+                        'link.html.twig',
+                        [
+                            'url' => $environment->generateUrl($reference->getUrl()),
+                            'title' => $reference->getTitle(),
+                            'attributes' => [],
+                        ]
+                    ),
+                    $span
+                );
+
+                continue;
+            }
+
             $span = $this->renderToken($token, $span, $environment);
         }
 
@@ -176,9 +213,6 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                 assert($spanToken instanceof LiteralToken);
 
                 return $this->renderLiteral($spanToken, $span);
-
-            case SpanToken::TYPE_REFERENCE:
-                return $this->renderReference($spanToken, $span, $environment);
 
             case SpanToken::TYPE_LINK:
                 return $this->renderLink($spanToken, $span, $environment);
@@ -194,31 +228,6 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
             $this->literal($token),
             $span
         );
-    }
-
-    private function renderReference(SpanToken $spanToken, string $span, RenderContext $environment): string
-    {
-        $role = $spanToken->get('section');
-        if ($spanToken->get('domain')) {
-            $role = $spanToken->get('domain') . ':' . $role;
-        }
-
-        $reference = $this->referenceRegistry->resolve(
-            $environment,
-            $role,
-            $spanToken->get('url'),
-            $environment->getMetaEntry()
-        );
-
-        if ($reference === null) {
-            $this->referenceRegistry->addInvalidLink(new InvalidLink($spanToken->get('url')));
-
-            return str_replace($spanToken->getId(), $spanToken->get('text'), $span);
-        }
-
-        $link = $this->reference($environment, $reference, $spanToken->getTokenData());
-
-        return str_replace($spanToken->getId(), $link, $span);
     }
 
     private function renderLink(SpanToken $spanToken, string $span, RenderContext $environment): string

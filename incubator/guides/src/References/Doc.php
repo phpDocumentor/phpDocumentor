@@ -23,7 +23,7 @@ class Doc extends Reference
     /** @var string */
     private $name;
 
-    /** @var Resolver */
+    /** @var DocResolver */
     private $resolver;
 
     /**
@@ -38,7 +38,7 @@ class Doc extends Reference
     public function __construct(string $name = 'doc', bool $dependenciesMustBeResolved = false)
     {
         $this->name = $name;
-        $this->resolver = new Resolver();
+        $this->resolver = new DocResolver();
         $this->dependenciesMustBeResolved = $dependenciesMustBeResolved;
     }
 
