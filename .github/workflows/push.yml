@@ -42,7 +42,7 @@ jobs:
           tools: composer-require-checker:2.1.0
 
       - name: Install Composer dependencies & cache dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
@@ -80,7 +80,7 @@ jobs:
         tools: pecl, phive
 
     - name: Install Composer dependencies & cache dependencies
-      uses: "ramsey/composer-install@v1"
+      uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
 
@@ -146,7 +146,7 @@ jobs:
           tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
@@ -187,7 +187,7 @@ jobs:
           tools: pecl, psalm
 
       - name: Install Composer dependencies & cache dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
@@ -228,7 +228,7 @@ jobs:
       - name: Install Composer dependencies & cache dependencies
         env:
           COMPOSER_MIRROR_PATH_REPOS: 1
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
@@ -296,7 +296,7 @@ jobs:
           tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
@@ -373,21 +373,7 @@ jobs:
         tools: pecl, phive
 
     - name: Install Composer dependencies & cache dependencies
-      uses: "ramsey/composer-install@v1"
-      with:
-        composer-options: --optimize-autoloader
-
-    # Retry composer step again because of: https://github.com/ramsey/composer-install/issues/79
-    - name: Install Composer dependencies & cache dependencies
-      if: ${{ failure() }}
-      uses: "ramsey/composer-install@v1"
-      with:
-        composer-options: --optimize-autoloader
-
-      # Retry composer step a third time because of: https://github.com/ramsey/composer-install/issues/79
-    - name: Install Composer dependencies & cache dependencies
-      if: ${{ failure() }}
-      uses: "ramsey/composer-install@v1"
+      uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
 
