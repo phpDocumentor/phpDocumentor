@@ -1,6 +1,8 @@
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*.*.*"
+
 name: Release
 jobs:
   release:
@@ -30,10 +32,11 @@ jobs:
         args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
           --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
     - name: release phar
-      uses: fnkr/github-action-ghr@v1
-      env:
-        GHR_PATH: build/
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          build/phpDocumentor.phar.asc
+          build/phpDocumentor.phar
     - name: release shim
       uses: benc-uk/workflow-dispatch@v1
       with:
