@@ -13,6 +13,7 @@ jobs:
       uses: docker://composer
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMPOSER_MIRROR_PATH_REPOS: 1
       with:
         args: install --no-interaction --prefer-dist --optimize-autoloader
     - name: warm cache

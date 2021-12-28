@@ -124,7 +124,7 @@ composer:
 .PHONY: composer-mirror
 composer-mirror:
 	rm -rf vendor/phpdocumentor/guides*
-	${.DOCKER_COMPOSE_RUN} -e "COMPOSER_MIRROR_PATH_REPOS=1" --entrypoint=/usr/bin/composer phpdoc install --optimize-autoloader
+	COMPOSER_MIRROR_PATH_REPOS=1 composer install --optimize-autoloader
 
 .PHONY: shell
 shell:
