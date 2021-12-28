@@ -269,7 +269,7 @@ TEXT
 
         self::assertStringNotContainsString($replaced, $result);
         self::assertInstanceOf(CrossReferenceNode::class, $token);
-        self::assertEquals($url, $token->getLiteral());
+        self::assertEquals($url, $token->getUrl());
         self::assertEquals($role, $token->getRole());
         self::assertEquals($domain, $token->getDomain());
         self::assertEquals($anchor, $token->getAnchor());

@@ -12,6 +12,8 @@ services:
       tags: ['phpdoc.guides.parser.markupLanguageParser']
     phpDocumentor\Guides\Formats\OutputFormat:
       tags: ['phpdoc.guides.format']
+    phpDocumentor\Guides\References\Resolver\Resolver:
+      tags: ['phpdoc.guides.reference.resolver']
     phpDocumentor\Guides\References\Reference:
       tags: ['phpdoc.guides.reference']
     phpDocumentor\Guides\RestructuredText\Directives\Directive:
@@ -304,3 +306,7 @@ services:
 
   phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer:
     tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\References\ReferenceResolver:
+    arguments:
+      $resolvers: !tagged_iterator phpdoc.guides.reference.resolver

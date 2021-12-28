@@ -9,6 +9,7 @@
    guides/index
    references/index
    internals/index
+   hand-written-docs/index
 
 Documentation
 =============

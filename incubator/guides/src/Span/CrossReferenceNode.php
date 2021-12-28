@@ -61,7 +61,7 @@ class CrossReferenceNode extends SpanToken
         return $this->id;
     }
 
-    public function getLiteral(): string
+    public function getUrl(): string
     {
         return $this->literal;
     }

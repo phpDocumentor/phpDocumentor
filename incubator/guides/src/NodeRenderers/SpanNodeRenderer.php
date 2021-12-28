@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ReferenceBuilder;
+use phpDocumentor\Guides\References\ReferenceResolver;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Span\CrossReferenceNode;
@@ -43,9 +44,13 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     /** @var ReferenceBuilder */
     private $referenceRegistry;
 
-    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry)
+    /** @var ReferenceResolver */
+    private $referenceResolver;
+
+    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry, ReferenceResolver $referenceResolver)
     {
         $this->renderer = $renderer;
+        $this->referenceResolver = $referenceResolver;
         $this->referenceRegistry = $referenceRegistry;
     }
 
@@ -165,20 +170,10 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     {
         foreach ($node->getTokens() as $token) {
             if ($token instanceof CrossReferenceNode) {
-                $role = $token->getRole();
-                if ($token->getDomain() !== null) {
-                    $role = $token->getDomain() . ':' . $role;
-                }
-
-                $reference = $this->referenceRegistry->resolve(
-                    $environment,
-                    $role,
-                    $token->getLiteral(),
-                    $environment->getMetaEntry()
-                );
+                $reference = $this->referenceResolver->resolve($token, $environment);
 
                 if ($reference === null) {
-                    $this->referenceRegistry->addInvalidLink(new InvalidLink($token->getLiteral()));
+                    $this->referenceRegistry->addInvalidLink(new InvalidLink($token->getUrl()));
 
                     $span = str_replace($token->getId(), $token->getText(), $span);
                     continue;
@@ -195,6 +190,18 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                         ]
                     ),
                     $span
+                );
+
+                var_dump(
+                    $token->getId(),
+                    $this->renderer->render(
+                        'link.html.twig',
+                        [
+                            'url' => $environment->generateUrl($reference->getUrl()),
+                            'title' => $reference->getTitle(),
+                            'attributes' => [],
+                        ]
+                    ),
                 );
 
                 continue;
