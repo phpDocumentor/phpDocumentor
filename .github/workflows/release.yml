@@ -1,7 +1,6 @@
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: [published]
 
 name: Release
 jobs:
@@ -35,6 +34,7 @@ jobs:
     - name: release phar
       uses: softprops/action-gh-release@v1
       with:
+        tag_name: ${{ github.event.release.tag_name }}
         files: |
           build/phpDocumentor.phar.asc
           build/phpDocumentor.phar
