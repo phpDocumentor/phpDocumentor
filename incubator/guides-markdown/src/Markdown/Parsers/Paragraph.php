@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Markdown\Parsers;
 
-use League\CommonMark\Block\Element\Paragraph as CommonMarkParagraph;
+use League\CommonMark\Node\Block\Paragraph as CommonMarkParagraph;
 use League\CommonMark\Node\NodeWalker;
 use League\CommonMark\Node\NodeWalkerEvent;
 use phpDocumentor\Guides\MarkupLanguageParser;

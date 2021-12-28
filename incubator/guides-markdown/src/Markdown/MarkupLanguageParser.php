@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Markdown;
 
-use League\CommonMark\Block\Element\Document;
-use League\CommonMark\Block\Element\FencedCode;
-use League\CommonMark\Block\Element\Heading;
-use League\CommonMark\Block\Element\HtmlBlock;
-use League\CommonMark\DocParser;
-use League\CommonMark\Environment as CommonMarkEnvironment;
-use League\CommonMark\Inline\Element\Code;
-use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Element\Text;
+use League\CommonMark\Environment\Environment as CommonMarkEnvironment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Block\HtmlBlock;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Node\Block\Document;
+use League\CommonMark\Node\Inline\Text;
 use League\CommonMark\Node\NodeWalker;
+use League\CommonMark\Parser\MarkdownParser;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -34,7 +35,7 @@ use function strtolower;
 
 final class MarkupLanguageParser implements ParserInterface
 {
-    /** @var DocParser */
+    /** @var MarkdownParser */
     private $markdownParser;
 
     /** @var ParserContext|null */
@@ -53,10 +54,9 @@ final class MarkupLanguageParser implements ParserInterface
     {
         $this->referenceRegistry = $referenceRegistry;
 
-        $cmEnvironment = CommonMarkEnvironment::createCommonMarkEnvironment();
-        $cmEnvironment->setConfig(['html_input' => 'strip']);
-
-        $this->markdownParser = new DocParser($cmEnvironment);
+        $cmEnvironment = new CommonMarkEnvironment(['html_input' => 'strip']);
+        $cmEnvironment->addExtension(new CommonMarkCoreExtension());
+        $this->markdownParser = new MarkdownParser($cmEnvironment);
         $this->parsers = [
             new Parsers\Paragraph(),
             new Parsers\ListBlock(),
@@ -108,9 +108,13 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Heading) {
-                $content = $node->getStringContent();
+                $content = $node->firstChild();
+                if ($content instanceof Text === false) {
+                    continue;
+                }
+
                 $title = new TitleNode(
-                    SpanNode::create($this, $content),
+                    new SpanNode($content->getLiteral(), []),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -118,13 +122,13 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = SpanNode::create($this, $node->getContent());
+                $spanNode = SpanNode::create($this, $node->getLiteral());
                 $document->addNode($spanNode);
                 continue;
             }
 
             if ($node instanceof Code) {
-                $spanNode = new CodeNode([$node->getContent()]);
+                $spanNode = new CodeNode([$node->getLiteral()]);
                 $document->addNode($spanNode);
                 continue;
             }
@@ -136,13 +140,13 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof FencedCode) {
-                $spanNode = new CodeNode([$node->getStringContent()]);
+                $spanNode = new CodeNode([$node->getLiteral()]);
                 $document->addNode($spanNode);
                 continue;
             }
 
             if ($node instanceof HtmlBlock) {
-                $spanNode = new RawNode($node->getStringContent());
+                $spanNode = new RawNode($node->getLiteral());
                 $document->addNode($spanNode);
                 continue;
             }

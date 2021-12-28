@@ -3,13 +3,13 @@ on:
     branches:
       - master
   pull_request:
-  # Allow manually triggering the workflow.
+# Allow manually triggering the workflow.
   workflow_dispatch:
 name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '7.2'
+  defaultPHPVersion: '7.4'
   phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
@@ -51,7 +51,7 @@ jobs:
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
-    name: Unit tests [7.2 | ubuntu-latest]
+    name: Unit tests [7.4 | ubuntu-latest]
     needs: setup
     steps:
     - uses: actions/checkout@v2
@@ -87,12 +87,11 @@ jobs:
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
     - name: PHPUnit
-      uses: docker://phpdoc/phpunit-ga:latest
-      with:
-        args: --testsuite=unit
+      run: php tools/phpunit --testsuite=unit
+
     - name: Quick check code coverage level
       run: php tests/coverage-checker.php 65
 
@@ -167,7 +166,7 @@ jobs:
         id: cache-env
         uses: shivammathur/cache-extensions@v1
         with:
-          php-version: 7.3
+          php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           key: ${{ env.key }}
 
@@ -181,7 +180,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.3
+          php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl, psalm
@@ -333,13 +332,12 @@ jobs:
           - windows-latest
           - macOS-latest
         php-versions:
-          - '7.2'
-          - '7.3'
           - '7.4'
           - '8.0'
+          - '8.1'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
-            php-versions: '7.2'
+            php-versions: '7.4'
     name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
 
     needs:
@@ -382,12 +380,6 @@ jobs:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
-    - name: Install phpunit 8 for php 7.2
-      if: matrix.php-versions == '7.2'
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} phpunit:^8.5
-
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
 
@@ -397,10 +389,9 @@ jobs:
     strategy:
       matrix:
         php-versions:
-          - '7.2'
-          - '7.3'
           - '7.4'
           - '8.0'
+          - '8.1'
         operating-system:
           - ubuntu-latest
           - windows-latest

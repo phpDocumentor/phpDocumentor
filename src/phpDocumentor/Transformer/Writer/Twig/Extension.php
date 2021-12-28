@@ -301,7 +301,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
-                        $this->markdownConverter->convertToHtml($value ?? '')
+                        $this->markdownConverter->convertToHtml($value ?? '')->getContent()
                     );
                 },
                 ['is_safe' => ['all']]
