@@ -1,4 +1,7 @@
 {
+    "dflydev/dot-access-data": {
+        "version": "v3.0.1"
+    },
     "doctrine/event-manager": {
         "version": "1.1.1"
     },
@@ -19,6 +22,9 @@
     },
     "league/commonmark": {
         "version": "1.5.6"
+    },
+    "league/config": {
+        "version": "v1.1.1"
     },
     "league/flysystem": {
         "version": "1.0.41"
@@ -61,6 +67,12 @@
     },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "nette/schema": {
+        "version": "v1.2.2"
+    },
+    "nette/utils": {
+        "version": "v3.2.6"
     },
     "nikic/php-parser": {
         "version": "v3.1.3"

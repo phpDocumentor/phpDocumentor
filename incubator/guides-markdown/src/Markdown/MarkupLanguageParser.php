@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Markdown;
 
-use League\CommonMark\Block\Element\Document;
-use League\CommonMark\Block\Element\FencedCode;
-use League\CommonMark\Block\Element\Heading;
-use League\CommonMark\Block\Element\HtmlBlock;
-use League\CommonMark\DocParser;
-use League\CommonMark\Environment as CommonMarkEnvironment;
-use League\CommonMark\Inline\Element\Code;
-use League\CommonMark\Inline\Element\Link;
-use League\CommonMark\Inline\Element\Text;
+use League\CommonMark\Environment\Environment as CommonMarkEnvironment;
+use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\NodeWalker;
+use League\CommonMark\Parser\MarkdownParser;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\AnchorNode;
@@ -53,10 +49,8 @@ final class MarkupLanguageParser implements ParserInterface
     {
         $this->referenceRegistry = $referenceRegistry;
 
-        $cmEnvironment = CommonMarkEnvironment::createCommonMarkEnvironment();
-        $cmEnvironment->setConfig(['html_input' => 'strip']);
-
-        $this->markdownParser = new DocParser($cmEnvironment);
+        $cmEnvironment = new CommonMarkEnvironment(['html_input' => 'strip']);
+        $this->markdownParser = new MarkdownParser($cmEnvironment);
         $this->parsers = [
             new Parsers\Paragraph(),
             new Parsers\ListBlock(),
@@ -108,7 +102,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Heading) {
-                $content = $node->getStringContent();
+                $content = $node;
                 $title = new TitleNode(
                     SpanNode::create($this, $content),
                     $node->getLevel()
@@ -124,7 +118,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Code) {
-                $spanNode = new CodeNode([$node->getContent()]);
+                $spanNode = new CodeNode([$node->getLiteral()]);
                 $document->addNode($spanNode);
                 continue;
             }

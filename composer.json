@@ -27,7 +27,7 @@
         { "type": "path", "url": "incubator/guides-markdown" }
     ],
     "require": {
-        "php": ">=7.2.5||^8.0",
+        "php": "^7.4.0||^8.0",
         "ext-ctype": "*",
         "ext-hash": "*",
         "ext-iconv": "*",
@@ -37,7 +37,7 @@
         "ext-xml": "*",
         "jawira/plantuml": "^1.27",
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
-        "league/commonmark": "^1.5",
+        "league/commonmark": "^2.1",
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
@@ -93,7 +93,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.2.5"
+            "php": "7.4.0"
         }
     },
     "replace": {
@@ -110,7 +110,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "3.4-dev"
         },
         "symfony": {
             "id": "01C32VS9393M1CP9R8TEJMH62G",

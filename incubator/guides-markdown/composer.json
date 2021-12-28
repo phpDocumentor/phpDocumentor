@@ -17,7 +17,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2.5||^8.0",
-        "league/commonmark": "^1.5"
+        "php": "^7.4.0||^8.0",
+        "league/commonmark": "^2.1"
     }
 }

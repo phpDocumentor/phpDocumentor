@@ -13,11 +13,11 @@ final class CommonMarkFactory
     /** @param iterable<ExtensionInterface> $extensions */
     public function createConverter(iterable $extensions): CommonMarkConverter
     {
-        $environment = Environment::createCommonMarkEnvironment();
+        $converter = new CommonMarkConverter([]);
         foreach ($extensions as $extension) {
-            $environment->addExtension($extension);
+            $converter->getEnvironment()->addExtension($extension);
         }
 
-        return new CommonMarkConverter([], $environment);
+        return $converter;
     }
 }
