@@ -15,4 +15,4 @@
   runs:
     using: 'docker'
     image: 'Dockerfile'
-    entrypoint: '/opt/phpdoc/bin/githubaction'
+    entrypoint: ["/opt/phpdoc/bin/githubaction"]
