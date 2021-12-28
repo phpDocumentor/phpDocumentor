@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Markdown;
 
 use League\CommonMark\Environment\Environment as CommonMarkEnvironment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Block\HtmlBlock;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Node\Block\Document;
+use League\CommonMark\Node\Inline\Text;
 use League\CommonMark\Node\NodeWalker;
 use League\CommonMark\Parser\MarkdownParser;
 use phpDocumentor\Guides\Markdown\Parsers\AbstractBlock;
@@ -30,7 +35,7 @@ use function strtolower;
 
 final class MarkupLanguageParser implements ParserInterface
 {
-    /** @var DocParser */
+    /** @var MarkdownParser */
     private $markdownParser;
 
     /** @var ParserContext|null */
@@ -50,6 +55,7 @@ final class MarkupLanguageParser implements ParserInterface
         $this->referenceRegistry = $referenceRegistry;
 
         $cmEnvironment = new CommonMarkEnvironment(['html_input' => 'strip']);
+        $cmEnvironment->addExtension(new CommonMarkCoreExtension());
         $this->markdownParser = new MarkdownParser($cmEnvironment);
         $this->parsers = [
             new Parsers\Paragraph(),
@@ -102,9 +108,13 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Heading) {
-                $content = $node;
+                $content = $node->firstChild();
+                if ($content instanceof Text === false) {
+                    continue;
+                }
+
                 $title = new TitleNode(
-                    SpanNode::create($this, $content),
+                    new SpanNode($content->getLiteral(), []),
                     $node->getLevel()
                 );
                 $document->addNode($title);
@@ -112,7 +122,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = SpanNode::create($this, $node->getContent());
+                $spanNode = SpanNode::create($this, $node->getLiteral());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -130,13 +140,13 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof FencedCode) {
-                $spanNode = new CodeNode([$node->getStringContent()]);
+                $spanNode = new CodeNode([$node->getLiteral()]);
                 $document->addNode($spanNode);
                 continue;
             }
 
             if ($node instanceof HtmlBlock) {
-                $spanNode = new RawNode($node->getStringContent());
+                $spanNode = new RawNode($node->getLiteral());
                 $document->addNode($spanNode);
                 continue;
             }

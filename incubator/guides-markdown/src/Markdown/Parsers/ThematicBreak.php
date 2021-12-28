@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Markdown\Parsers;
 
-use League\CommonMark\Block\Element\ThematicBreak as CommonMark;
+use League\CommonMark\Extension\CommonMark\Node\Block\ThematicBreak as CommonMark;
 use League\CommonMark\Node\NodeWalker;
 use League\CommonMark\Node\NodeWalkerEvent;
 use phpDocumentor\Guides\MarkupLanguageParser;
