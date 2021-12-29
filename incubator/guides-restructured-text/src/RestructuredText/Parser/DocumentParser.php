@@ -80,10 +80,7 @@ class DocumentParser
         $this->document = new DocumentNode(md5($contents));
         $this->parser->getReferenceBuilder()->scope($this->document);
 
-        $this->documentIterator->load(
-            $this->parser->getEnvironment(),
-            trim($preParseDocumentEvent->getContents())
-        );
+        $this->documentIterator->load(trim($preParseDocumentEvent->getContents()));
 
         if ($this->startingRule->applies($this)) {
             $this->startingRule->apply($this->documentIterator, $this->document);

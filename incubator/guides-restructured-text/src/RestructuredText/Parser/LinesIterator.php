@@ -15,12 +15,9 @@ namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use Iterator;
 use OutOfBoundsException;
-use phpDocumentor\Guides\ParserContext;
-use RuntimeException;
 
 use function chr;
 use function explode;
-use function preg_replace_callback;
 use function sprintf;
 use function str_replace;
 use function trim;
@@ -36,9 +33,9 @@ class LinesIterator implements Iterator
     /** @var int */
     private $position = 0;
 
-    public function load(ParserContext $parserContext, string $document): void
+    public function load(string $document): void
     {
-        $document = trim($this->prepareDocument($parserContext, $document));
+        $document = trim($this->prepareDocument($document));
         $this->lines = explode("\n", $document);
         $this->rewind();
     }
@@ -93,12 +90,10 @@ class LinesIterator implements Iterator
         return isset($this->lines[$this->position]);
     }
 
-    private function prepareDocument(ParserContext $parserContext, string $document): string
+    private function prepareDocument(string $document): string
     {
         $document = str_replace("\r\n", "\n", $document);
         $document = sprintf("\n%s\n", $document);
-
-        $document = $this->mergeIncludedFiles($parserContext, $document);
 
         // Removing UTF-8 BOM
         $document = str_replace("\xef\xbb\xbf", '', $document);
@@ -107,32 +102,6 @@ class LinesIterator implements Iterator
         $document = str_replace(chr(194) . chr(160), ' ', $document);
 
         return $document;
-    }
-
-    private function mergeIncludedFiles(ParserContext $parserContext, string $document): string
-    {
-        return preg_replace_callback(
-            '/^\.\. include:: (.+)$/m',
-            function ($match) use ($parserContext) {
-                $path = $parserContext->absoluteRelativePath($match[1]);
-
-                $origin = $parserContext->getOrigin();
-                if (!$origin->has($path)) {
-                    throw new RuntimeException(
-                        sprintf('Include "%s" (%s) does not exist or is not readable.', $match[0], $path)
-                    );
-                }
-
-                $contents = $origin->read($path);
-
-                if ($contents === false) {
-                    throw new RuntimeException(sprintf('Could not load file from path %s', $path));
-                }
-
-                return $this->mergeIncludedFiles($parserContext, $contents);
-            },
-            $document
-        );
     }
 
     /**

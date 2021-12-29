@@ -16,6 +16,8 @@ namespace phpDocumentor\Guides\Nodes;
 use phpDocumentor\Guides\Nodes\Metadata\MetadataNode;
 
 use function array_filter;
+use function array_map;
+use function array_merge;
 use function count;
 use function in_array;
 use function is_string;
@@ -112,7 +114,16 @@ final class DocumentNode extends Node
             $levels[$level] = &$parent[count($parent) - 1][1];
         }
 
-        return $titles;
+        $subDocumentTitles = array_map(
+            static function (DocumentNode $node) {
+                return $node->getTitles();
+            },
+            $this->getNodes(static function ($node) {
+                return $node instanceof DocumentNode;
+            })
+        );
+
+        return array_merge($titles, ...$subDocumentTitles);
     }
 
     /**
