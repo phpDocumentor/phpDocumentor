@@ -76,16 +76,14 @@ Influencing the List of Project Files
 
     A basic example of the ``--ignore`` option is excluding one or more directories from your project.
     If you have a 'vendor' directory that is not relevant to your project documentation, you can exclude it by specifying
-    ``--ignore "vendor/"``. To exclude the 'vendor' and 'tests' directories at the project root, separate each directory
-    with a comma: ``--ignore "vendor/,tests/"``.
+    ``--ignore "vendor/"``. Repeat the ``--ignore`` option to exclude multiple directories.
 
     If you have a single file in the 'tests' directory that you want to exclude from the documentation build, you can
     declare it explicitly by specifying ``--ignore "tests/excludeme.php"``. This command will transform all PHP files in
     the 'tests' directory *except for* 'excludeme.php'.
 
-    The ``--ignore`` option also supports wildcards to indicate that there may be any number of undetermined characters
-    in the path. For example, ``--ignore "*/tests/*,tests/*"`` will ignore any files in a subdirectory 'tests' or if
-    'tests' is a subdirectory somewhere down the tree.
+    The ``--ignore`` option also supports `glob patterns`_ to exclude files and directories using wildcards. To ignore all
+    files ending with ``test.php`` you can use ``--ignore "**/*test.php".``
 
 .. important::
 
