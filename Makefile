@@ -84,7 +84,7 @@ phpstan:
 
 .PHONY: psalm
 psalm:
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 ./tools/psalm
+	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 ./bin/psalm.phar
 
 .PHONY: lint
 lint: phpcs

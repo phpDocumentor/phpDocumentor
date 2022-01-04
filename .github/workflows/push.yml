@@ -183,7 +183,7 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: pecl, psalm
+          tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v2"
@@ -191,7 +191,7 @@ jobs:
           composer-options: --optimize-autoloader
 
       - name: Psalm
-        run: psalm --output-format=github
+        run: php bin/psalm.phar --output-format=github
 
   build-phar:
     runs-on: ubuntu-latest
