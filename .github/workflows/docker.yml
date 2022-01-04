@@ -13,4 +13,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           snapshot: true
-          tags: 'latest, 3, 3.2'
+          tags: '3.2'

@@ -50,13 +50,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@master
-        - name: Release docker
-          uses: elgohr/Publish-Docker-Github-Action@master
-          with:
-            name: phpdoc/phpdoc
-            username: ${{ secrets.DOCKER_HUB_USERNAME }}
-            password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-            tag_semver: true
         - name: Trigger
           uses: benc-uk/workflow-dispatch@v1
           with:
