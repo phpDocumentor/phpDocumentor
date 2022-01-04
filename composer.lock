@@ -357,16 +357,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "819276bc54e83c160617d3ac0a436c239e479928"
+                "reference": "17d2b9cb5161a2ea1a8dd30e6991d668e503fb9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/819276bc54e83c160617d3ac0a436c239e479928",
-                "reference": "819276bc54e83c160617d3ac0a436c239e479928",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/17d2b9cb5161a2ea1a8dd30e6991d668e503fb9d",
+                "reference": "17d2b9cb5161a2ea1a8dd30e6991d668e503fb9d",
                 "shasum": ""
             },
             "require": {
@@ -456,7 +456,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-05T18:25:20+00:00"
+            "time": "2022-01-02T18:25:06+00:00"
         },
         {
             "name": "league/config",
@@ -4842,22 +4842,23 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.14.8",
+            "version": "v2.14.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "06b450a2326aa879faa2061ff72fe1588b3ab043"
+                "reference": "95fb194cd4dd6ac373a27af2bde2bad5d3f27aba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/06b450a2326aa879faa2061ff72fe1588b3ab043",
-                "reference": "06b450a2326aa879faa2061ff72fe1588b3ab043",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/95fb194cd4dd6ac373a27af2bde2bad5d3f27aba",
+                "reference": "95fb194cd4dd6ac373a27af2bde2bad5d3f27aba",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=7.1.3",
                 "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3"
+                "symfony/polyfill-mbstring": "^1.3",
+                "symfony/polyfill-php72": "^1.8"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -4905,7 +4906,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.14.8"
+                "source": "https://github.com/twigphp/Twig/tree/v2.14.10"
             },
             "funding": [
                 {
@@ -4917,7 +4918,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-25T13:38:06+00:00"
+            "time": "2022-01-03T21:13:26+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -5138,30 +5139,33 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.3.5",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "472fa8ca4e55483d55ee1e73c963718c4393791d"
+                "reference": "e01123a0e847d52d186c5eb4b9bf58b0c6d00346"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/472fa8ca4e55483d55ee1e73c963718c4393791d",
-                "reference": "472fa8ca4e55483d55ee1e73c963718c4393791d",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/e01123a0e847d52d186c5eb4b9bf58b0c6d00346",
+                "reference": "e01123a0e847d52d186c5eb4b9bf58b0c6d00346",
                 "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "^2.0.1",
                 "lib-pcre": ">=7.0",
-                "php": ">=5.6.0"
+                "php": "^7.3 || ^8.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7.10|^6.5|^7.5|^8.5|^9.3"
+                "phpunit/phpunit": "^8.5 || ^9.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -5201,9 +5205,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mockery/mockery/issues",
-                "source": "https://github.com/mockery/mockery/tree/1.3.5"
+                "source": "https://github.com/mockery/mockery/tree/1.4.4"
             },
-            "time": "2021-09-13T15:33:03+00:00"
+            "time": "2021-09-13T15:28:59+00:00"
         },
         {
             "name": "psalm/phar",
