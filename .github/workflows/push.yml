@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - 3.2
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
