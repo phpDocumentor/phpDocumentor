@@ -90,6 +90,7 @@ final class PropertyAssemblerTest extends TestCase
             null,
             false,
             null,
+            null,
             new String_()
         );
     }
