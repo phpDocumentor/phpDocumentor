@@ -98,6 +98,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "psalm/phar": {
+        "version": "4.17.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

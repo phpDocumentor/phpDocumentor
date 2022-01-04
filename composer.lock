@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2af2477b5743d95b9ab1a3689eb2c4a7",
+    "content-hash": "1c349cef2fd117ce7ac6575611359364",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -4898,6 +4898,41 @@
                 "source": "https://github.com/mockery/mockery/tree/1.3.5"
             },
             "time": "2021-09-13T15:33:03+00:00"
+        },
+        {
+            "name": "psalm/phar",
+            "version": "4.17.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psalm/phar.git",
+                "reference": "8e968d791ffbb253901afc4b3512445d96cb1c51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/8e968d791ffbb253901afc4b3512445d96cb1c51",
+                "reference": "8e968d791ffbb253901afc4b3512445d96cb1c51",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "conflict": {
+                "vimeo/psalm": "*"
+            },
+            "bin": [
+                "psalm.phar"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer-based Psalm Phar",
+            "support": {
+                "issues": "https://github.com/psalm/phar/issues",
+                "source": "https://github.com/psalm/phar/tree/4.17.0"
+            },
+            "time": "2022-01-01T19:35:43+00:00"
         }
     ],
     "aliases": [],
