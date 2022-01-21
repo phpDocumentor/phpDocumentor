@@ -39,15 +39,15 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: composer-require-checker:2.1.0
+          tools: composer-require-checker:3.8.0
 
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
-#      - name: composer-require-checker
-#        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
+      - name: composer-require-checker
+        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
