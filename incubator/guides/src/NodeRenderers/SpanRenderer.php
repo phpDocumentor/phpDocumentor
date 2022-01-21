@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\NodeRenderers;
 
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\Span\LiteralToken;
 
 interface SpanRenderer
 {
@@ -26,7 +27,7 @@ interface SpanRenderer
 
     public function br(): string;
 
-    public function literal(string $text): string;
+    public function literal(LiteralToken $text): string;
 
     /**
      * @param string[] $attributes

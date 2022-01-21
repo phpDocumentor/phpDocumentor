@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\Span\LiteralToken;
 
 use function htmlspecialchars;
 use function trim;
@@ -50,9 +51,9 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         // return $this->renderer->render('br.html.twig');
     }
 
-    public function literal(string $text): string
+    public function literal(LiteralToken $text): string
     {
-        return $this->renderer->render('literal.html.twig', ['text' => $text]);
+        return $this->renderer->render('literal.html.twig', ['text' => $text->getValue()]);
     }
 
     /**

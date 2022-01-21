@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\Span\LiteralToken;
 
 use function is_string;
 use function substr;
@@ -45,9 +46,9 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         return $this->renderer->render('br.tex.twig');
     }
 
-    public function literal(string $text): string
+    public function literal(LiteralToken $text): string
     {
-        return $this->renderer->render('literal.tex.twig', ['text' => $text]);
+        return $this->renderer->render('literal.tex.twig', ['text' => $text->getValue()]);
     }
 
     /**

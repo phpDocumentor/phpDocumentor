@@ -20,9 +20,11 @@ use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
+use function assert;
 use function is_string;
 use function preg_replace;
 use function preg_replace_callback;
@@ -171,6 +173,8 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     {
         switch ($spanToken->getType()) {
             case SpanToken::TYPE_LITERAL:
+                assert($spanToken instanceof LiteralToken);
+
                 return $this->renderLiteral($spanToken, $span);
 
             case SpanToken::TYPE_REFERENCE:
@@ -183,11 +187,11 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
         throw new InvalidArgumentException(sprintf('Unknown token type %s', $spanToken->getType()));
     }
 
-    private function renderLiteral(SpanToken $spanToken, string $span): string
+    private function renderLiteral(LiteralToken $token, string $span): string
     {
         return str_replace(
-            $spanToken->getId(),
-            $this->literal($spanToken->get('text')),
+            $token->getId(),
+            $this->literal($token),
             $span
         );
     }

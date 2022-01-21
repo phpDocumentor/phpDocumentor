@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\References\ReferenceBuilder;
+use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
 
 use function mt_rand;
@@ -79,14 +80,9 @@ class SpanParser
             '/``(.+)``(?!`)/mUsi',
             function (array $match) {
                 $id = $this->generateId();
-
-                $this->addToken(
-                    SpanToken::TYPE_LITERAL,
+                $this->tokens[$id] = new LiteralToken(
                     $id,
-                    [
-                        'type' => 'literal',
-                        'text' => $match[1],
-                    ]
+                    $match[1],
                 );
 
                 return $id;
