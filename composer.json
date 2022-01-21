@@ -60,7 +60,7 @@
         "symfony/console": "^5.0",
         "symfony/contracts": "^2.0",
         "symfony/dependency-injection": "^5.0",
-        "symfony/dom-crawler": "5.2.*",
+        "symfony/dom-crawler": "5.4.*",
         "symfony/dotenv": "^5.0",
         "symfony/event-dispatcher": "^5.0",
         "symfony/expression-language": "^5.0",
