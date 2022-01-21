@@ -73,6 +73,16 @@ final class SpanParserTest extends TestCase
         ];
     }
 
+    /**
+     * The result of this method is rather odd. There seems to be something wrong with the inline link replacement.
+     * I don't think we should support this, but the regex is not covered by tests right now. So impriving it will be hard.
+     */
+    public function testIncompleteStructureLikeUrlIsReplaced(): void
+    {
+        $result = $this->spanProcessor->process($this->parserContext->reveal(),'This text is an example of role:`mis-used`.');
+        self::assertMatchesRegularExpression('#This text is an example of [a-z0-9]{40}\\.#', $result);
+    }
+
     /** @dataProvider namedHyperlinkReferenceProvider */
     public function testNamedHyperlinkReferencesAreReplaced(
         string $input,

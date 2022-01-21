@@ -302,6 +302,11 @@ class SpanParser
                     $anchor = $this->parseAnchor();
                     break;
                 case SpanLexer::BACKTICK:
+                    if ($role === null) {
+                        $this->rollback($startPosition);
+                        return ':';
+                    }
+
                     if ($inText) {
                         $id = $this->generateId();
                         $this->tokens[$id] = new CrossReferenceNode(
