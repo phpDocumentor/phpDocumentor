@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d605dba845ff21d2c221cfc5aed0e61",
+    "content-hash": "e5029aca1bfc203756ecd3504601f6a6",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -2603,20 +2603,21 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.2.12",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "c983279c00f723eef8da2a4b1522296c82dc75da"
+                "reference": "bb3bc3699779fc6d9646270789026a7e2cec7ec7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/c983279c00f723eef8da2a4b1522296c82dc75da",
-                "reference": "c983279c00f723eef8da2a4b1522296c82dc75da",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/bb3bc3699779fc6d9646270789026a7e2cec7ec7",
+                "reference": "bb3bc3699779fc6d9646270789026a7e2cec7ec7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php80": "^1.16"
@@ -2626,7 +2627,7 @@
             },
             "require-dev": {
                 "masterminds/html5": "^2.6",
-                "symfony/css-selector": "^4.4|^5.0"
+                "symfony/css-selector": "^4.4|^5.0|^6.0"
             },
             "suggest": {
                 "symfony/css-selector": ""
@@ -2657,7 +2658,7 @@
             "description": "Eases DOM navigation for HTML and XML documents",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dom-crawler/tree/v5.2.12"
+                "source": "https://github.com/symfony/dom-crawler/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -2673,7 +2674,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:54:19+00:00"
+            "time": "2021-12-28T17:15:56+00:00"
         },
         {
             "name": "symfony/dotenv",
