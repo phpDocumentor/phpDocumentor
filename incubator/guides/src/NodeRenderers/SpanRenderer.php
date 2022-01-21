@@ -27,7 +27,7 @@ interface SpanRenderer
 
     public function br(): string;
 
-    public function literal(LiteralToken $text): string;
+    public function literal(LiteralToken $token): string;
 
     /**
      * @param string[] $attributes

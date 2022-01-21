@@ -46,9 +46,9 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         return $this->renderer->render('br.tex.twig');
     }
 
-    public function literal(LiteralToken $text): string
+    public function literal(LiteralToken $token): string
     {
-        return $this->renderer->render('literal.tex.twig', ['text' => $text->getValue()]);
+        return $this->renderer->render('literal.tex.twig', ['node' => $token]);
     }
 
     /**

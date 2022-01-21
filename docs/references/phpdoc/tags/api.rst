@@ -43,31 +43,8 @@ sidebar section and the individual entry will be marked as being an API element.
 Examples
 --------
 
-.. code-block:: php
-   :linenos:
-
-    class UserService
-    {
-        /**
-         * This method is public-API.
-         *
-         * This method will not change until a major release.
-         *
-         * @api
-         */
-        public function getUser()
-        {
-            <...>
-        }
-
-        /**
-         * This method is "package scope", not public-API.
-         */
-        public function callMefromAnotherClass()
-        {
-            <...>
-        }
-    }
-
+.. include:: examples/api-tag.php
+   :code: php
+   :start-line: 3
 
 .. _template:      https://phpdoc.org/templates

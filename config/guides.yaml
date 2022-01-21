@@ -224,6 +224,13 @@ services:
       $nodeClass: '\phpDocumentor\Guides\Nodes\ListNode'
     tags: ['phpdoc.guides.noderenderer.html']
 
+  guides.renderer.noderenderer.literal:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+      $template: 'directives/literal-block.html.twig'
+      $nodeClass: '\phpDocumentor\Guides\Nodes\LiteralBlockNode'
+    tags: ['phpdoc.guides.noderenderer.html']
+
   guides.renderer.noderenderers.latex:
     class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
     arguments:

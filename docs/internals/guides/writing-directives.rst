@@ -83,13 +83,5 @@ At time of writing, not much is known on what this exactly is or does. I infer i
 
 When I find out, I will write it down.
 
-.. code-block::
-
-   A directive that parses the sub block and call the processSub that can
-   be overloaded, like :
-
-   .. sub-directive::
-      Some block of code
-
-      You can imagine anything here, like adding *emphasis*, lists or
-      titles
+.. include:: includes/sub-directive.rst
+   :literal:
