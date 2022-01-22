@@ -40,13 +40,7 @@ class Toctree extends Directive
 
         $environment = $parser->getEnvironment();
 
-        $toctreeFiles = $this->toctreeBuilder
-            ->buildToctreeFiles($environment, $node, $options);
-
-        foreach ($toctreeFiles as $file) {
-            $parser->getReferenceBuilder()->addDependency($file, false);
-        }
-
+        $toctreeFiles = $this->toctreeBuilder->buildToctreeFiles($environment, $node, $options);
         $parser->getDocument()->addNode((new TocNode($toctreeFiles))->withOptions($options));
     }
 }

@@ -16,7 +16,7 @@ namespace phpDocumentor\Guides\References;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\RenderContext;
 
-class Resolver
+class DocResolver
 {
     /**
      * @param string[] $attributes

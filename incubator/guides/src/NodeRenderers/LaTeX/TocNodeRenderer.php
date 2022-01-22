@@ -17,22 +17,19 @@ use InvalidArgumentException;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+
+use function ltrim;
 
 class TocNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
-    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry)
+    public function __construct(Renderer $renderer)
     {
         $this->renderer = $renderer;
-        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function render(Node $node, RenderContext $environment): string
@@ -44,18 +41,12 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->referenceRegistry->resolve(
-                $environment,
-                'doc',
-                $file,
-                $environment->getMetaEntry()
-            );
-
-            if ($reference === null) {
+            $metaEntry = $environment->getMetas()->get(ltrim($file, '/'));
+            if ($metaEntry === null) {
                 continue;
             }
 
-            $url = $environment->relativeUrl($reference->getUrl());
+            $url = $environment->relativeUrl($metaEntry->getUrl());
 
             $tocItems[] = ['url' => $url];
         }

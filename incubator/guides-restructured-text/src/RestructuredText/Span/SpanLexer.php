@@ -25,6 +25,8 @@ final class SpanLexer extends AbstractLexer
     public const EMBEDED_URL_END = 10;
     public const NAMED_REFERENCE = 11;
     public const ANONYMOUSE_REFERENCE = 12;
+    public const COLON = 13;
+    public const OCTOTHORPE = 14;
 
     /**
      * Map between string position and position in token list.
@@ -49,6 +51,8 @@ final class SpanLexer extends AbstractLexer
             '`',
             '`__',
             '_{2}',
+            ':',
+            '#',
         ];
     }
 
@@ -117,6 +121,12 @@ final class SpanLexer extends AbstractLexer
 
             case '`__':
                 return self::PHRASE_ANONYMOUS_END;
+
+            case ':':
+                return self::COLON;
+
+            case '#':
+                return self::OCTOTHORPE;
 
             default:
                 return self::WORD;

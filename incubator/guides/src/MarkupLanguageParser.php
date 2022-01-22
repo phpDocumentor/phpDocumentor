@@ -14,15 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 
 interface MarkupLanguageParser
 {
     public function supports(string $inputFormat): bool;
 
     public function getEnvironment(): ParserContext;
-
-    public function getReferenceBuilder(): ReferenceBuilder;
 
     public function parse(ParserContext $environment, string $contents): DocumentNode;
 

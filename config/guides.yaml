@@ -12,8 +12,8 @@ services:
       tags: ['phpdoc.guides.parser.markupLanguageParser']
     phpDocumentor\Guides\Formats\OutputFormat:
       tags: ['phpdoc.guides.format']
-    phpDocumentor\Guides\References\Reference:
-      tags: ['phpdoc.guides.reference']
+    phpDocumentor\Guides\References\Resolver\Resolver:
+      tags: ['phpdoc.guides.reference.resolver']
     phpDocumentor\Guides\RestructuredText\Directives\Directive:
       tags: ['phpdoc.guides.directive']
 
@@ -76,8 +76,6 @@ services:
       $parserStrategies: !tagged_iterator phpdoc.guides.parser.markupLanguageParser
 
   phpDocumentor\Guides\Handlers\RenderHandler:
-    arguments:
-      $references: !tagged_iterator phpdoc.guides.reference
     tags: [{name: tactician.handler, typehints: true}]
 
   phpDocumentor\Guides\Formats\OutputFormats:
@@ -99,7 +97,6 @@ services:
   phpDocumentor\Guides\RestructuredText\MarkupLanguageParser:
     arguments:
       $directives: !tagged_iterator phpdoc.guides.directive
-      $references: !tagged_iterator phpdoc.guides.reference
     tags: ['phpdoc.guides.parser.markupLanguageParser']
 
   phpDocumentor\Guides\Renderer:
@@ -304,3 +301,7 @@ services:
 
   phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer:
     tags: ['phpdoc.guides.noderenderer.latex']
+
+  phpDocumentor\Guides\References\ReferenceResolver:
+    arguments:
+      $resolvers: !tagged_iterator phpdoc.guides.reference.resolver

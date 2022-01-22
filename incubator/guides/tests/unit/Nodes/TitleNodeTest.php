@@ -17,7 +17,6 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Guides\MarkupLanguageParser;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 
 final class TitleNodeTest extends MockeryTestCase
 {
@@ -27,11 +26,8 @@ final class TitleNodeTest extends MockeryTestCase
         $environment->shouldReceive('getTitleLetters')->andReturn(['a']);
         $environment->shouldReceive('resetAnonymousStack');
 
-        $referenceBuilder = m::mock(ReferenceBuilder::class);
-
         $parser = m::mock(MarkupLanguageParser::class);
         $parser->shouldReceive('getEnvironment')->andReturn($environment);
-        $parser->shouldReceive('getReferenceBuilder')->andReturn($referenceBuilder);
 
         $titleNode = SpanNode::create($parser, 'Raw String');
         $node = new TitleNode($titleNode, 1);

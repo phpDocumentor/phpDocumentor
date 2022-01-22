@@ -16,7 +16,6 @@ namespace phpDocumentor\Guides\NodeRenderers\Html;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -24,19 +23,16 @@ use Webmozart\Assert\Assert;
 
 use function count;
 use function is_array;
+use function ltrim;
 
 class TocNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
-    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry)
+    public function __construct(Renderer $renderer)
     {
         $this->renderer = $renderer;
-        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function render(Node $node, RenderContext $environment): string
@@ -50,20 +46,14 @@ class TocNodeRenderer implements NodeRenderer
         $tocItems = [];
 
         foreach ($node->getFiles() as $file) {
-            $reference = $this->referenceRegistry->resolve(
-                $environment,
-                'doc',
-                $file,
-                $environment->getMetaEntry()
-            );
-
-            if ($reference === null) {
+            $metaEntry = $environment->getMetas()->get(ltrim($file, '/'));
+            if ($metaEntry === null) {
                 continue;
             }
 
-            $url = $environment->relativeUrl($reference->getUrl());
+            $url = $environment->relativeUrl($metaEntry->getUrl());
 
-            $this->buildLevel($environment, $node, $url, $reference->getTitles(), 1, $tocItems);
+            $this->buildLevel($environment, $node, $url, $metaEntry->getTitles(), 1, $tocItems);
         }
 
         return $this->renderer->render(
@@ -90,7 +80,7 @@ class TocNodeRenderer implements NodeRenderer
         foreach ($titles as $entry) {
             [$title, $children] = $entry;
 
-            [$title, $target] = $this->generateTarget($environment, $url, $title);
+            [$title, $target] = $this->generateTarget($url, $title);
 
             $tocItem = [
                 'targetId' => $this->generateTargetId($target),
@@ -119,28 +109,29 @@ class TocNodeRenderer implements NodeRenderer
      *
      * @return array{mixed, string}
      */
-    private function generateTarget(RenderContext $environment, ?string $url, $title): array
+    private function generateTarget(?string $url, $title): array
     {
         $anchor = $this->generateAnchorFromTitle($title);
 
         $target = $url . '#' . $anchor;
 
-        if (is_array($title)) {
-            [$title, $target] = $title;
-
-            $reference = $this->referenceRegistry->resolve(
-                $environment,
-                'doc',
-                $target,
-                $environment->getMetaEntry()
-            );
-
-            if ($reference === null) {
-                return [$title, $target];
-            }
-
-            $target = $environment->relativeUrl($reference->getUrl());
-        }
+        //TODO figure out when this happens, why would title be an array?
+//        if (is_array($title)) {
+//            [$title, $target] = $title;
+//
+//            $reference = $this->referenceRegistry->resolve(
+//                $environment,
+//                'doc',
+//                $target,
+//                $environment->getMetaEntry()
+//            );
+//
+//            if ($reference === null) {
+//                return [$title, $target];
+//            }
+//
+//            $target = $environment->relativeUrl($reference->getUrl());
+//        }
 
         return [$title, $target];
     }
