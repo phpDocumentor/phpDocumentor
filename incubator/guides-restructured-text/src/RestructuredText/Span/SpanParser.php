@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\References\ReferenceBuilder;
-use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\CrossReferenceNode;
+use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
 
 use function mt_rand;
@@ -32,13 +31,9 @@ class SpanParser
     /** @var SpanLexer */
     private $lexer;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
-    public function __construct(ReferenceBuilder $referenceRegistry)
+    public function __construct()
     {
         $this->lexer = new SpanLexer();
-        $this->referenceRegistry = $referenceRegistry;
         $this->tokenId = 0;
         $this->prefix = mt_rand() . '|' . time();
     }
@@ -278,10 +273,12 @@ class SpanParser
         $part = '';
         $inText = false;
 
-        while ($this->lexer->moveNext()) {
+        $this->lexer->moveNext();
+
+        while (true) {
             $token = $this->lexer->token;
             switch ($token['type']) {
-                case SpanLexer::COLON:
+                case $token['type'] === SpanLexer::COLON && $inText === false:
                     if ($role !== null) {
                         $domain = $role;
                         $role = $part;
@@ -304,6 +301,7 @@ class SpanParser
                 case SpanLexer::BACKTICK:
                     if ($role === null) {
                         $this->rollback($startPosition);
+
                         return ':';
                     }
 
@@ -318,9 +316,6 @@ class SpanParser
                             $domain
                         );
 
-                        //TODO: do we need this call?
-                        //$this->referenceRegistry->found($parserContext->getCurrentFileName(), $section, $tokenData);
-
                         return $id;
                     }
 
@@ -328,6 +323,10 @@ class SpanParser
                     break;
                 default:
                     $part .= $token['value'];
+            }
+
+            if ($this->lexer->moveNext() === false && $this->lexer->token === null) {
+                break;
             }
         }
 

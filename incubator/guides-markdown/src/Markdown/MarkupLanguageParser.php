@@ -26,7 +26,6 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use RuntimeException;
 
 use function get_class;
@@ -47,13 +46,8 @@ final class MarkupLanguageParser implements ParserInterface
     /** @var DocumentNode */
     private $document;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
-    public function __construct(ReferenceBuilder $referenceRegistry)
+    public function __construct()
     {
-        $this->referenceRegistry = $referenceRegistry;
-
         $cmEnvironment = new CommonMarkEnvironment(['html_input' => 'strip']);
         $cmEnvironment->addExtension(new CommonMarkCoreExtension());
         $this->markdownParser = new MarkdownParser($cmEnvironment);
@@ -82,7 +76,6 @@ final class MarkupLanguageParser implements ParserInterface
     public function parseDocument(NodeWalker $walker, string $hash): DocumentNode
     {
         $document = new DocumentNode($hash);
-        $this->referenceRegistry->scope($document);
         $this->document = $document;
 
         while ($event = $walker->next()) {
@@ -190,10 +183,5 @@ final class MarkupLanguageParser implements ParserInterface
     public function getDocument(): DocumentNode
     {
         return $this->document;
-    }
-
-    public function getReferenceBuilder(): ReferenceBuilder
-    {
-        return $this->referenceRegistry;
     }
 }

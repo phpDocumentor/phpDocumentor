@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\NodeRenderers;
 
 use InvalidArgumentException;
-use phpDocumentor\Guides\Nodes\Links\InvalidLink;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\References\ReferenceResolver;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 use function assert;
@@ -41,17 +40,19 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     /** @var NodeRendererFactory */
     private $nodeRendererFactory;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
     /** @var ReferenceResolver */
     private $referenceResolver;
 
-    public function __construct(Renderer $renderer, ReferenceBuilder $referenceRegistry, ReferenceResolver $referenceResolver)
-    {
+    private LoggerInterface $logger;
+
+    public function __construct(
+        Renderer $renderer,
+        ReferenceResolver $referenceResolver,
+        LoggerInterface $logger
+    ) {
         $this->renderer = $renderer;
         $this->referenceResolver = $referenceResolver;
-        $this->referenceRegistry = $referenceRegistry;
+        $this->logger = $logger;
     }
 
     public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
@@ -173,7 +174,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                 $reference = $this->referenceResolver->resolve($token, $environment);
 
                 if ($reference === null) {
-                    $this->referenceRegistry->addInvalidLink(new InvalidLink($token->getUrl()));
+                    $this->logger->error(sprintf('Invalid cross reference: %s', $token->getUrl()));
 
                     $span = str_replace($token->getId(), $token->getText(), $span);
                     continue;
@@ -190,18 +191,6 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                         ]
                     ),
                     $span
-                );
-
-                var_dump(
-                    $token->getId(),
-                    $this->renderer->render(
-                        'link.html.twig',
-                        [
-                            'url' => $environment->generateUrl($reference->getUrl()),
-                            'title' => $reference->getTitle(),
-                            'attributes' => [],
-                        ]
-                    ),
                 );
 
                 continue;
@@ -254,7 +243,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
             }
 
             if ($url === '') {
-                $this->referenceRegistry->addInvalidLink(new InvalidLink($link));
+                $this->logger->error(sprintf('Invalid link: %s', $link));
 
                 return str_replace($spanToken->getId(), $link, $span);
             }

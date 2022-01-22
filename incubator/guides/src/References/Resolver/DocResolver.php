@@ -20,7 +20,6 @@ final class DocResolver implements Resolver
     {
         $filePath = $context->canonicalUrl($node->getUrl());
 
-
         if ($filePath === null) {
             return null;
         }
@@ -30,13 +29,13 @@ final class DocResolver implements Resolver
             return null;
         }
 
-        if ($node->getAnchor() === null) {
-            return $this->createResolvedReference(
-                $filePath,
-                $context,
-                $entry
-            );
-        }
+        return $this->createResolvedReference(
+            $filePath,
+            $context,
+            $entry,
+            [],
+            $node->getAnchor()
+        );
     }
 
     /**

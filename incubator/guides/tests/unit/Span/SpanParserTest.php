@@ -6,7 +6,6 @@ namespace phpDocumentor\Guides\Span;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,18 +21,14 @@ final class SpanParserTest extends TestCase
     /** @var ParserContext&ObjectProphecy */
     private $parserContext;
 
-    /** @var ReferenceBuilder&ObjectProphecy */
-    private $referenceRegistry;
-
     /** @var SpanParser */
     private $spanProcessor;
 
     public function setUp(): void
     {
-        $this->referenceRegistry = $this->prophesize(ReferenceBuilder::class);
         $this->parserContext = $this->prophesize(ParserContext::class);
         $this->parserContext->resetAnonymousStack()->hasReturnVoid();
-        $this->spanProcessor = new SpanParser($this->referenceRegistry->reveal());
+        $this->spanProcessor = new SpanParser();
     }
 
     public function testInlineLiteralsAreReplacedWithToken(): void
@@ -75,11 +70,15 @@ final class SpanParserTest extends TestCase
 
     /**
      * The result of this method is rather odd. There seems to be something wrong with the inline link replacement.
-     * I don't think we should support this, but the regex is not covered by tests right now. So impriving it will be hard.
+     * I don't think we should support this, but the regex is not covered by tests right now.
+     * So improving it will be hard.
      */
     public function testIncompleteStructureLikeUrlIsReplaced(): void
     {
-        $result = $this->spanProcessor->process($this->parserContext->reveal(),'This text is an example of role:`mis-used`.');
+        $result = $this->spanProcessor->process(
+            $this->parserContext->reveal(),
+            'This text is an example of role:`mis-used`.'
+        );
         self::assertMatchesRegularExpression('#This text is an example of [a-z0-9]{40}\\.#', $result);
     }
 
@@ -322,6 +321,20 @@ TEXT
                 'replaced' => ':php:class:`title ref`',
                 'url' => 'title ref',
                 'role' => 'class',
+                'domain' => 'php',
+            ],
+            'just a interpreted text with domain and role' => [
+                'span' => ':php:class:`title ref`',
+                'replaced' => ':php:class:`title ref`',
+                'url' => 'title ref',
+                'role' => 'class',
+                'domain' => 'php',
+            ],
+            'php method reference' => [
+                'span' => ':php:method:`phpDocumentor\Descriptor\ClassDescriptor::getParent()`',
+                'replaced' => ':php:method:`phpDocumentor\Descriptor\ClassDescriptor::getParent()`',
+                'url' => 'phpDocumentor\Descriptor\ClassDescriptor::getParent()',
+                'role' => 'method',
                 'domain' => 'php',
             ],
         ];

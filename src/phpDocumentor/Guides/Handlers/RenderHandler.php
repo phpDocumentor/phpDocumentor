@@ -13,23 +13,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Handlers;
 
-use IteratorAggregate;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\References\Doc;
-use phpDocumentor\Guides\References\Reference;
-use phpDocumentor\Guides\References\ReferenceBuilder;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 
-use function array_merge;
 use function dirname;
-use function iterator_to_array;
 use function str_replace;
 
 final class RenderHandler
@@ -40,33 +34,22 @@ final class RenderHandler
     /** @var Renderer */
     private $renderer;
 
-    /** @var Reference[] */
-    private $references;
-
     /** @var Router */
     private $router;
 
     /** @var UrlGenerator */
     private $urlGenerator;
 
-    /** @var ReferenceBuilder */
-    private $referenceRegistry;
-
-    /** @param IteratorAggregate<Reference> $references */
     public function __construct(
         Metas $metas,
         Renderer $renderer,
-        IteratorAggregate $references,
         Router $router,
-        UrlGenerator $urlGenerator,
-        ReferenceBuilder $referenceRegistry
+        UrlGenerator $urlGenerator
     ) {
         $this->metas = $metas;
         $this->renderer = $renderer;
-        $this->references = iterator_to_array($references);
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
-        $this->referenceRegistry = $referenceRegistry;
     }
 
     public function handle(RenderCommand $command): void
@@ -103,24 +86,6 @@ final class RenderHandler
         }
     }
 
-    /**
-     * @param array<Reference> $references
-     */
-    private function initReferences(array $references): void
-    {
-        $references = array_merge(
-            [
-                new Doc(),
-                new Doc('ref', true),
-            ],
-            $references
-        );
-
-        foreach ($references as $reference) {
-            $this->referenceRegistry->registerTypeOfReference($reference);
-        }
-    }
-
     private function renderDocument(
         DocumentDescriptor $descriptor,
         string $destinationPath,
@@ -128,7 +93,6 @@ final class RenderHandler
         GuideSetDescriptor $documentationSet
     ): string {
         $document = $descriptor->getDocumentNode();
-        $this->referenceRegistry->scope($document);
 
         $environment->setCurrentFileName($descriptor->getFile());
         // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
@@ -155,14 +119,11 @@ final class RenderHandler
         string $outputFolder,
         FilesystemInterface $origin
     ): RenderContext {
-        $environment = new RenderContext(
+        return new RenderContext(
             $outputFolder,
             $origin,
             $this->metas,
             $this->urlGenerator
         );
-        $this->initReferences($this->references);
-
-        return $environment;
     }
 }

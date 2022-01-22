@@ -11,7 +11,7 @@ your documentation set or even between documentation sets when you have multiple
 Doc
 ===
 
-Most used links you create in `Guides_` are refering to other pages or sections of your documentation. ReStructuredText
+Most used links you create in `Guides`_ are refering to other pages or sections of your documentation. ReStructuredText
 supports multiple formats of links. But most common used is the notation below.
 
 .. code-block:: rst
@@ -22,4 +22,23 @@ to this page. The downside of this, your titles have to be unique to be able to 
 projects it will be nearly impossible to do this.
 
 .. note::
-    :doc:`../getting-started/what-is-a-docblock`
+    :ref:`Configuration`
+
+PHP
+===
+
+References classes:
+
+:php:class:`phpDocumentor\Descriptor\ClassDescriptor`
+
+Reference methods
+
+:php:method:`phpDocumentor\Descriptor\ClassDescriptor::getParent()`
+
+Reference properties
+
+:php:property:`phpDocumentor\Descriptor\ClassDescriptor::$methods`
+
+Reference namespaces
+
+:php:namespace:`phpDocumentor\Descriptor`

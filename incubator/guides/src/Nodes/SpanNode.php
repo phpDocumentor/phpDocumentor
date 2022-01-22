@@ -35,7 +35,7 @@ class SpanNode extends Node
         }
 
         $environment = $parser->getEnvironment();
-        $spanProcessor = new SpanParser($parser->getReferenceBuilder());
+        $spanProcessor = new SpanParser();
 
         return new self($spanProcessor->process($environment, $span), $spanProcessor->getTokens());
     }
