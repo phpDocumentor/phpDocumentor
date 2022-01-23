@@ -50,16 +50,20 @@ class RenderContext
     /** @var string */
     private $currentAbsolutePath = '';
 
+    private string $outputFormat;
+
     public function __construct(
         string $outputFolder,
         FilesystemInterface $origin,
         Metas $metas,
-        UrlGenerator $urlGenerator
+        UrlGenerator $urlGenerator,
+        string $outputFormat
     ) {
         $this->destinationPath = $outputFolder;
         $this->origin = $origin;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
+        $this->outputFormat = $outputFormat;
     }
 
     /**
@@ -116,6 +120,15 @@ class RenderContext
     public function canonicalUrl(string $url): ?string
     {
         return $this->urlGenerator->canonicalUrl($this->getDirName(), $url);
+    }
+
+    public function relativeDocUrl(string $filename, ?string $anchor = null): string
+    {
+        return $this->relativeUrl(
+            $this->destinationPath . '/' .
+            $filename . '.' . $this->outputFormat .
+            ($anchor !== null ? '#' . $anchor : '')
+        );
     }
 
     public function outputUrl(string $url): ?string
@@ -190,5 +203,10 @@ class RenderContext
     public function getCurrentAbsolutePath(): string
     {
         return $this->currentAbsolutePath;
+    }
+
+    public function getOutputFormat(): string
+    {
+        return $this->outputFormat;
     }
 }

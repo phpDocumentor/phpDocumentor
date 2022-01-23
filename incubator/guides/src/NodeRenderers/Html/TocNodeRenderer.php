@@ -51,7 +51,7 @@ class TocNodeRenderer implements NodeRenderer
                 continue;
             }
 
-            $url = $environment->relativeUrl($metaEntry->getUrl());
+            $url = $environment->relativeDocUrl($metaEntry->getUrl());
 
             $this->buildLevel($environment, $node, $url, $metaEntry->getTitles(), 1, $tocItems);
         }

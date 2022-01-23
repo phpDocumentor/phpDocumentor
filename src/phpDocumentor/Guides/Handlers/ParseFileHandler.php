@@ -91,7 +91,6 @@ final class ParseFileHandler
             $this->metas,
             $origin,
             $documentFolder,
-            $documentationSet->getOutputLocation(),
             $fileName,
             $documentationSet->getInitialHeaderLevel()
         );

@@ -48,20 +48,15 @@ class ParserContext
     private $errors = [];
 
     /** @var string */
-    private $destinationPath;
-
-    /** @var string */
     private $currentAbsolutePath = '';
 
     public function __construct(
         string $currentFileName,
         string $currentDirectory,
-        string $outputFolder,
         int $initialHeaderLevel,
         FilesystemInterface $origin,
         UrlGenerator $urlGenerator
     ) {
-        $this->destinationPath = $outputFolder;
         $this->initialHeaderLevel = $initialHeaderLevel;
         $this->origin = $origin;
         $this->urlGenerator = $urlGenerator;
@@ -161,11 +156,6 @@ class ParserContext
     public function getCurrentDirectory(): string
     {
         return $this->currentDirectory;
-    }
-
-    public function getDestinationPath(): string
-    {
-        return $this->destinationPath;
     }
 
     public function getUrl(): string

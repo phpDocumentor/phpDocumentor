@@ -58,7 +58,6 @@ final class Parser
         Metas $metas,
         ?FilesystemInterface $origin,
         string $sourcePath,
-        string $destinationPath,
         string $fileName,
         int $initialHeaderLevel = 1
     ): void {
@@ -71,7 +70,6 @@ final class Parser
             $sourcePath,
             $fileName,
             $origin,
-            $destinationPath,
             $initialHeaderLevel
         );
     }
@@ -82,13 +80,12 @@ final class Parser
      */
     public function parse(
         string $text,
-        string $inputFormat = 'rst',
-        string $outputFormat = 'html'
+        string $inputFormat = 'rst'
     ): DocumentNode {
         if ($this->metas === null || $this->parserContext === null) {
             // if Metas or Environment is not set; then the prepare method hasn't been called and we consider
             // this a one-off parse of dynamic RST content.
-            $this->prepare(new Metas(), null, '', '', 'index');
+            $this->prepare(new Metas(), null, '', 'index');
         }
 
         $this->parserContext->setCurrentAbsolutePath(
@@ -105,7 +102,7 @@ final class Parser
 
         $document = $parser->parse($this->parserContext, $text);
         $document->setVariables($this->parserContext->getVariables());
-        $this->addDocumentToMetas($this->parserContext->getDestinationPath(), $outputFormat, $document);
+        $this->addDocumentToMetas($document);
 
         $this->metas         = null;
         $this->parserContext = null;
@@ -128,13 +125,11 @@ final class Parser
         string $sourcePath,
         string $file,
         FilesystemInterface $origin,
-        string $destinationPath,
         int $initialHeaderLevel
     ): ParserContext {
         return new ParserContext(
             $file,
             $sourcePath,
-            $destinationPath,
             $initialHeaderLevel,
             $origin,
             $this->urlGenerator
@@ -166,23 +161,11 @@ final class Parser
         return $result;
     }
 
-    private function buildDocumentUrl(ParserContext $parserContext, string $extension): string
-    {
-        return $parserContext->getUrl() . '.' . $extension;
-    }
-
-    private function buildOutputUrl(string $destinationPath, string $outputFormat, ParserContext $parserContext): string
-    {
-        $outputFolder = $destinationPath ? $destinationPath . '/' : '';
-
-        return $outputFolder . $this->buildDocumentUrl($parserContext, $outputFormat);
-    }
-
-    private function addDocumentToMetas(string $destinationPath, string $outputFormat, DocumentNode $document): void
+    private function addDocumentToMetas(DocumentNode $document): void
     {
         $this->metas->set(
             $this->parserContext->getCurrentFileName(),
-            $this->buildOutputUrl($destinationPath, $outputFormat, $this->parserContext),
+            $this->parserContext->getUrl(),
             $document->getTitle() ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),
             $this->compileTableOfContents($document, $this->parserContext),

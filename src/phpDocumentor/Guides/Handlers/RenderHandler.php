@@ -56,7 +56,7 @@ final class RenderHandler
     {
         $origin = $command->getOrigin();
         $destinationPath = $command->getDestinationPath();
-        $environment = $this->createEnvironment($destinationPath, $origin);
+        $environment = $this->createEnvironment($destinationPath, $origin, $command->getTargetFileFormat());
 
         $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
     }
@@ -117,13 +117,15 @@ final class RenderHandler
 
     private function createEnvironment(
         string $outputFolder,
-        FilesystemInterface $origin
+        FilesystemInterface $origin,
+        string $outputFormat
     ): RenderContext {
         return new RenderContext(
             $outputFolder,
             $origin,
             $this->metas,
-            $this->urlGenerator
+            $this->urlGenerator,
+            $outputFormat
         );
     }
 }

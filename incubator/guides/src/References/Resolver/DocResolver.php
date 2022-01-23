@@ -50,16 +50,10 @@ final class DocResolver implements Resolver
         array $attributes = [],
         ?string $anchor = null
     ): ResolvedReference {
-        $url = $entry->getUrl();
-
-        if ($url !== '') {
-            $url = $environment->relativeUrl('/' . $url) . ($anchor !== null ? '#' . $anchor : '');
-        }
-
         return new ResolvedReference(
             $file,
             $entry->getTitle(),
-            $url,
+            $environment->relativeDocUrl($file, $anchor),
             $entry->getTitles(),
             $attributes
         );

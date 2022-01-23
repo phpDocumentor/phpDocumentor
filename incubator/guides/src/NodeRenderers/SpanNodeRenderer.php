@@ -238,7 +238,10 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
                 $metaEntry = $environment->getMetaEntry();
 
                 if ($metaEntry !== null && $metaEntry->hasTitle($link)) {
-                    $url = $metaEntry->getUrl() . '#' . (new AsciiSlugger())->slug($link)->lower()->toString();
+                    $url = $environment->relativeDocUrl(
+                        $metaEntry->getUrl(),
+                        (new AsciiSlugger())->slug($link)->lower()->toString()
+                    );
                 }
             }
 
