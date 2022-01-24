@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
 use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionListTerm;
 use phpDocumentor\Guides\Nodes\Links\Link;
 use phpDocumentor\Guides\Nodes\Lists\ListItem;
 use phpDocumentor\Guides\Nodes\SpanNode;
-use phpDocumentor\Guides\RestructuredText\Event\OnLinkParsedEvent;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function array_map;
@@ -26,13 +24,9 @@ class LineDataParser
     /** @var MarkupLanguageParser */
     private $parser;
 
-    /** @var EventManager */
-    private $eventManager;
-
-    public function __construct(MarkupLanguageParser $parser, EventManager $eventManager)
+    public function __construct(MarkupLanguageParser $parser)
     {
         $this->parser = $parser;
-        $this->eventManager = $eventManager;
     }
 
     public function parseLink(string $line): ?Link
@@ -72,11 +66,6 @@ class LineDataParser
 
     private function createLink(string $name, string $url, string $type): Link
     {
-        $this->eventManager->dispatchEvent(
-            OnLinkParsedEvent::ON_LINK_PARSED,
-            new OnLinkParsedEvent($url, $type, $this->parser->getEnvironment()->getCurrentFileName())
-        );
-
         return new Link($name, $url, $type);
     }
 

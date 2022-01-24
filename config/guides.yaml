@@ -26,8 +26,9 @@ services:
   phpdoc.guides:
     namespace: phpDocumentor\Guides\
     exclude:
+      - '../incubator/guides/src/Events/*'
       - '../incubator/guides/src/Nodes/*'
-      - '../incubator/guides/src/Meta/*'
+      - '../incubator/guides/src/Meta/Entry'
       - '../incubator/guides/src/Span/*'
     resource: '../incubator/guides/src/*'
 
@@ -54,8 +55,14 @@ services:
     resource: '../incubator/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
-  phpDocumentor\Guides\Handlers\:
+  phpdoc.app.guides.handlers:
+    namespace: phpDocumentor\Guides\Handlers\
     resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
+    tags: [{name: tactician.handler, typehints: true}]
+
+  phpdoc.guides.handlers:
+    namespace: phpDocumentor\Guides\Handlers\
+    resource: '../incubator/guides/src/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]
 
   phpDocumentor\Pipeline\Stage\Parser\ParseGuides:

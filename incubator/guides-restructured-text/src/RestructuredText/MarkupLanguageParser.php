@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\MarkupLanguageParser as ParserInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\ParserContext;
@@ -28,17 +27,12 @@ class MarkupLanguageParser implements ParserInterface
     /** @var DocumentParser|null */
     private $documentParser;
 
-    /** @var EventManager */
-    private $eventManager;
-
     /**
      * @param iterable<Directive> $directives
      */
     public function __construct(
-        EventManager $eventManager,
         iterable $directives
     ) {
-        $this->eventManager = $eventManager;
         foreach ($directives as $directive) {
             $this->registerDirective($directive);
         }
@@ -52,7 +46,6 @@ class MarkupLanguageParser implements ParserInterface
     public function getSubParser(): MarkupLanguageParser
     {
         return new MarkupLanguageParser(
-            $this->eventManager,
             $this->directives
         );
     }
@@ -105,6 +98,6 @@ class MarkupLanguageParser implements ParserInterface
 
     private function createDocumentParser(): DocumentParser
     {
-        return new DocumentParser($this, $this->eventManager, $this->directives);
+        return new DocumentParser($this, $this->directives);
     }
 }

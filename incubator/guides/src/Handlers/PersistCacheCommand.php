@@ -11,20 +11,20 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Handlers;
 
-final class LoadCacheCommand
+final class PersistCacheCommand
 {
     /** @var string */
     private $cacheDirectory;
 
     /** @var bool */
-    private $useCaching;
+    private $useCache;
 
-    public function __construct(string $cacheDirectory, bool $useCaching = true)
+    public function __construct(string $cacheDirectory, bool $useCache = false)
     {
         $this->cacheDirectory = $cacheDirectory;
-        $this->useCaching = $useCaching;
+        $this->useCache = $useCache;
     }
 
     public function getCacheDirectory(): string
@@ -32,8 +32,8 @@ final class LoadCacheCommand
         return $this->cacheDirectory;
     }
 
-    public function useCaching(): bool
+    public function useCache(): bool
     {
-        return $this->useCaching;
+        return $this->useCache;
     }
 }

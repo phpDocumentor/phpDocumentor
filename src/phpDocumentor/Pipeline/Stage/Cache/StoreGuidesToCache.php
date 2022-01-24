@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Cache;
 
 use League\Tactician\CommandBus;
-use phpDocumentor\Guides\PersistCacheCommand;
+use phpDocumentor\Guides\Handlers\PersistCacheCommand;
 use phpDocumentor\Pipeline\Stage\Parser\Payload;
 use Psr\Log\LoggerInterface;
 

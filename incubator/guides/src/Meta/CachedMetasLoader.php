@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides\RestructuredText\Meta;
+namespace phpDocumentor\Guides\Meta;
 
 use LogicException;
 use phpDocumentor\Guides\Metas;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TableNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
@@ -39,10 +38,10 @@ final class TableRule implements Rule
     /** @var TableParser */
     private $tableParser;
 
-    public function __construct(MarkupLanguageParser $parser, EventManager $eventManager)
+    public function __construct(MarkupLanguageParser $parser)
     {
         $this->parser = $parser;
-        $this->lineChecker = new LineChecker(new LineDataParser($parser, $eventManager));
+        $this->lineChecker = new LineChecker(new LineDataParser($parser));
         $this->tableParser = new TableParser();
     }
 

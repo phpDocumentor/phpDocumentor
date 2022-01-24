@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Parser;
 
 use ArrayObject;
-use Doctrine\Common\EventManager;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive as DirectiveHandler;
-use phpDocumentor\Guides\RestructuredText\Event\PostParseDocumentEvent;
-use phpDocumentor\Guides\RestructuredText\Event\PreParseDocumentEvent;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 
 use function md5;
-use function trim;
 
 class DocumentParser
 {
@@ -35,12 +31,6 @@ class DocumentParser
 
     /** @var ArrayObject<int, TitleNode> public is temporary */
     public $openSectionsAsTitleNodes;
-
-    /** @var MarkupLanguageParser */
-    private $parser;
-
-    /** @var EventManager */
-    private $eventManager;
 
     /** @var DocumentNode */
     private $document;
@@ -56,38 +46,22 @@ class DocumentParser
      */
     public function __construct(
         MarkupLanguageParser $parser,
-        EventManager $eventManager,
         array $directives
     ) {
-        $this->parser = $parser;
-        $this->eventManager = $eventManager;
-
         $this->documentIterator = new LinesIterator();
         $this->openSectionsAsTitleNodes = new ArrayObject();
 
-        $this->startingRule = new Productions\DocumentRule($this, $parser, $eventManager, $directives);
+        $this->startingRule = new Productions\DocumentRule($this, $parser, $directives);
     }
 
     public function parse(string $contents): DocumentNode
     {
-        $preParseDocumentEvent = new PreParseDocumentEvent($this->parser, $contents);
-
-        $this->eventManager->dispatchEvent(
-            PreParseDocumentEvent::PRE_PARSE_DOCUMENT,
-            $preParseDocumentEvent
-        );
-
         $this->document = new DocumentNode(md5($contents));
-        $this->documentIterator->load(trim($preParseDocumentEvent->getContents()));
+        $this->documentIterator->load($contents);
 
         if ($this->startingRule->applies($this)) {
             $this->startingRule->apply($this->documentIterator, $this->document);
         }
-
-        $this->eventManager->dispatchEvent(
-            PostParseDocumentEvent::POST_PARSE_DOCUMENT,
-            new PostParseDocumentEvent($this->document)
-        );
 
         return $this->document;
     }

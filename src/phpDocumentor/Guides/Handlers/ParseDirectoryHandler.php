@@ -9,17 +9,13 @@ use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
 use phpDocumentor\Guides\FileCollector;
 use phpDocumentor\Guides\ParseDirectoryCommand;
-use phpDocumentor\Guides\ParseFileCommand;
 
 use function sprintf;
 
 final class ParseDirectoryHandler
 {
-    /** @var FileCollector */
-    private $fileCollector;
-
-    /** @var CommandBus */
-    private $commandBus;
+    private FileCollector $fileCollector;
+    private CommandBus $commandBus;
 
     public function __construct(FileCollector $scanner, CommandBus $commandBus)
     {
@@ -44,7 +40,7 @@ final class ParseDirectoryHandler
 
         $files = $this->fileCollector->collect($origin, $currentDirectory, $extension);
         foreach ($files as $file) {
-            $this->commandBus->handle(new ParseFileCommand($documentationSet, $origin, $currentDirectory, $file));
+            $this->commandBus->handle(new ParseFileCommand($origin, $currentDirectory, $file, $extension, 1));
         }
     }
 

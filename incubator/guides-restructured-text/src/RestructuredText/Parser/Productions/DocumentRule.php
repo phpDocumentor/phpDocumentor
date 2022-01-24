@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
-use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
@@ -32,12 +31,11 @@ final class DocumentRule implements Rule
     public function __construct(
         DocumentParser $documentParser,
         MarkupLanguageParser $parser,
-        EventManager $eventManager,
         array $directiveHandlers
     ) {
         $this->documentParser = $documentParser;
 
-        $lineDataParser = new LineDataParser($parser, $eventManager);
+        $lineDataParser = new LineDataParser($parser);
 
         $literalBlockRule = new LiteralBlockRule();
 
@@ -53,7 +51,7 @@ final class DocumentRule implements Rule
             new DirectiveRule($parser, $documentParser, $lineDataParser, $literalBlockRule, $directiveHandlers),
             new CommentRule(),
             new DefinitionListRule($lineDataParser),
-            new TableRule($parser, $eventManager),
+            new TableRule($parser),
 
             // For now: ParagraphRule must be last as it is the rule that applies if none other applies.
             new ParagraphRule($parser, $documentParser),

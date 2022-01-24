@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\Adapter\Local;
@@ -74,10 +83,6 @@ final class Parser
         );
     }
 
-    /**
-     * @todo Investigate if we can somehow dump the output format bit; the AST should not depend on the
-     *       expected rendering.
-     */
     public function parse(
         string $text,
         string $inputFormat = 'rst'

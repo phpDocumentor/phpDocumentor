@@ -15,10 +15,15 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Guides\DocumentCollector;
+use phpDocumentor\Guides\Event\PostParseDocument;
+use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\ParseDirectoryCommand;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ParseGuides
 {
@@ -30,12 +35,23 @@ final class ParseGuides
 
     /** @var FlySystemFactory */
     private $flySystemFactory;
+    /** @var EventDispatcherInterface&EventDispatcher */
+    private EventDispatcherInterface $eventDispatcher;
+    private Metas $metas;
 
-    public function __construct(CommandBus $commandBus, LoggerInterface $logger, FlySystemFactory $flySystemFactory)
-    {
+    /** @param EventDispatcherInterface&EventDispatcher $eventDispatcher */
+    public function __construct(
+        CommandBus $commandBus,
+        LoggerInterface $logger,
+        FlySystemFactory $flySystemFactory,
+        EventDispatcherInterface $eventDispatcher,
+        Metas $metas
+    ) {
         $this->commandBus = $commandBus;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->metas = $metas;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -67,9 +83,17 @@ final class ParseGuides
         $origin = $this->flySystemFactory->create($dsn);
         $sourcePath = (string) ($guideDocumentationSet->getSource()->paths()[0] ?? '');
 
+        $listener = new DocumentCollector(
+            $this->metas,
+            $guideDocumentationSet,
+            $this->logger
+        );
+
+        $this->eventDispatcher->addListener(PostParseDocument::class, $listener);
         $this->commandBus->handle(
             new ParseDirectoryCommand($guideDocumentationSet, $origin, $sourcePath)
         );
+        $this->eventDispatcher->removeListener(PostParseDocument::class, $listener);
 
         return $payload;
     }

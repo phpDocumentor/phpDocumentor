@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Handlers;
 
+use phpDocumentor\Guides\Meta\CachedMetasLoader;
 use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\PersistCacheCommand;
-use phpDocumentor\Guides\RestructuredText\Meta\CachedMetasLoader;
 
-final class PersistCacheHandler
+final class LoadCacheHandler
 {
     /** @var CachedMetasLoader */
     private $cachedMetasLoader;
@@ -31,12 +30,12 @@ final class PersistCacheHandler
         $this->cachedMetasLoader = $cachedMetasLoader;
     }
 
-    public function handle(PersistCacheCommand $command): void
+    public function handle(LoadCacheCommand $command): void
     {
-        if (!$command->useCache()) {
+        if (!$command->useCaching()) {
             return;
         }
 
-        $this->cachedMetasLoader->cacheMetaEntries($command->getCacheDirectory(), $this->metas);
+        $this->cachedMetasLoader->loadCachedMetaEntries($command->getCacheDirectory(), $this->metas);
     }
 }
