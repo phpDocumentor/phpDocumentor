@@ -17,8 +17,8 @@ use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\DocumentCollector;
 use phpDocumentor\Guides\Event\PostParseDocument;
+use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Metas;
-use phpDocumentor\Guides\ParseDirectoryCommand;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -91,7 +91,7 @@ final class ParseGuides
 
         $this->eventDispatcher->addListener(PostParseDocument::class, $listener);
         $this->commandBus->handle(
-            new ParseDirectoryCommand($guideDocumentationSet, $origin, $sourcePath)
+            new ParseDirectoryCommand($origin, $sourcePath, $guideDocumentationSet->getInputFormat())
         );
         $this->eventDispatcher->removeListener(PostParseDocument::class, $listener);
 

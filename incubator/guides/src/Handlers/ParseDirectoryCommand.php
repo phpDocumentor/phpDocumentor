@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Guides;
+namespace phpDocumentor\Guides\Handlers;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
 
 final class ParseDirectoryCommand
 {
@@ -15,22 +14,16 @@ final class ParseDirectoryCommand
     /** @var string */
     private $directory;
 
-    /** @var GuideSetDescriptor */
-    private $documentationSet;
+    private string $inputFormat;
 
     public function __construct(
-        GuideSetDescriptor $documentationSet,
         FilesystemInterface $origin,
-        string $directory
+        string $directory,
+        string $inputFormat
     ) {
         $this->origin = $origin;
         $this->directory = $directory;
-        $this->documentationSet = $documentationSet;
-    }
-
-    public function getDocumentationSet(): GuideSetDescriptor
-    {
-        return $this->documentationSet;
+        $this->inputFormat = $inputFormat;
     }
 
     public function getOrigin(): FilesystemInterface
@@ -41,5 +34,10 @@ final class ParseDirectoryCommand
     public function getDirectory(): string
     {
         return $this->directory;
+    }
+
+    public function getInputFormat(): string
+    {
+        return $this->inputFormat;
     }
 }

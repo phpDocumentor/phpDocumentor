@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
 use phpDocumentor\Guides\FileCollector;
-use phpDocumentor\Guides\ParseDirectoryCommand;
 
 use function sprintf;
 
@@ -27,8 +26,7 @@ final class ParseDirectoryHandler
     {
         $origin = $command->getOrigin();
         $currentDirectory = $command->getDirectory();
-        $documentationSet = $command->getDocumentationSet();
-        $extension = $documentationSet->getInputFormat();
+        $extension = $command->getInputFormat();
         $nameOfIndexFile = 'index';
 
         $this->guardThatAnIndexFileExists(
