@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
@@ -98,12 +99,16 @@ final class Twig extends WriterAbstract implements Initializable
     /** @var Environment */
     private $environment;
 
+    private Engine $queryEngine;
+
     public function __construct(
         EnvironmentFactory $environmentFactory,
-        PathGenerator $pathGenerator
+        PathGenerator $pathGenerator,
+        Engine $queryEngine
     ) {
         $this->environmentFactory = $environmentFactory;
         $this->pathGenerator = $pathGenerator;
+        $this->queryEngine = $queryEngine;
     }
 
     public function getName(): string
@@ -131,8 +136,11 @@ final class Twig extends WriterAbstract implements Initializable
     {
         $templatePath = $this->getTemplatePath($transformation);
 
-        $finder = new Pathfinder();
-        $nodes = $finder->find($project, $transformation->getQuery());
+        if ($transformation->getQuery()) {
+            $nodes = $this->queryEngine->perform($project, '$.' . $transformation->getQuery());
+        } else {
+            $nodes = [$project];
+        }
 
         foreach ($nodes as $node) {
             if (!$node) {

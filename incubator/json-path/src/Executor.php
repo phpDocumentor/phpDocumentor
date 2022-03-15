@@ -24,7 +24,7 @@ use function get_class;
 use function strrpos;
 use function substr;
 
-class Executor
+final class Executor
 {
     private PropertyAccessor $propertyAccessor;
 

@@ -15,10 +15,12 @@ namespace phpDocumentor\Transformer\Writer;
 
 use League\Flysystem\MountManager;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
@@ -49,8 +51,16 @@ final class PathGeneratorTest extends TestCase
         $this->template = new Template('My Template', new MountManager());
 
         $this->router = $this->prophesize(Router::class);
-        $pathfinder = new Pathfinder();
-        $this->generator = new PathGenerator($this->router->reveal(), $pathfinder);
+        $engine = $this->prophesize(Engine::class);
+        //phpcs:ignore SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic
+        $engine->perform(Argument::type(FileDescriptor::class), Argument::any())->will(function ($arguments) {
+            return $arguments[0]->getPath();
+        });
+
+        $this->generator = new PathGenerator(
+            $this->router->reveal(),
+            $engine->reveal()
+        );
     }
 
     /**
