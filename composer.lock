@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18d8d65c332de849e6a24301b918b64c",
+    "content-hash": "1635fdcc1b55c4141aa7d0679c0f730c",
     "packages": [
+        {
+            "name": "cypresslab/php-curry",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matteosister/php-curry.git",
+                "reference": "cf1a856b4bfcf6ba671296f1d1216323f366177e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matteosister/php-curry/zipball/cf1a856b4bfcf6ba671296f1d1216323f366177e",
+                "reference": "cf1a856b4bfcf6ba671296f1d1216323f366177e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Cypress/Curry/functions.php"
+                ],
+                "psr-0": {
+                    "Cypress\\Curry": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Curried functions in PHP",
+            "keywords": [
+                "curry",
+                "functional-programming"
+            ],
+            "support": {
+                "issues": "https://github.com/matteosister/php-curry/issues",
+                "source": "https://github.com/matteosister/php-curry/tree/0.5.0"
+            },
+            "time": "2017-03-10T17:05:37+00:00"
+        },
         {
             "name": "dflydev/dot-access-data",
             "version": "v3.0.1",
@@ -1464,6 +1513,88 @@
             "time": "2021-11-30T19:35:32+00:00"
         },
         {
+            "name": "parsica-php/parsica",
+            "version": "0.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/parsica-php/parsica.git",
+                "reference": "1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/parsica-php/parsica/zipball/1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8",
+                "reference": "1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8",
+                "shasum": ""
+            },
+            "require": {
+                "cypresslab/php-curry": "^0.5.0",
+                "ext-mbstring": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "mathiasverraes/uptodocs": "dev-main",
+                "phpbench/phpbench": "dev-master",
+                "phpunit/phpunit": "^9.0",
+                "psr/event-dispatcher": "^1.0",
+                "vimeo/psalm": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/characters.php",
+                    "src/combinators.php",
+                    "src/numeric.php",
+                    "src/predicates.php",
+                    "src/primitives.php",
+                    "src/recursion.php",
+                    "src/sideEffects.php",
+                    "src/space.php",
+                    "src/strings.php",
+                    "src/Expression/expression.php",
+                    "src/Internal/FP.php"
+                ],
+                "psr-4": {
+                    "Parsica\\Parsica\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net",
+                    "homepage": "https://verraes.net"
+                },
+                {
+                    "name": "Toon Daelman",
+                    "email": "spinnewebber_toon@hotmail.com",
+                    "homepage": "https://github.com/turanct"
+                }
+            ],
+            "description": "The easiest way to build robust parsers in PHP.",
+            "homepage": "https://parsica-php.github.io/",
+            "keywords": [
+                "parser",
+                "parser combinator",
+                "parser-combinator",
+                "parsing"
+            ],
+            "support": {
+                "issues": "https://github.com/parsica-php/parsica/issues",
+                "source": "https://github.com/parsica-php/parsica/tree/0.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/turanct",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-04-10T12:58:34+00:00"
+        },
+        {
             "name": "phpdocumentor/flyfinder",
             "version": "1.1.0",
             "source": {
@@ -1667,6 +1798,47 @@
                 "MIT"
             ],
             "homepage": "https://www.phpdoc.org",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "phpdocumentor/json-path",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "incubator/json-path",
+                "reference": "b18577747b19acd982067663a711c935ac6e37a5"
+            },
+            "require": {
+                "parsica-php/parsica": "^0.8.1",
+                "php": "7.4|8.0.*|8.1.*",
+                "symfony/property-access": "^5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\JsonPath\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "phpDocumentor\\JsonPath\\": "tests/unit"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jaapio",
+                    "email": "jaap@phpdoc.org"
+                }
+            ],
+            "description": "Access php objects with json path expressions",
             "transport-options": {
                 "relative": true
             }
@@ -4382,6 +4554,178 @@
             "time": "2022-01-30T18:16:22+00:00"
         },
         {
+            "name": "symfony/property-access",
+            "version": "v5.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-access.git",
+                "reference": "57196a19211baa36087e6fc06254d3b39ff0f369"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/57196a19211baa36087e6fc06254d3b39ff0f369",
+                "reference": "57196a19211baa36087e6fc06254d3b39ff0f369",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/property-info": "^5.2|^6.0"
+            },
+            "require-dev": {
+                "symfony/cache": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "psr/cache-implementation": "To cache access methods."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides functions to read and write from/to an object or array using a simple string notation",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/property-access/tree/v5.4.7"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-31T17:09:19+00:00"
+        },
+        {
+            "name": "symfony/property-info",
+            "version": "v5.4.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-info.git",
+                "reference": "0fc07795712972b9792f203d0fe0e77c26c3281d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/0fc07795712972b9792f203d0fe0e77c26c3281d",
+                "reference": "0fc07795712972b9792f203d0fe0e77c26c3281d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/string": "^5.1|^6.0"
+            },
+            "conflict": {
+                "phpdocumentor/reflection-docblock": "<3.2.2",
+                "phpdocumentor/type-resolver": "<1.4.0",
+                "symfony/dependency-injection": "<4.4"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.10.4",
+                "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
+                "phpstan/phpdoc-parser": "^1.0",
+                "symfony/cache": "^4.4|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/serializer": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "phpdocumentor/reflection-docblock": "To use the PHPDoc",
+                "psr/cache-implementation": "To cache results",
+                "symfony/doctrine-bridge": "To use Doctrine metadata",
+                "symfony/serializer": "To use Serializer metadata"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyInfo\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kévin Dunglas",
+                    "email": "dunglas@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Extracts information about PHP class' properties using metadata of popular sources",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "doctrine",
+                "phpdoc",
+                "property",
+                "symfony",
+                "type",
+                "validator"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/property-info/tree/v5.4.7"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-03-30T13:40:48+00:00"
+        },
+        {
             "name": "symfony/routing",
             "version": "v5.4.3",
             "source": {
@@ -5266,7 +5610,8 @@
     "stability-flags": {
         "phpdocumentor/guides": 20,
         "phpdocumentor/guides-markdown": 20,
-        "phpdocumentor/guides-restructured-text": 20
+        "phpdocumentor/guides-restructured-text": 20,
+        "phpdocumentor/json-path": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
