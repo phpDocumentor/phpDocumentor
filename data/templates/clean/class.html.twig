@@ -329,7 +329,7 @@
             <h3 id="source-view-label">{{ node.file.name }}</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="{{ path('files/' ~ node.path ~ '.txt')|raw }}" class="language-php line-numbers"></pre>
+            <pre data-src="files/ ~ {{ node.path }} ~ .txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 {% endblock %}

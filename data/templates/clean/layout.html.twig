@@ -10,28 +10,29 @@
     <title>{% block title %}{{ project.name }}{% endblock %}</title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
+	<base href="../">
 
-    <link href="{{ path('css/bootstrap-combined.no-icons.min.css') }}" rel="stylesheet">
-    <link href="{{ path('css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ path('css/prism.css') }}" rel="stylesheet" media="all"/>
-    <link href="{{ path('css/template.css') }}" rel="stylesheet" media="all"/>
+    <link href="css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/prism.css" rel="stylesheet" media="all"/>
+    <link href="css/template.css" rel="stylesheet" media="all"/>
     {% block stylesheets %}{% endblock %}
 
     <!--[if lt IE 9]>
-    <script src="{{ path('js/html5.js') }}"></script>
+    <script src="js/html5.js"></script>
     <![endif]-->
-    <script src="{{ path('js/jquery-1.11.0.min.js') }}"></script>
-    <script src="{{ path('js/ui/1.10.4/jquery-ui.min.js') }}"></script>
-    <script src="{{ path('js/bootstrap.min.js') }}"></script>
-    <script src="{{ path('js/jquery.smooth-scroll.js') }}"></script>
-    <script src="{{ path('js/prism.min.js') }}"></script>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.smooth-scroll.js"></script>
+    <script src="js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
     {% block javascripts %}{% endblock %}
 
-    <link rel="shortcut icon" href="{{ path('images/favicon.ico') }}"/>
-    <link rel="apple-touch-icon" href="{{ path('images/apple-touch-icon.png') }}"/>
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ path('images/apple-touch-icon-72x72.png') }}"/>
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ path('images/apple-touch-icon-114x114.png') }}"/>
+    <link rel="shortcut icon" href="images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png"/>
 </head>
 <body>
 
@@ -41,13 +42,13 @@
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <i class="icon-ellipsis-vertical"></i>
             </a>
-            <a class="brand" href="{{  path('index.html') }}">{{ project.name }}</a>
+            <a class="brand" href="index.html">{{ project.name }}</a>
 
             <div class="nav-collapse">
                 <ul class="nav pull-right">
                     {% if project.namespace.children|length > 0 %}
                     <li class="dropdown">
-                        <a href="{{ path('index.html') }}" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="index.html" class="dropdown-toggle" data-toggle="dropdown">
                             API Documentation <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
@@ -63,7 +64,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ path('graphs/class.html') }}">
+                                <a href="graphs/class.html">
                                     <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
                                 </a>
                             </li>
@@ -75,7 +76,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{{ path('reports/errors.html') }}">
+                                <a href="reports/errors.html">
                                     {% set errorCount = 0 %}
                                     {% for file in project.files %}
                                         {% set errorCount = errorCount + file.allerrors.count %}
@@ -84,7 +85,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ path('reports/markers.html') }}">
+                                <a href="reports/markers.html">
                                     {% set markerCount = 0 %}
                                     {% for file in project.files %}
                                         {% set markerCount = markerCount + file.markers.count %}
@@ -93,7 +94,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ path('reports/deprecated.html') }}">
+                                <a href="reports/deprecated.html">
                                     {% set deprecatedCount = 0 %}
                                     {% for element in project.indexes.elements if element.deprecated %}
                                         {% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}
@@ -136,7 +137,7 @@
                             <h1><i class="icon-bar-chart"></i></h1>
                             <div>
                                 <ul>
-                                    <li><a href="{{ path('graphs/class.html') }}">Class Hierarchy Diagram</a></li>
+                                    <li><a href="graphs/class.html">Class Hierarchy Diagram</a></li>
                                 </ul>
                             </div>
                         </section>
@@ -145,8 +146,8 @@
                             <h1><i class="icon-pushpin"></i></h1>
                             <div>
                                 <ul>
-                                    <li><a href="{{ path('reports/errors.html') }}">Errors</a></li>
-                                    <li><a href="{{ path('reports/markers.html') }}">Markers</a></li>
+                                    <li><a href="reports/errors.html">Errors</a></li>
+                                    <li><a href="reports/markers.html">Markers</a></li>
                                 </ul>
                             </div>
                         </section>
