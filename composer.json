@@ -95,6 +95,9 @@
         "sort-packages": true,
         "platform": {
             "php": "7.4.0"
+        },
+        "allow-plugins": {
+            "symfony/flex": true
         }
     },
     "replace": {
