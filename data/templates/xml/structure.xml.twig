@@ -22,7 +22,7 @@
 
             {# @var function \phpDocumentor\Descriptor\FunctionDescriptor #}
             {% for function in file.functions %}
-                <function namespace="{{ function.namespace }}" line="{{ function.line }}" package="{{ function.package }}">
+                <function namespace="{{ function.namespace }}" line="{{ function.line }}" package="{{ function.package }}" returnByReference="{{ function.hasReturnByReference | export }}">
                     <name>{{ function.name }}</name>
                     <full_name>{{ function.fullyQualifiedStructuralElementName }}</full_name>
                     {{ include('docblock.xml.twig', {descriptor: function}) }}
