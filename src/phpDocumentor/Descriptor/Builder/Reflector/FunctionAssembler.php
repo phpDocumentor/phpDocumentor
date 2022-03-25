@@ -86,6 +86,7 @@ class FunctionAssembler extends AssemblerAbstract
             -strlen($reflector->getName()) - 2
         ), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
+        $descriptor->setHasReturnByReference($reflector->getHasReturnByReference());
     }
 
     /**

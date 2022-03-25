@@ -98,6 +98,7 @@ class MethodAssemblerTest extends TestCase
         $this->assertFalse($descriptor->isFinal());
         $this->assertFalse($descriptor->isAbstract());
         $this->assertFalse($descriptor->isStatic());
+        $this->assertFalse($descriptor->getHasReturnByReference());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument->getName(), $argumentDescriptor->getName());
@@ -181,18 +182,65 @@ class MethodAssemblerTest extends TestCase
     }
 
     /**
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     */
+    public function testCreateMethodDescriptorFromReflectorWithReturnByReference(): void
+    {
+        // Arrange
+        $namespace = 'Namespace';
+        $methodName = 'goodbyeWorld';
+        $argumentName = 'variableName';
+
+        $argument = $this->givenAnArgumentWithName($argumentName);
+        $methodReflectorMock = $this->givenAMethodReflector(
+            $namespace,
+            $methodName,
+            $argument,
+            $this->givenADocBlockObject(true),
+            true
+        );
+
+        $argumentDescriptor = new ArgumentDescriptor();
+        $argumentDescriptor->setName($argumentName);
+
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
+
+        // Act
+        $descriptor = $this->fixture->create($methodReflectorMock);
+
+        // Assert
+        $this->assertTrue($descriptor->getHasReturnByReference());
+    }
+
+    /**
      * Creates a sample method reflector for the tests with the given data.
      */
     protected function givenAMethodReflector(
         string $namespace,
         string $methodName,
         Argument $argumentMock,
-        ?DocBlock $docBlockMock = null
+        ?DocBlock $docBlockMock = null,
+        bool $hasReturnByReference = false
     ): Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '\\myClass::' . $methodName . '()'),
             new Visibility(Visibility::PROTECTED_),
-            $docBlockMock
+            $docBlockMock,
+            false,
+            false,
+            false,
+            null,
+            null,
+            null,
+            $hasReturnByReference
         );
 
         $method->addArgument($argumentMock);
