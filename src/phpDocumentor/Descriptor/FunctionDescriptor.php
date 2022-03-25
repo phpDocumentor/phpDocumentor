@@ -32,6 +32,9 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     /** @var Type */
     private $returnType;
 
+    /** @var bool */
+    private $hasReturnByReference = false;
+
     /**
      * Initializes the all properties representing a collection with a new Collection object.
      */
@@ -73,5 +76,15 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
     public function setReturnType(Type $returnType): void
     {
         $this->returnType = $returnType;
+    }
+
+    public function setHasReturnByReference(bool $hasReturnByReference): void
+    {
+        $this->hasReturnByReference = $hasReturnByReference;
+    }
+
+    public function getHasReturnByReference(): bool
+    {
+        return $this->hasReturnByReference;
     }
 }

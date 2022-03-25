@@ -3,6 +3,7 @@
     {% if node.abstract %}<span class="phpdocumentor-signature__abstract">abstract</span>{% endif %}
     {% if node.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
     {% if node.static %}<span class="phpdocumentor-signature__static">static</span>{% endif %}
+    {% if node.hasReturnByReference %}<span class="phpdocumentor-signature__reference-operator">&amp;</span>{% endif %}
     {% apply spaceless %}
     <span class="phpdocumentor-signature__name">{{ node.name }}</span>
     <span>(</span>

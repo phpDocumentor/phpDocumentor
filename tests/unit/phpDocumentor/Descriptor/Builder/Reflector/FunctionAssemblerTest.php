@@ -86,7 +86,8 @@ class FunctionAssemblerTest extends TestCase
             $namespace,
             $functionName,
             $argument,
-            $this->givenADocBlockObject()
+            $this->givenADocBlockObject(),
+            true
         );
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
@@ -107,6 +108,7 @@ class FunctionAssemblerTest extends TestCase
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argumentDescriptor, $argument);
+        $this->assertTrue($descriptor->getHasReturnByReference());
     }
 
     /**
@@ -116,11 +118,16 @@ class FunctionAssemblerTest extends TestCase
         string $namespace,
         string $functionName,
         Argument $argumentMock,
-        DocBlock $docBlockMock
+        DocBlock $docBlockMock,
+        bool $hasReturnByReference = false
     ): Function_ {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),
-            $docBlockMock
+            $docBlockMock,
+            null,
+            null,
+            null,
+            $hasReturnByReference
         );
 
         $functionReflectorMock->addArgument($argumentMock);
