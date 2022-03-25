@@ -10,6 +10,7 @@
     <title>{% block title %}{{ project.name }}{% endblock %}</title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
+    {{ renderBaseUrlHeader() }}
 
     <link href="{{ path('css/bootstrap-combined.no-icons.min.css') }}" rel="stylesheet">
     <link href="{{ path('css/font-awesome.min.css') }}" rel="stylesheet">
