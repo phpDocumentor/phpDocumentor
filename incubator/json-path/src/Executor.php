@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\JsonPath;
 
+use ArrayAccess;
+use Generator;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\PathNode;
 use phpDocumentor\JsonPath\AST\QueryNode;
@@ -20,7 +22,12 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
+use function array_merge;
+use function current;
 use function get_class;
+use function is_array;
+use function is_iterable;
+use function iterator_to_array;
 use function strrpos;
 use function substr;
 
@@ -50,10 +57,26 @@ final class Executor
      */
     public function evaluateEqualsComparison($root, $currentObject, QueryNode $left, QueryNode $right): bool
     {
-        $leftValue = $this->evaluate($left, $currentObject, $root);
-        $rightValue = $this->evaluate($right, $currentObject, $root);
+        $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
+        $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
 
         return $leftValue === $rightValue;
+    }
+
+    /**
+     * @param Generator<mixed>|mixed $value
+     *
+     * @return mixed
+     */
+    private function toValue($value)
+    {
+        if ($value instanceof Generator) {
+            $result = iterator_to_array($value, false);
+
+            return current($result);
+        }
+
+        return $value;
     }
 
     /**
@@ -95,10 +118,34 @@ final class Executor
     /**
      * @param mixed $currentElement
      *
-     * @return mixed
+     * @return Generator<mixed>
      */
-    public function evaluateFieldAccess($currentElement, FieldName $fieldName)
+    public function evaluateFieldAccess($currentElement, FieldName $fieldName): Generator
     {
-        return $this->propertyAccessor->getValue($currentElement, new PropertyPath($fieldName->getName()));
+        if (
+            (is_array($currentElement) || $currentElement instanceof ArrayAccess) &&
+            isset($currentElement[$fieldName->getName()])
+        ) {
+            yield $currentElement[$fieldName->getName()];
+        } elseif (is_iterable($currentElement)) {
+            $result = [];
+            foreach ($currentElement as $element) {
+                foreach ($this->evaluateFieldAccess($element, $fieldName) as $row) {
+                    if (is_iterable($row)) {
+                        $result = array_merge(
+                            $result,
+                            is_array($row) ? $row : iterator_to_array($row, false)
+                        );
+                        continue;
+                    }
+
+                    $result[] = $row;
+                }
+            }
+
+            yield from $result;
+        } else {
+            yield $this->propertyAccessor->getValue($currentElement, new PropertyPath($fieldName->getName()));
+        }
     }
 }

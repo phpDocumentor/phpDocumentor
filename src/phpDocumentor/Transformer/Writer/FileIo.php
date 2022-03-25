@@ -51,7 +51,7 @@ class FileIo extends WriterAbstract
     public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         $method = $transformation->getQuery();
-        if (strtolower($method) !== 'copy') {
+        if (strtolower($method) !== '$.copy') {
             throw new InvalidArgumentException(
                 'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
             );

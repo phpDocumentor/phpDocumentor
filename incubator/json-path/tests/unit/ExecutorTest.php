@@ -22,17 +22,19 @@ use phpDocumentor\JsonPath\AST\FunctionCall;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
+use phpDocumentor\JsonPath\AST\Wildcard;
 use phpDocumentor\JsonPath\Fixtures\Book;
 use phpDocumentor\JsonPath\Fixtures\Commic;
 use phpDocumentor\JsonPath\Fixtures\Store;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+use function iterator_to_array;
+
 final class ExecutorTest extends TestCase
 {
     public function testQueryRootSource(): void
     {
-        $this->markTestSkipped('Need to research this, do we need array access');
         $store = new Store();
         $executor = new Executor();
         $result = $executor->evaluate(
@@ -45,7 +47,7 @@ final class ExecutorTest extends TestCase
             ['store' => $store]
         );
 
-        self::assertSame($store, $result);
+        self::assertSame([$store], iterator_to_array($result, false));
     }
 
     public function testQueryRootSourceObject(): void
@@ -64,7 +66,7 @@ final class ExecutorTest extends TestCase
             $root
         );
 
-        self::assertSame($store, $result);
+        self::assertSame([$store], iterator_to_array($result));
     }
 
     public function testQuerySubProperty(): void
@@ -86,7 +88,7 @@ final class ExecutorTest extends TestCase
             $root
         );
 
-        self::assertSame($store->getBooks(), $result);
+        self::assertSame($store->getBooks(), iterator_to_array($result, false));
     }
 
     public function testQuerySubPropertyByFilter(): void
@@ -123,7 +125,7 @@ final class ExecutorTest extends TestCase
             $root
         );
 
-        self::assertSame([$book], $result);
+        self::assertSame([$book], iterator_to_array($result, false));
     }
 
     public function testQuerySubPropertyByFilterFunctionCall(): void
@@ -166,6 +168,104 @@ final class ExecutorTest extends TestCase
             $root
         );
 
-        self::assertSame([$book], $result);
+        self::assertSame([$book], iterator_to_array($result, false));
+    }
+
+    public function testQueryWithWildcard(): void
+    {
+        $books = [
+            'phpDoc',
+            'First book',
+            'Second book',
+        ];
+
+        $root = new stdClass();
+        $root->store = $this->createStore($books);
+
+        $executor = new Executor();
+        $result = $executor->evaluate(
+            new Path(
+                [
+                    new RootNode(),
+                    new FieldAccess(
+                        new FieldName('store')
+                    ),
+                    new FieldAccess(
+                        new FieldName('books')
+                    ),
+                    new FilterNode(
+                        new Wildcard()
+                    ),
+                    new FieldAccess(
+                        new FieldName('title')
+                    ),
+                ]
+            ),
+            $root
+        );
+
+        self::assertSame($books, iterator_to_array($result, false));
+    }
+
+    public function testQueryCollectionInCollection(): void
+    {
+        $books = [
+            'phpDoc',
+            'First book',
+            'Second book',
+        ];
+
+        $root = new stdClass();
+        $root->stores = [];
+
+        $root->stores[] = $this->createStore($books);
+        $root->stores[] = $this->createStore(['foo', 'bar']);
+        $root->stores[] = $this->createStore($books);
+
+        $executor = new Executor();
+        $result = $executor->evaluate(
+            new Path(
+                [
+                    new RootNode(),
+                    new FieldAccess(
+                        new FieldName('stores')
+                    ),
+                    new FilterNode(
+                        new Wildcard()
+                    ),
+                    new FieldAccess(
+                        new FieldName('books')
+                    ),
+                    new FilterNode(
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('title')),
+                            ]),
+                            '==',
+                            new Value(
+                                'phpDoc'
+                            )
+                        )
+                    ),
+                    new FieldAccess(
+                        new FieldName('title')
+                    ),
+                ]
+            ),
+            $root
+        );
+
+        self::assertEquals(['phpDoc', 'phpDoc'], iterator_to_array($result, false));
+    }
+
+    private function createStore(array $books): Store
+    {
+        $store = new Store();
+        foreach ($books as $title) {
+            $store->addBook(new Book($title));
+        }
+
+        return $store;
     }
 }

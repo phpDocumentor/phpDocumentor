@@ -13,15 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\JsonPath\AST;
 
-use ArrayIterator;
-use CallbackFilterIterator;
 use InvalidArgumentException;
-use IteratorIterator;
 use phpDocumentor\JsonPath\Executor;
 
-use function is_array;
 use function is_iterable;
-use function iterator_to_array;
 
 final class FilterNode implements PathNode
 {
@@ -39,11 +34,12 @@ final class FilterNode implements PathNode
             throw new InvalidArgumentException('Can only filter iteratable values %s given');
         }
 
-        $valueIterator = new CallbackFilterIterator(
-            is_array($currentObject) ? new ArrayIterator($currentObject) : new IteratorIterator($currentObject),
-            fn ($current) => $this->expression->visit($param, $current, $root)
-        );
+        foreach ($currentObject as $current) {
+            if (!$this->expression->visit($param, $current, $root)) {
+                continue;
+            }
 
-        return iterator_to_array($valueIterator, false);
+            yield $current;
+        }
     }
 }

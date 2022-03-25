@@ -23,6 +23,7 @@ use phpDocumentor\JsonPath\AST\FunctionCall;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
+use phpDocumentor\JsonPath\AST\Wildcard;
 use PHPUnit\Framework\TestCase;
 
 class ParserBuilderTest extends TestCase
@@ -148,6 +149,26 @@ class ParserBuilderTest extends TestCase
                             'api'
                         )
                     )
+                ),
+            ]),
+            $result->output()
+        );
+    }
+
+    public function testFilterExpressionWildcard(): void
+    {
+        $result = $this->parser->tryString('$.store.books_title[*]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store')
+                ),
+                new FieldAccess(
+                    new FieldName('books_title')
+                ),
+                new FilterNode(
+                    new Wildcard()
                 ),
             ]),
             $result->output()

@@ -15,6 +15,8 @@ namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Transformer\Template\Parameter;
 
+use function str_starts_with;
+
 /**
  * Class representing a single Transformation.
  */
@@ -69,7 +71,15 @@ class Transformation
      */
     public function getQuery(): string
     {
-        return $this->query;
+        if ($this->query === '') {
+            return $this->query;
+        }
+
+        if (str_starts_with($this->query, '$.')) {
+            return $this->query;
+        }
+
+        return '$.' . $this->query;
     }
 
     /**

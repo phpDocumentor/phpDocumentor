@@ -13,6 +13,7 @@ use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -199,5 +200,14 @@ final class Provider extends Base
         }
 
         return $rootNamespace;
+    }
+
+    public function classDescriptor(Fqsen $fqsen): ClassDescriptor
+    {
+        $classDescriptor = new ClassDescriptor();
+        $classDescriptor->setName($fqsen->getName());
+        $classDescriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $classDescriptor;
     }
 }

@@ -23,6 +23,7 @@ use phpDocumentor\JsonPath\AST\FunctionCall;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
+use phpDocumentor\JsonPath\AST\Wildcard;
 
 use function is_array;
 use function Parsica\Parsica\alphaChar;
@@ -69,11 +70,14 @@ final class ParserBuilder
     /** @return Parser<FilterNode> */
     private static function filter(): Parser
     {
-        return between(
-            string('[?('),
-            string(')]'),
-            self::expression()
-        )->map((static fn ($expression) => new FilterNode($expression)));
+        return choice(
+            string('[*]')->map(static fn () => new FilterNode(new Wildcard())),
+            between(
+                string('[?('),
+                string(')]'),
+                self::expression()
+            )->map((static fn ($expression) => new FilterNode($expression))),
+        );
     }
 
     /** @return Parser<Comparison> */
@@ -84,7 +88,8 @@ final class ParserBuilder
         );
 
         $value = choice(
-            between(char('"'), char('"'), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value))
+            between(char('"'), char('"'), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value)),
+            between(char("'"), char("'"), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value))
         );
 
         return collect(
@@ -139,7 +144,9 @@ final class ParserBuilder
     /** @return Parser<FieldName> */
     private static function fieldName(): Parser
     {
-        return atLeastOne(alphaNumChar())->label('NODE_NAME')->map(static fn ($name) => new FieldName($name));
+        return atLeastOne(
+            alphaNumChar()->or(char('_')),
+        )->label('NODE_NAME')->map(static fn ($name) => new FieldName($name));
     }
 
     /** @return Parser<Path> */
@@ -168,6 +175,6 @@ final class ParserBuilder
             self::rootFollowUp(),
             self::rootNode(),
             self::currentNode(),
-        );
+        )->thenEof();
     }
 }
