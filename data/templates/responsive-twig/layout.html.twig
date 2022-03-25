@@ -6,6 +6,7 @@
     <title>{% block title %}{{ project.name }}{% endblock %}</title>
     <meta name="author" content="{{ author }}"/>
     <meta name="description" content=""/>
+    {{ renderBaseUrlHeader() }}
 
     {% block stylesheets %}
         <link href="{{ path('css/template.css') }}" rel="stylesheet" media="all"/>
