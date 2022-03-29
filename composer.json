@@ -37,7 +37,7 @@
         "ext-xml": "*",
         "jawira/plantuml": "^1.27",
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
-        "league/commonmark": "^2.1",
+        "league/commonmark": "^2.2",
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",

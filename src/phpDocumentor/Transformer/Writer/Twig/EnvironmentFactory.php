@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
-use League\CommonMark\MarkdownConverterInterface;
+use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
@@ -30,12 +30,12 @@ class EnvironmentFactory
     /** @var ?Path */
     private $templateOverridesAt;
 
-    /** @var MarkdownConverterInterface */
+    /** @var ConverterInterface */
     private $markDownConverter;
 
     public function __construct(
         LinkRenderer $renderer,
-        MarkdownConverterInterface $markDownConverter
+        ConverterInterface $markDownConverter
     ) {
         $this->renderer = $renderer;
         $this->markDownConverter = $markDownConverter;

@@ -15,7 +15,7 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use ArrayIterator;
 use InvalidArgumentException;
-use League\CommonMark\MarkdownConverterInterface;
+use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -75,7 +75,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /** @var LinkRenderer */
     private $routeRenderer;
 
-    /** @var MarkdownConverterInterface */
+    /** @var ConverterInterface */
     private $markdownConverter;
 
     /**
@@ -85,7 +85,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function __construct(
         ProjectDescriptor $project,
-        MarkdownConverterInterface $markdownConverter,
+        ConverterInterface $markdownConverter,
         LinkRenderer $routeRenderer
     ) {
         $this->markdownConverter = $markdownConverter;
@@ -301,7 +301,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return str_replace(
                         ['<pre>', '<code>'],
                         ['<pre class="prettyprint">', '<code class="prettyprint">'],
-                        $this->markdownConverter->convertToHtml($value ?? '')->getContent()
+                        $this->markdownConverter->convert($value ?? '')->getContent()
                     );
                 },
                 ['is_safe' => ['all']]
