@@ -69,6 +69,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToPackage($packages, $file->getClasses()->getAll(), 'classes');
             $this->addElementsOfTypeToPackage($packages, $file->getInterfaces()->getAll(), 'interfaces');
             $this->addElementsOfTypeToPackage($packages, $file->getTraits()->getAll(), 'traits');
+            $this->addElementsOfTypeToPackage($packages, $file->getEnums()->getAll(), 'enums');
         }
 
         $project->getIndexes()->set('packages', $packages);
