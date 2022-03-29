@@ -57,6 +57,7 @@ parameters:
       'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
       'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
       'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
+      'phpDocumentor\Descriptor\Tag\UsedByDescriptor': ['reference']
 
 services:
     _defaults:

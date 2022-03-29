@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Marios;
 
+/**
+ * @used-by Pizzaria
+ */
 final class Oven
 {
     private const DEFAULT_TEMPERATURE=220;
