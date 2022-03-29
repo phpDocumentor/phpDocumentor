@@ -1672,16 +1672,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "d0fcff5f5fcd319bd8ca9fb73f17646ba6f58534"
+                "reference": "accb6fe9299d1a4d6ab66e30670bfc12da3e9c06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/d0fcff5f5fcd319bd8ca9fb73f17646ba6f58534",
-                "reference": "d0fcff5f5fcd319bd8ca9fb73f17646ba6f58534",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/accb6fe9299d1a4d6ab66e30670bfc12da3e9c06",
+                "reference": "accb6fe9299d1a4d6ab66e30670bfc12da3e9c06",
                 "shasum": ""
             },
             "require": {
@@ -1722,9 +1722,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
-                "source": "https://github.com/phpDocumentor/Reflection/tree/5.1.0"
+                "source": "https://github.com/phpDocumentor/Reflection/tree/5.1.1"
             },
-            "time": "2022-01-04T20:59:25+00:00"
+            "time": "2022-03-29T12:49:02+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1838,16 +1838,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706"
+                "reference": "77a32518733312af16a44300404e945338981de3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/93ebd0014cab80c4ea9f5e297ea48672f1b87706",
-                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/77a32518733312af16a44300404e945338981de3",
+                "reference": "77a32518733312af16a44300404e945338981de3",
                 "shasum": ""
             },
             "require": {
@@ -1882,9 +1882,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.0"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.1"
             },
-            "time": "2022-01-04T19:58:01+00:00"
+            "time": "2022-03-15T21:29:03+00:00"
         },
         {
             "name": "psr/cache",
