@@ -81,6 +81,21 @@ describe('Showing functions in a namespace', function() {
                     .find('.phpdocumentor-signature__argument__default-value')
                     .contains('42')
             });
+
+            it('Show the name of argument $timeout', function () {
+                getElementWithName('function', 'turnOffOven()')
+                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__name')
+                    .contains('$timeout');
+            });
+
+            it('Show the default value of argument $timeout', function () {
+                getElementWithName('function', 'turnOffOven()')
+                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__name')
+                    .contains('$timeout')
+                    .parent()
+                    .find('.phpdocumentor-signature__argument__default-value')
+                    .contains('0')
+            });
         });
     });
 
