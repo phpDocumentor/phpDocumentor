@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace phpDocumentor\Compiler\Pass;
+
+use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Tag\UsesDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
+
+final class UsedByBuilder implements CompilerPassInterface
+{
+    public function getDescription(): string
+    {
+        return 'Creates a link for uses tags on the counter side';
+    }
+
+    public function execute(ProjectDescriptor $project): void
+    {
+        foreach ($project->getIndexes()->get('elements') as $element) {
+            $uses = $element->getTags()->fetch('uses', Collection::fromClassString(TagDescriptor::class));
+            foreach ($uses->filter(UsesDescriptor::class) as $usesTag) {
+                $counterSide = $usesTag->getReference();
+                if ($counterSide instanceof DescriptorAbstract === false) {
+                    continue;
+                }
+
+                $tag = new UsesDescriptor('used-by', $usesTag->getDescription());
+                $tag->setReference($element);
+                $counterSide->getTags()->fetch(
+                    'used-by',
+                    Collection::fromClassString(TagDescriptor::class)
+                )->add($tag);
+            }
+        }
+    }
+}

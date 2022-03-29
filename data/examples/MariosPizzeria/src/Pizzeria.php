@@ -33,6 +33,8 @@ final class Pizzeria implements \JsonSerializable
      * determined by the DocBlock and no type hints are given in the method signature.
      *
      * @param Pizza $pizza The specific pizza to place an order for.
+     * @uses Pizza::getName() used to create an order
+     *
      *
      * @return bool Whether the order succeeded
      */
