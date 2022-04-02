@@ -3,7 +3,7 @@
     "null", "true", "false",
     "static", "self", "parent",
     "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
-    "array_key_last",
+    "array_key_last", "str_starts_with",
     "Composer\\Autoload\\ClassLoader",
     "League\\Uri\\Exceptions\\SyntaxError",
     "PackageVersions\\Versions"
