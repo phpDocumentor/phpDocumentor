@@ -10,7 +10,7 @@ env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.4'
-  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5
+  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5,033E5F8D801A2F8D
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
   setup:
@@ -39,15 +39,15 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: composer-require-checker:2.1.0
+          tools: composer-require-checker:3.8.0
 
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
-#      - name: composer-require-checker
-#        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
+      - name: composer-require-checker
+        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
