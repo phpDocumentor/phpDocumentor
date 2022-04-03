@@ -23,10 +23,12 @@ use Symfony\Component\String\UnicodeString;
 use UnexpectedValueException;
 
 use function array_map;
+use function current;
 use function explode;
 use function get_class;
 use function implode;
 use function is_string;
+use function iterator_to_array;
 use function preg_replace_callback;
 use function sprintf;
 use function strpos;
@@ -105,7 +107,9 @@ class PathGenerator
                 }
 
                 // Find value in Descriptor's properties / methods
-                $value = (string) $this->queryEngine->perform($descriptor, '$.' . $variable);
+                $value = (string) current(
+                    iterator_to_array($this->queryEngine->perform($descriptor, '$.' . $variable))
+                );
 
                 // strip any special characters and surrounding \ or /
                 $filepart = trim(trim($value), '\\/');

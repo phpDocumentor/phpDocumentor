@@ -54,7 +54,7 @@ final class PathGeneratorTest extends TestCase
         $engine = $this->prophesize(Engine::class);
         //phpcs:ignore SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic
         $engine->perform(Argument::type(FileDescriptor::class), Argument::any())->will(function ($arguments) {
-            return $arguments[0]->getPath();
+            yield $arguments[0]->getPath();
         });
 
         $this->generator = new PathGenerator(
