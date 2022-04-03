@@ -72,7 +72,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      */
     public function testGetQuery(): void
     {
-        $this->assertSame($this->query, $this->fixture->getQuery());
+        $this->assertSame('$.' . $this->query, $this->fixture->getQuery());
     }
 
     /**

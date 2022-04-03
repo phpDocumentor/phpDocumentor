@@ -11,6 +11,9 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "phpDocumentor\\JsonPath\\" : [
+                "incubator/json-path/tests/unit/"
+            ],
             "phpDocumentor\\": [
                 "tests/unit/phpDocumentor/",
                 "tests/integration/phpDocumentor/",
@@ -24,7 +27,8 @@
     "repositories": [
         { "type": "path", "url": "incubator/guides" },
         { "type": "path", "url": "incubator/guides-restructured-text" },
-        { "type": "path", "url": "incubator/guides-markdown" }
+        { "type": "path", "url": "incubator/guides-markdown" },
+        { "type": "path", "url": "incubator/json-path" }
     ],
     "require": {
         "php": "^7.4.0||^8.0",
@@ -49,6 +53,7 @@
         "phpdocumentor/guides": "*@dev",
         "phpdocumentor/guides-markdown": "*@dev",
         "phpdocumentor/guides-restructured-text": "*@dev",
+        "phpdocumentor/json-path": "*@dev",
         "phpdocumentor/reflection": "^5.1",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.0",
