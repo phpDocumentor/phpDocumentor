@@ -41,7 +41,14 @@ final class DocumentNode extends Node
     /** @var string[] */
     private $dependencies = [];
 
-    /** @var array<string|SpanNode> */
+    /**
+     * Variables are replacements in a document.
+     *
+     * They easiest example is the replace directive that allows textual replacements in the document. But
+     * also other directives may be prefixed with a name to replace a certain value in the text.
+     *
+     * @var array<string|Node>
+     */
     private $variables = [];
 
     public function __construct(string $value)
@@ -176,18 +183,18 @@ final class DocumentNode extends Node
     }
 
     /**
-     * @return array<string|SpanNode>
+     * @param mixed $default
+     *
+     * @return string|Node
      */
-    public function getVariables(): array
+    public function getVariable(string $name, $default)
     {
-        return $this->variables;
+        return $this->variables[$name] ?? $default;
     }
 
-    /**
-     * @param array<string|SpanNode> $variables
-     */
-    public function setVariables(array $variables): void
+    /** @param string|Node $value */
+    public function addVariable(string $name, $value): void
     {
-        $this->variables = $variables;
+        $this->variables[$name] = $value;
     }
 }

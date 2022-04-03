@@ -52,8 +52,7 @@ final class DocumentCollector
                 $document->getTitles(),
                 $document->getTocs(),
                 $document->getDependencies(),
-                $metaEntry->getLinks(),
-                $document->getVariables()
+                $metaEntry->getLinks()
             )
         );
     }

@@ -106,7 +106,6 @@ final class Parser
         $this->parserContext->reset();
 
         $document = $parser->parse($this->parserContext, $text);
-        $document->setVariables($this->parserContext->getVariables());
         $this->addDocumentToMetas($document);
 
         $this->metas         = null;

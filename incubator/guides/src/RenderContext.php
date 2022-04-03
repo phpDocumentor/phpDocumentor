@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 
 use function array_shift;
 use function dirname;
@@ -51,6 +52,7 @@ class RenderContext
     private $currentAbsolutePath = '';
 
     private string $outputFormat;
+    private DocumentNode $document;
 
     public function __construct(
         string $outputFolder,
@@ -66,12 +68,9 @@ class RenderContext
         $this->outputFormat = $outputFormat;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setVariable(string $variable, $value): void
+    public function setDocument(DocumentNode $documentNode): void
     {
-        $this->variables[$variable] = $value;
+        $this->document = $documentNode;
     }
 
     /**
@@ -81,7 +80,7 @@ class RenderContext
      */
     public function getVariable(string $variable, $default = null)
     {
-        return $this->variables[$variable] ?? $default;
+        return $this->document->getVariable($variable, $default);
     }
 
     public function setLink(string $name, string $url): void

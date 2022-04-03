@@ -94,6 +94,7 @@ final class RenderHandler
     ): string {
         $document = $descriptor->getDocumentNode();
 
+        $environment->setDocument($document);
         $environment->setCurrentFileName($descriptor->getFile());
         // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
         // source locations are propagated.
@@ -103,10 +104,6 @@ final class RenderHandler
 
         foreach ($descriptor->getLinks() as $link => $url) {
             $environment->setLink($link, $url);
-        }
-
-        foreach ($descriptor->getVariables() as $key => $value) {
-            $environment->setVariable($key, $value);
         }
 
         $this->renderer->setGuidesEnvironment($environment);

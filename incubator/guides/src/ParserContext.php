@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Nodes\SpanNode;
 
 use function array_shift;
 use function dirname;
@@ -75,22 +74,6 @@ class ParserContext
     public function getInitialHeaderLevel(): int
     {
         return $this->initialHeaderLevel;
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public function setVariable(string $variable, $value): void
-    {
-        $this->variables[$variable] = $value;
-    }
-
-    /**
-     * @return array<string|SpanNode>
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
     }
 
     public function setLink(string $name, string $url): void

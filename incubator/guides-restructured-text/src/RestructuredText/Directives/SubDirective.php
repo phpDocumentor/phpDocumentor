@@ -44,10 +44,11 @@ abstract class SubDirective extends Directive
             return;
         }
 
+        $document = $parser->getDocument();
         if ($variable !== '') {
-            $parser->getEnvironment()->setVariable($variable, $newNode);
+            $document->addVariable($variable, $node);
         } else {
-            $parser->getDocument()->addNode($newNode);
+            $document->addNode($node);
         }
     }
 
