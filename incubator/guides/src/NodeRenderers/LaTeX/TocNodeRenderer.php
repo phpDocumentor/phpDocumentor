@@ -20,16 +20,19 @@ use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
 
+use phpDocumentor\Guides\UrlGenerator;
 use function ltrim;
 
 class TocNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
+    private UrlGenerator $urlGenerator;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(Renderer $renderer, UrlGenerator $urlGenerator)
     {
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function render(Node $node, RenderContext $environment): string
@@ -46,9 +49,7 @@ class TocNodeRenderer implements NodeRenderer
                 continue;
             }
 
-            $url = $environment->relativeUrl($metaEntry->getUrl());
-
-            $tocItems[] = ['url' => $url];
+            $tocItems[] = ['url' => $this->urlGenerator->relativeUrl($metaEntry->getUrl())];
         }
 
         return $this->renderer->render(

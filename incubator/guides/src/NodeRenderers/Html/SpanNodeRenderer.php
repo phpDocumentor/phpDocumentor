@@ -66,7 +66,7 @@ class SpanNodeRenderer extends BaseSpanNodeRenderer
         return $this->renderer->render(
             'link.html.twig',
             [
-                'url' => $environment->generateUrl($url),
+                'url' => $this->urlGenerator->generateUrl($url),
                 'title' => $title,
                 'attributes' => $attributes,
             ]

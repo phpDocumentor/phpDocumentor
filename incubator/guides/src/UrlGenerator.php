@@ -23,7 +23,7 @@ use function ltrim;
 
 final class UrlGenerator
 {
-    public function generateUrl(string $path, string $dirName): string
+    public function generateUrl(string $path): string
     {
         $uri = UriFactory::createUri($path);
         if (UriInfo::isAbsolute($uri)) {

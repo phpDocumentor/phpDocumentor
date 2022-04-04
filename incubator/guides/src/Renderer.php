@@ -52,18 +52,21 @@ class Renderer implements FullDocumentNodeRenderer
 
     /** @var OutputFormatRenderer|null */
     private $outputRenderer;
+    private UrlGenerator $urlGenerator;
 
     /** @param iterable<OutputFormatRenderer> $outputFormatRenderers */
     public function __construct(
         EnvironmentFactory $twigFactory,
         LoggerInterface $logger,
         PlantumlRenderer $plantumlRenderer,
-        iterable $outputFormatRenderers
+        iterable $outputFormatRenderers,
+        UrlGenerator $urlGenerator
     ) {
         $this->twigFactory = $twigFactory;
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
         $this->outputFormatRenderers = $outputFormatRenderers;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /** @param DocumentationSetDescriptor|GuideSetDescriptor $documentationSet */
@@ -90,7 +93,7 @@ class Renderer implements FullDocumentNodeRenderer
         }
 
         $this->twig = $this->twigFactory->create($project, $transformation->template());
-        $this->twig->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer, $this->outputRenderer));
+        $this->twig->addExtension(new AssetsExtension($this->logger, $this->plantumlRenderer, $this->outputRenderer, $this->urlGenerator));
         $this->twig->addGlobal('project', $project);
         $this->twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
         $this->twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);

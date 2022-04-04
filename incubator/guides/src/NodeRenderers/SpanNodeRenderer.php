@@ -22,6 +22,7 @@ use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
+use phpDocumentor\Guides\UrlGenerator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
@@ -44,15 +45,18 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
     private $referenceResolver;
 
     private LoggerInterface $logger;
+    protected UrlGenerator $urlGenerator;
 
     public function __construct(
         Renderer $renderer,
         ReferenceResolver $referenceResolver,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        UrlGenerator $urlGenerator
     ) {
         $this->renderer = $renderer;
         $this->referenceResolver = $referenceResolver;
         $this->logger = $logger;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function setNodeRendererFactory(NodeRendererFactory $nodeRendererFactory): void
@@ -85,7 +89,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
         return $this->renderer->render(
             'link.html.twig',
             [
-                'url' => $environment->generateUrl($url),
+                'url' => $this->urlGenerator->generateUrl($url),
                 'title' => $title,
                 'attributes' => $attributes,
             ]
@@ -182,14 +186,7 @@ abstract class SpanNodeRenderer implements NodeRenderer, SpanRenderer, NodeRende
 
                 $span = str_replace(
                     $token->getId(),
-                    $this->renderer->render(
-                        'link.html.twig',
-                        [
-                            'url' => $environment->generateUrl($reference->getUrl()),
-                            'title' => $reference->getTitle(),
-                            'attributes' => [],
-                        ]
-                    ),
+                    $this->link($environment, $reference->getUrl(), $reference->getTitle(), $reference->getAttributes()),
                     $span
                 );
 

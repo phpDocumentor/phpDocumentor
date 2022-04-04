@@ -17,6 +17,7 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -37,15 +38,18 @@ final class AssetsExtension extends AbstractExtension
 
     /** @var Renderer\OutputFormatRenderer */
     private $renderer;
+    private UrlGenerator $urlGenerator;
 
     public function __construct(
         LoggerInterface $logger,
         PlantumlRenderer $plantumlRenderer,
-        Renderer\OutputFormatRenderer $renderer
+        Renderer\OutputFormatRenderer $renderer,
+        UrlGenerator $urlGenerator
     ) {
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function getFunctions(): array
@@ -71,7 +75,8 @@ final class AssetsExtension extends AbstractExtension
         $outputPath = $this->copyAsset(
             $context['env'] ?? null,
             $context['destination'] ?? null,
-            $path
+            $path,
+            $context['destinationPath'],
         );
 
         // make it relative so it plays nice with the base tag in the HEAD
@@ -100,8 +105,12 @@ final class AssetsExtension extends AbstractExtension
         return $this->plantumlRenderer->render($source);
     }
 
-    private function copyAsset(?RenderContext $environment, ?FilesystemInterface $destination, string $path): string
-    {
+    private function copyAsset(
+        ?RenderContext $environment,
+        ?FilesystemInterface $destination,
+        string $path,
+        string $destinationPath
+    ): string {
         if (!$environment instanceof RenderContext) {
             return $path;
         }
@@ -111,7 +120,10 @@ final class AssetsExtension extends AbstractExtension
         }
 
         $sourcePath = $environment->getCurrentAbsolutePath() . '/' . $path;
-        $outputPath = $environment->outputUrl($path);
+        $outputPath = $this->urlGenerator->absoluteUrl(
+            $destinationPath,
+            $environment->canonicalUrl($path)
+        );
 
         Assert::string($outputPath);
         if ($environment->getOrigin()->has($sourcePath) === false) {

@@ -37,9 +37,6 @@ class RenderContext
     private $metas;
 
     /** @var string[] */
-    private $variables = [];
-
-    /** @var string[] */
     private $links = [];
 
     /** @var string[] */
@@ -102,18 +99,13 @@ class RenderContext
             $link = $this->links[$name];
 
             if ($relative) {
-                return $this->relativeUrl($link);
+                return $this->urlGenerator->relativeUrl($link);
             }
 
             return $link;
         }
 
         return '';
-    }
-
-    public function relativeUrl(?string $url): string
-    {
-        return $this->urlGenerator->relativeUrl($url);
     }
 
     public function canonicalUrl(string $url): ?string
@@ -123,24 +115,11 @@ class RenderContext
 
     public function relativeDocUrl(string $filename, ?string $anchor = null): string
     {
-        return $this->relativeUrl(
+        return $this->urlGenerator->relativeUrl(
             $this->destinationPath . '/' .
             $filename . '.' . $this->outputFormat .
             ($anchor !== null ? '#' . $anchor : '')
         );
-    }
-
-    public function outputUrl(string $url): ?string
-    {
-        return $this->urlGenerator->absoluteUrl(
-            $this->destinationPath,
-            $this->canonicalUrl($url)
-        );
-    }
-
-    public function generateUrl(string $path): string
-    {
-        return $this->urlGenerator->generateUrl($path, $this->getDirName());
     }
 
     private function getDirName(): string
