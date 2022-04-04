@@ -20,6 +20,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Twig\Templates;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -155,6 +156,7 @@ class Factory
             [
                 'templates' => $this->getTemplatesDirectory(),
                 'template' => $this->resolve($nameOrPath),
+                'guides' => Templates::create(),
                 'destination' => $filesystem,
             ]
         );

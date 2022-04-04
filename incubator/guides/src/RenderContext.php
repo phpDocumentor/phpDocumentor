@@ -39,9 +39,6 @@ class RenderContext
     /** @var string[] */
     private $links = [];
 
-    /** @var string[] */
-    private $anonymous = [];
-
     /** @var string */
     private $destinationPath;
 
@@ -50,10 +47,12 @@ class RenderContext
 
     private string $outputFormat;
     private DocumentNode $document;
+    private FilesystemInterface $destination;
 
     public function __construct(
         string $outputFolder,
         FilesystemInterface $origin,
+        FilesystemInterface $destination,
         Metas $metas,
         UrlGenerator $urlGenerator,
         string $outputFormat
@@ -63,6 +62,7 @@ class RenderContext
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
         $this->outputFormat = $outputFormat;
+        $this->destination = $destination;
     }
 
     public function setDocument(DocumentNode $documentNode): void
@@ -83,11 +83,6 @@ class RenderContext
     public function setLink(string $name, string $url): void
     {
         $name = strtolower(trim($name));
-
-        if ($name === '_') {
-            $name = array_shift($this->anonymous);
-        }
-
         $this->links[$name] = trim($url);
     }
 
@@ -186,5 +181,20 @@ class RenderContext
     public function getOutputFormat(): string
     {
         return $this->outputFormat;
+    }
+
+    public function getDestinationPath(): string
+    {
+        return $this->destinationPath;
+    }
+
+    public function setDestinationPath(string $path): void
+    {
+        $this->destinationPath = $path;
+    }
+
+    public function getDestination(): FilesystemInterface
+    {
+        return $this->destination;
     }
 }

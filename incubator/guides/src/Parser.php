@@ -173,7 +173,7 @@ final class Parser
             $document->getTitle() ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),
             $this->compileTableOfContents($document, $this->parserContext),
-            (int) filemtime($this->parserContext->getCurrentAbsolutePath()),
+            0, //TODO: remove this? as the md5 hash of documents should be used for caching
             $document->getDependencies(),
             $this->parserContext->getLinks()
         );

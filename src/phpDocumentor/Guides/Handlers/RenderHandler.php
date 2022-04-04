@@ -56,7 +56,7 @@ final class RenderHandler
     {
         $origin = $command->getOrigin();
         $destinationPath = $command->getDestinationPath();
-        $environment = $this->createEnvironment($destinationPath, $origin, $command->getTargetFileFormat());
+        $environment = $this->createEnvironment($destinationPath, $origin, $command->getTargetFileFormat(), $command->getDestination());
 
         $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
     }
@@ -76,9 +76,9 @@ final class RenderHandler
                 $documentationSet->getOutputLocation() . '/' . $this->router->generate($descriptor)
             );
 
+            $environment->setDestinationPath($destinationPath);
             $renderedOutput = $this->renderDocument(
                 $descriptor,
-                $destinationPath,
                 $environment,
                 $documentationSet
             );
@@ -88,7 +88,6 @@ final class RenderHandler
 
     private function renderDocument(
         DocumentDescriptor $descriptor,
-        string $destinationPath,
         RenderContext $environment,
         GuideSetDescriptor $documentationSet
     ): string {
@@ -106,20 +105,19 @@ final class RenderHandler
             $environment->setLink($link, $url);
         }
 
-        $this->renderer->setGuidesEnvironment($environment);
-        $this->renderer->setDestination($destinationPath);
-
         return $this->renderer->renderDocument($document, $environment);
     }
 
     private function createEnvironment(
         string $outputFolder,
         FilesystemInterface $origin,
-        string $outputFormat
+        string $outputFormat,
+        FilesystemInterface $destination
     ): RenderContext {
         return new RenderContext(
             $outputFolder,
             $origin,
+            $destination,
             $this->metas,
             $this->urlGenerator,
             $outputFormat

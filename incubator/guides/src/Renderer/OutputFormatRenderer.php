@@ -22,25 +22,16 @@ class OutputFormatRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    public function __construct(string $format, NodeRendererFactory $nodeRendererFactory)
+    public function __construct(string $format, NodeRendererFactory $nodeRendererFactory, TemplateRenderer $templateRenderer)
     {
         $this->format = $format;
         $this->nodeRendererFactory = $nodeRendererFactory;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function supports(string $format): bool
     {
         return $this->format === $format;
-    }
-
-    /**
-     * @TODO: can we remove this, once the rendering is less spaghetti? Template rendering is something that
-     *  belongs to a particular output format. But as our current twig logic needs extra variables we are forced
-     *  to inject the template renderer here. As it cannot be autowired.
-     */
-    public function setTemplateRenderer(TemplateRenderer $templateRenderer): void
-    {
-        $this->templateRenderer = $templateRenderer;
     }
 
     /**
@@ -51,11 +42,6 @@ class OutputFormatRenderer
     public function renderTemplate(string $template, array $context): string
     {
         return $this->templateRenderer->render($template, $context);
-    }
-
-    public function setDestination(string $destination): void
-    {
-        $this->templateRenderer->setDestination($destination);
     }
 
     public function render(Node $node, RenderContext $environment): string

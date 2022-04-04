@@ -196,6 +196,11 @@ final class Twig extends WriterAbstract implements Initializable
         $this->environment->addGlobal('destinationPath', $path);
         $this->environment->addGlobal('parameter', $transformation->getParameters());
 
+        // pre-set the global variable so that we can update it later
+        // TODO: replace env with origin filesystem, as this will help us to copy assets.
+        $this->environment->addGlobal('env', null);
+
+
         $output = $this->environment->render($templatePath, ['target_path' => ltrim($path, '/\\')]);
 
         $this->persistTo($transformation, ltrim($path, '/\\'), $output);

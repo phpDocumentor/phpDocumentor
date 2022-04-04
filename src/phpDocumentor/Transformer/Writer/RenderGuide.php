@@ -20,8 +20,12 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Twig\AssetsExtension;
+use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -40,22 +44,23 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var Renderer */
-    private $renderer;
-
     /** @var FlySystemFactory */
     private $flySystemFactory;
+    private EnvironmentFactory $environmentFactory;
+    private EnvironmentBuilder $environmentBuilder;
 
     public function __construct(
-        Renderer $renderer,
         LoggerInterface $logger,
         CommandBus $commandBus,
-        FlySystemFactory $flySystemFactory
+        FlySystemFactory $flySystemFactory,
+        EnvironmentFactory $environmentFactory,
+        EnvironmentBuilder $environmentBuilder
     ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
-        $this->renderer = $renderer;
         $this->flySystemFactory = $flySystemFactory;
+        $this->environmentFactory = $environmentFactory;
+        $this->environmentBuilder = $environmentBuilder;
     }
 
     public function getName(): string
@@ -81,7 +86,19 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                     continue;
                 }
 
-                $this->renderDocumentationSet($documentationSet, $project, $transformation);
+                //TODO Extract this, as this code is dupplicated
+                $this->environmentBuilder->setEnvironmentFactory(function () use ($transformation, $project, $documentationSet) {
+                    $twig = $this->environmentFactory->create($project, $transformation->template());
+                    $twig->addGlobal('project', $project);
+                    $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+                    $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+                    $twig->addGlobal('documentationSet', $documentationSet);
+                    $twig->addGlobal('destinationPath', null);
+
+                    return $twig;
+                });
+
+                $this->renderDocumentationSet($documentationSet, $transformation);
             }
         }
     }
@@ -93,13 +110,10 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     private function renderDocumentationSet(
         GuideSetDescriptor $documentationSet,
-        ProjectDescriptor $project,
         Transformation $transformation
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
-
-        $this->renderer->initialize($project, $documentationSet, $transformation);
 
         $this->commandBus->handle(
             new RenderCommand(
