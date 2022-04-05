@@ -25,7 +25,7 @@ final class UrlGenerator
     public function generateUrl(string $path): string
     {
         $uri = UriFactory::createUri($path);
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $path;
         }
 
@@ -41,7 +41,7 @@ final class UrlGenerator
     public function absoluteUrl(string $basePath, string $url): string
     {
         $uri = UriFactory::createUri($url);
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $url;
         }
 
@@ -55,7 +55,7 @@ final class UrlGenerator
     {
         $uri = UriFactory::createUri($url);
 
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $url;
         }
 

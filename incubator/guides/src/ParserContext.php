@@ -7,6 +7,7 @@ namespace phpDocumentor\Guides;
 use League\Flysystem\FilesystemInterface;
 
 use League\Uri\Uri;
+use League\Uri\UriInfo;
 use function array_shift;
 use function dirname;
 use function strtolower;
@@ -113,6 +114,11 @@ class ParserContext
 
     public function absoluteRelativePath(string $url): string
     {
+        $uri = Uri::createFromString($url);
+        if (UriInfo::isAbsolutePath($uri)) {
+            return $this->currentDirectory . '/' . ltrim($url, '/');
+        }
+
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
