@@ -11,18 +11,11 @@ final class RenderDocumentCommand
 {
     private DocumentNode $document;
     private RenderContext $renderContext;
-    private string $target;
 
-    public function __construct(DocumentNode $document, RenderContext $renderContext, string $target)
+    public function __construct(DocumentNode $document, RenderContext $renderContext)
     {
         $this->document = $document;
         $this->renderContext = $renderContext;
-        $this->target = $target;
-    }
-
-    public function getTarget(): string
-    {
-        return $this->target;
     }
 
     public function getDocument(): DocumentNode

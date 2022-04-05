@@ -51,11 +51,20 @@ final class DocumentNode extends Node
      */
     private $variables = [];
 
-    public function __construct(string $value)
+    /** @var string Absolute file path of this document */
+    private string $filePath;
+
+    public function __construct(string $value, string $filePath)
     {
         parent::__construct();
 
         $this->hash = $value;
+        $this->filePath = $filePath;
+    }
+
+    public function getFilePath(): string
+    {
+        return $this->filePath;
     }
 
     /**

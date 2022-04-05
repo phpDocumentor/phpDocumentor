@@ -75,7 +75,7 @@ final class MarkupLanguageParser implements ParserInterface
 
     public function parseDocument(NodeWalker $walker, string $hash): DocumentNode
     {
-        $document = new DocumentNode($hash);
+        $document = new DocumentNode($hash, $this->environment->getCurrentAbsolutePath());
         $this->document = $document;
 
         while ($event = $walker->next()) {

@@ -55,72 +55,34 @@ final class RenderHandler
     public function handle(RenderCommand $command): void
     {
         $origin = $command->getOrigin();
-        $destinationPath = $command->getDestinationPath();
-        $environment = $this->createEnvironment($destinationPath, $origin, $command->getTargetFileFormat(), $command->getDestination());
 
-        $this->render($command->getDocumentationSet(), $environment, $command->getDestination());
-    }
-
-    private function render(
-        GuideSetDescriptor $documentationSet,
-        RenderContext $environment,
-        FilesystemInterface $destination
-    ): void {
         /** @var DocumentDescriptor $descriptor */
-        foreach ($documentationSet->getDocuments() as $descriptor) {
+        foreach ($command->getDocumentationSet()->getDocuments() as $descriptor) {
             // TODO: This is a hack; I want to rework path handling for guides as the Environment, for example,
             //       has a plethora of 'em.
             $destinationPath = str_replace(
                 '//',
                 '/',
-                $documentationSet->getOutputLocation() . '/' . $this->router->generate($descriptor)
+                $command->getDocumentationSet()->getOutputLocation() . '/' . $this->router->generate($descriptor)
             );
 
-            $environment->setDestinationPath($destinationPath);
-            $renderedOutput = $this->renderDocument(
-                $descriptor,
-                $environment,
-                $documentationSet
+            $document = $descriptor->getDocumentNode();
+
+            $environment = RenderContext::forDocument(
+                $document,
+                $origin,
+                $command->getDestination(),
+                $destinationPath,
+                $this->metas,
+                $this->urlGenerator,
+                $command->getTargetFileFormat()
             );
-            $destination->put($destinationPath, $renderedOutput);
+
+            foreach ($descriptor->getLinks() as $link => $url) {
+                $environment->setLink($link, $url);
+            }
+
+            $environment->getDestination()->put($destinationPath, $this->renderer->renderDocument($document, $environment));
         }
-    }
-
-    private function renderDocument(
-        DocumentDescriptor $descriptor,
-        RenderContext $environment,
-        GuideSetDescriptor $documentationSet
-    ): string {
-        $document = $descriptor->getDocumentNode();
-
-        $environment->setDocument($document);
-        $environment->setCurrentFileName($descriptor->getFile());
-        // TODO: We assume there is one, but there may be multiple. Handling this correctly required rework on how
-        // source locations are propagated.
-        $sourcePath = $documentationSet->getSource()->paths()[0];
-
-        $environment->setCurrentAbsolutePath($sourcePath . '/' . dirname($descriptor->getFile()));
-
-        foreach ($descriptor->getLinks() as $link => $url) {
-            $environment->setLink($link, $url);
-        }
-
-        return $this->renderer->renderDocument($document, $environment);
-    }
-
-    private function createEnvironment(
-        string $outputFolder,
-        FilesystemInterface $origin,
-        string $outputFormat,
-        FilesystemInterface $destination
-    ): RenderContext {
-        return new RenderContext(
-            $outputFolder,
-            $origin,
-            $destination,
-            $this->metas,
-            $this->urlGenerator,
-            $outputFormat
-        );
     }
 }

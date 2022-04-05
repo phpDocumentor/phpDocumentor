@@ -93,14 +93,6 @@ final class Parser
             $this->prepare(new Metas(), null, '', 'index');
         }
 
-        $this->parserContext->setCurrentAbsolutePath(
-            $this->buildPathOnFileSystem(
-                $this->parserContext->getCurrentFileName(),
-                $this->parserContext->getCurrentDirectory(),
-                $inputFormat
-            )
-        );
-
         $parser = $this->determineParser($inputFormat);
 
         $this->parserContext->reset();
@@ -140,11 +132,6 @@ final class Parser
         );
     }
 
-    private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
-    {
-        return ltrim(sprintf('%s/%s.%s', trim($currentDirectory, '/'), $file, $extension), '/');
-    }
-
     /**
      * @return array<array<string|null>>
      */
@@ -168,7 +155,7 @@ final class Parser
     private function addDocumentToMetas(DocumentNode $document): void
     {
         $this->metas->set(
-            $this->parserContext->getCurrentFileName(),
+            $document->getFilePath(),
             $this->parserContext->getUrl(),
             $document->getTitle() ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),

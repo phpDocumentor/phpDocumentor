@@ -6,6 +6,7 @@ namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
 
+use League\Uri\Uri;
 use function array_shift;
 use function dirname;
 use function strtolower;
@@ -166,17 +167,6 @@ class ParserContext
     }
 
     /**
-     * Register the current file's absolute path on the Origin file system.
-     *
-     * You would more or less expect getCurrentFileName to return this information; but that filename does
-     * not return the absolute position on Origin but the relative path from the Documentation Root.
-     */
-    public function setCurrentAbsolutePath(string $path): void
-    {
-        $this->currentAbsolutePath = $path;
-    }
-
-    /**
      * Return the current file's absolute path on the Origin file system.
      *
      * In order to load files relative to the current file (such as embedding UML diagrams) the environment
@@ -187,7 +177,7 @@ class ParserContext
      */
     public function getCurrentAbsolutePath(): string
     {
-        return $this->currentAbsolutePath;
+        return $this->urlGenerator->absoluteUrl($this->currentDirectory, $this->currentFileName);
     }
 
     /** @return string[] */

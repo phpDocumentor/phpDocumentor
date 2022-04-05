@@ -133,15 +133,15 @@ foreach ($documents as $document) {
     $renderDocumentHandler->handle(
         new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
             $document,
-            new \phpDocumentor\Guides\RenderContext(
-                'example',
+            \phpDocumentor\Guides\RenderContext::forDocument(
+                $document,
                 $sourceFileSystem,
                 new Filesystem(new Local(__DIR__  . '/out')),
+                '/example/',
                 $metas,
                 new UrlGenerator(),
                 'html'
-            ),
-            'test.html'
+            )
         )
     );
 }

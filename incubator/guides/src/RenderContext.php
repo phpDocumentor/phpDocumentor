@@ -49,14 +49,16 @@ class RenderContext
     private DocumentNode $document;
     private FilesystemInterface $destination;
 
-    public function __construct(
+    private function __construct(
         string $outputFolder,
+        string $currentFileName,
         FilesystemInterface $origin,
         FilesystemInterface $destination,
         Metas $metas,
         UrlGenerator $urlGenerator,
         string $outputFormat
     ) {
+        $this->currentFileName = $currentFileName;
         $this->destinationPath = $outputFolder;
         $this->origin = $origin;
         $this->urlGenerator = $urlGenerator;
@@ -65,9 +67,28 @@ class RenderContext
         $this->destination = $destination;
     }
 
-    public function setDocument(DocumentNode $documentNode): void
-    {
-        $this->document = $documentNode;
+    public static function forDocument(
+        DocumentNode $documentNode,
+        FilesystemInterface $origin,
+        FilesystemInterface $destination,
+        string $destinationPath,
+        Metas $metas,
+        UrlGenerator $urlGenerator,
+        string $ouputFormat
+    ) {
+        $self = new self(
+            $destinationPath,
+            $documentNode->getFilePath(),
+            $origin,
+            $destination,
+            $metas,
+            $urlGenerator,
+            $ouputFormat
+        );
+
+        $self->document = $documentNode;
+
+        return $self;
     }
 
     /**
@@ -128,11 +149,6 @@ class RenderContext
         return $dirname;
     }
 
-    public function setCurrentFileName(string $filename): void
-    {
-        $this->currentFileName = $filename;
-    }
-
     public function getCurrentFileName(): string
     {
         return $this->currentFileName;
@@ -153,27 +169,7 @@ class RenderContext
         return $this->metas->get($this->currentFileName);
     }
 
-    /**
-     * Register the current file's absolute path on the Origin file system.
-     *
-     * You would more or less expect getCurrentFileName to return this information; but that filename does
-     * not return the absolute position on Origin but the relative path from the Documentation Root.
-     */
-    public function setCurrentAbsolutePath(string $path): void
-    {
-        $this->currentAbsolutePath = $path;
-    }
-
-    /**
-     * Return the current file's absolute path on the Origin file system.
-     *
-     * In order to load files relative to the current file (such as embedding UML diagrams) the environment
-     * must expose what the absolute path relative to the Origin is.
-     *
-     * @see self::setCurrentAbsolutePath() for more information
-     * @see self::getOrigin() for the filesystem on which to use this path
-     */
-    public function getCurrentAbsolutePath(): string
+    public function getSourcePath(): string
     {
         return $this->currentAbsolutePath;
     }

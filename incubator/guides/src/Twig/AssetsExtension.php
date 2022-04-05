@@ -111,9 +111,9 @@ final class AssetsExtension extends AbstractExtension
             return $path;
         }
 
-        $sourcePath = $environment->getCurrentAbsolutePath() . '/' . $path;
+        $sourcePath = $environment->getSourcePath() . '/' . $path;
         $outputPath = $this->urlGenerator->absoluteUrl(
-            $environment->getDestinationPath(),
+            dirname($environment->getDestinationPath()),
             $environment->canonicalUrl($path)
         );
 
