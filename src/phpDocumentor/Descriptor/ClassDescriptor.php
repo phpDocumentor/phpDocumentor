@@ -215,6 +215,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
             $method->setReturnType($methodTag->getResponse()->getType());
+            $method->setHasReturnByReference($methodTag->getHasReturnByReference());
 
             $returnTags = $method->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
             $returnTags->add($methodTag->getResponse());

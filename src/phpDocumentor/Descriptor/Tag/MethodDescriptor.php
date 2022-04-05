@@ -35,6 +35,9 @@ class MethodDescriptor extends TagDescriptor
     /** @var bool */
     private $static = false;
 
+    /** @var bool */
+    private $hasReturnByReference = false;
+
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -86,5 +89,15 @@ class MethodDescriptor extends TagDescriptor
     public function isStatic(): bool
     {
         return $this->static;
+    }
+
+    public function setHasReturnByReference(bool $hasReturnByReference): void
+    {
+        $this->hasReturnByReference = $hasReturnByReference;
+    }
+
+    public function getHasReturnByReference(): bool
+    {
+        return $this->hasReturnByReference;
     }
 }

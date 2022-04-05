@@ -32,6 +32,7 @@ trait MagicMethodContainerTests
         $methodMock->shouldReceive('getResponse')->andReturn($response);
         $methodMock->shouldReceive('getArguments')->andReturn(new Collection(['argument1' => $argument]));
         $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
+        $methodMock->shouldReceive('getHasReturnByReference')->andReturn(false);
 
         $this->fixture->getTags()->fetch('method', new Collection())->add($methodMock);
 

@@ -120,6 +120,8 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
             $method->setDescription($methodTag->getDescription());
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
+            $method->setReturnType($methodTag->getResponse()->getType());
+            $method->setHasReturnByReference($methodTag->getHasReturnByReference());
 
             $returnTags = $method->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
             $returnTags->add($methodTag->getResponse());
