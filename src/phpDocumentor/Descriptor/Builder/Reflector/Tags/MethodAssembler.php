@@ -41,6 +41,7 @@ class MethodAssembler extends BaseTagAssembler
         $descriptor = new MethodDescriptor($data->getName());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
+        $descriptor->setHasReturnByReference($data->returnsReference());
 
         $response = new ReturnDescriptor('return');
         $response->setType($data->getReturnType());

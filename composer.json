@@ -56,7 +56,7 @@
         "phpdocumentor/json-path": "*@dev",
         "phpdocumentor/reflection": "^5.1",
         "phpdocumentor/reflection-common": "^2.0",
-        "phpdocumentor/reflection-docblock": "^5.0",
+        "phpdocumentor/reflection-docblock": "@dev",
         "phpdocumentor/type-resolver": "^1.6",
         "psr/cache": "^1.0",
         "psr/log": "^1.1",

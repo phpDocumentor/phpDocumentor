@@ -81,6 +81,8 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $method->setDescription($methodTag->getDescription());
             $method->setStatic($methodTag->isStatic());
             $method->setParent($this);
+            $method->setReturnType($methodTag->getResponse()->getType());
+            $method->setHasReturnByReference($methodTag->getHasReturnByReference());
 
             /** @var Collection<ReturnDescriptor> $returnTags */
             $returnTags = $method->getTags()->fetch('return', new Collection());
