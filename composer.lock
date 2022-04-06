@@ -1700,7 +1700,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1736,7 +1736,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1769,7 +1769,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1804,7 +1804,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
