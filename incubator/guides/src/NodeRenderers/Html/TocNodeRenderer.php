@@ -18,6 +18,7 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\UrlGenerator;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Webmozart\Assert\Assert;
 
@@ -29,10 +30,12 @@ class TocNodeRenderer implements NodeRenderer
 {
     /** @var Renderer */
     private $renderer;
+    private UrlGenerator $urlGenerator;
 
-    public function __construct(Renderer $renderer)
+    public function __construct(Renderer $renderer, UrlGenerator $urlGenerator)
     {
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function render(Node $node, RenderContext $environment): string
@@ -84,7 +87,7 @@ class TocNodeRenderer implements NodeRenderer
 
             $tocItem = [
                 'targetId' => $this->generateTargetId($target),
-                'targetUrl' => $environment->generateUrl($target),
+                'targetUrl' => $this->urlGenerator->generateUrl($target),
                 'title' => $title,
                 'level' => $level,
                 'children' => [],

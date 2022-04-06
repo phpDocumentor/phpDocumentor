@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
+use League\Uri\Uri;
+use League\Uri\UriInfo;
 use phpDocumentor\Guides\Meta\Entry;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 
-use function array_shift;
 use function dirname;
-use function strtolower;
+use function ltrim;
 use function trim;
 
 class RenderContext
@@ -35,15 +37,6 @@ class RenderContext
     /** @var Metas */
     private $metas;
 
-    /** @var string[] */
-    private $variables = [];
-
-    /** @var string[] */
-    private $links = [];
-
-    /** @var string[] */
-    private $anonymous = [];
-
     /** @var string */
     private $destinationPath;
 
@@ -51,27 +44,49 @@ class RenderContext
     private $currentAbsolutePath = '';
 
     private string $outputFormat;
+    private DocumentNode $document;
+    private FilesystemInterface $destination;
 
-    public function __construct(
+    private function __construct(
         string $outputFolder,
+        string $currentFileName,
         FilesystemInterface $origin,
+        FilesystemInterface $destination,
         Metas $metas,
         UrlGenerator $urlGenerator,
         string $outputFormat
     ) {
-        $this->destinationPath = $outputFolder;
+        $this->currentFileName = $currentFileName;
+        $this->destinationPath = trim($outputFolder, '/');
         $this->origin = $origin;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
         $this->outputFormat = $outputFormat;
+        $this->destination = $destination;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setVariable(string $variable, $value): void
-    {
-        $this->variables[$variable] = $value;
+    public static function forDocument(
+        DocumentNode $documentNode,
+        FilesystemInterface $origin,
+        FilesystemInterface $destination,
+        string $destinationPath,
+        Metas $metas,
+        UrlGenerator $urlGenerator,
+        string $ouputFormat
+    ): self {
+        $self = new self(
+            $destinationPath,
+            $documentNode->getFilePath(),
+            $origin,
+            $destination,
+            $metas,
+            $urlGenerator,
+            $ouputFormat
+        );
+
+        $self->document = $documentNode;
+
+        return $self;
     }
 
     /**
@@ -81,40 +96,22 @@ class RenderContext
      */
     public function getVariable(string $variable, $default = null)
     {
-        return $this->variables[$variable] ?? $default;
-    }
-
-    public function setLink(string $name, string $url): void
-    {
-        $name = strtolower(trim($name));
-
-        if ($name === '_') {
-            $name = array_shift($this->anonymous);
-        }
-
-        $this->links[$name] = trim($url);
+        return $this->document->getVariable($variable, $default);
     }
 
     public function getLink(string $name, bool $relative = true): string
     {
-        $name = strtolower(trim($name));
+        $link = $this->document->getLink($name);
 
-        if (isset($this->links[$name])) {
-            $link = $this->links[$name];
-
+        if ($link !== null) {
             if ($relative) {
-                return $this->relativeUrl($link);
+                return $this->urlGenerator->relativeUrl($link);
             }
 
             return $link;
         }
 
         return '';
-    }
-
-    public function relativeUrl(?string $url): string
-    {
-        return $this->urlGenerator->relativeUrl($url);
     }
 
     public function canonicalUrl(string $url): ?string
@@ -124,24 +121,26 @@ class RenderContext
 
     public function relativeDocUrl(string $filename, ?string $anchor = null): string
     {
-        return $this->relativeUrl(
-            $this->destinationPath . '/' .
-            $filename . '.' . $this->outputFormat .
-            ($anchor !== null ? '#' . $anchor : '')
+        if (UriInfo::isAbsolutePath(Uri::createFromString($filename))) {
+            return $this->getDestinationPath() . $this->createFileUrl($filename, $anchor);
+        }
+
+        $baseUrl = ltrim($this->urlGenerator->absoluteUrl($this->getDestinationPath(), $this->getDirName()), '/');
+
+        if ($this->metas->get($filename) !== null) {
+            return $this->getDestinationPath() . '/' . $this->createFileUrl($filename, $anchor);
+        }
+
+        return $this->urlGenerator->canonicalUrl(
+            $baseUrl,
+            $this->createFileUrl($filename, $anchor)
         );
     }
 
-    public function outputUrl(string $url): ?string
+    private function createFileUrl(string $filename, ?string $anchor): string
     {
-        return $this->urlGenerator->absoluteUrl(
-            $this->destinationPath,
-            $this->canonicalUrl($url)
-        );
-    }
-
-    public function generateUrl(string $path): string
-    {
-        return $this->urlGenerator->generateUrl($path, $this->getDirName());
+        return $filename . '.' . $this->outputFormat .
+            ($anchor !== null ? '#' . $anchor : '');
     }
 
     private function getDirName(): string
@@ -153,11 +152,6 @@ class RenderContext
         }
 
         return $dirname;
-    }
-
-    public function setCurrentFileName(string $filename): void
-    {
-        $this->currentFileName = $filename;
     }
 
     public function getCurrentFileName(): string
@@ -180,27 +174,7 @@ class RenderContext
         return $this->metas->get($this->currentFileName);
     }
 
-    /**
-     * Register the current file's absolute path on the Origin file system.
-     *
-     * You would more or less expect getCurrentFileName to return this information; but that filename does
-     * not return the absolute position on Origin but the relative path from the Documentation Root.
-     */
-    public function setCurrentAbsolutePath(string $path): void
-    {
-        $this->currentAbsolutePath = $path;
-    }
-
-    /**
-     * Return the current file's absolute path on the Origin file system.
-     *
-     * In order to load files relative to the current file (such as embedding UML diagrams) the environment
-     * must expose what the absolute path relative to the Origin is.
-     *
-     * @see self::setCurrentAbsolutePath() for more information
-     * @see self::getOrigin() for the filesystem on which to use this path
-     */
-    public function getCurrentAbsolutePath(): string
+    public function getSourcePath(): string
     {
         return $this->currentAbsolutePath;
     }
@@ -208,5 +182,25 @@ class RenderContext
     public function getOutputFormat(): string
     {
         return $this->outputFormat;
+    }
+
+    public function getDestinationPath(): string
+    {
+        return $this->destinationPath;
+    }
+
+    public function setDestinationPath(string $path): void
+    {
+        $this->destinationPath = $path;
+    }
+
+    public function getDestination(): FilesystemInterface
+    {
+        return $this->destination;
+    }
+
+    public function getCurrentFileDestination(): string
+    {
+        return $this->getDestinationPath() . '/' . $this->currentFileName . '.' . $this->outputFormat;
     }
 }

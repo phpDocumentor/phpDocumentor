@@ -40,6 +40,7 @@ class DocumentParser
 
     /** @var Productions\Rule */
     private $startingRule;
+    private MarkupLanguageParser $parser;
 
     /**
      * @param DirectiveHandler[] $directives
@@ -52,11 +53,12 @@ class DocumentParser
         $this->openSectionsAsTitleNodes = new ArrayObject();
 
         $this->startingRule = new Productions\DocumentRule($this, $parser, $directives);
+        $this->parser = $parser;
     }
 
     public function parse(string $contents): DocumentNode
     {
-        $this->document = new DocumentNode(md5($contents));
+        $this->document = new DocumentNode(md5($contents), $this->parser->getEnvironment()->getCurrentFileName());
         $this->documentIterator->load($contents);
 
         if ($this->startingRule->applies($this)) {

@@ -66,8 +66,7 @@ abstract class Directive
             ->withOptions($options);
 
         if ($variable !== '') {
-            $environment = $parser->getEnvironment();
-            $environment->setVariable($variable, $processNode);
+            $document->addVariable($variable, $processNode);
         } else {
             $document->addNode($processNode);
         }

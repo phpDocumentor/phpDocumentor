@@ -96,7 +96,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Initialize series of globals used by the writers to set the context
      *
-     * @return array<string, true|null>
+     * @return array<string, (true|string[]|null)>
      */
     public function getGlobals(): array
     {
@@ -107,6 +107,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'usesNamespaces' => true,
             'usesPackages' => true,
             'destinationPath' => null,
+            'parameter' => [],
+            'env' => null,
         ];
     }
 
@@ -449,7 +451,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     private function contextRouteRenderer(array $context): LinkRenderer
     {
         return $this->routeRenderer
-            ->withDestination(ltrim($context['destinationPath'], '/\\'))
+            ->withDestination(ltrim($context['destinationPath'] ?? $context['env']->getCurrentFileDestination(), '/\\'))
             ->withProject($context['project']);
     }
 }

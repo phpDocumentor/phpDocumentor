@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Uri\UriInfo;
-use phpDocumentor\UriFactory;
 
 use function array_pop;
 use function explode;
 use function implode;
 use function ltrim;
+use function trim;
 
 final class UrlGenerator
 {
-    public function generateUrl(string $path, string $dirName): string
+    public function generateUrl(string $path): string
     {
         $uri = UriFactory::createUri($path);
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $path;
         }
 
@@ -42,11 +42,15 @@ final class UrlGenerator
     public function absoluteUrl(string $basePath, string $url): string
     {
         $uri = UriFactory::createUri($url);
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $url;
         }
 
-        return '/' . $basePath . '/' . $url;
+        if ($basePath === '/') {
+            return $basePath . $url;
+        }
+
+        return '/' . trim($basePath, '/') . '/' . $url;
     }
 
     /**
@@ -56,7 +60,7 @@ final class UrlGenerator
     {
         $uri = UriFactory::createUri($url);
 
-        if (UriInfo::isAbsolute($uri)) {
+        if (UriInfo::isAbsolutePath($uri)) {
             return $url;
         }
 

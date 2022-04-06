@@ -30,7 +30,7 @@ final class DocResolver implements Resolver
         }
 
         return $this->createResolvedReference(
-            $filePath,
+            $node->getUrl(),
             $context,
             $entry,
             [],

@@ -37,11 +37,10 @@ class RawDirective extends Directive
             return;
         }
 
+        $document = $parser->getDocument();
         if ($variable !== '') {
-            $environment = $parser->getEnvironment();
-            $environment->setVariable($variable, $node);
+            $document->addVariable($variable, $node);
         } else {
-            $document = $parser->getDocument();
             $document->addNode($node);
         }
     }

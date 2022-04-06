@@ -51,8 +51,6 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer, No
 
     public function renderDocument(DocumentNode $node, RenderContext $environment): string
     {
-        $this->renderer->setGuidesEnvironment($environment);
-
         return $this->renderer->render(
             'document.html.twig',
             ['node' => $node]

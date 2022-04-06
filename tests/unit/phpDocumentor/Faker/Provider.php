@@ -48,6 +48,7 @@ final class Provider extends Base
     {
         return new Template($name, new MountManager([
             'template' => $this->fileSystem(),
+            'guides' => $this->fileSystem(),
             'templates' => $this->fileSystem(),
             'destination' => $this->fileSystem(),
         ]));

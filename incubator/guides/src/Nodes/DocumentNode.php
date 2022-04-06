@@ -21,6 +21,8 @@ use function array_merge;
 use function count;
 use function in_array;
 use function is_string;
+use function strtolower;
+use function trim;
 
 final class DocumentNode extends Node
 {
@@ -41,14 +43,33 @@ final class DocumentNode extends Node
     /** @var string[] */
     private $dependencies = [];
 
-    /** @var array<string|SpanNode> */
+    /**
+     * Variables are replacements in a document.
+     *
+     * They easiest example is the replace directive that allows textual replacements in the document. But
+     * also other directives may be prefixed with a name to replace a certain value in the text.
+     *
+     * @var array<string|Node>
+     */
     private $variables = [];
 
-    public function __construct(string $value)
+    /** @var string Absolute file path of this document */
+    private string $filePath;
+
+    /** @var string[] */
+    private array $links;
+
+    public function __construct(string $value, string $filePath)
     {
         parent::__construct();
 
         $this->hash = $value;
+        $this->filePath = $filePath;
+    }
+
+    public function getFilePath(): string
+    {
+        return $this->filePath;
     }
 
     /**
@@ -176,18 +197,29 @@ final class DocumentNode extends Node
     }
 
     /**
-     * @return array<string|SpanNode>
+     * @param mixed $default
+     *
+     * @return string|Node
      */
-    public function getVariables(): array
+    public function getVariable(string $name, $default)
     {
-        return $this->variables;
+        return $this->variables[$name] ?? $default;
     }
 
-    /**
-     * @param array<string|SpanNode> $variables
-     */
-    public function setVariables(array $variables): void
+    /** @param string|Node $value */
+    public function addVariable(string $name, $value): void
     {
-        $this->variables = $variables;
+        $this->variables[$name] = $value;
+    }
+
+    /** @param array<string, string> $links */
+    public function setLinks(array $links): void
+    {
+        $this->links = $links;
+    }
+
+    public function getLink(string $name): ?string
+    {
+        return $this->links[strtolower(trim($name))] ?? null;
     }
 }

@@ -275,7 +275,7 @@ class SpanParser
 
         $this->lexer->moveNext();
 
-        while (true) {
+        while ($this->lexer->token !== null) {
             $token = $this->lexer->token;
             switch ($token['type']) {
                 case $token['type'] === SpanLexer::COLON && $inText === false:
@@ -342,7 +342,7 @@ class SpanParser
         $url = null;
         $this->lexer->moveNext();
 
-        while (true) {
+        while ($this->lexer->token !== null) {
             $token = $this->lexer->token;
             switch ($token['type']) {
                 case SpanLexer::BACKTICK:
