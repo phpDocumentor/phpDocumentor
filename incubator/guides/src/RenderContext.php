@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
+use League\Uri\Uri;
+use League\Uri\UriInfo;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
@@ -36,9 +38,6 @@ class RenderContext
     /** @var Metas */
     private $metas;
 
-    /** @var string[] */
-    private $links = [];
-
     /** @var string */
     private $destinationPath;
 
@@ -59,7 +58,7 @@ class RenderContext
         string $outputFormat
     ) {
         $this->currentFileName = $currentFileName;
-        $this->destinationPath = $outputFolder;
+        $this->destinationPath = trim($outputFolder, '/');
         $this->origin = $origin;
         $this->urlGenerator = $urlGenerator;
         $this->metas = $metas;
@@ -75,7 +74,7 @@ class RenderContext
         Metas $metas,
         UrlGenerator $urlGenerator,
         string $ouputFormat
-    ) {
+    ): self {
         $self = new self(
             $destinationPath,
             $documentNode->getFilePath(),
@@ -101,19 +100,11 @@ class RenderContext
         return $this->document->getVariable($variable, $default);
     }
 
-    public function setLink(string $name, string $url): void
-    {
-        $name = strtolower(trim($name));
-        $this->links[$name] = trim($url);
-    }
-
     public function getLink(string $name, bool $relative = true): string
     {
-        $name = strtolower(trim($name));
+        $link = $this->document->getLink($name);
 
-        if (isset($this->links[$name])) {
-            $link = $this->links[$name];
-
+        if ($link !== null) {
             if ($relative) {
                 return $this->urlGenerator->relativeUrl($link);
             }
@@ -131,11 +122,25 @@ class RenderContext
 
     public function relativeDocUrl(string $filename, ?string $anchor = null): string
     {
-        return $this->urlGenerator->relativeUrl(
-            $this->destinationPath . '/' .
-            $filename . '.' . $this->outputFormat .
-            ($anchor !== null ? '#' . $anchor : '')
+        if (UriInfo::isAbsolutePath(Uri::createFromString($filename))) {
+            return $this->getDestinationPath() . $this->createFileUrl($filename, $anchor);
+        }
+
+        $baseUrl = ltrim($this->urlGenerator->absoluteUrl($this->getDestinationPath(), $this->getDirName()), '/');
+
+        if ($this->metas->get($filename) !== null) {
+            return $this->getDestinationPath() . '/' . $this->createFileUrl($filename, $anchor);
+        }
+
+        return $this->urlGenerator->canonicalUrl(
+            $baseUrl, $this->createFileUrl($filename, $anchor)
         );
+    }
+
+    private function createFileUrl(string $filename, ?string $anchor): string
+    {
+        return $filename . '.' . $this->outputFormat .
+            ($anchor !== null ? '#' . $anchor : '');
     }
 
     private function getDirName(): string
@@ -192,5 +197,10 @@ class RenderContext
     public function getDestination(): FilesystemInterface
     {
         return $this->destination;
+    }
+
+    public function getCurrentFileDestination(): string
+    {
+        return $this->getDestinationPath() . '/' . $this->currentFileName . '.' . $this->outputFormat;
     }
 }

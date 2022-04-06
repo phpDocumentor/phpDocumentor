@@ -45,7 +45,11 @@ final class UrlGenerator
             return $url;
         }
 
-        return '/' . $basePath . '/' . $url;
+        if ($basePath === '/') {
+            return $basePath . $url;
+        }
+
+        return '/' . trim($basePath, '/') . '/' . $url;
     }
 
     /**

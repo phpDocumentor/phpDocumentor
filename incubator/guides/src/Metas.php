@@ -34,17 +34,6 @@ final class Metas
         $this->entries = $entries;
     }
 
-    public function findLinkMetaEntry(string $link): ?Entry
-    {
-        foreach ($this->entries as $entry) {
-            if ($this->doesLinkExist($entry->getLinks(), $link)) {
-                return $entry;
-            }
-        }
-
-        return $this->findByTitle($link);
-    }
-
     /**
      * @return Entry[]
      */
@@ -57,7 +46,6 @@ final class Metas
      * @param string[][] $titles
      * @param mixed[][] $tocs
      * @param string[] $depends
-     * @param string[] $links
      */
     public function set(
         string $file,
@@ -66,8 +54,7 @@ final class Metas
         array $titles,
         array $tocs,
         int $mtime,
-        array $depends,
-        array $links
+        array $depends
     ): void {
         foreach ($tocs as $toc) {
             foreach ($toc as $child) {
@@ -88,7 +75,6 @@ final class Metas
             $titles,
             $tocs,
             $depends,
-            $links,
             $mtime
         );
 
@@ -114,33 +100,5 @@ final class Metas
     public function setMetaEntries(array $metaEntries): void
     {
         $this->entries = $metaEntries;
-    }
-
-    /**
-     * @param string[] $links
-     */
-    private function doesLinkExist(array $links, string $link): bool
-    {
-        foreach ($links as $name => $_url) {
-            if ($name === strtolower($link)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function findByTitle(string $text): ?Entry
-    {
-        $text = (new AsciiSlugger())->slug($text)->lower()->toString();
-
-        // try to lookup the document reference by title
-        foreach ($this->entries as $entry) {
-            if ($entry->hasTitle($text)) {
-                return $entry;
-            }
-        }
-
-        return null;
     }
 }

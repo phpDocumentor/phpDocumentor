@@ -54,6 +54,9 @@ final class DocumentNode extends Node
     /** @var string Absolute file path of this document */
     private string $filePath;
 
+    /** @var string[] */
+    private array $links;
+
     public function __construct(string $value, string $filePath)
     {
         parent::__construct();
@@ -205,5 +208,15 @@ final class DocumentNode extends Node
     public function addVariable(string $name, $value): void
     {
         $this->variables[$name] = $value;
+    }
+
+    public function setLinks(array $links): void
+    {
+        $this->links = $links;
+    }
+
+    public function getLink(string $name): ?string
+    {
+        return $this->links[strtolower(trim($name))] ?? null;
     }
 }

@@ -98,6 +98,8 @@ final class Parser
         $this->parserContext->reset();
 
         $document = $parser->parse($this->parserContext, $text);
+        $document->setLinks($this->parserContext->getLinks());
+
         $this->addDocumentToMetas($document);
 
         $this->metas         = null;
@@ -161,8 +163,7 @@ final class Parser
             $document->getTitles(),
             $this->compileTableOfContents($document, $this->parserContext),
             0, //TODO: remove this? as the md5 hash of documents should be used for caching
-            $document->getDependencies(),
-            $this->parserContext->getLinks()
+            $document->getDependencies()
         );
     }
 }
