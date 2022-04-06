@@ -66,6 +66,7 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
+        <exclude-pattern>*/incubator/guides-restructured-text/tests/unit/**</exclude-pattern>
         <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
         <exclude-pattern>*/tests/unit/phpDocumentor/Compiler/Pass/TableOfContentsBuilderTest\.php$</exclude-pattern>
     </rule>

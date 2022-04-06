@@ -12,9 +12,13 @@ use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\Productions\ParagraphRule;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\UrlGenerator;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+
+use function implode;
 
 final class ParagraphRuleTest extends TestCase
 {
@@ -50,10 +54,18 @@ final class ParagraphRuleTest extends TestCase
         );
         $documentParser = $this->prophesize(DocumentParser::class);
         $documentParser->getDocumentIterator()->willReturn($iterator);
+        $spanParser = $this->prophesize(SpanParser::class);
+        $spanParser->parse(
+            Argument::any(),
+            Argument::any()
+        )->will(function ($args) {
+            return new SpanNode(implode("\n", $args[0]));
+        });
 
         $rule = new ParagraphRule(
             $parser->reveal(),
-            $documentParser->reveal()
+            $documentParser->reveal(),
+            $spanParser->reveal()
         );
 
         self::assertTrue($rule->applies($documentParser->reveal()));
@@ -86,7 +98,7 @@ RST
                         <<<RST
 some multiline
 paragraph
-    RST,
+RST,
                         []
                     )
                 ),
@@ -205,7 +217,7 @@ RST
                         <<<RST
 some multiline next paragraph is a literal block
 paragraph:
-    RST,
+RST,
                         []
                     )
                 ),

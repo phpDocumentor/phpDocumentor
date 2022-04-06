@@ -14,6 +14,7 @@ use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 use function array_search;
 
@@ -35,14 +36,15 @@ final class DocumentRule implements Rule
     ) {
         $this->documentParser = $documentParser;
 
-        $lineDataParser = new LineDataParser($parser);
+        $spanParser = new SpanParser();
+        $lineDataParser = new LineDataParser($parser, $spanParser);
 
         $literalBlockRule = new LiteralBlockRule();
 
         // TODO: Somehow move this into the top of the instantiation chain so that you can configure which rules
         //       to use when consuming this library
         $this->productions = [
-            new TitleRule($parser, $documentParser),
+            new TitleRule($parser, $documentParser, $spanParser),
             new TransitionRule(), // Transition rule must follow Title rule
             new LinkRule($lineDataParser, $parser),
             $literalBlockRule,
@@ -54,7 +56,7 @@ final class DocumentRule implements Rule
             new TableRule($parser),
 
             // For now: ParagraphRule must be last as it is the rule that applies if none other applies.
-            new ParagraphRule($parser, $documentParser),
+            new ParagraphRule($parser, $documentParser, $spanParser),
         ];
     }
 

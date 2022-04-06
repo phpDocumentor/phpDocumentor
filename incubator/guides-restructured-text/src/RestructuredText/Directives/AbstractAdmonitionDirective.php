@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Nodes\AdmonitionNode;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 abstract class AbstractAdmonitionDirective extends SubDirective
 {
@@ -25,11 +25,13 @@ abstract class AbstractAdmonitionDirective extends SubDirective
 
     /** @var string */
     private $text;
+    private SpanParser $spanParser;
 
-    public function __construct(string $name, string $text)
+    public function __construct(string $name, string $text, SpanParser $spanParser)
     {
         $this->name = $name;
         $this->text = $text;
+        $this->spanParser = $spanParser;
     }
 
     final public function processSub(
@@ -42,7 +44,7 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         return (new AdmonitionNode(
             $this->name,
             $this->text,
-            $document ?? SpanNode::create($parser, $data)
+            $document ?? $this->spanParser->parse($data, $parser->getEnvironment())
         ))->withOptions($options);
     }
 
