@@ -96,7 +96,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Initialize series of globals used by the writers to set the context
      *
-     * @return array<string, true|null|string[]>
+     * @return array<string, (true|string[]|null)>
      */
     public function getGlobals(): array
     {
