@@ -182,6 +182,45 @@ final class MethodDescriptorTest extends MockeryTestCase
     }
 
     /**
+     * @covers ::getColumn
+     * @covers ::setColumn
+     */
+    public function testSettingAndGettingColumn(): void
+    {
+        $this->assertSame(0, $this->fixture->getColumn());
+
+        $this->fixture->setColumn(15);
+
+        $this->assertSame(15, $this->fixture->getColumn());
+    }
+
+    /**
+     * @covers ::getEndLine
+     * @covers ::setEndLine
+     */
+    public function testSettingAndGettingEndLine(): void
+    {
+        $this->assertSame(0, $this->fixture->getEndLine());
+
+        $this->fixture->setEndLine(12);
+
+        $this->assertSame(12, $this->fixture->getEndLine());
+    }
+
+    /**
+     * @covers ::getEndColumn
+     * @covers ::setEndColumn
+     */
+    public function testSettingAndGettingEndColumn(): void
+    {
+        $this->assertSame(0, $this->fixture->getEndColumn());
+
+        $this->fixture->setEndColumn(230);
+
+        $this->assertSame(230, $this->fixture->getEndColumn());
+    }
+
+    /**
      * @covers ::getFile
      */
     public function testRetrieveFileAssociatedWithAMethod(): void
