@@ -18,11 +18,11 @@ use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\SectionBeginNode;
 use phpDocumentor\Guides\Nodes\SectionEndNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 use function array_search;
 use function in_array;
@@ -77,11 +77,13 @@ final class TitleRule implements Rule
 
     /** @var DocumentParser */
     private $documentParser;
+    private SpanParser $spanParser;
 
-    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser)
+    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser, SpanParser $spanParser)
     {
         $this->parser = $parser;
         $this->documentParser = $documentParser;
+        $this->spanParser = $spanParser;
     }
 
     public function applies(DocumentParser $documentParser): bool
@@ -126,7 +128,7 @@ final class TitleRule implements Rule
         $level = $environment->getLevel($letter);
         $level = $environment->getInitialHeaderLevel() + $level - 1;
 
-        $node = new TitleNode(SpanNode::create($this->parser, $title), $level);
+        $node = new TitleNode($this->spanParser->parse($title, $environment), $level);
 
         $this->transitionBetweenSections($node, $on);
 

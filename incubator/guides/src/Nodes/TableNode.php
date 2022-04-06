@@ -171,7 +171,8 @@ class TableNode extends Node
                 if ($lineChecker->isListLine($lines[0], false)) {
                     $node = $parser->parseFragment($col->getContent())->getNodes()[0];
                 } else {
-                    $node = SpanNode::create($parser, $col->getContent());
+                    //TODO: fix this, as we need to parse table contents for links
+                    $node = new SpanNode($col->getContent()); //SpanNode::create($parser, $col->getContent());
                 }
 
                 $col->setNode($node);

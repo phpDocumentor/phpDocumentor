@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Span;
 
+use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Guides\Span\LiteralToken;
 use phpDocumentor\Guides\Span\SpanToken;
 
+use function implode;
+use function is_array;
 use function mt_rand;
 use function preg_replace;
 use function preg_replace_callback;
@@ -38,7 +41,17 @@ class SpanParser
         $this->prefix = mt_rand() . '|' . time();
     }
 
-    public function process(ParserContext $parserContext, string $span): string
+    /** @param string|string[] $span */
+    public function parse($span, ParserContext $environment): SpanNode
+    {
+        if (is_array($span)) {
+            $span = implode("\n", $span);
+        }
+
+        return new SpanNode($this->process($environment, $span), $this->getTokens());
+    }
+
+    private function process(ParserContext $parserContext, string $span): string
     {
         $span = $this->replaceLiterals($span);
 
@@ -55,7 +68,7 @@ class SpanParser
     /**
      * @return SpanToken[]
      */
-    public function getTokens(): array
+    private function getTokens(): array
     {
         return $this->tokens;
     }

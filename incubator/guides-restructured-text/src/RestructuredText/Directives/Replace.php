@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 /**
  * The Replace directive will set the variables for the spans
@@ -15,6 +15,13 @@ use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
  */
 class Replace extends Directive
 {
+    private SpanParser $spanParser;
+
+    public function __construct(SpanParser $spanParser)
+    {
+        $this->spanParser = $spanParser;
+    }
+
     public function getName(): string
     {
         return 'replace';
@@ -29,6 +36,6 @@ class Replace extends Directive
         string $data,
         array $options
     ): Node {
-        return SpanNode::create($parser, $data);
+        return $this->spanParser->parse($data, $parser->getEnvironment());
     }
 }
