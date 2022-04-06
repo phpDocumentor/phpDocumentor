@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1635fdcc1b55c4141aa7d0679c0f730c",
+    "content-hash": "92069691edee45798252ede45897bc8d",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1700,7 +1700,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-master",
+            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1736,7 +1736,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-master",
+            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1769,7 +1769,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-master",
+            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1804,7 +1804,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-master",
+            "version": "dev-rfc/3154-full-line-and-column-location-of-methods",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -1845,26 +1845,26 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "5.1.1",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "accb6fe9299d1a4d6ab66e30670bfc12da3e9c06"
+                "reference": "936e4dde326e6ba42feb46cb7a89688a9425356f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/accb6fe9299d1a4d6ab66e30670bfc12da3e9c06",
-                "reference": "accb6fe9299d1a4d6ab66e30670bfc12da3e9c06",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/936e4dde326e6ba42feb46cb7a89688a9425356f",
+                "reference": "936e4dde326e6ba42feb46cb7a89688a9425356f",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^4.0",
+                "nikic/php-parser": "^4.13",
                 "php": ">=7.2",
-                "phpdocumentor/reflection-common": "^2.0",
+                "phpdocumentor/reflection-common": "^2.1",
                 "phpdocumentor/reflection-docblock": "^5",
-                "phpdocumentor/type-resolver": "^1.0",
+                "phpdocumentor/type-resolver": "^1.2",
                 "psr/log": "~1.0",
-                "webmozart/assert": "^1.0"
+                "webmozart/assert": "^1.7"
             },
             "require-dev": {
                 "mikey179/vfsstream": "~1.2",
@@ -1895,9 +1895,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
-                "source": "https://github.com/phpDocumentor/Reflection/tree/5.1.1"
+                "source": "https://github.com/phpDocumentor/Reflection/tree/5.2.0"
             },
-            "time": "2022-03-29T12:49:02+00:00"
+            "time": "2022-04-02T19:58:37+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
