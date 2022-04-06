@@ -72,7 +72,7 @@ final class RenderHandler
                 $document,
                 $origin,
                 $command->getDestination(),
-                $destinationPath,
+                $command->getDocumentationSet()->getOutputLocation(),
                 $this->metas,
                 $this->urlGenerator,
                 $command->getTargetFileFormat()

@@ -39,14 +39,10 @@ final class DocumentDescriptor implements Descriptor
     /** @var string[] */
     private $depends;
 
-    /** @var string[] */
-    private $links;
-
     /**
      * @param string[][] $titles
      * @param TocNode[] $tocs
      * @param string[] $depends
-     * @param string[] $links
      */
     public function __construct(
         DocumentNode $documentNode,
@@ -55,8 +51,7 @@ final class DocumentDescriptor implements Descriptor
         string $title,
         array $titles,
         array $tocs,
-        array $depends,
-        array $links
+        array $depends
     ) {
         $this->documentNode = $documentNode;
         $this->hash = $hash;
@@ -65,7 +60,6 @@ final class DocumentDescriptor implements Descriptor
         $this->titles = $titles;
         $this->tocs = $tocs;
         $this->depends = $depends;
-        $this->links = $links;
     }
 
     public function getDocumentNode(): DocumentNode
@@ -104,12 +98,6 @@ final class DocumentDescriptor implements Descriptor
     public function getDepends(): array
     {
         return $this->depends;
-    }
-
-    /** @return string[] */
-    public function getLinks(): array
-    {
-        return $this->links;
     }
 
     public function getName(): string
