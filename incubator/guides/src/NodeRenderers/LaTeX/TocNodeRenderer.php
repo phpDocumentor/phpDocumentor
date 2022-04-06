@@ -19,8 +19,8 @@ use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TocNode;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
-
 use phpDocumentor\Guides\UrlGenerator;
+
 use function ltrim;
 
 class TocNodeRenderer implements NodeRenderer

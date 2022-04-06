@@ -22,32 +22,32 @@ final class UrlGeneratorTest extends TestCase
             [
                 'basePath' => 'dir',
                 'url' => 'file',
-                'result' => 'dir/file'
+                'result' => 'dir/file',
             ],
             [
                 'basePath' => 'dir',
                 'url' => '../file',
-                'result' => 'file'
+                'result' => 'file',
             ],
             [
                 'basePath' => 'dir/subdir',
                 'url' => '../file',
-                'result' => 'dir/file'
+                'result' => 'dir/file',
             ],
             [
                 'basePath' => 'dir/subdir',
                 'url' => '../../file',
-                'result' => 'file'
+                'result' => 'file',
             ],
             [
                 'basePath' => 'dir/subdir',
                 'url' => '.././file',
-                'result' => 'dir/file'
+                'result' => 'dir/file',
             ],
             [
                 'basePath' => 'dir/subdir',
                 'url' => './file',
-                'result' => 'dir/subdir/file'
+                'result' => 'dir/subdir/file',
             ],
         ];
     }
@@ -65,22 +65,22 @@ final class UrlGeneratorTest extends TestCase
             [
                 'basePath' => '/',
                 'url' => 'file',
-                'result' => '/file'
+                'result' => '/file',
             ],
             [
                 'basePath' => '/foo',
                 'url' => '/file',
-                'result' => '/file'
+                'result' => '/file',
             ],
             [
                 'basePath' => '/dir',
                 'url' => 'file',
-                'result' => '/dir/file'
+                'result' => '/dir/file',
             ],
             [
                 'basePath' => '/dir/',
                 'url' => 'file',
-                'result' => '/dir/file'
+                'result' => '/dir/file',
             ],
         ];
     }

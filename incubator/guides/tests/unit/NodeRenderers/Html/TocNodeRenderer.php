@@ -10,6 +10,5 @@ final class TocNodeRenderer extends TestCase
 {
     public function testWorks(): void
     {
-        
     }
 }

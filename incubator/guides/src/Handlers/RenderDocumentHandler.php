@@ -10,7 +10,8 @@ final class RenderDocumentHandler
 {
     private Renderer $renderer;
 
-    public function __construct(Renderer $renderer) {
+    public function __construct(Renderer $renderer)
+    {
         $this->renderer = $renderer;
     }
 

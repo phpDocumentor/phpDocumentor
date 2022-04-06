@@ -8,9 +8,7 @@ use phpDocumentor\Guides\Nodes\Node;
 
 final class LazyNodeRendererFactory implements NodeRendererFactory
 {
-    /**
-     * @var callable
-     */
+    /** @var callable */
     private $factory;
 
     private ?NodeRendererFactory $innerFactory = null;

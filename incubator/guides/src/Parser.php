@@ -19,11 +19,7 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use RuntimeException;
 
-use function filemtime;
 use function getcwd;
-use function ltrim;
-use function sprintf;
-use function trim;
 
 /**
  * Determines the correct markup language parser to use based on the input and output format and with it, and parses

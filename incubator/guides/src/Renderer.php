@@ -33,7 +33,8 @@ class Renderer implements FullDocumentNodeRenderer
     private EnvironmentBuilder $environmentBuilder;
 
     /** @param iterable<OutputFormatRenderer> $outputFormatRenderers */
-    public function __construct(iterable $outputFormatRenderers, EnvironmentBuilder $environmentBuilder) {
+    public function __construct(iterable $outputFormatRenderers, EnvironmentBuilder $environmentBuilder)
+    {
         $this->outputFormatRenderers = $outputFormatRenderers;
         $this->environmentBuilder = $environmentBuilder;
     }
@@ -53,6 +54,7 @@ class Renderer implements FullDocumentNodeRenderer
     public function renderNode(Node $node, RenderContext $environment): string
     {
         $this->setOutputRenderer($environment);
+
         return $this->outputRenderer->render($node, $environment);
     }
 

@@ -22,8 +22,11 @@ class OutputFormatRenderer
     /** @var TemplateRenderer */
     private $templateRenderer;
 
-    public function __construct(string $format, NodeRendererFactory $nodeRendererFactory, TemplateRenderer $templateRenderer)
-    {
+    public function __construct(
+        string $format,
+        NodeRendererFactory $nodeRendererFactory,
+        TemplateRenderer $templateRenderer
+    ) {
         $this->format = $format;
         $this->nodeRendererFactory = $nodeRendererFactory;
         $this->templateRenderer = $templateRenderer;

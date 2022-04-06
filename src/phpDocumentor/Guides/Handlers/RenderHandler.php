@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Handlers;
 
-use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\RenderContext;
@@ -23,7 +21,6 @@ use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 
-use function dirname;
 use function str_replace;
 
 final class RenderHandler
@@ -78,11 +75,10 @@ final class RenderHandler
                 $command->getTargetFileFormat()
             );
 
-            foreach ($descriptor->getLinks() as $link => $url) {
-                $environment->setLink($link, $url);
-            }
-
-            $environment->getDestination()->put($destinationPath, $this->renderer->renderDocument($document, $environment));
+            $environment->getDestination()->put(
+                $destinationPath,
+                $this->renderer->renderDocument($document, $environment)
+            );
         }
     }
 }

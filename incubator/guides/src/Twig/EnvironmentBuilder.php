@@ -7,7 +7,7 @@ namespace phpDocumentor\Guides\Twig;
 use phpDocumentor\Guides\RenderContext;
 use Twig\Environment;
 
-final class EnvironmentBuilder
+class EnvironmentBuilder
 {
     private Environment $environment;
 

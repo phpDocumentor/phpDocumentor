@@ -19,6 +19,7 @@ use function array_pop;
 use function explode;
 use function implode;
 use function ltrim;
+use function trim;
 
 final class UrlGenerator
 {

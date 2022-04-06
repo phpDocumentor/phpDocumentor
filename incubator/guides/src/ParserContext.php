@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
-
 use League\Uri\Uri;
 use League\Uri\UriInfo;
+
 use function array_shift;
 use function dirname;
+use function ltrim;
 use function strtolower;
 use function trim;
 

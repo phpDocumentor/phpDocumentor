@@ -13,6 +13,8 @@ use phpDocumentor\Guides\UrlGenerator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
+use function md5;
+
 final class RenderContextTest extends TestCase
 {
     use ProphecyTrait;
@@ -41,7 +43,7 @@ final class RenderContextTest extends TestCase
                     [],
                     [],
                     0
-                )
+                ),
             ]),
             new UrlGenerator(),
             'txt'
@@ -57,26 +59,26 @@ final class RenderContextTest extends TestCase
                 'filePath' => 'getting-started/configuration',
                 'destinationPath' => 'guide/',
                 'linkedDocument' => 'installing',
-                'result' => 'guide/getting-started/installing.txt'
+                'result' => 'guide/getting-started/installing.txt',
             ],
             [
                 'filePath' => 'getting-started/configuration',
                 'destinationPath' => 'guide/',
                 'linkedDocument' => '/installing',
-                'result' => 'guide/installing.txt'
+                'result' => 'guide/installing.txt',
             ],
             [
                 'filePath' => 'getting-started/configuration',
                 'destinationPath' => 'guide',
                 'linkedDocument' => 'getting-started/configuration',
                 'result' => 'guide/getting-started/configuration.txt#composer',
-                'anchor' => 'composer'
+                'anchor' => 'composer',
             ],
             [
                 'filePath' => 'getting-started/configuration',
                 'destinationPath' => 'guide/',
                 'linkedDocument' => '../references/installing',
-                'result' => 'guide/references/installing.txt'
+                'result' => 'guide/references/installing.txt',
             ],
         ];
     }

@@ -170,14 +170,6 @@ final class Entry
         unset($this->depends[$key]);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getLinks(): array
-    {
-        return $this->links;
-    }
-
     public function getMtime(): int
     {
         return $this->mtime;

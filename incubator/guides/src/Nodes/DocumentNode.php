@@ -21,6 +21,8 @@ use function array_merge;
 use function count;
 use function in_array;
 use function is_string;
+use function strtolower;
+use function trim;
 
 final class DocumentNode extends Node
 {
@@ -210,6 +212,7 @@ final class DocumentNode extends Node
         $this->variables[$name] = $value;
     }
 
+    /** @param array<string, string> $links */
     public function setLinks(array $links): void
     {
         $this->links = $links;

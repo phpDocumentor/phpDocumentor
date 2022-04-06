@@ -6,16 +6,13 @@ namespace phpDocumentor\Guides\DependencyInjection;
 
 use phpDocumentor\Guides\Configuration;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
-use phpDocumentor\Guides\Renderer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
-
-class NodeRenderersPass implements CompilerPassInterface
+final class NodeRenderersPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $config = new Configuration();
 
@@ -25,10 +22,10 @@ class NodeRenderersPass implements CompilerPassInterface
                 'phpdoc.guides.noderenderer.html.' . $count++,
                 (
                     new Definition(
-                    TemplateNodeRenderer::class,
+                        TemplateNodeRenderer::class,
                         [
                             '$template' => $template,
-                            '$nodeClass' => $node
+                            '$nodeClass' => $node,
                         ]
                     )
                 )->setAutowired(true)->addTag('phpdoc.guides.noderenderer.html')

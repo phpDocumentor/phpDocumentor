@@ -19,16 +19,14 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\RenderCommand;
-use phpDocumentor\Guides\Renderer;
-use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
+use function count;
 use function sprintf;
 
 /**
@@ -87,16 +85,18 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 }
 
                 //TODO Extract this, as this code is dupplicated
-                $this->environmentBuilder->setEnvironmentFactory(function () use ($transformation, $project, $documentationSet) {
-                    $twig = $this->environmentFactory->create($project, $transformation->template());
-                    $twig->addGlobal('project', $project);
-                    $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-                    $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-                    $twig->addGlobal('documentationSet', $documentationSet);
-                    $twig->addGlobal('destinationPath', null);
+                $this->environmentBuilder->setEnvironmentFactory(
+                    function () use ($transformation, $project, $documentationSet) {
+                        $twig = $this->environmentFactory->create($project, $transformation->template());
+                        $twig->addGlobal('project', $project);
+                        $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+                        $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+                        $twig->addGlobal('documentationSet', $documentationSet);
+                        $twig->addGlobal('destinationPath', null);
 
-                    return $twig;
-                });
+                        return $twig;
+                    }
+                );
 
                 $this->renderDocumentationSet($documentationSet, $transformation);
             }

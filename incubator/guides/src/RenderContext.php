@@ -19,9 +19,8 @@ use League\Uri\UriInfo;
 use phpDocumentor\Guides\Meta\Entry;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
-use function array_shift;
 use function dirname;
-use function strtolower;
+use function ltrim;
 use function trim;
 
 class RenderContext
@@ -133,7 +132,8 @@ class RenderContext
         }
 
         return $this->urlGenerator->canonicalUrl(
-            $baseUrl, $this->createFileUrl($filename, $anchor)
+            $baseUrl,
+            $this->createFileUrl($filename, $anchor)
         );
     }
 

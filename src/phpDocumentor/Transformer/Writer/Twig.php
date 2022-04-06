@@ -200,7 +200,6 @@ final class Twig extends WriterAbstract implements Initializable
         // TODO: replace env with origin filesystem, as this will help us to copy assets.
         $this->environment->addGlobal('env', null);
 
-
         $output = $this->environment->render($templatePath, ['target_path' => ltrim($path, '/\\')]);
 
         $this->persistTo($transformation, ltrim($path, '/\\'), $output);

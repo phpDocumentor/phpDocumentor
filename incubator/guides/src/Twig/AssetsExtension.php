@@ -24,6 +24,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
 
+use function dirname;
 use function sprintf;
 use function trim;
 

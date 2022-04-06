@@ -8,8 +8,8 @@ use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
 use League\Tactician\CommandBus;
 use phpDocumentor\Guides\FileCollector;
-
 use phpDocumentor\Guides\Nodes\DocumentNode;
+
 use function sprintf;
 
 final class ParseDirectoryHandler
@@ -41,7 +41,9 @@ final class ParseDirectoryHandler
         $files = $this->fileCollector->collect($origin, $currentDirectory, $extension);
         $documents = [];
         foreach ($files as $file) {
-            $documents[] = $this->commandBus->handle(new ParseFileCommand($origin, $currentDirectory, $file, $extension, 1));
+            $documents[] = $this->commandBus->handle(
+                new ParseFileCommand($origin, $currentDirectory, $file, $extension, 1)
+            );
         }
 
         return $documents;

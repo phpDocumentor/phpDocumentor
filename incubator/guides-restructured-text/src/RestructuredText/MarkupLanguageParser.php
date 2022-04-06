@@ -103,8 +103,7 @@ class MarkupLanguageParser implements ParserInterface
             new Uml(),
             new WarningDirective(),
             new Wrap(),
-        ]
-        );
+        ]);
     }
 
     public function supports(string $inputFormat): bool
