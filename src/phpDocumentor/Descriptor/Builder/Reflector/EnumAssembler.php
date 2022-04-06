@@ -44,7 +44,8 @@ final class EnumAssembler extends AssemblerAbstract
         $descriptor->setPackage(
             $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackage()
         );
-        $descriptor->setLine($data->getLocation()->getLineNumber());
+        $descriptor->setStartLocation($data->getLocation());
+        $descriptor->setEndLocation($data->getEndLocation());
 
         $descriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
         $descriptor->setBackedType($data->getBackedType());

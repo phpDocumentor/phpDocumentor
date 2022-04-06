@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -149,9 +150,9 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         }
     }
 
-    public function setLocation(FileDescriptor $file, int $line = 0): void
+    public function setLocation(FileDescriptor $file, Location $startLocation): void
     {
-        parent::setLocation($file, $line);
+        parent::setLocation($file, $startLocation);
         foreach ($this->getCases() as $case) {
             $case->setFile($file);
         }

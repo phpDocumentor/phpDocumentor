@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Location;
 
 use function lcfirst;
 use function strpos;
@@ -61,6 +62,12 @@ abstract class DescriptorAbstract implements Filterable
 
     /** @var DescriptorAbstract|null the element from which to inherit information in this element */
     protected $inheritedElement = null;
+
+    /** @var Location */
+    protected $startLocation;
+
+    /** @var Location */
+    protected $endLocation;
 
     /**
      * Initializes this descriptor.
@@ -192,10 +199,10 @@ abstract class DescriptorAbstract implements Filterable
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setLocation(FileDescriptor $file, int $line = 0): void
+    public function setLocation(FileDescriptor $file, Location $startLocation): void
     {
         $this->setFile($file);
-        $this->line = $line;
+        $this->setStartLocation($startLocation);
     }
 
     /**
@@ -226,20 +233,52 @@ abstract class DescriptorAbstract implements Filterable
 
     /**
      * Returns the line number where the definition for this element can be found.
+     *
+     * @deprecated use getStartLocation()->getLineNumber() instead
      */
     public function getLine(): int
     {
-        return $this->line;
+        if ($this->getStartLocation() === null) {
+            return 0;
+        }
+
+        return $this->getStartLocation()->getLineNumber();
     }
 
     /**
-     * Sets the line number for this element's location in the source file.
-     *
-     * @internal should not be called by any other class than the assamblers
+     * Returns the start location where the definition for this element can be found.
      */
-    public function setLine(int $lineNumber): void
+    public function getStartLocation(): ?Location
     {
-        $this->line = $lineNumber;
+        return $this->startLocation;
+    }
+
+    /**
+     * Sets this element's start location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setStartLocation(Location $startLocation): void
+    {
+        $this->startLocation = $startLocation;
+    }
+
+    /**
+     * Returns the end location where the definition for this element can be found.
+     */
+    public function getEndLocation(): ?Location
+    {
+        return $this->endLocation;
+    }
+
+    /**
+     * Sets this element's end location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setEndLocation(Location $endLocation): void
+    {
+        $this->endLocation = $endLocation;
     }
 
     /**
