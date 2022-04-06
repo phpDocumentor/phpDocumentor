@@ -53,15 +53,6 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /** @var bool */
     private $hasReturnByReference = false;
 
-    /** @var int $column The column number on which this element occurs. */
-    private $column = 0;
-
-    /** @var int $endLine The end line number on which this element occurs. */
-    private $endLine = 0;
-
-    /** @var int $endColumn The end column number on which this element occurs. */
-    private $endColumn = 0;
-
     /**
      * Initializes the all properties representing a collection with a new Collection object.
      */
@@ -303,59 +294,5 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     public function getHasReturnByReference(): bool
     {
         return $this->hasReturnByReference;
-    }
-
-    /**
-     * Returns the column number where the definition for this element can be found.
-     */
-    public function getColumn(): int
-    {
-        return $this->column;
-    }
-
-    /**
-     * Sets the column number for this element's location in the source file.
-     *
-     * @internal should not be called by any other class than the assemblers
-     */
-    public function setColumn(int $column): void
-    {
-        $this->column = $column;
-    }
-
-    /**
-     * Returns the end line number where the definition for this element can be found.
-     */
-    public function getEndLine(): int
-    {
-        return $this->endLine;
-    }
-
-    /**
-     * Sets the end line number for this element's location in the source file.
-     *
-     * @internal should not be called by any other class than the assemblers
-     */
-    public function setEndLine(int $endLine): void
-    {
-        $this->endLine = $endLine;
-    }
-
-    /**
-     * Returns the end column number where the definition for this element can be found.
-     */
-    public function getEndColumn(): int
-    {
-        return $this->endColumn;
-    }
-
-    /**
-     * Sets the end column number for this element's location in the source file.
-     *
-     * @internal should not be called by any other class than the assemblers
-     */
-    public function setEndColumn(int $endColumn): void
-    {
-        $this->endColumn = $endColumn;
     }
 }

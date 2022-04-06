@@ -79,7 +79,8 @@ class FunctionAssembler extends AssemblerAbstract
 
         $descriptor->setFullyQualifiedStructuralElementName($reflector->getFqsen());
         $descriptor->setName($reflector->getName());
-        $descriptor->setLine($reflector->getLocation()->getLineNumber());
+        $descriptor->setStartLocation($reflector->getLocation());
+        $descriptor->setEndLocation($reflector->getEndLocation());
         $descriptor->setNamespace('\\' . trim(substr(
             (string) $reflector->getFqsen(),
             0,
@@ -98,7 +99,8 @@ class FunctionAssembler extends AssemblerAbstract
     {
         foreach ($arguments as $argument) {
             $descriptor = $this->createArgumentDescriptor($functionDescriptor, $argument);
-            $descriptor->setLine($functionDescriptor->getLine());
+            $descriptor->setStartLocation($functionDescriptor->getStartLocation());
+            $descriptor->setEndLocation($functionDescriptor->getEndLocation());
 
             $this->addArgumentDescriptorToFunction(
                 $functionDescriptor,

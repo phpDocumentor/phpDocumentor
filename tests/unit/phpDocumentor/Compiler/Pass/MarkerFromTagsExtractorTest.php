@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\TestCase;
 
 final class MarkerFromTagsExtractorTest extends TestCase
@@ -56,11 +57,11 @@ final class MarkerFromTagsExtractorTest extends TestCase
     public function testAddTodoMarkerForEachTodoTagInAnyElement(): void
     {
         $fileDescriptor = $this->givenProjectHasFileDescriptor();
-        $fileDescriptor->setLine(10);
+        $fileDescriptor->setStartLocation(new Location(10));
         $this->givenDescriptorHasTodoTagWithDescription($fileDescriptor, '123');
         $this->givenDescriptorHasTodoTagWithDescription($fileDescriptor, '456');
         $classDescriptor = $this->givenProjectHasClassDescriptorAssociatedWithFile($fileDescriptor);
-        $classDescriptor->setLine(20);
+        $classDescriptor->setStartLocation(new Location(20));
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
 
         $this->fixture->execute($this->project);

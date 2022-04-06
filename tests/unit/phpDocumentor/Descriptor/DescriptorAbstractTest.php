@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Location;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -234,30 +235,46 @@ class DescriptorAbstractTest extends MockeryTestCase
     /**
      * @covers ::setLocation
      * @covers ::getFile
-     * @covers ::getLine
+     * @covers ::getStartLocation
      */
     public function testSettingAndGettingLocation(): void
     {
         $this->assertNull($this->fixture->getFile());
         $this->assertSame(0, $this->fixture->getLine());
 
-        $this->fixture->setLocation(m::mock(FileDescriptor::class), 5);
+        $startLocation = new Location(5, 100);
+        $this->fixture->setLocation(m::mock(FileDescriptor::class), $startLocation);
 
         $this->assertInstanceOf(FileDescriptor::class, $this->fixture->getFile());
-        $this->assertSame(5, $this->fixture->getLine());
+        $this->assertSame($startLocation, $this->fixture->getStartLocation());
     }
 
     /**
-     * @covers ::setLine
-     * @covers ::getLine
+     * @covers ::getStartLocation
+     * @covers ::setStartLocation
      */
-    public function testSetLineNumber(): void
+    public function testSettingAndGettingStartLocation(): void
     {
-        $this->assertSame(0, $this->fixture->getLine());
+        $this->assertNull($this->fixture->getStartLocation());
 
-        $this->fixture->setLine(5);
+        $startLocation = new Location(10, 200);
+        $this->fixture->setStartLocation($startLocation);
 
-        $this->assertSame(5, $this->fixture->getLine());
+        $this->assertSame($startLocation, $this->fixture->getStartLocation());
+    }
+
+    /**
+     * @covers ::getEndLocation
+     * @covers ::setEndLocation
+     */
+    public function testSettingAndGettingEndLocation(): void
+    {
+        $this->assertNull($this->fixture->getEndLocation());
+
+        $endLocation = new Location(99, 5200);
+        $this->fixture->setEndLocation($endLocation);
+
+        $this->assertSame($endLocation, $this->fixture->getEndLocation());
     }
 
     /**
@@ -270,7 +287,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         /** @var m\MockInterface $file */
         $file = m::mock(FileDescriptor::class);
         $file->shouldReceive('getPath')->andReturn('path');
-        $this->fixture->setLocation($file);
+        $this->fixture->setLocation($file, new Location(10));
 
         $this->assertSame('path', $this->fixture->getPath());
     }

@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Location;
 
 /**
  * Represents the public interface to which all descriptors should be held.
@@ -68,7 +69,7 @@ interface ElementInterface
     /**
      * Sets the file and location for this element.
      */
-    public function setLocation(FileDescriptor $file, int $line = 0): void;
+    public function setLocation(FileDescriptor $file, Location $startLocation): void;
 
     /**
      * Returns the file location for this element relative to the project root.

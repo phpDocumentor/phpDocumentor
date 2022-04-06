@@ -76,14 +76,16 @@ class MethodAssemblerTest extends TestCase
         $column = 25;
         $endLine = 264;
         $endColumn = 9950;
+        $startLocation = $this->givenALocation(10, 25);
+        $endLocation = $this->givenALocation(264, 9950);
         $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
             $methodName,
             $argument,
             $this->givenADocBlockObject(true),
             false,
-            $this->givenALocation($line, $column),
-            $this->givenALocation($endLine, $endColumn),
+            $startLocation,
+            $endLocation
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -107,10 +109,8 @@ class MethodAssemblerTest extends TestCase
         $this->assertFalse($descriptor->isAbstract());
         $this->assertFalse($descriptor->isStatic());
         $this->assertFalse($descriptor->getHasReturnByReference());
-        $this->assertSame($line, $descriptor->getLine());
-        $this->assertSame($column, $descriptor->getColumn());
-        $this->assertSame($endLine, $descriptor->getEndLine());
-        $this->assertSame($endColumn, $descriptor->getEndColumn());
+        $this->assertSame($startLocation, $descriptor->getStartLocation());
+        $this->assertSame($endLocation, $descriptor->getEndLocation());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument->getName(), $argumentDescriptor->getName());
