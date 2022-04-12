@@ -162,7 +162,7 @@ class LineDataParser
                     );
                 }
 
-                $parts = explode(':', trim($line));
+                $parts = explode(' : ', trim($line));
 
                 $term = $parts[0];
                 unset($parts[0]);
