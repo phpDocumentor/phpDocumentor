@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
-  <phar name="phpunit" version="^9.5.0" installed="9.5.8" location="./tools/phpunit" copy="true"/>
+  <phar name="phpunit" version="^9.5.8" installed="9.5.8" location="./tools/phpunit" copy="true"/>
   <phar name="composer-require-checker" version="^3.8.0" installed="3.8.0" location="./tools/composer-require-checker" copy="true"/>
-  <phar name="jaapio/prophecy-phpunit" version="^2.1.0" installed="2.2.0" location="./tools/phpunit.d/prophecy-phpunit.phar" copy="true"/>
+  <phar name="jaapio/prophecy-phpunit" version="^2.2.0" installed="2.2.0" location="./tools/prophecy-phpunit" copy="true"/>
 </phive>

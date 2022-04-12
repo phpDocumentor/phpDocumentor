@@ -10,7 +10,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutCoversAnnotation="false"
          convertDeprecationsToExceptions="true"
-         extensionsDirectory="./tools/phpunit.d"
+         extensionsDirectory="./tools"
 >
     <testsuites>
         <testsuite name="unit">
@@ -26,6 +26,7 @@
     </testsuites>
     <filter>
         <whitelist>
+            <directory suffix=".php">incubator/guides-restructured-text/src</directory>
             <directory suffix=".php">src/incubator/json-path</directory>
             <directory suffix=".php">src/phpDocumentor</directory>
         </whitelist>
