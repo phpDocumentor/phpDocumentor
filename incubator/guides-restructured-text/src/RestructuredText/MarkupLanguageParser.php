@@ -36,6 +36,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\Uml;
 use phpDocumentor\Guides\RestructuredText\Directives\WarningDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Wrap;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Toc\GlobSearcher;
 use phpDocumentor\Guides\RestructuredText\Toc\ToctreeBuilder;
 use phpDocumentor\Guides\UrlGenerator;
@@ -70,28 +71,30 @@ class MarkupLanguageParser implements ParserInterface
 
     public static function createInstance(): self
     {
+        $spanParser = new SpanParser();
+
         return new self([
-            new AdmonitionDirective(),
-            new BestPracticeDirective(),
-            new CautionDirective(),
+            new AdmonitionDirective($spanParser),
+            new BestPracticeDirective($spanParser),
+            new CautionDirective($spanParser),
             new ClassDirective(),
             new Code(),
             new CodeBlock(),
             new ContainerDirective(),
             new Figure(new UrlGenerator()),
-            new HintDirective(),
+            new HintDirective($spanParser),
             new Image(new UrlGenerator()),
-            new ImportantDirective(),
+            new ImportantDirective($spanParser),
             new IncludeDirective(),
             new IndexDirective(),
             new Meta(),
-            new NoteDirective(),
+            new NoteDirective($spanParser),
             new RawDirective(),
-            new Replace(),
+            new Replace($spanParser),
             new RoleDirective(),
-            new SeeAlsoDirective(),
+            new SeeAlsoDirective($spanParser),
             new SidebarDirective(),
-            new TipDirective(),
+            new TipDirective($spanParser),
             new Title(),
             new Toctree(
                 new ToctreeBuilder(
@@ -101,7 +104,7 @@ class MarkupLanguageParser implements ParserInterface
             ),
             new TopicDirective(),
             new Uml(),
-            new WarningDirective(),
+            new WarningDirective($spanParser),
             new Wrap(),
         ]);
     }
