@@ -94,7 +94,7 @@ class Transform
                 $this->transformerProvider->get($documentationSet)->execute(
                     $project,
                     $documentationSet,
-                    current($templates)
+                    current($templates->getArrayCopy())
                 );
 
                 /** @var PostTransformEvent $postTransformEvent */

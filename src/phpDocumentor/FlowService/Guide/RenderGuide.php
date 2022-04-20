@@ -85,8 +85,8 @@ final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSett
             function () use ($template, $project, $documentationSet) {
                 $twig = $this->environmentFactory->create($project, $template);
                 $twig->addGlobal('project', $project);
-                $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-                $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+//                $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+//                $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
                 $twig->addGlobal('documentationSet', $documentationSet);
                 $twig->addGlobal('destinationPath', null);
 

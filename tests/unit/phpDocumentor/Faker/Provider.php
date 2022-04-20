@@ -28,7 +28,6 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Dsn;
-use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
