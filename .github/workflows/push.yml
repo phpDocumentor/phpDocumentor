@@ -263,6 +263,9 @@ jobs:
           path: build/phpDocumentor.phar
 
   e2e:
+    permissions:
+      actions: read  # for cypress-io/github-action to correctly identify workflow run
+      contents: read  # for actions/checkout to fetch code
     runs-on: ubuntu-latest
     name: E2E tests [ubuntu-latest]
     if: github.repository == 'phpDocumentor/phpDocumentor'
@@ -384,6 +387,9 @@ jobs:
       run: php tools/phpunit --testsuite=unit,integration
 
   e2e-matrix:
+    permissions:
+      actions: read  # for cypress-io/github-action to correctly identify workflow run
+      contents: read  # for actions/checkout to fetch code
     runs-on: ${{ matrix.operating-system }}
     if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:

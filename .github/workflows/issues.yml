@@ -1,7 +1,12 @@
 on: [issues]
 name: Issue Triage
+permissions:
+  contents: read
+
 jobs:
   add-new-issues-to-project-column:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - name: add-new-issues-to-organization-based-project-column
