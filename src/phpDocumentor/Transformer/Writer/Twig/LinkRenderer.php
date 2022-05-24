@@ -224,7 +224,7 @@ final class LinkRenderer
      *
      * @param iterable<mixed> $value
      *
-     * @return list<string>
+     * @return list<string|list<string>>
      */
     private function renderASeriesOfLinks(iterable $value, string $presentation): array
     {
@@ -237,7 +237,7 @@ final class LinkRenderer
     }
 
     /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Fqsen $node
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $node
      */
     private function renderLink($node, string $presentation): string
     {

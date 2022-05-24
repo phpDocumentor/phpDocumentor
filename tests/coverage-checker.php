@@ -11,7 +11,12 @@ if (!$percentage) {
     throw new InvalidArgumentException('An integer checked percentage must be given as parameter');
 }
 
-$xml             = new SimpleXMLElement(file_get_contents($inputFile));
+$contents = file_get_contents($inputFile);
+if ($contents === false) {
+    throw new \RuntimeException('Unable to read file ' . $inputFile);
+}
+
+$xml             = new SimpleXMLElement($contents);
 $metrics         = $xml->xpath('//metrics');
 $totalElements   = 0;
 $checkedElements = 0;

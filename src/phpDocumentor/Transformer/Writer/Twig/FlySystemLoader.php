@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
+use InvalidArgumentException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface;
 use Twig\Error\LoaderError;
@@ -52,14 +53,19 @@ final class FlySystemLoader implements LoaderInterface
     /**
      * @inheritDoc
      */
-    public function getSourceContext($name)
+    public function getSourceContext($name): Source
     {
         $this->guardTemplateExistsAndIsFile($name);
 
         $path = $this->resolveTemplateName($name);
 
+        $code = $this->filesystem->read($path);
+        if ($code === false) {
+            throw new InvalidArgumentException('Could not read file ' . $path);
+        }
+
         return new Source(
-            $this->filesystem->read($path),
+            $code,
             $name,
             $path
         );
@@ -110,6 +116,10 @@ final class FlySystemLoader implements LoaderInterface
         try {
             $path = $this->resolveTemplateName($name);
             $metadata = $this->filesystem->getMetadata($path);
+            if ($metadata === false) {
+                throw new FileNotFoundException($path);
+            }
+
             if ($metadata['type'] !== 'file') {
                 throw new LoaderError(
                     sprintf('Cannot use anything other than a file as a template, received: %s', $path)
