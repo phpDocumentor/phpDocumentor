@@ -115,7 +115,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = SpanNode::create($this, $node->getLiteral());
+                $spanNode = new SpanNode($node->getLiteral(), []);
                 $document->addNode($spanNode);
                 continue;
             }
