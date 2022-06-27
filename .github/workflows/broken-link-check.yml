@@ -14,7 +14,7 @@ jobs:
     if: github.repository == 'phpDocumentor/phpDocumentor'
     steps:
       - name: Broken Link Check
-        uses: technote-space/broken-link-checker-action@v2.2
+        uses: technote-space/broken-link-checker-action@v2.3
         with:
           TARGET: 'https://docs.phpdoc.org/3.0/'
           RECURSIVE: true
