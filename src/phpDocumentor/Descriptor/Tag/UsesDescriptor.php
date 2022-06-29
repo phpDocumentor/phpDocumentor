@@ -47,4 +47,9 @@ final class UsesDescriptor extends TagDescriptor
     {
         $this->reference = $reference;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->reference;
+    }
 }

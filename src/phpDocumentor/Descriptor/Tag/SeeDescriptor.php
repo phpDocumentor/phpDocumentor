@@ -34,4 +34,9 @@ class SeeDescriptor extends TagDescriptor
     {
         return $this->reference;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->reference;
+    }
 }
