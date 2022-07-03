@@ -8,8 +8,3 @@ Guides
    docblocks
    types
    inheritance
-
-.. toctree::
-   :hidden:
-
-   templates

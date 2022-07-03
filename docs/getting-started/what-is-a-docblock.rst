@@ -167,7 +167,7 @@ for more in-depth information.
 Read more
 ~~~~~~~~~
 
-- :doc:`running-phpdocumentor`, now that you have learned what a DocBlock looks like, shall we take phpDocumentor
+- :doc:`generating-documentation`, now that you have learned what a DocBlock looks like, shall we take phpDocumentor
   for a spin?
 
 - :doc:`../references/configuration`, there are a lot more options to phpDocumentor. To maintain consistent

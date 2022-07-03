@@ -1,6 +1,5 @@
 .. meta::
    :layout: landingpage
-   :tada: true
 
 .. toctree::
    :hidden:

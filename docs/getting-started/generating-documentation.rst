@@ -11,22 +11,20 @@ to run a command, it will be in the following form
 
     $ phpdoc
 
-.. hint::
+When you have installed a version via composer or manually you should invoke the ``phpdoc`` script in
+the ``bin`` folder of your phpDocumentor installation.
 
-    When you have installed a version via composer or manually you should invoke the ``phpdoc`` script in
-    the ``bin`` folder of your phpDocumentor installation.
+Under Linux / MacOSX that would be
 
-    Under Linux / MacOSX that would be
+.. code-block:: shell-session
 
-    .. code-block:: shell-session
+	$ [PHPDOC_FOLDER]/bin/phpdoc
 
-        $ [PHPDOC_FOLDER]/bin/phpdoc
+And under Windows that would be
 
-    And under Windows that would be
+.. code-block:: shell-session
 
-    .. code-block:: shell-session
-
-        $ [PHPDOC_FOLDER]\bin\phpdoc.bat
+	$ [PHPDOC_FOLDER]\bin\phpdoc.bat
 
 The basic usage of phpDocumentor is to provide an input location using the command line options
 (``-d`` for a directory, ``-f`` for a file) and tell it to output your documentation to a folder of your
