@@ -46,7 +46,7 @@
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
         "league/tactician-bundle": "^1.2",
-        "league/uri": "~6.3.0",
+        "league/uri": "~6.7.1",
         "league/uri-interfaces": "^2.0",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
