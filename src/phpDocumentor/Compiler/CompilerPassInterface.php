@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
 /**
  * Represents a single pass / business rule to be executed by the Compiler.
@@ -34,7 +34,7 @@ interface CompilerPassInterface
      * This method will execute the business logic associated with a given compiler pass and allow it to manipulate
      * or consumer the Object Graph using the ProjectDescriptor object.
      *
-     * @param ProjectDescriptor $project Representation of the Object Graph that can be manipulated.
+     * @param DocumentationSetDescriptor $project Representation of the Object Graph that can be manipulated.
      */
-    public function execute(ProjectDescriptor $project): void;
+    public function execute(DocumentationSetDescriptor $project): void;
 }

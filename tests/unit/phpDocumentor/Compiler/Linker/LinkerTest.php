@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -34,6 +35,7 @@ use function get_class;
  */
 final class LinkerTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var ObjectProphecy|DescriptorRepository */
@@ -285,8 +287,8 @@ final class LinkerTest extends TestCase
         $object = $this->prophesize(ClassDescriptor::class);
         $fqsen = get_class($object);
 
-        $project = new ProjectDescriptor('project');
-        $project->setIndexes(new Collection(['elements' => new Collection([$fqsen => $result])]));
+        $project = $this->faker()->apiSetDescriptor();
+        $project->getIndexes()->set('elements', new Collection([$fqsen => $result]));
 
         // prepare linker
         $repository = $this->prophesize(DescriptorRepository::class);

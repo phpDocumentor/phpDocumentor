@@ -21,7 +21,6 @@ use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -78,7 +77,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('index.html'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'index.html.twig', 'index.html')
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
@@ -95,7 +94,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images/destination.png'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation(
                 $this->template,
                 'copy',
@@ -118,7 +117,7 @@ final class FileIoTest extends TestCase
         $writer = new FileIo();
 
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'index.html.twig', 'index.html')
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
@@ -138,7 +137,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'images', 'images')
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
@@ -160,7 +159,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'templates/templateName/images', 'images')
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
@@ -182,7 +181,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'images', 'images')
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
@@ -206,7 +205,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'templates/templateName/images', 'images')
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
@@ -222,7 +221,7 @@ final class FileIoTest extends TestCase
         $writer = new FileIo();
 
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'copy', 'fileio', 'unknown_file', 'nah.png')
         );
     }
@@ -236,7 +235,7 @@ final class FileIoTest extends TestCase
         $writer = new FileIo();
 
         $writer->transform(
-            new ProjectDescriptor('project'),
+            $this->faker()->apiSetDescriptor(),
             new Transformation($this->template, 'not-a-copy', 'fileio', 'unknown_file', 'nah.png')
         );
     }

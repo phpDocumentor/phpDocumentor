@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Cache;
 
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Pipeline\Stage\Parser\Payload;
+use phpDocumentor\Pipeline\Stage\Payload;
 
 final class GarbageCollectCache
 {
@@ -28,7 +28,7 @@ final class GarbageCollectCache
 
     public function __invoke(Payload $payload): Payload
     {
-        $this->descriptorMapper->garbageCollect($payload->getFiles());
+        //$this->descriptorMapper->garbageCollect($payload->);
 
         return $payload;
     }

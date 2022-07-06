@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -21,9 +22,9 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\Description;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +38,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 final class PackageTreeBuilderTest extends TestCase
 {
     use ProphecyTrait;
+    use Faker;
 
     private const DEFAULT_PACKAGE_NAME = 'Default';
 
@@ -67,7 +69,7 @@ final class PackageTreeBuilderTest extends TestCase
      */
     public function testRootPackageIsSet(): void
     {
-        $project = new ProjectDescriptor('title');
+        $project = $this->faker()->apiSetDescriptor();
         $this->fixture->execute($project);
 
         $packages = $project->getIndexes()->get('packages');
@@ -414,17 +416,17 @@ final class PackageTreeBuilderTest extends TestCase
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }
 
-    private function givenProjectWithFile(FileDescriptor $file): ProjectDescriptor
+    private function givenProjectWithFile(FileDescriptor $file): ApiSetDescriptor
     {
-        $project = new ProjectDescriptor('title');
+        $project = $this->faker()->apiSetDescriptor();
         $project->getFiles()->add($file);
 
         return $project;
     }
 
-    private function givenProjectWithFiles(array $files): ProjectDescriptor
+    private function givenProjectWithFiles(array $files): ApiSetDescriptor
     {
-        $project = new ProjectDescriptor('title');
+        $project = $this->faker()->apiSetDescriptor();
         foreach ($files as $file) {
             $project->getFiles()->add($file);
         }

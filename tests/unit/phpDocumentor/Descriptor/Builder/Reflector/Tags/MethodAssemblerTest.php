@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use phpDocumentor\Reflection\Type;
@@ -39,7 +39,7 @@ final class MethodAssemblerTest extends TestCase
     /** @var MethodAssembler */
     private $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     protected $builder;
 
     /**
@@ -47,7 +47,7 @@ final class MethodAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builder = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->fixture = new MethodAssembler();
         $this->fixture->setBuilder($this->builder->reveal());
     }

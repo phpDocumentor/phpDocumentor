@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Parser;
+namespace phpDocumentor\FileSystem;
 
 use Flyfinder\Path;
 use Flyfinder\Specification\InPath;
@@ -32,7 +32,7 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
 
 /**
- * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
+ * @coversDefaultClass \phpDocumentor\FileSystem\FlySystemFactory
  * @covers ::__construct
  * @covers ::<private>
  */

@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use Generator;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
@@ -43,6 +45,7 @@ use function is_object;
  */
 final class LinkRendererTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var Router|ObjectProphecy */
@@ -51,15 +54,21 @@ final class LinkRendererTest extends TestCase
     /** @var LinkRenderer */
     private $renderer;
 
+    /** @var ApiSetDescriptor */
+    private $apiSetDescriptor;
+
     /** @var ProjectDescriptor */
     private $projectDescriptor;
 
     protected function setUp(): void
     {
-        $this->router = $this->prophesize(Router::class);
+        $this->router           = $this->prophesize(Router::class);
         $this->projectDescriptor = new ProjectDescriptor('project');
-        $this->projectDescriptor->getIndexes()->set('elements', new Collection());
-        $this->renderer = (new LinkRenderer($this->router->reveal()))->withProject($this->projectDescriptor);
+        $this->apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $this->apiSetDescriptor->getIndexes()->set('elements', new Collection());
+        $this->renderer = (new LinkRenderer($this->router->reveal()))
+            ->withProject($this->projectDescriptor)
+            ->withDocumentationSet($this->apiSetDescriptor);
     }
 
     /**
@@ -82,7 +91,7 @@ final class LinkRendererTest extends TestCase
     public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
         $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
-        $this->projectDescriptor->getIndexes()->get('elements')
+        $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
         $this->router->generate($classDescriptor)->willReturn('/classes/My.Namespace.Class.html');
@@ -163,7 +172,7 @@ final class LinkRendererTest extends TestCase
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
-        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+        $this->apiSetDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
         $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
@@ -182,7 +191,7 @@ final class LinkRendererTest extends TestCase
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
-        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+        $this->apiSetDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
         $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
@@ -230,7 +239,7 @@ final class LinkRendererTest extends TestCase
         $fqsen = new Fqsen('\My\Namespace\Class');
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
-        $this->projectDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
+        $this->apiSetDescriptor->getIndexes()->get('elements')->set('\My\Namespace\Class', $descriptor);
 
         $this->router->generate(Argument::any())->shouldBeCalled()->willReturn('/classes/My.Namespace.Class.html');
 
@@ -248,7 +257,7 @@ final class LinkRendererTest extends TestCase
     public function testRenderType(Type $input, string $presentation, string $output): void
     {
         $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
-        $this->projectDescriptor->getIndexes()->get('elements')
+        $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
         $this->router->generate($classDescriptor)->willReturn('/classes/My.Namespace.Class.html');

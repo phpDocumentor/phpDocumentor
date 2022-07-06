@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Fqsen;
@@ -20,7 +20,7 @@ class ThrowsAssemblerTest extends TestCase
     /** @var ThrowsAssembler */
     private $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     private $builder;
 
     /**
@@ -28,7 +28,7 @@ class ThrowsAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builder = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->fixture = new ThrowsAssembler();
         $this->fixture->setBuilder($this->builder->reveal());
     }

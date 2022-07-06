@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 
 use function array_merge;
 use function is_array;
@@ -40,8 +41,12 @@ class ElementsIndexBuilder implements CompilerPassInterface
         return 'Build "elements" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
 

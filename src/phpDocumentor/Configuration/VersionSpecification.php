@@ -24,15 +24,24 @@ class VersionSpecification
     /** @var array<mixed>|null */
     public $guides;
 
+    /** @var string */
+    private $folder;
+
     /**
      * @param array<int, ApiSpecification> $api
      * @param array<mixed>|null $guides
      */
-    public function __construct(string $number, array $api, ?array $guides)
+    public function __construct(string $number, string $folder, array $api, ?array $guides)
     {
         $this->number = $number;
         $this->api = $api;
         $this->guides = $guides;
+        $this->folder = $folder;
+    }
+
+    public function getFolder(): string
+    {
+        return $this->folder;
     }
 
     public function getNumber(): string

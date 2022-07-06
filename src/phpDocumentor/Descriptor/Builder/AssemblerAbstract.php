@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder;
 
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
 /**
  * Base class for all assemblers.
@@ -25,13 +25,13 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 abstract class AssemblerAbstract implements AssemblerInterface
 {
-    /** @var ProjectDescriptorBuilder|null $builder */
+    /** @var ApiSetDescriptorBuilder|null $builder */
     protected $builder;
 
     /**
      * Returns the builder for this Assembler or null if none is set.
      */
-    public function getBuilder(): ?ProjectDescriptorBuilder
+    public function getBuilder(): ?ApiSetDescriptorBuilder
     {
         return $this->builder;
     }
@@ -42,7 +42,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
      * The Builder may be used to recursively assemble Descriptors using
      * the {@link ProjectDescriptorBuilder::buildDescriptor()} method.
      */
-    public function setBuilder(ProjectDescriptorBuilder $builder): void
+    public function setBuilder(ApiSetDescriptorBuilder $builder): void
     {
         $this->builder = $builder;
     }

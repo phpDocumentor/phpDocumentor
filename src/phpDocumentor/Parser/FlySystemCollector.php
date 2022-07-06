@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Path;
 
 final class FlySystemCollector implements FileCollector

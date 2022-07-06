@@ -30,7 +30,7 @@ services:
 
   phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache:
     tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
+#      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 
   phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache:
@@ -41,19 +41,13 @@ services:
   ## Autoloading definitions for parser stages      #################################
   ###################################################################################
 
-  phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 5000 }
+#  phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
+#    tags:
+#      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
 
-  phpDocumentor\Pipeline\Stage\Parser\CollectFiles:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 4000 }
-
-  phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
-
-  phpDocumentor\Pipeline\Stage\Parser\ParseFiles:
+  phpDocumentor\Pipeline\Stage\Parse:
+    arguments:
+      $provider: '@phpdoc.flow.parser_provider'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
@@ -66,5 +60,7 @@ services:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 
   phpDocumentor\Pipeline\Stage\Transform:
+    arguments:
+      $transformerProvider: '@phpdoc.flow.transformer_provider'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 0 }

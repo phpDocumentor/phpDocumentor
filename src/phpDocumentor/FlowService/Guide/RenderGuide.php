@@ -11,17 +11,19 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Writer;
+namespace phpDocumentor\FlowService\Guide;
 
+use InvalidArgumentException;
 use League\Tactician\CommandBus;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\FileSystemFactory;
+use phpDocumentor\FlowService\Transformer;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
-use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -32,7 +34,7 @@ use function sprintf;
 /**
  * @experimental this feature is in alpha stages and can have unresolved issues or missing features.
  */
-final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
+final class RenderGuide implements Transformer, ProjectDescriptor\WithCustomSettings
 {
     public const FEATURE_FLAG = 'guides.enabled';
 
@@ -42,21 +44,21 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
+    /** @var FileSystemFactory */
+    private $fileSystems;
     private EnvironmentFactory $environmentFactory;
     private EnvironmentBuilder $environmentBuilder;
 
     public function __construct(
         LoggerInterface $logger,
         CommandBus $commandBus,
-        FlySystemFactory $flySystemFactory,
+        FileSystemFactory $fileSystems,
         EnvironmentFactory $environmentFactory,
         EnvironmentBuilder $environmentBuilder
     ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
-        $this->flySystemFactory = $flySystemFactory;
+        $this->fileSystems = $fileSystems;
         $this->environmentFactory = $environmentFactory;
         $this->environmentBuilder = $environmentBuilder;
     }
@@ -66,67 +68,49 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         return 'RenderGuide';
     }
 
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function execute(ProjectDescriptor $project, DocumentationSetDescriptor $documentationSet, Template $template): void
     {
-        // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
-            return;
+        if (!$documentationSet instanceof GuideSetDescriptor) {
+            throw new InvalidArgumentException('Invalid documentation set');
         }
 
         $this->logger->warning(
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
 
-        /** @var VersionDescriptor $version */
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof GuideSetDescriptor) {
-                    continue;
-                }
-
-                //TODO Extract this, as this code is dupplicated
-                $this->environmentBuilder->setEnvironmentFactory(
-                    function () use ($transformation, $project, $documentationSet) {
-                        $twig = $this->environmentFactory->create($project, $transformation->template());
-                        $twig->addGlobal('project', $project);
-                        $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-                        $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-                        $twig->addGlobal('documentationSet', $documentationSet);
-                        $twig->addGlobal('destinationPath', null);
-
-                        return $twig;
-                    }
-                );
-
-                $this->renderDocumentationSet($documentationSet, $transformation);
-            }
-        }
-    }
-
-    public function getDefaultSettings(): array
-    {
-        return [self::FEATURE_FLAG => false];
-    }
-
-    private function renderDocumentationSet(
-        GuideSetDescriptor $documentationSet,
-        Transformation $transformation
-    ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
+
+        $this->environmentBuilder->setEnvironmentFactory(
+            function () use ($template, $project, $documentationSet) {
+                $twig = $this->environmentFactory->create($project, $template);
+                $twig->addGlobal('project', $project);
+//                $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
+//                $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+                $twig->addGlobal('documentationSet', $documentationSet);
+                $twig->addGlobal('destinationPath', null);
+
+                return $twig;
+            }
+        );
 
         $this->commandBus->handle(
             new RenderCommand(
                 $documentationSet,
-                $this->flySystemFactory->create($dsn),
-                $transformation->getTransformer()->destination()
+                $this->fileSystems->create($dsn),
+                $this->fileSystems->createDestination($documentationSet)
             )
         );
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
 
-    private function startRenderingSetMessage(Dsn $dsn): Stopwatch
+    public function getDefaultSettings() : array
+    {
+        return [self::FEATURE_FLAG => false];
+    }
+
+    private function startRenderingSetMessage(Dsn $dsn) : Stopwatch
     {
         $stopwatch = new Stopwatch();
         $stopwatch->start('guide');

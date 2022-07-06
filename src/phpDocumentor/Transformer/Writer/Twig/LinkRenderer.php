@@ -19,7 +19,9 @@ use League\Uri\Uri;
 use League\Uri\UriInfo;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -68,6 +70,9 @@ final class LinkRenderer
     /** @var ProjectDescriptor|null */
     private $project;
 
+    /** @var DocumentationSetDescriptor */
+    private $documentationSet;
+
     /** @var bool */
     private $convertToRootPath = true;
 
@@ -106,6 +111,14 @@ final class LinkRenderer
     {
         $result = clone $this;
         $result->project = $projectDescriptor;
+
+        return $result;
+    }
+
+    public function withDocumentationSet(DocumentationSetDescriptor $documentationSet): self
+    {
+        $result = clone $this;
+        $result->documentationSet = $documentationSet;
 
         return $result;
     }
@@ -260,7 +273,7 @@ final class LinkRenderer
         }
 
         if ($node instanceof Fqsen) {
-            $node = $this->project->findElement($node) ?? $node;
+            $node = $this->documentationSet->findElement($node) ?? $node;
         }
 
         if ($node instanceof AbstractList) {
@@ -282,8 +295,8 @@ final class LinkRenderer
             return (string) $node;
         }
 
-        if ($node instanceof Descriptor) {
-            Assert::isInstanceOf($node, DescriptorAbstract::class);
+        if ($node instanceof Descriptor || $node instanceof VersionDescriptor) {
+            Assert::isInstanceOfAny($node, [DescriptorAbstract::class, VersionDescriptor::class]);
             try {
                 $generatedUrl = $this->router->generate($node);
             } catch (InvalidArgumentException $e) {

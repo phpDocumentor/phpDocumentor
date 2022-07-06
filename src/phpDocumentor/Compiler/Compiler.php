@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use SplPriorityQueue;
 use Webmozart\Assert\Assert;
 
@@ -35,5 +36,14 @@ class Compiler extends SplPriorityQueue
         Assert::isInstanceOf($value, CompilerPassInterface::class);
 
         return parent::insert($value, $priority);
+    }
+
+    public function compile(DocumentationSetDescriptor $documentationSet): void
+    {
+        $self = clone $this;
+        /** @var CompilerPassInterface $pass */
+        foreach ($self as $pass) {
+            $pass->execute($documentationSet);
+        }
     }
 }

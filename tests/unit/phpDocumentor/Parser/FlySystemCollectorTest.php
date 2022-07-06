@@ -15,6 +15,7 @@ namespace phpDocumentor\Parser;
 
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use PHPUnit\Framework\TestCase;
 
 use function stripos;
@@ -31,7 +32,7 @@ final class FlySystemCollectorTest extends TestCase
 {
     /**
      * @uses \phpDocumentor\Parser\SpecificationFactory
-     * @uses \phpDocumentor\Parser\FlySystemFactory
+     * @uses \phpDocumentor\FileSystem\FlySystemFactory
      *
      * @covers ::getFiles()
      */

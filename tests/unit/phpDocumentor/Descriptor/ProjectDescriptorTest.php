@@ -52,61 +52,6 @@ final class ProjectDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setFiles
-     * @covers ::getFiles
-     */
-    public function testGetSetFiles(): void
-    {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getFiles());
-
-        $filesCollection = new Collection();
-        $this->fixture->setFiles($filesCollection);
-
-        $this->assertSame($filesCollection, $this->fixture->getFiles());
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::setIndexes
-     * @covers ::getIndexes
-     */
-    public function testGetSetIndexes(): void
-    {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getIndexes());
-
-        $indexCollection = new Collection();
-        $this->fixture->setIndexes($indexCollection);
-
-        $this->assertSame($indexCollection, $this->fixture->getIndexes());
-    }
-
-    /**
-     * @covers ::setNamespace
-     * @covers ::getNamespace
-     */
-    public function testGetSetNamespace(): void
-    {
-        $this->assertInstanceOf(NamespaceDescriptor::class, $this->fixture->getNamespace());
-
-        $namespaceDescriptor = new NamespaceDescriptor();
-        $this->fixture->setNamespace($namespaceDescriptor);
-
-        $this->assertSame($namespaceDescriptor, $this->fixture->getNamespace());
-    }
-
-    /**
-     * @covers ::setNamespace
-     * @covers ::getNamespace
-     */
-    public function testRootPackageIsSetForProject(): void
-    {
-        $this->assertInstanceOf(PackageDescriptor::class, $this->fixture->getPackage());
-        $this->assertSame('\\', (string) $this->fixture->getPackage()->getName());
-        $this->assertSame('\\', (string) $this->fixture->getPackage()->getFullyQualifiedStructuralElementName());
-    }
-
-    /**
      * @covers ::setSettings
      * @covers ::getSettings
      */

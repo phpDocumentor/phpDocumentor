@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Cache;
 
-use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Reflection\File;
-use Psr\Cache\CacheItemInterface;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 use function array_diff;
-use function array_map;
 use function md5;
 
 /**
@@ -57,16 +55,16 @@ class ProjectDescriptorMapper
             return;
         }
 
-        /** @var CacheItemInterface $item */
-        foreach ($this->cache->getItems($fileList) as $item) {
-            $file = $item->get();
-
-            if (!($file instanceof FileDescriptor)) {
-                continue;
-            }
-
-            $projectDescriptor->getFiles()->set($file->getPath(), $file);
-        }
+//        /** @var CacheItemInterface $item */
+//        foreach ($this->cache->getItems($fileList) as $item) {
+//            $file = $item->get();
+//
+//            if (!($file instanceof FileDescriptor)) {
+//                continue;
+//            }
+//
+//            $projectDescriptor->getFiles()->set($file->getPath(), $file);
+//        }
     }
 
     /**
@@ -83,11 +81,21 @@ class ProjectDescriptorMapper
 
         // store cache items
         $fileKeys = [];
-        foreach ($projectDescriptor->getFiles() as $file) {
-            $key        = self::FILE_PREFIX . md5($file->getPath());
-            $fileKeys[] = $key;
-            $item       = $this->cache->getItem($key);
-            $this->cache->saveDeferred($item->set($file));
+        /** @var VersionDescriptor $version */
+        foreach ($projectDescriptor->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                if (!($documentationSet instanceof ApiSetDescriptor)) {
+                    continue;
+                }
+
+                $versionSetPrefix = $version->getNumber() . md5((string) $documentationSet->getSource()->dsn());
+                foreach ($documentationSet->getFiles() as $file) {
+                    $key        = self::FILE_PREFIX . $versionSetPrefix . md5($file->getPath());
+                    $fileKeys[] = $key;
+                    $item       = $this->cache->getItem($key);
+                    $this->cache->saveDeferred($item->set($file));
+                }
+            }
         }
 
         $this->cache->saveDeferred($fileListItem->set($fileKeys));
@@ -104,30 +112,6 @@ class ProjectDescriptorMapper
         }
 
         $this->cache->deleteItems($invalidatedKeys);
-    }
-
-    /**
-     * Removes all files in cache that do not occur in the given FileSet Collection.
-     *
-     * @param File[] $files
-     */
-    public function garbageCollect(array $files): void
-    {
-        $fileListItem   = $this->cache->getItem(self::FILE_LIST);
-        $cachedFileList = $fileListItem->get();
-
-        if ($cachedFileList === null) {
-            return;
-        }
-
-        $realFileKeys = array_map(
-            static function (File $file) {
-                return self::FILE_PREFIX . md5($file->path());
-            },
-            $files
-        );
-
-        $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));
     }
 
     private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void

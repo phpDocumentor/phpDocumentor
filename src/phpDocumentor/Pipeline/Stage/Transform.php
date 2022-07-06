@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
+use phpDocumentor\FlowService\ServiceProvider;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -17,14 +16,11 @@ use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 use function count;
+use function current;
 use function get_class;
-use function getcwd;
 use function sprintf;
-
-use const DIRECTORY_SEPARATOR;
 
 /**
  * Transforms the structure file into the specified output format
@@ -39,9 +35,6 @@ use const DIRECTORY_SEPARATOR;
  */
 class Transform
 {
-    /** @var Transformer $transformer Principal object for guiding the transformation process */
-    private $transformer;
-
     /** @var LoggerInterface */
     private $logger;
 
@@ -51,19 +44,22 @@ class Transform
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
+    /** @var ServiceProvider */
+    private $transformerProvider;
+
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
-        Transformer $transformer,
+        ServiceProvider $transformerProvider,
         FlySystemFactory $flySystemFactory,
         LoggerInterface $logger,
         Factory $templateFactory
     ) {
-        $this->transformer   = $transformer;
         $this->logger        = $logger;
         $this->templateFactory  = $templateFactory;
         $this->flySystemFactory = $flySystemFactory;
+        $this->transformerProvider = $transformerProvider;
 
         $this->connectOutputToEvents();
     }
@@ -76,34 +72,39 @@ class Transform
     public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
-
-        $templates = $this->templateFactory->getTemplates(
-            $configuration['phpdocumentor']['templates'],
-            $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
-        );
         $project = $payload->getBuilder()->getProjectDescriptor();
-        $transformations = $templates->getTransformations();
 
-        /** @var PreTransformEvent $preTransformEvent */
-        $preTransformEvent = PreTransformEvent::createInstance($this);
-        $preTransformEvent->setProject($project);
-        $preTransformEvent->setTransformations($transformations);
-        Dispatcher::getInstance()->dispatch(
-            $preTransformEvent,
-            Transformer::EVENT_PRE_TRANSFORM
-        );
+        foreach ($project->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                $templates = $this->templateFactory->getTemplates(
+                    $configuration['phpdocumentor']['templates'],
+                    $this->flySystemFactory->createDestination($documentationSet)
+                );
+                $transformations = $templates->getTransformations();
 
-        $this->transformer->execute(
-            $project,
-            $transformations
-        );
+                /** @var PreTransformEvent $preTransformEvent */
+                $preTransformEvent = PreTransformEvent::createInstance($this);
+                $preTransformEvent->setDocumentationSet($documentationSet);
+                $preTransformEvent->setTransformations($transformations);
+                Dispatcher::getInstance()->dispatch(
+                    $preTransformEvent,
+                    Transformer::EVENT_PRE_TRANSFORM
+                );
 
-        /** @var PostTransformEvent $postTransformEvent */
-        $postTransformEvent = PostTransformEvent::createInstance($this);
-        $postTransformEvent->setProject($project);
-        $postTransformEvent->setTransformations($transformations);
+                $this->transformerProvider->get($documentationSet)->execute(
+                    $project,
+                    $documentationSet,
+                    current($templates->getArrayCopy())
+                );
 
-        Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
+                /** @var PostTransformEvent $postTransformEvent */
+                $postTransformEvent = PostTransformEvent::createInstance($this);
+                $postTransformEvent->setDocumentationSet($documentationSet);
+                $postTransformEvent->setTransformations($transformations);
+
+                Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
+            }
+        }
 
         return $payload;
     }
@@ -139,22 +140,5 @@ class Transform
                 );
             }
         );
-    }
-
-    private function createFileSystem(Dsn $dsn): FilesystemInterface
-    {
-        $target     = $dsn->getPath();
-        $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
-            $target = getcwd() . DIRECTORY_SEPARATOR . $target;
-        }
-
-        $destination = $this->flySystemFactory->create(Dsn::createFromString((string) $target));
-
-        //TODO: the guides to need this, can we get rid of these lines?
-        $this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($destination);
-
-        return $destination;
     }
 }

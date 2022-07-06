@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 
 /**
@@ -41,31 +41,24 @@ class Sourcecode extends WriterAbstract
     /**
      * This method writes every source code entry in the structure file to a highlighted file.
      *
-     * @param ProjectDescriptor $project        Document containing the structure.
-     * @param Transformation    $transformation Transformation to execute.
+     * @param DocumentationSetDescriptor $documentationSet Document containing the structure.
+     * @param Transformation $transformation Transformation to execute.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function transform(DocumentationSetDescriptor $documentationSet, Transformation $transformation): void
     {
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (
-                    $documentationSet instanceof ApiSetDescriptor &&
-                    $documentationSet->getSettings()['include-source'] === false
-                ) {
-                    return;
-                }
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return;
+        }
 
-                /** @var FileDescriptor $file */
-                foreach ($project->getFiles() as $file) {
-                    $source = $file->getSource();
-                    if ($source === null) {
-                        continue;
-                    }
-
-                    $path = $this->pathGenerator->generate($file, $transformation);
-                    $this->persistTo($transformation, $path, $source);
-                }
+        /** @var FileDescriptor $file */
+        foreach ($documentationSet->getFiles() as $file) {
+            $source = $file->getSource();
+            if ($source === null) {
+                continue;
             }
+
+            $path = $this->pathGenerator->generate($file, $transformation);
+            $this->persistTo($transformation, $path, $source);
         }
     }
 }

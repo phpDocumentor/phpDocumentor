@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ApiSetDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
@@ -32,7 +32,7 @@ final class PropertyAssemblerTest extends TestCase
     /** @var PropertyAssembler $fixture */
     protected $fixture;
 
-    /** @var ProjectDescriptorBuilder|ObjectProphecy */
+    /** @var ApiSetDescriptorBuilder|ObjectProphecy */
     protected $builderMock;
 
     /**
@@ -40,7 +40,7 @@ final class PropertyAssemblerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->builderMock = $this->prophesize(ApiSetDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(null);
 
         $this->fixture = new PropertyAssembler();

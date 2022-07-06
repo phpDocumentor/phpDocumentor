@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -121,39 +122,40 @@ final class Twig extends WriterAbstract implements Initializable
     public function initialize(ProjectDescriptor $project, Template $template): void
     {
         $this->environment = $this->environmentFactory->create($project, $template);
+        $this->environment->addGlobal('project', $project);
     }
 
     /**
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param DocumentationSetDescriptor $documentationSet Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
      *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
+    public function transform(DocumentationSetDescriptor $documentationSet, Transformation $transformation): void
     {
         $templatePath = substr($transformation->getSource(), strlen($this->getTemplatePath($transformation)));
 
         if ($transformation->getQuery()) {
-            $nodes = $this->queryEngine->perform($project, $transformation->getQuery());
+            $nodes = $this->queryEngine->perform($documentationSet, $transformation->getQuery());
         } else {
-            $nodes = [$project];
+            $nodes = [$documentationSet];
         }
 
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection($node, $transformation, $project, $templatePath);
+                $this->transformNodeCollection($node, $transformation, $documentationSet, $templatePath);
             }
 
             if (!($node instanceof Descriptor)) {
                 continue;
             }
 
-            $this->transformNode($node, $transformation, $project, $templatePath);
+            $this->transformNode($node, $transformation, $documentationSet, $templatePath);
         }
     }
 
@@ -161,26 +163,26 @@ final class Twig extends WriterAbstract implements Initializable
     private function transformNodeCollection(
         DescriptorCollection $nodes,
         Transformation $transformation,
-        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
         string $templatePath
     ): void {
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection($node, $transformation, $project, $templatePath);
+                $this->transformNodeCollection($node, $transformation, $documentationSet, $templatePath);
             }
 
             if (!($node instanceof Descriptor)) {
                 continue;
             }
 
-            $this->transformNode($node, $transformation, $project, $templatePath);
+            $this->transformNode($node, $transformation, $documentationSet, $templatePath);
         }
     }
 
     private function transformNode(
         Descriptor $node,
         Transformation $transformation,
-        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
         string $templatePath
     ): void {
         $path = $this->pathGenerator->generate($node, $transformation);
@@ -188,13 +190,12 @@ final class Twig extends WriterAbstract implements Initializable
             return;
         }
 
-        $this->environment->addGlobal('project', $project);
-        $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-        $this->environment->addGlobal('documentationSet', $project);
-        $this->environment->addGlobal('node', $node);
-        $this->environment->addGlobal('destinationPath', $path);
-        $this->environment->addGlobal('parameter', $transformation->getParameters());
+            $this->environment->addGlobal('usesNamespaces', count($documentationSet->getNamespace()->getChildren()) > 0);
+            $this->environment->addGlobal('usesPackages', count($documentationSet->getPackage()->getChildren()) > 1);
+            $this->environment->addGlobal('documentationSet', $documentationSet);
+            $this->environment->addGlobal('node', $node);
+            $this->environment->addGlobal('destinationPath', $path);
+            $this->environment->addGlobal('parameter', $transformation->getParameters());
 
         // pre-set the global variable so that we can update it later
         // TODO: replace env with origin filesystem, as this will help us to copy assets.

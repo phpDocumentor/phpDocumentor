@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% set filesWithMarkers = project.files|filter(file => file.markers is not empty) %}
+{% set filesWithMarkers = documentationSet.files|filter(file => file.markers is not empty) %}
 
 {% block title %}
-    {{ project.name }} &raquo; Markers
+    {{ documentationSet.name }} &raquo; Markers
 {% endblock %}
 
 {% block content %}

@@ -15,13 +15,15 @@ namespace phpDocumentor\Compiler\Pass;
 
 use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
+use function get_class;
 use function strlen;
 use function substr;
 use function ucfirst;
@@ -45,8 +47,16 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(DocumentationSetDescriptor $project): void
     {
+        if ($project instanceof ApiSetDescriptor === false) {
+            dump(get_class($project));
+
+            return;
+        }
+
+        dump(get_class($project));
+
         $project->getIndexes()->fetch('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->fetch('namespaces', new Collection())->set('\\', $project->getNamespace());
 
@@ -81,7 +91,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      *                                       exist. Out of performance considerations will no effort be done to verify
      *                                       whether the provided type is valid.
      */
-    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type): void
+    protected function addElementsOfTypeToNamespace(ApiSetDescriptor $project, array $elements, string $type): void
     {
         foreach ($elements as $element) {
             $namespaceName = (string) $element->getNamespace();
@@ -119,7 +129,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         }
     }
 
-    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace): void
+    private function addToParentNamespace(ApiSetDescriptor $project, NamespaceDescriptor $namespace): void
     {
         /** @var NamespaceDescriptor|null $parent */
         $parent = $project->getIndexes()->fetch(

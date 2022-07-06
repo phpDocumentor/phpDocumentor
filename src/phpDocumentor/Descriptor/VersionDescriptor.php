@@ -21,18 +21,32 @@ final class VersionDescriptor
     /** @var Collection<DocumentationSetDescriptor> */
     private $documentationSets;
 
+    /** @var string */
+    private $folder;
+
     /**
      * @param Collection<DocumentationSetDescriptor> $documentationSets
      */
-    public function __construct(string $number, Collection $documentationSets)
+    public function __construct(string $number, string $folder, Collection $documentationSets)
     {
         $this->documentationSets = $documentationSets;
         $this->number = $number;
+        $this->folder = $folder;
     }
 
     public function getNumber(): string
     {
         return $this->number;
+    }
+
+    public function getFolder(): string
+    {
+        return $this->folder;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNumber();
     }
 
     /**

@@ -65,10 +65,6 @@ services:
     resource: '../incubator/guides/src/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]
 
-  phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
-
   phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }

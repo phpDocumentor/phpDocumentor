@@ -15,7 +15,7 @@ namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
@@ -122,7 +122,14 @@ final class TransformerTest extends TestCase
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
 
-        $this->fixture->execute($project->reveal(), [$transformation->reveal()]);
+        $template = $this->faker()->template();
+        $template[] = $transformation->reveal();
+
+        $this->fixture->execute(
+            $project->reveal(),
+            $this->faker()->apiSetDescriptor(),
+            $template
+        );
     }
 
     /**
