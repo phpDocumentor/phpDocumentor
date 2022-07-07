@@ -20,25 +20,52 @@ use phpDocumentor\Path;
 
 class Payload
 {
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /** @var array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} */
-    //phpcs:enable Generic.Files.LineLength.TooLong
+    /**
+     * @var array{
+     *     phpdocumentor: array{
+     *         configVersion: string,
+     *         title?: string,
+     *         use-cache?: bool,
+     *         paths?: array{
+     *             output: Dsn,
+     *             cache: Path
+     *         },
+     *         versions?: array<string, VersionSpecification>,
+     *         settings?: array<mixed>,
+     *         templates?: non-empty-list<string>
+     *     }
+     * }
+     */
     private $config;
 
     /** @var ProjectDescriptorBuilder */
     private $builder;
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
+    // @phpcs:disable Squiz.Commenting.FunctionComment.MissingParamName
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $config
+     * @param array{
+     *     phpdocumentor: array{
+     *         configVersion: string,
+     *         title?: string,
+     *         use-cache?: bool,
+     *         paths?: array{
+     *             output: Dsn,
+     *             cache: Path
+     *         },
+     *         versions?: array<string, VersionSpecification>,
+     *         settings?: array<mixed>,
+     *         templates?: non-empty-list<string>
+     *     }
+     * } $config
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
+    // @phpcs:enable Squiz.Commenting.FunctionComment.MissingParamName
     public function __construct(array $config, ProjectDescriptorBuilder $builder)
     {
         $this->config = $config;
         $this->builder = $builder;
     }
 
+    // @phpcs:disable Squiz.Commenting.FunctionComment.MissingParamName
     /**
      * @return array{
      *     phpdocumentor: array{
@@ -55,6 +82,7 @@ class Payload
      *     }
      * }
      */
+    // @phpcs:enable Squiz.Commenting.FunctionComment.MissingParamName
     public function getConfig(): array
     {
         return $this->config;
