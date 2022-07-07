@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Nodes\DefinitionLists;
 
 use phpDocumentor\Guides\Nodes\SpanNode;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList
@@ -22,6 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class DefinitionListTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::__construct
      * @covers ::getTerms

@@ -146,7 +146,7 @@ final class LinkRenderer
     /**
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
-     * @return string[]|string
+     * @return string|list<string>
      */
     public function render($value, string $presentation)
     {
@@ -224,13 +224,18 @@ final class LinkRenderer
      *
      * @param iterable<mixed> $value
      *
-     * @return list<string|list<string>>
+     * @return list<string>
      */
     private function renderASeriesOfLinks(iterable $value, string $presentation): array
     {
         $result = [];
         foreach ($value as $path) {
-            $result[] = $this->render($path, $presentation);
+            $links = $this->render($path, $presentation);
+            if (!is_array($links)) {
+                $links = [$links];
+            }
+
+            $result = array_merge($result, $links);
         }
 
         return $result;

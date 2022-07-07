@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\Renderer;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Environment;
 
 use function sprintf;
@@ -27,6 +28,7 @@ use function sprintf;
 final class TemplateRendererTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     /**
      * @covers ::__construct
