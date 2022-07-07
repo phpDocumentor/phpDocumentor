@@ -35,6 +35,7 @@ use phpDocumentor\Transformer\Router\Router;
 use Webmozart\Assert\Assert;
 
 use function array_fill;
+use function array_merge;
 use function count;
 use function current;
 use function end;
@@ -131,6 +132,8 @@ final class LinkRenderer
      */
     public function link(object $value): string
     {
+        Assert::isInstanceOfAny($value, [Descriptor::class, Fqsen::class, Uri::class]);
+
         $uri = $this->router->generate($value);
         if (!$uri) {
             return $uri;

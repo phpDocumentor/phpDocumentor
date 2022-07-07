@@ -39,11 +39,22 @@ class Payload
         $this->builder = $builder;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return array{
+     *     phpdocumentor: array{
+     *         configVersion: string,
+     *         title?: string,
+     *         use-cache?: bool,
+     *         paths?: array{
+     *             output: Dsn,
+     *             cache: Path
+     *         },
+     *         versions?: array<string, VersionSpecification>,
+     *         settings?: array<mixed>,
+     *         templates?: non-empty-list<string>
+     *     }
+     * }
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function getConfig(): array
     {
         return $this->config;

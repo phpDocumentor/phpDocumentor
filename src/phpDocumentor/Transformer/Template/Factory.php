@@ -29,6 +29,7 @@ use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Webmozart\Assert\Assert;
 
 use function array_merge;
 use function file_exists;
@@ -162,6 +163,7 @@ class Factory
         );
 
         $xml = $files->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
+        Assert::string($xml);
 
         $xml = new SimpleXMLElement($xml);
         $template = new Template((string) $xml->name, $files);

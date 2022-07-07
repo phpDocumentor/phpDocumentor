@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use ArrayIterator;
 use InvalidArgumentException;
 use League\CommonMark\ConverterInterface;
+use League\Uri\Uri;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -158,6 +159,14 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'link',
                 function (array $context, object $element): string {
+                    if (
+                        !$element instanceof Fqsen
+                        && !$element instanceof Uri
+                        && !$element instanceof Descriptor
+                    ) {
+                        return '';
+                    }
+
                     return $this->contextRouteRenderer($context)->link($element);
                 },
                 ['needs_context' => true]

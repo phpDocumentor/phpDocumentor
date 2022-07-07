@@ -29,6 +29,9 @@ class PlantumlRenderer
     public function render(string $diagram): ?string
     {
         $pumlFileLocation = tempnam('phpdocumentor', 'pu_');
+        if ($pumlFileLocation === false) {
+            return null;
+        }
 
         $output = <<<PUML
 @startuml
