@@ -32,7 +32,7 @@ these locally.
 
 To run phpDocumentor using docker, the following should suffice::
 
-    $ docker run --rm -v $(pwd):/data phpdoc/phpdoc:3
+    $ docker run --rm -v "$(pwd):/data" "phpdoc/phpdoc:3"
 
 As a dependency, using Phive
 ---------------------------
