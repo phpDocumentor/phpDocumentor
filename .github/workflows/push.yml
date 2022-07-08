@@ -87,7 +87,7 @@ jobs:
     - name: Restore/cache phive folder
       uses: actions/cache@v3
       with:
-        path: ~/.phive
+        path: $GITHUB_WORKSPACE/.phive
         key: all-build-phive-${{ hashFiles('**/phive.xml') }}
         restore-keys: |
           all-build-phive-${{ hashFiles('**/phive.xml') }}
@@ -387,7 +387,7 @@ jobs:
     - name: Restore/cache phive folder
       uses: actions/cache@v3
       with:
-        path: ~/.phive
+        path: $GITHUB_WORKSPACE/.phive
         key: all-build-phive-${{ hashFiles('**/phive.xml') }}
         restore-keys: |
           all-build-phive-${{ hashFiles('**/phive.xml') }}
