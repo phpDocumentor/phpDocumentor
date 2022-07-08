@@ -13,6 +13,7 @@ env:
   phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5,033E5F8D801A2F8D
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
+
   setup:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +52,7 @@ jobs:
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
-    name: Unit tests [7.4 | ubuntu-latest]
+    name: Unit tests pre-flight
     needs: setup
     steps:
     - uses: actions/checkout@v3
@@ -204,7 +205,7 @@ jobs:
 
   build-phar:
     runs-on: ubuntu-latest
-    name: Build PHAR to test with
+    name: Build PHAR
     needs:
       - setup
     steps:
@@ -287,7 +288,7 @@ jobs:
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '7.4'
-    name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Unit tests
     needs:
     - phpunit-with-coverage
     - phpstan
@@ -335,7 +336,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    name: E2E tests [ubuntu-latest]
+    name: E2E pre-flight
     if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
       matrix:
@@ -343,7 +344,7 @@ jobs:
           - 'clean'
           - 'default'
     needs:
-      - phpunit
+      - setup
     steps:
       - uses: actions/checkout@v3
 
@@ -458,7 +459,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macOS-latest
-    name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: E2E
     needs:
       - e2e
       - smoke-test-matrix
