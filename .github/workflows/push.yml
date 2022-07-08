@@ -15,6 +15,7 @@ env:
 jobs:
 
   setup:
+    name: Composer checks and pre-warm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -107,6 +108,7 @@ jobs:
 
   codestyle:
     runs-on: ubuntu-latest
+    name: Codestyle
     needs:
       - setup
     steps:
@@ -126,6 +128,7 @@ jobs:
 
   phpstan:
     runs-on: ubuntu-latest
+    name: Phpstan
     needs:
       - setup
     steps:
@@ -168,6 +171,7 @@ jobs:
 
   psalm:
     runs-on: ubuntu-latest
+    name: Psalm
     needs: [setup]
     steps:
       - uses: actions/checkout@v3
@@ -389,7 +393,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  smoke-test-matrix:
+  smoke-tests:
     runs-on: ${{ matrix.operating-system }}
     if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
@@ -402,7 +406,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macOS-latest
-    name: Smoke test on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Smoke tests
     needs:
       - build-phar
     steps:
