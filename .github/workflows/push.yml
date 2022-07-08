@@ -275,6 +275,11 @@ jobs:
     runs-on: ubuntu-latest
     name: E2E tests [ubuntu-latest]
     if: github.repository == 'phpDocumentor/phpDocumentor'
+    strategy:
+      matrix:
+        template:
+          - 'clean'
+          - 'default'
     needs:
       - setup
     steps:
@@ -308,25 +313,15 @@ jobs:
         with:
           composer-options: --optimize-autoloader
 
-      - name: Build example project using Clean template
-        run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
-      - name: Build example project using Default template
-        run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
-      - name: Test Default template using Cypress
+      - name: Build example project template
+        run: ./bin/phpdoc --template=${{ matrix.template }} -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
+
+      - name: Test template using Cypress
         uses: cypress-io/github-action@v2
         with:
           record: true
-          group: 'template/default'
-          spec: cypress/integration/default/*
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test Clean template using Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          group: 'template/clean'
-          spec: cypress/integration/clean/*
+          group: 'template/${{ matrix.template }}'
+          spec: cypress/integration/${{ matrix.template }}/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -393,7 +388,7 @@ jobs:
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
 
-  e2e-matrix:
+  smoke-test-matrix:
     runs-on: ${{ matrix.operating-system }}
     if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
@@ -406,9 +401,8 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macOS-latest
-    name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Smoke test on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     needs:
-      - e2e
       - build-phar
     steps:
       - uses: actions/checkout@v3
@@ -446,30 +440,69 @@ jobs:
         run: php ./build/phpDocumentor.phar --version
 
       - name: Run phpDocumentor on itself
-        run: php ./build/phpDocumentor.phar -vvv  --setting="guides.enabled=false"
+        run: php ./build/phpDocumentor.phar -vvv --setting="guides.enabled=false"
 
-      - name: Build example project using Clean template
-        run: php ./build/phpDocumentor.phar --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
+  e2e-matrix:
+    runs-on: ${{ matrix.operating-system }}
+    if: github.repository == 'phpDocumentor/phpDocumentor'
+    strategy:
+      matrix:
+        template:
+          - 'clean'
+          - 'default'
+        php-versions:
+          - '7.4'
+          - '8.0'
+          - '8.1'
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    needs:
+      - e2e
+      - smoke-test-matrix
+    steps:
+      - uses: actions/checkout@v3
 
-      - name: Build example project using Default template
-        run: php ./build/phpDocumentor.phar --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
 
-      - name: Test Default template using Cypress
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Download PHAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: phpDocumentor.phar
+          path: build
+
+      - name: Build example project
+        run: php ./build/phpDocumentor.phar --template=${{ matrix.template }} --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
+
+      - name: Test template using Cypress
         uses: cypress-io/github-action@v2
         with:
           record: true
-          group: 'template/default/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
-          spec: cypress/integration/default/*
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Test Clean template using Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          group: 'template/clean/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
-          spec: cypress/integration/clean/*
+          group: 'template/${{ matrix.template }}/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
+          spec: cypress/integration/${{ matrix.template }}/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
