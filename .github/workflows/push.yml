@@ -466,7 +466,7 @@ jobs:
     name: E2E
     needs:
       - e2e
-      - smoke-test-matrix
+      - smoke-tests
     steps:
       - uses: actions/checkout@v3
 
