@@ -71,15 +71,6 @@ jobs:
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
-    - name: Restore/cache phive folder
-      uses: actions/cache@v3
-      with:
-        path: ~/.phive
-        key: all-build-${{ hashFiles('**/phive.xml') }}
-        restore-keys: |
-          all-build-${{ hashFiles('**/phive.xml') }}
-          all-build-
-
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -97,6 +88,15 @@ jobs:
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
+
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: ~/.phive
+        key: all-build-phive-${{ hashFiles('**/phive.xml') }}
+        restore-keys: |
+          all-build-phive-${{ hashFiles('**/phive.xml') }}
+          all-build-phive-
 
     - name: PHPUnit
       run: php tools/phpunit --testsuite=unit
@@ -371,15 +371,6 @@ jobs:
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
-    - name: Restore/cache phive folder
-      uses: actions/cache@v3
-      with:
-        path: ~/.phive
-        key: all-build-${{ hashFiles('**/phive.xml') }}
-        restore-keys: |
-          all-build-${{ hashFiles('**/phive.xml') }}
-          all-build-
-
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -397,6 +388,15 @@ jobs:
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit  && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
+
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: ~/.phive
+        key: all-build-phive-${{ hashFiles('**/phive.xml') }}
+        restore-keys: |
+          all-build-phive-${{ hashFiles('**/phive.xml') }}
+          all-build-phive-
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
