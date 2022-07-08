@@ -84,11 +84,6 @@ jobs:
       with:
         composer-options: --optimize-autoloader
 
-    - name: Install PHAR dependencies
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
-
     - name: Restore/cache phive folder
       uses: actions/cache@v3
       with:
@@ -97,6 +92,11 @@ jobs:
         restore-keys: |
           all-build-phive-${{ hashFiles('**/phive.xml') }}
           all-build-phive-
+
+    - name: Install PHAR dependencies
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
 
     - name: PHPUnit
       run: php tools/phpunit --testsuite=unit
@@ -384,11 +384,6 @@ jobs:
       with:
         composer-options: --optimize-autoloader
 
-    - name: Install PHAR dependencies
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit  && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
-
     - name: Restore/cache phive folder
       uses: actions/cache@v3
       with:
@@ -397,6 +392,11 @@ jobs:
         restore-keys: |
           all-build-phive-${{ hashFiles('**/phive.xml') }}
           all-build-phive-
+
+    - name: Install PHAR dependencies
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit  && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
 
     - name: Run PHPUnit
       run: php tools/phpunit --testsuite=unit,integration
