@@ -71,6 +71,15 @@ jobs:
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: ~/.phive
+        key: all-build-${{ hashFiles('**/phive.xml') }}
+        restore-keys: |
+          all-build-${{ hashFiles('**/phive.xml') }}
+          all-build-
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -361,6 +370,15 @@ jobs:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
+
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: ~/.phive
+        key: all-build-${{ hashFiles('**/phive.xml') }}
+        restore-keys: |
+          all-build-${{ hashFiles('**/phive.xml') }}
+          all-build-
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
