@@ -61,7 +61,8 @@ export default function() {
             .type('pizza')
             .blur(); // Ensure focus is gone
 
-        cy.get('body').type('{esc}');
+        cy.get('.phpdocumentor-search--has-results')
+            .type('{esc}');
 
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');
