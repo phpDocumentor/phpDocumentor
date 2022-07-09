@@ -1,7 +1,0 @@
-{
-  "projectId": "ifc328",
-  "pluginsFile": false,
-  "supportFile": false,
-  "testFiles": "**/*.spec.js",
-  "retries": 2
-}

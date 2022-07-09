@@ -107,7 +107,7 @@ unit-test integration-test functional-test:
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
-	docker run -it --rm -v ${CURDIR}:/e2e -w /e2e cypress/included:8.5.0
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0
 
 .PHONY: composer-require-checker
 composer-require-checker:
@@ -130,7 +130,7 @@ shell:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc
 
 node_modules/.bin/cypress:
-	docker run -it --rm -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/opt/phpdoc/var/cache/.cypress" -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
 build/default/index.html: data/examples/MariosPizzeria/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default --force
