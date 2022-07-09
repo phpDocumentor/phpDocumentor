@@ -53,7 +53,7 @@ Usually the following configuration suffices for your project
             configVersion="3"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns="https://www.phpdoc.org"
-            xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+            xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
     >
         <paths>
             <output>build/api</output>
@@ -192,7 +192,7 @@ Appendix A: basic configuration example
             configVersion="3"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns="https://www.phpdoc.org"
-            xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
+            xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
     >
         <paths>
             <output>build/api</output>
