@@ -33,7 +33,10 @@ export default function() {
             .type('pizza');
 
         let searchResults = cy.get('.phpdocumentor-search-results');
-        searchResults.get('ul li').contains('Pizza').click();
+        searchResults
+            .get('ul li').contains('Pizza')
+            .click({force: true});
+
         cy.url().should('include', '/namespaces/marios-pizza.html');
     });
 
