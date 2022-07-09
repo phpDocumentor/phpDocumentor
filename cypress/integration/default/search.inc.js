@@ -43,7 +43,7 @@ export default function() {
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('have.class', 'phpdocumentor-search--has-results');
         cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
-            .clear();
+            .clear({ force: true });
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');
 
