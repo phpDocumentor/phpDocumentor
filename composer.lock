@@ -1702,7 +1702,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-em411-patch-1",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1746,7 +1746,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-em411-patch-1",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1779,7 +1779,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-em411-patch-1",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1814,7 +1814,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-em411-patch-1",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -5581,16 +5581,16 @@
         },
         {
             "name": "psalm/phar",
-            "version": "4.22.0",
+            "version": "4.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "feebed09c9782d9aaa819b794d880c2671ba0e4c"
+                "reference": "86a74acd5b9d4888ac3c42c95c1cba7b395b8d2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/feebed09c9782d9aaa819b794d880c2671ba0e4c",
-                "reference": "feebed09c9782d9aaa819b794d880c2671ba0e4c",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/86a74acd5b9d4888ac3c42c95c1cba7b395b8d2f",
+                "reference": "86a74acd5b9d4888ac3c42c95c1cba7b395b8d2f",
                 "shasum": ""
             },
             "require": {
@@ -5610,9 +5610,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/4.22.0"
+                "source": "https://github.com/psalm/phar/tree/4.24.0"
             },
-            "time": "2022-02-27T11:01:37+00:00"
+            "time": "2022-06-27T17:13:36+00:00"
         }
     ],
     "aliases": [],
@@ -5639,5 +5639,5 @@
     "platform-overrides": {
         "php": "7.4.0"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
