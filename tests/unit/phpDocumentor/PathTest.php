@@ -29,7 +29,7 @@ final class PathTest extends TestCase
     {
         $path = new Path('/my/Path');
 
-        $this->assertSame('/my/Path', (string) $path);
+        self::assertSame('/my/Path', (string) $path);
     }
 
     /**
@@ -41,8 +41,8 @@ final class PathTest extends TestCase
         $similar    = new Path('a');
         $dissimilar = new Path('b');
 
-        $this->assertTrue($subject->equals($similar));
-        $this->assertFalse($subject->equals($dissimilar));
+        self::assertTrue($subject->equals($similar));
+        self::assertFalse($subject->equals($dissimilar));
     }
 
     /**
@@ -50,15 +50,14 @@ final class PathTest extends TestCase
      */
     public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath(): void
     {
-        $this->assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));
-        $this->assertTrue(Path::isAbsolutePath('/my/absolute/path'));
-        $this->assertTrue(Path::isAbsolutePath('c:\\my\\absolute\\path'));
-        $this->assertTrue(Path::isAbsolutePath('http://my/absolute/path'));
-        $this->assertTrue(Path::isAbsolutePath('//my/absolute/path'));
+        self::assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));
+        self::assertTrue(Path::isAbsolutePath('/my/absolute/path'));
+        self::assertTrue(Path::isAbsolutePath('c:\\my\\absolute\\path'));
+        self::assertTrue(Path::isAbsolutePath('//my/absolute/path'));
 
-        $this->assertFalse(Path::isAbsolutePath('path'));
-        $this->assertFalse(Path::isAbsolutePath('my/absolute/path'));
-        $this->assertFalse(Path::isAbsolutePath('./my/absolute/path'));
-        $this->assertFalse(Path::isAbsolutePath('../my/absolute/path'));
+        self::assertFalse(Path::isAbsolutePath('path'));
+        self::assertFalse(Path::isAbsolutePath('my/absolute/path'));
+        self::assertFalse(Path::isAbsolutePath('./my/absolute/path'));
+        self::assertFalse(Path::isAbsolutePath('../my/absolute/path'));
     }
 }

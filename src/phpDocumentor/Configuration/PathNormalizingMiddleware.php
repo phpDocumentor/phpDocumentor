@@ -76,7 +76,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $version->setApi($apiConfigs);
 
             foreach ($version->getGuides() ?? [] as $key => $guide) {
-                $version->guides[$key] = $version->guides[$key]->withSource(
+                $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
                         $guide->source()->dsn()->resolve($configDsn)
                     )
@@ -174,7 +174,8 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
     public function normalizeCachePath(?UriInterface $uri, Path $cachePath): Path
     {
-        if ($cachePath::isAbsolutePath((string) $cachePath)) {
+        $cachePathAsString = $cachePath->decoded();
+        if ($cachePath::isAbsolutePath($cachePathAsString)) {
             return $cachePath;
         }
 
@@ -184,11 +185,6 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
         $configFile = Dsn::createFromUri($uri);
         $configPath = $configFile->withPath(Path::dirname($configFile->getPath()));
-
-        // Since League URI 6.5 it will url-encode backslashes. Since this is used in windows, we convert it
-        // into a forward slash
-        $cachePathAsString = (string) $cachePath;
-        $cachePathAsString = str_replace('\\', '/', $cachePathAsString);
 
         return Dsn::createFromString($cachePathAsString)->resolve($configPath)->getPath();
     }

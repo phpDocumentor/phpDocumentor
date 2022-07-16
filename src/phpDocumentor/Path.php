@@ -13,18 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use Symfony\Component\Filesystem\Path as SymfonyPath;
 use Webmozart\Assert\Assert;
-
-use function array_pop;
-use function ctype_alpha;
-use function explode;
-use function implode;
-use function parse_url;
 use function sprintf;
-use function strlen;
-use function strspn;
-
-use const PHP_URL_SCHEME;
 
 /**
  * Value Object for paths.
@@ -32,8 +23,7 @@ use const PHP_URL_SCHEME;
  */
 final class Path
 {
-    /** @var string */
-    private $path;
+    private string $path;
 
     /**
      * Initializes the path.
@@ -45,7 +35,12 @@ final class Path
             sprintf('"%s" is not a valid path', $path)
         );
 
-        $this->path = $path;
+        // Canonicalizing paths will ensure they are all *NIX-like paths whose relative components are
+        // converted into a regular representation. This normalization step will make it easier to work with.
+        $this->path = SymfonyPath::canonicalize($path);
+
+        // URL encoding will ensure we have a consistent format for the paths
+        $this->path = implode('/', array_map('rawurlencode', explode('/', $this->path)));
     }
 
     /**
@@ -56,12 +51,22 @@ final class Path
         return $this->path === (string) $otherPath;
     }
 
+    public function encoded(): string
+    {
+        return $this->path;
+    }
+
+    public function decoded(): string
+    {
+        return implode('/', array_map('rawurldecode', explode('/', $this->path)));
+    }
+
     /**
-     * returns a string representation of the path.
+     * Returns a string representation of the path.
      */
     public function __toString(): string
     {
-        return $this->path;
+        return $this->encoded();
     }
 
     /**
@@ -71,19 +76,11 @@ final class Path
      */
     public static function isAbsolutePath(string $file): bool
     {
-        return strspn($file, '/\\', 0, 1)
-            || (strlen($file) > 3 && ctype_alpha($file[0])
-                && $file[1] === ':'
-                && strspn($file, '/\\', 2, 1)
-            )
-            || parse_url($file, PHP_URL_SCHEME) !== null;
+        return SymfonyPath::isAbsolute($file);
     }
 
     public static function dirname(Path $input): self
     {
-        $parts = explode('/', (string) $input);
-        array_pop($parts);
-
-        return new self(implode('/', $parts));
+        return new Path(SymfonyPath::getDirectory($input->decoded()));
     }
 }

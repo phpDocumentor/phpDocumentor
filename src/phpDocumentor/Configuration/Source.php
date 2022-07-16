@@ -20,6 +20,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use ReturnTypeWillChange;
 
+use Webmozart\Assert\Assert;
 use function array_map;
 use function in_array;
 use function ltrim;
@@ -32,14 +33,16 @@ use function substr;
 final class Source implements ArrayAccess
 {
     /** @var Dsn */
-    private $dsn;
+    private Dsn $dsn;
 
     /** @var array<array-key, Path> */
-    private $paths;
+    private array $paths;
 
     /** @param array<array-key, Path> $paths */
     public function __construct(Dsn $dsn, array $paths)
     {
+        Assert::allIsInstanceOf($paths, Path::class);
+
         $this->dsn = $dsn;
         $this->paths = $paths;
     }
@@ -77,7 +80,7 @@ final class Source implements ArrayAccess
     {
         return array_map(
             function (Path $path): string {
-                return $this->pathToGlobPattern((string) $path);
+                return $this->pathToGlobPattern($path);
             },
             $this->paths
         );
@@ -96,15 +99,15 @@ final class Source implements ArrayAccess
         return rtrim($path, '/');
     }
 
-    private function pathToGlobPattern(string $path): string
+    private function pathToGlobPattern(Path $path): string
     {
-        $path = $this->normalizePath($path);
+        $pathAsString = $this->normalizePath($path->decoded());
 
-        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
-            $path .= '/**/*';
+        if (substr($pathAsString, -1) !== '*' && strpos($pathAsString, '.') === false) {
+            $pathAsString .= '/**/*';
         }
 
-        return $path;
+        return $pathAsString;
     }
 
     /** @param string $offset */

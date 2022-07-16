@@ -8,6 +8,7 @@
     <title>phpDocumentor</title>
     <paths>
         <output>build/website/docs</output>
+        <cache>build/ex$a#mple cache/</cache>
     </paths>
     <version number="3.0.0">
         <folder>latest</folder>

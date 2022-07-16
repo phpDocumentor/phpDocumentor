@@ -144,19 +144,19 @@ final class PathNormalizingMiddlewareTest extends TestCase
                 '/opt/myProject',
                 '/data/phpdocumentor/config.xml',
             ],
-            'Absolute windows paths are not normalized' => [
+            'Absolute windows paths are normalized' => [
                 'D:\opt\myProject',
-                'D:\opt\myProject',
+                'D:/opt/myProject',
                 '/data/phpdocumentor/config.xml',
             ],
             'Absolute paths could contain special characters' => [
                 '/opt/#myProject/with a space',
-                '/opt/#myProject/with a space',
+                '/opt/%23myProject/with%20a%20space',
                 '/data/phpdocumentor/config.xml',
             ],
             'Absolute windows paths could contain hashes' => [
-                'D:#opt\myProject',
-                'D:#opt\myProject',
+                'D:\opt\#myProject',
+                'D:/opt/%23myProject',
                 '/data/phpdocumentor/config.xml',
             ],
             'Relative unix paths are changed to an absolute path with the config folder as prefix' => [
@@ -166,18 +166,18 @@ final class PathNormalizingMiddlewareTest extends TestCase
             ],
             'Relative paths may contain spaces' => [
                 '.phpdoc/my cache',
-                '/data/phpdocumentor/.phpdoc/my cache',
+                '/data/phpdocumentor/.phpdoc/my%20cache',
                 '/data/phpdocumentor/config.xml',
             ],
             'Relative paths may contain hashes' => [
                 '.phpdoc/#cache',
-                '/data/phpdocumentor/.phpdoc/#cache',
+                '/data/phpdocumentor/.phpdoc/%23cache',
                 '/data/phpdocumentor/config.xml',
             ],
             'Relative paths on Windows are changed to an absolute path with the config folder as prefix' => [
                 '.phpdoc\cache',
                 'd:/data/phpdocumentor/.phpdoc/cache',
-                'D:/data/phpdocumentor/config.xml',
+                'D:\data\phpdocumentor\config.xml',
             ],
         ];
     }

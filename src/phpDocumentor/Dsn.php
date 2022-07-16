@@ -219,7 +219,8 @@ final class Dsn
 
     public function withPath(Path $path): self
     {
-        $pathString = (string) $path;
+        // The URI object will want reencode; so we need the decoded version to prevent double encoding
+        $pathString = $path->decoded();
         if (strpos($pathString, '/') !== 0) {
             $pathString = '/' . $pathString;
         }
