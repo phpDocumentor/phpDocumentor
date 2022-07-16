@@ -23,6 +23,7 @@ use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use phpDocumentor\UriFactory;
 use Psr\Log\LoggerInterface;
+use Webmozart\Assert\Assert;
 
 use function getcwd;
 use function realpath;
@@ -66,8 +67,11 @@ final class Configure
      */
     public function __invoke(array $options): array
     {
+        $currentWorkingDir = getcwd();
+        Assert::stringNotEmpty($currentWorkingDir);
+
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory, getcwd())
+            new CommandlineOptionsMiddleware($options, $this->configFactory, $currentWorkingDir)
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
         $this->configFactory->addMiddleware(new ProvideTemplateOverridePathMiddleware($this->environmentFactory));

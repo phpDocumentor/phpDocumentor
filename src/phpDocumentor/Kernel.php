@@ -21,6 +21,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Webmozart\Assert\Assert;
 
 use function getcwd;
 use function is_dir;
@@ -55,7 +56,10 @@ class Kernel extends BaseKernel
      */
     public function getWorkingDir(): string
     {
-        return getcwd();
+        $workingDirectory = getcwd();
+        Assert::stringNotEmpty($workingDirectory);
+
+        return $workingDirectory;
     }
 
     public function getCacheDir(): string
@@ -65,7 +69,7 @@ class Kernel extends BaseKernel
 
     public function getLogDir(): string
     {
-        if ($this->isPhar()) {
+        if (self::isPhar()) {
             return '/tmp/php-doc/log';
         }
 

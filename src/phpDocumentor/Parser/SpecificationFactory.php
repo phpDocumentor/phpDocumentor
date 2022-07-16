@@ -38,6 +38,10 @@ final class SpecificationFactory implements FactoryInterface
         /** @var ?Glob $pathSpec */
         $pathSpec = null;
         foreach ($paths as $path) {
+            if ($path instanceof Path) {
+                $path = (string) $path;
+            }
+
             if ($pathSpec === null) {
                 $pathSpec = new Glob($path);
                 continue;
