@@ -15,38 +15,45 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
+use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
-use phpDocumentor\Dsn;
 use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Util\XmlUtils;
+use Webmozart\Assert\Assert;
 
 use function array_key_last;
 use function array_keys;
 
+/**
+ * @psalm-import-type ConfigurationMap from Version3 as Version3ConfigurationMap
+ * @psalm-type ConfigurationMap = array{
+ *     phpdocumentor: Version3ConfigurationMap
+ * }
+ */
 class SymfonyConfigFactory
 {
     public const FIELD_CONFIG_VERSION = 'configVersion';
     private const DEFAULT_CONFIG_VERSION = '2';
 
     /** @var ConfigurationInterface[] $configurationDefinitions */
-    private $configurationDefinitions;
+    private array $configurationDefinitions;
 
     /**
      * @param ConfigurationInterface[] $definitions
      */
     public function __construct(array $definitions)
     {
+        Assert::allIsInstanceOf($definitions, ConfigurationInterface::class);
+
         $this->configurationDefinitions = $definitions;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool, visibility: non-empty-array<array-key, string>}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return ConfigurationMap
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function createFromFile(string $filename): array
     {
         $values = XmlUtils::loadFile($filename);
@@ -55,11 +62,9 @@ class SymfonyConfigFactory
         return $this->generateConfiguration($values);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool, visibility: non-empty-array<array-key, string>}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return ConfigurationMap
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function createDefault(): array
     {
         return $this->generateConfiguration([
@@ -67,13 +72,11 @@ class SymfonyConfigFactory
         ]);
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * @param array<mixed> $values
      *
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return ConfigurationMap
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     private function generateConfiguration(array $values): array
     {
         $configuration = $this->processConfiguration($values);
@@ -89,7 +92,6 @@ class SymfonyConfigFactory
         return ['phpdocumentor' => $configuration];
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Normalizes and validates the given values.
      *
@@ -97,11 +99,12 @@ class SymfonyConfigFactory
      * Configuration definition) then it will do so and re-run this method with the upgraded values. The 'configVersion'
      * field will tell which definition should be used; when none is provided then a version 2 configuration is assumed.
      *
-     * @param array{configVersion?: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $values
+     * @param array<mixed> $values because this method is called recursively, the provided shape varies and is the
+     *   output of the ConfigurationDefinition matching the prior configVersion is used.
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array<mixed> the recursiveness of this method means that the output of this method has the shape of the
+     *   current ConfigurationDefinition's output.
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     private function processConfiguration(array $values): array
     {
         $configurationVersion = (string) ($values[self::FIELD_CONFIG_VERSION] ?? self::DEFAULT_CONFIG_VERSION);
@@ -127,7 +130,7 @@ class SymfonyConfigFactory
     {
         $definition = $this->configurationDefinitions[$configurationVersion] ?? null;
         if ($definition === null) {
-            throw UnSupportedConfigVersionException::create(
+            throw UnsupportedConfigVersionException::create(
                 $configurationVersion,
                 array_keys($this->configurationDefinitions)
             );
@@ -136,13 +139,13 @@ class SymfonyConfigFactory
         return $definition;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{configVersion?: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
+     * @param array<mixed> $configuration because this method is called as part of the recursive method processConfiguration,
+     *   the provided shape varies and is the output of the normalisation process of provided ConfigurationDefinition.
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array<mixed> this method's output will match the shape of the output of the provided
+     *   ConfigurationDefinition.
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     private function upgradeConfiguration(Upgradable $definition, array $configuration): array
     {
         $upgradedConfiguration = $definition->upgrade($configuration);

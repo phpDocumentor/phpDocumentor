@@ -22,6 +22,7 @@ use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\Twig\Templates;
 use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
@@ -69,7 +70,7 @@ class Factory
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
      *
-     * @param array<int, array{name:string, parameters:array<string, string>}> $templates
+     * @param array<int, array{name:string, location: ?Path, parameters:array<string, string>}> $templates
      */
     public function getTemplates(array $templates, FilesystemInterface $output): Collection
     {
@@ -78,9 +79,14 @@ class Factory
 
         foreach ($templates as $template) {
             $stopWatch->start('load template');
+
+            $templateNameOrLocation = $template['location'] instanceof Path
+                ? ($template['location'] . '/' . $template['name'])
+                : $template['name'];
+
             $loadedTemplates[$template['name']] = $this->loadTemplate(
                 $output,
-                $template['name'],
+                $templateNameOrLocation,
                 $template['parameters'] ?? []
             );
             $stopWatch->stop('load template');

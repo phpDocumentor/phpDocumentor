@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use Symfony\Component\Filesystem\Path as SymfonyPath;
 
 use function array_map;
 use function array_merge;
@@ -58,16 +59,18 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         }
 
         $configFile = Dsn::createFromUri($uri);
-        $configPath = $configFile->withPath(Path::dirname($configFile->getPath()));
+        $configPath = Path::dirname($configFile->getPath());
+        $configDsn = $configFile->withPath($configPath);
 
         $configuration['phpdocumentor']['paths']['output'] =
-            $configuration['phpdocumentor']['paths']['output']->resolve($configPath);
+            $configuration['phpdocumentor']['paths']['output']->resolve($configDsn);
+
         /** @var VersionSpecification $version */
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
             $apiConfigs = [];
 
             foreach ($version->getApi() as $api) {
-                $apiConfigs[] = $api->withSource($api->source()->withDsn($api['source']['dsn']->resolve($configPath)));
+                $apiConfigs[] = $api->withSource($api->source()->withDsn($api['source']['dsn']->resolve($configDsn)));
             }
 
             $version->setApi($apiConfigs);
@@ -75,10 +78,22 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             foreach ($version->getGuides() ?? [] as $key => $guide) {
                 $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
-                        $guide->source()->dsn()->resolve($configPath)
+                        $guide->source()->dsn()->resolve($configDsn)
                     )
                 );
             }
+        }
+
+        /** @var array{name: string, location?: ?Path, parameters?: array} $template */
+        foreach ($configuration['phpdocumentor']['templates'] as $key => $template) {
+            $location = $template['location'];
+            if ($location instanceof Path && SymfonyPath::isAbsolute((string) $location) === false) {
+                $location = new Path($configPath . '/' . $location);
+            }
+
+            $template['location'] = $location;
+
+            $configuration['phpdocumentor']['templates'][$key] = $template;
         }
 
         return $configuration;

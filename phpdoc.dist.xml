@@ -42,5 +42,5 @@
         </guide>
     </version>
     <setting name="guides.enabled" value="true"/>
-    <template name="default"/>
+    <template name="default" />
 </phpdocumentor>

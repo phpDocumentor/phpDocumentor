@@ -24,6 +24,7 @@ use function sprintf;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
+ * @psalm-import-type ConfigurationMap from SymfonyConfigFactory
  */
 /*final*/ class ConfigurationFactory
 {
@@ -118,11 +119,9 @@ use function sprintf;
         return $configuration;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{ api: array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: Dsn, paths: array}, include-source: bool, validate: bool}, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}} $configuration
+     * @param ConfigurationMap $configuration
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     private function createConfigurationFromArray(array $configuration): Configuration
     {
         if (isset($configuration['phpdocumentor']['versions'])) {

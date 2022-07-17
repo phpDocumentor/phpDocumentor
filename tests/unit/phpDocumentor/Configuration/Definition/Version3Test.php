@@ -65,9 +65,26 @@ final class Version3Test extends TestCase
         $expected['versions']['1.0.0']['api'][0]['visibility']
             = $expected['versions']['1.0.0']['api'][0]['visibilities'];
         unset($expected['versions']['1.0.0']['api'][0]['visibilities']);
+        $expected['templates'][0]['location'] = null;
+
         $configuration = $definition->normalize($configuration);
 
-        $this->assertEquals($expected, $configuration);
+        self::assertEquals($expected, $configuration);
+    }
+
+    /**
+     * @covers ::normalize
+     */
+    public function testNormalizingAPopulatedTemplateLocationGivesAPath(): void
+    {
+        $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
+        $configuration = $this->defaultConfigurationOutput();
+        $configuration['templates'][0]['location'] = 'data/templates';
+
+        $result = $definition->normalize($configuration);
+
+        self::assertInstanceOf(Path::class, $result['templates'][0]['location']);
+        self::assertSame('data/templates', (string) $result['templates'][0]['location']);
     }
 
     public function provideTestConfiguration(): array

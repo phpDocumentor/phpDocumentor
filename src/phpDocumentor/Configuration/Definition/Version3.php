@@ -24,6 +24,62 @@ use function is_int;
 use function is_string;
 use function var_export;
 
+/**
+ * @psalm-type BaseConfiguration = array<mixed>
+ * @psalm-type ConfigurationApiMap = array{
+ *     ignore-tags: list<string>,
+ *     extensions: non-empty-array<string>,
+ *     markers: list<string>,
+ *     visibility: non-empty-array<string>,
+ *     source: array{dsn: Dsn, paths: list<Path>},
+ *     ignore: array{
+ *         hidden: bool,
+ *         symlinks: bool,
+ *         paths: list<string>
+ *     },
+ *     ignore-tags: list<string>,
+ *     encoding: string,
+ *     output: string,
+ *     format: string,
+ *     default-package-name: string,
+ *     examples?: array{dsn: string, paths: array},
+ *     include-source: bool,
+ *     validate: bool,
+ *     visibility: non-empty-array<array-key, string>
+ * }
+ *
+ * @psalm-type ConfigurationMap = array{
+ *     configVersion: string,
+ *     title?: string,
+ *     paths: array{output: Dsn, cache: Path},
+ *     versions: array<
+ *         string,
+ *         array{
+ *             number: string,
+ *             folder: string,
+ *             api: list<ConfigurationApiMap>,
+ *             guides: list<
+ *                 array{
+ *                     source: array{dsn: Dsn, paths: Path[]},
+ *                     output: string,
+ *                     format: string,
+ *                 }
+ *             >
+ *         }
+ *     >,
+ *     use-cache: bool,
+ *     settings: array<string, mixed>,
+ *     templates: non-empty-list<
+ *         array{
+ *             name: string,
+ *             location: ?Path,
+ *             parameters: list<string, mixed>
+ *         }
+ *     >
+ * }
+ *
+ * @implements Normalizable<BaseConfiguration, ConfigurationMap>
+ */
 final class Version3 implements ConfigurationInterface, Normalizable
 {
     /** @var string This is injected so that the name of the default template can be defined globally in the app */
@@ -115,13 +171,9 @@ final class Version3 implements ConfigurationInterface, Normalizable
         return $treebuilder;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, apis: array, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>} $configuration
-     *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, array{api: array<int, array{ignore-tags: array, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibillity: string, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}}>, guides: array}>, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * {@inheritDoc}
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function normalize(array $configuration): array
     {
         $configuration['configVersion'] = (string) $configuration['configVersion'];
@@ -162,6 +214,21 @@ final class Version3 implements ConfigurationInterface, Normalizable
 
                 $configuration['versions'][$versionNumber]['guides'][$key] = $guidesKey;
             }
+        }
+
+        foreach ($configuration['templates'] as $key => $template) {
+            if (is_string($template)) {
+                $template = [
+                    'name' => $template,
+                    'location' => null,
+                    'parameters' => [],
+                ];
+            }
+
+            $location = $template['location'] ?? null;
+            $template['location'] = $location ? new Path((string) $location) : null;
+
+            $configuration['templates'][$key] = $template;
         }
 
         return $configuration;

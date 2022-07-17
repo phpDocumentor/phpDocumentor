@@ -6,7 +6,7 @@ namespace phpDocumentor\Configuration;
 
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Definition\Upgradable;
-use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
+use phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;

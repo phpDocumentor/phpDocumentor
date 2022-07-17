@@ -22,6 +22,7 @@ parameters:
 
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
+
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
 
@@ -36,9 +37,6 @@ parameters:
 
     # Design improvement of configuration needed
     - '#Parameter \#1 \$templates of method phpDocumentor\\Transformer\\Template\\Factory::getTemplates\(\) expects array<int, array\(.*\)>, array<int, string> given\.#'
-
-    # Advanced transformations of array. PHPStan doesn't seem to keep nonEmpty flag through some array functions
-    - '#Method phpDocumentor\\Configuration\\Definition\\Version2::upgrade\(\) should return.+#'
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
@@ -64,6 +62,7 @@ parameters:
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setFontSize\\(\\) expects float, string given\\.$#"
             count: 1
             path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
+
   excludes_analyse:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php

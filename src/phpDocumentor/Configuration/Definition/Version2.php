@@ -25,6 +25,12 @@ use function getcwd;
 use function implode;
 use function substr;
 
+/**
+ * @psalm-type ConfigurationMap = array<mixed>
+ * @psalm-import-type BaseConfiguration from Version3 as UpgradedConfiguration
+ *
+ * @implements Upgradable<ConfigurationMap, UpgradedConfiguration>
+ */
 final class Version2 implements ConfigurationInterface, Upgradable
 {
     /** @var string This is injected so that the name of the default template can be defined globally in the app */
@@ -148,17 +154,9 @@ final class Version2 implements ConfigurationInterface, Upgradable
         return $treebuilder;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * Upgrades the version 2 configuration to the version 3 configuration.
-     *
-     * @param array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, versions?: array<string, mixed>, settings?: array<mixed>, templates?: non-empty-list<string>, transformer: array{target: string}, parser: array{target: string, default-package-name: string, extensions: array{extensions: array}, visibility: string, markers: array{items: array}}, files: array{files: array, directories: array, ignores: array}, transformations: array{templates: array<string>}} $values
-     *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, version?: array{array{api: array{array{default-package-name: string, extensions: array{extensions: array<array-key, string>}, ignore: array{paths: array<array-key, string>}, markers: array{markers: array<array-key, mixed>}, source: array{paths: array<array-key, string>}, visibilities: non-empty-list<string>}}, number: string}}}, settings?: array<mixed>, templates?: non-empty-list<string>}
-     *
-     * @todo not all options are included yet; finish this
+     * Upgrades the version 2 configuration to the version 3 pre-normalized configuration.
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function upgrade(array $values): array
     {
         return [

@@ -334,6 +334,16 @@ name
 location
 ~~~~~~~~
 
+[optional] The path where the template can be found. Unless your project uses a custom template in a specific folder,
+this attribute should not be provided. When provided, phpDocumentor will load your template from that folder.
+
+When a relative folder is provided, phpDocumentor will attempt to find that relative to the location of your
+configuration file. An absolute path is also allowed for when you have multiple projects that should use the same
+template.
+
+For example: When the location ``my/phpdoc/templates`` is provided and ``myTemplate`` as name, phpDocumentor will
+attempt to load the template configuration at ``[configPath]/my/phpdoc/templates/myTemplate/template.xml``.
+
 parameters
 ~~~~~~~~~~
 
