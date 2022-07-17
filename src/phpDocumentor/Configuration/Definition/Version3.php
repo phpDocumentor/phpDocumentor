@@ -26,12 +26,13 @@ use function var_export;
 
 /**
  * @psalm-type BaseConfiguration = array<mixed>
+ *
  * @psalm-type ConfigurationApiMap = array{
  *     ignore-tags: list<string>,
  *     extensions: non-empty-array<string>,
  *     markers: list<string>,
  *     visibility: non-empty-array<string>,
- *     source: array{dsn: Dsn, paths: list<Path>},
+ *     source: array{dsn: Dsn, paths: array<array-key, Path>},
  *     ignore: array{
  *         hidden: bool,
  *         symlinks: bool,
@@ -42,7 +43,7 @@ use function var_export;
  *     output: string,
  *     format: string,
  *     default-package-name: string,
- *     examples?: array{dsn: string, paths: array},
+ *     examples?: array{dsn: string, paths: array<string>},
  *     include-source: bool,
  *     validate: bool,
  *     visibility: non-empty-array<array-key, string>
@@ -60,7 +61,7 @@ use function var_export;
  *             api: list<ConfigurationApiMap>,
  *             guides: list<
  *                 array{
- *                     source: array{dsn: Dsn, paths: Path[]},
+ *                     source: array{dsn: Dsn, paths: array<array-key, Path>},
  *                     output: string,
  *                     format: string,
  *                 }
@@ -69,16 +70,14 @@ use function var_export;
  *     >,
  *     use-cache: bool,
  *     settings: array<string, mixed>,
- *     templates: non-empty-list<
+ *     templates: non-empty-array<
  *         array{
  *             name: string,
  *             location: ?Path,
- *             parameters: list<string, mixed>
+ *             parameters: array<string, mixed>
  *         }
  *     >
  * }
- *
- * @implements Normalizable<BaseConfiguration, ConfigurationMap>
  */
 final class Version3 implements ConfigurationInterface, Normalizable
 {

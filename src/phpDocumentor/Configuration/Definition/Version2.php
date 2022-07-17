@@ -28,8 +28,6 @@ use function substr;
 /**
  * @psalm-type ConfigurationMap = array<mixed>
  * @psalm-import-type BaseConfiguration from Version3 as UpgradedConfiguration
- *
- * @implements Upgradable<ConfigurationMap, UpgradedConfiguration>
  */
 final class Version2 implements ConfigurationInterface, Upgradable
 {
@@ -156,6 +154,10 @@ final class Version2 implements ConfigurationInterface, Upgradable
 
     /**
      * Upgrades the version 2 configuration to the version 3 pre-normalized configuration.
+     *
+     * @param ConfigurationMap $values
+     *
+     * @return UpgradedConfiguration
      */
     public function upgrade(array $values): array
     {

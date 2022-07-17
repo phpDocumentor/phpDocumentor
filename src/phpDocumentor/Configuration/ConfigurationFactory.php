@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
+use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
-use phpDocumentor\Dsn;
 use phpDocumentor\UriFactory;
 
 use function array_map;
@@ -24,7 +24,11 @@ use function sprintf;
 
 /**
  * The ConfigurationFactory converts the configuration xml from a Uri into an array.
- * @psalm-import-type ConfigurationMap from SymfonyConfigFactory
+ *
+ * @psalm-import-type ConfigurationMap from Version3 as Version3ConfigurationMap
+ * @psalm-type ConfigurationMap = array{
+ *     phpdocumentor: Version3ConfigurationMap
+ * }
  */
 /*final*/ class ConfigurationFactory
 {

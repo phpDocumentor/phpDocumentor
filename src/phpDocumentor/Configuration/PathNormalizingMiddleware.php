@@ -84,7 +84,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             }
         }
 
-        /** @var array{name: string, location?: ?Path, parameters?: array} $template */
+        /** @var array{name: string, location?: ?Path, parameters?: array<string, mixed>} $template */
         foreach ($configuration['phpdocumentor']['templates'] as $key => $template) {
             $location = $template['location'];
             if ($location instanceof Path && SymfonyPath::isAbsolute((string) $location) === false) {

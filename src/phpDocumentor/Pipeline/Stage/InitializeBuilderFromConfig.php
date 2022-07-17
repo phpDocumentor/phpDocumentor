@@ -44,14 +44,10 @@ final class InitializeBuilderFromConfig
         $builder->createProjectDescriptor();
         $builder->setName($configuration['phpdocumentor']['title'] ?? '');
         $builder->setPartials($this->partials);
-        $builder->setCustomSettings($configuration['phpdocumentor']['settings'] ?? []);
+        $builder->setCustomSettings($configuration['phpdocumentor']['settings']);
 
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
-            $builder->addVersion(
-                $this->buildVersion(
-                    $version
-                )
-            );
+            $builder->addVersion($this->buildVersion($version));
         }
 
         return $payload;

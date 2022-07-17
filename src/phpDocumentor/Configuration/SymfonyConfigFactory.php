@@ -15,7 +15,6 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
-use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use RuntimeException;
@@ -28,10 +27,7 @@ use function array_key_last;
 use function array_keys;
 
 /**
- * @psalm-import-type ConfigurationMap from Version3 as Version3ConfigurationMap
- * @psalm-type ConfigurationMap = array{
- *     phpdocumentor: Version3ConfigurationMap
- * }
+ * @psalm-import-type ConfigurationMap from ConfigurationFactory
  */
 class SymfonyConfigFactory
 {

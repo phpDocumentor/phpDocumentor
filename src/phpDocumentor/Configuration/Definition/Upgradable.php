@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration\Definition;
 
-/**
- * @template TPreviousConfigurationMap of array
- * @template TUpgradedConfigurationMap of array
- */
 interface Upgradable
 {
     /**
@@ -24,9 +20,9 @@ interface Upgradable
      * The 'configVersion' field in the result will inform the ConfigurationFactory what the next Configuration
      * definition should be used to parse this result.
      *
-     * @param TPreviousConfigurationMap $values
+     * @param array<mixed> $values
      *
-     * @return TUpgradedConfigurationMap
+     * @return array<mixed>
      */
     public function upgrade(array $values): array;
 }

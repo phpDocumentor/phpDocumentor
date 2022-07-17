@@ -4,6 +4,8 @@ services:
     autoconfigure: true
 
   phpDocumentor\Pipeline\Stage\Configure:
+    arguments:
+      $currentWorkingDir: "@=service('kernel').getWorkingDir()"
     tags:
       - { name: 'phpdoc.pipeline.application.configuration', priority: 10000 }
 

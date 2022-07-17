@@ -81,7 +81,7 @@ class Transform
         Assert::keyExists($configuration['phpdocumentor'], 'paths');
 
         $templates = $this->templateFactory->getTemplates(
-            $configuration['phpdocumentor']['templates'] ?? [],
+            $configuration['phpdocumentor']['templates'],
             $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
         );
         $project = $payload->getBuilder()->getProjectDescriptor();

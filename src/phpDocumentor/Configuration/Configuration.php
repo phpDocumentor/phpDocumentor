@@ -14,9 +14,29 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use ArrayObject;
+use phpDocumentor\Dsn;
+use phpDocumentor\Path;
 
 /**
- * @template-extends ArrayObject<string, mixed>
+ * @psalm-type ConfigurationMap = array{
+ *     phpdocumentor: array{
+ *         configVersion: string,
+ *         title?: string,
+ *         paths: array{output: Dsn, cache: Path},
+ *         versions: array<string, VersionSpecification>,
+ *         use-cache: bool,
+ *         settings: array<string, mixed>,
+ *         templates: non-empty-array<
+ *             array{
+ *                 name: string,
+ *                 location: ?Path,
+ *                 parameters: array<string, mixed>
+ *             }
+ *         >
+ *     }
+ * }
+ *
+ * @template-extends ArrayObject<string, mixed>&ConfigurationMap
  */
 final class Configuration extends ArrayObject
 {
