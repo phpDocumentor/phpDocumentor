@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Nodes\Metadata\MetadataNode;
 
+use Webmozart\Assert\Assert;
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -135,13 +136,16 @@ final class DocumentNode extends Node
             $levels[$level] = &$parent[count($parent) - 1][1];
         }
 
+        $nodes = $this->getNodes(static function ($node): bool {
+            return $node instanceof DocumentNode;
+        });
+        Assert::allIsInstanceOf($nodes, DocumentNode::class);
+
         $subDocumentTitles = array_map(
-            static function (DocumentNode $node) {
+            static function (DocumentNode $node): array {
                 return $node->getTitles();
             },
-            $this->getNodes(static function ($node) {
-                return $node instanceof DocumentNode;
-            })
+            $nodes
         );
 
         return array_merge($titles, ...$subDocumentTitles);

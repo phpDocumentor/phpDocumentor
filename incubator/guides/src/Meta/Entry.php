@@ -49,9 +49,6 @@ final class Entry
     /** @var string[] */
     private $resolvedDependencies = [];
 
-    /** @var string[] */
-    private $links;
-
     /** @var string|null */
     private $parent;
 

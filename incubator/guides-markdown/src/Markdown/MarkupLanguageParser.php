@@ -96,7 +96,7 @@ final class MarkupLanguageParser implements ParserInterface
                 continue;
             }
 
-            if (!$event->isEntering() && $node instanceof Document) {
+            if ($node instanceof Document) {
                 return $document;
             }
 

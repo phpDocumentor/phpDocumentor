@@ -38,9 +38,6 @@ class ParserContext
     private $currentDirectory;
 
     /** @var string[] */
-    private $variables = [];
-
-    /** @var string[] */
     private $links = [];
 
     /** @var string[] */
@@ -48,9 +45,6 @@ class ParserContext
 
     /** @var string[] */
     private $errors = [];
-
-    /** @var string */
-    private $currentAbsolutePath = '';
 
     public function __construct(
         string $currentFileName,
