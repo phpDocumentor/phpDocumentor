@@ -32,6 +32,10 @@ parameters:
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
 
+    # PHPStan doesn't support inheritance of a generic in a generic
+    - '/Parameter \#2 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::set\(\)/'
+    - '/Parameter \#1 \$collection of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>::merge\(\)/'
+
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
             count: 1
@@ -57,7 +61,7 @@ parameters:
             count: 1
             path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
 
-  excludes_analyse:
+  excludePaths:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php
     - %currentWorkingDirectory%/tests/data/*.php

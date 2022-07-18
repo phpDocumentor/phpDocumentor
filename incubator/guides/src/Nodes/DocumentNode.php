@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes;
 
 use phpDocumentor\Guides\Nodes\Metadata\MetadataNode;
-
 use Webmozart\Assert\Assert;
+
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -139,7 +139,7 @@ final class DocumentNode extends Node
         $nodes = $this->getNodes(static function ($node): bool {
             return $node instanceof DocumentNode;
         });
-        Assert::allIsInstanceOf($nodes, DocumentNode::class);
+        Assert::allIsInstanceOf($nodes, self::class);
 
         $subDocumentTitles = array_map(
             static function (DocumentNode $node): array {

@@ -8,6 +8,7 @@ interface Normalizable
 {
     /**
      * @param array<mixed> $configuration
+     *
      * @return array<mixed>
      */
     public function normalize(array $configuration): array;

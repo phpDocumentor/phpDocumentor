@@ -15,7 +15,7 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\Configuration\Definition\Normalizable;
 use phpDocumentor\Configuration\Definition\Upgradable;
-use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
+use phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use RuntimeException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -136,8 +136,9 @@ class SymfonyConfigFactory
     }
 
     /**
-     * @param array<mixed> $configuration because this method is called as part of the recursive method processConfiguration,
-     *   the provided shape varies and is the output of the normalisation process of provided ConfigurationDefinition.
+     * @param array<mixed> $configuration because this method is called as part of the recursive method
+     *   processConfiguration, the provided shape varies and is the output of the normalisation process of provided
+     *   ConfigurationDefinition.
      *
      * @return array<mixed> this method's output will match the shape of the output of the provided
      *   ConfigurationDefinition.

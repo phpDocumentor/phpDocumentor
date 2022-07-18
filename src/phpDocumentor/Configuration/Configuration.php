@@ -18,6 +18,7 @@ use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 
 /**
+ * @template-extends ArrayObject<string, mixed>&ConfigurationMap
  * @psalm-type ConfigurationMap = array{
  *     phpdocumentor: array{
  *         configVersion: string,
@@ -35,8 +36,6 @@ use phpDocumentor\Path;
  *         >
  *     }
  * }
- *
- * @template-extends ArrayObject<string, mixed>&ConfigurationMap
  */
 final class Configuration extends ArrayObject
 {

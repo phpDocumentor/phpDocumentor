@@ -58,13 +58,13 @@ final class SymfonyConfigFactoryTest extends TestCase
     }
 
     /**
-     * @uses \phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException::create
+     * @uses \phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException::create
      *
      * @covers ::createFromFile
      */
     public function testThrowsExceptionWhenConfigVersionIsNotSupported(): void
     {
-        $this->expectException(UnSupportedConfigVersionException::class);
+        $this->expectException(UnsupportedConfigVersionException::class);
 
         $root = vfsStream::setup();
         $configFile = vfsStream::newFile('config.xml')->withContent(

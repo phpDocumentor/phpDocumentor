@@ -9,8 +9,9 @@ use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use RuntimeException;
-
 use Webmozart\Assert\Assert;
+
+use function array_map;
 use function sprintf;
 
 /**
@@ -130,7 +131,7 @@ final class ApiSpecification implements ArrayAccess
             isset($api['examples'])
                 ? new Source(
                     Dsn::createFromString($api['examples']['dsn']),
-                    array_map(static fn(string $path) => new Path($path), $api['examples']['paths'])
+                    array_map(static fn (string $path) => new Path($path), $api['examples']['paths'])
                 )
                 : null,
             $api['encoding'],

@@ -26,7 +26,6 @@ use function var_export;
 
 /**
  * @psalm-type BaseConfiguration = array<mixed>
- *
  * @psalm-type ConfigurationApiMap = array{
  *     ignore-tags: list<string>,
  *     extensions: non-empty-array<string>,
@@ -48,7 +47,6 @@ use function var_export;
  *     validate: bool,
  *     visibility: non-empty-array<array-key, string>
  * }
- *
  * @psalm-type ConfigurationMap = array{
  *     configVersion: string,
  *     title?: string,
