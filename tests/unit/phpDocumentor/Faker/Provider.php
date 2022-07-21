@@ -48,6 +48,7 @@ final class Provider extends Base
     {
         return new Template($name, new MountManager([
             'template' => $this->fileSystem(),
+            'guides' => $this->fileSystem(),
             'templates' => $this->fileSystem(),
             'destination' => $this->fileSystem(),
         ]));
@@ -202,18 +203,19 @@ final class Provider extends Base
         return $rootNamespace;
     }
 
+    public function classDescriptor(Fqsen $fqsen): ClassDescriptor
+    {
+        $classDescriptor = new ClassDescriptor();
+        $classDescriptor->setName($fqsen->getName());
+        $classDescriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $classDescriptor;
+    }
+
     public function fqsen($maxDepth = 3): Fqsen
     {
         $parts = $this->generator->words($maxDepth);
 
         return new Fqsen('\\' . implode('\\', $parts));
-    }
-
-    public function classDescriptor(): ClassDescriptor
-    {
-        $classDescriptor = new ClassDescriptor();
-        $classDescriptor->setFullyQualifiedStructuralElementName($this->fqsen());
-
-        return $classDescriptor;
     }
 }

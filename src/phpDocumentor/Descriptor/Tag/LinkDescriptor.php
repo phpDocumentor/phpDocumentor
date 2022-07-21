@@ -41,4 +41,9 @@ class LinkDescriptor extends TagDescriptor
     {
         return $this->link;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->link;
+    }
 }

@@ -81,7 +81,8 @@ class MethodAssembler extends AssemblerAbstract
         $descriptor->setFinal($reflector->isFinal());
         $descriptor->setAbstract($reflector->isAbstract());
         $descriptor->setStatic($reflector->isStatic());
-        $descriptor->setLine($reflector->getLocation()->getLineNumber());
+        $descriptor->setStartLocation($reflector->getLocation());
+        $descriptor->setEndLocation($reflector->getEndLocation());
         $descriptor->setReturnType($reflector->getReturnType());
         $descriptor->setHasReturnByReference($reflector->getHasReturnByReference());
     }
@@ -109,7 +110,8 @@ class MethodAssembler extends AssemblerAbstract
         }
 
         $argumentDescriptor = $this->argumentAssembler->create($argument, $params);
-        $argumentDescriptor->setLine($descriptor->getLine());
+        $argumentDescriptor->setStartLocation($descriptor->getStartLocation());
+        $argumentDescriptor->setEndLocation($descriptor->getEndLocation());
 
         $descriptor->addArgument($argumentDescriptor->getName(), $argumentDescriptor);
     }
@@ -145,7 +147,8 @@ class MethodAssembler extends AssemblerAbstract
         $argument->setName($lastParamTag->getVariableName());
         $argument->setType($types);
         $argument->setDescription(new DescriptionDescriptor($lastParamTag->getDescription(), []));
-        $argument->setLine($methodDescriptor->getLine());
+        $argument->setStartLocation($methodDescriptor->getStartLocation());
+        $argument->setEndLocation($methodDescriptor->getEndLocation());
         $argument->setVariadic(true);
 
         $methodDescriptor->getArguments()->set($argument->getName(), $argument);

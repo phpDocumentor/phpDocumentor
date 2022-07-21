@@ -21,7 +21,7 @@ use function sprintf;
 /**
  * @codeCoverageIgnore
  */
-final class UnSupportedConfigVersionException extends RuntimeException
+final class UnsupportedConfigVersionException extends RuntimeException
 {
     /**
      * @param string[] $supportedVersions

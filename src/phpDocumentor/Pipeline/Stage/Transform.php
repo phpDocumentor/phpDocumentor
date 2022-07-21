@@ -18,6 +18,7 @@ use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\Assert\Assert;
 
 use function count;
 use function get_class;
@@ -76,6 +77,8 @@ class Transform
     public function __invoke(Payload $payload): Payload
     {
         $configuration = $payload->getConfig();
+
+        Assert::keyExists($configuration['phpdocumentor'], 'paths');
 
         $templates = $this->templateFactory->getTemplates(
             $configuration['phpdocumentor']['templates'],

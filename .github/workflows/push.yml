@@ -10,10 +10,12 @@ env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.4'
-  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5
+  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5,033E5F8D801A2F8D
   phiveHome: $GITHUB_WORKSPACE/.phive
 jobs:
+
   setup:
+    name: Composer checks and pre-warm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,19 +41,19 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: composer-require-checker:2.1.0
+          tools: composer-require-checker:3.8.0
 
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
 
-#      - name: composer-require-checker
-#        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
+      - name: composer-require-checker
+        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
-    name: Unit tests [7.4 | ubuntu-latest]
+    name: Unit tests pre-flight
     needs: setup
     steps:
     - uses: actions/checkout@v3
@@ -84,10 +86,19 @@ jobs:
       with:
         composer-options: --optimize-autoloader
 
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: tools
+        key: all-build-phive-${{ hashFiles('phive.xml') }}
+        restore-keys: |
+          all-build-phive-${{ hashFiles('phive.xml') }}
+          all-build-phive-
+
     - name: Install PHAR dependencies
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
 
     - name: PHPUnit
       run: php tools/phpunit --testsuite=unit
@@ -97,6 +108,7 @@ jobs:
 
   codestyle:
     runs-on: ubuntu-latest
+    name: Codestyle
     needs:
       - setup
     steps:
@@ -116,6 +128,7 @@ jobs:
 
   phpstan:
     runs-on: ubuntu-latest
+    name: Phpstan
     needs:
       - setup
     steps:
@@ -150,7 +163,7 @@ jobs:
           composer-options: --optimize-autoloader
 
       - name: PHPStan
-        uses: phpDocumentor/phpstan-ga@master
+        uses: phpDocumentor/phpstan-ga@1.8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -158,6 +171,7 @@ jobs:
 
   psalm:
     runs-on: ubuntu-latest
+    name: Psalm
     needs: [setup]
     steps:
       - uses: actions/checkout@v3
@@ -195,7 +209,7 @@ jobs:
 
   build-phar:
     runs-on: ubuntu-latest
-    name: Build PHAR to test with
+    name: Build PHAR
     needs:
       - setup
     steps:
@@ -257,15 +271,82 @@ jobs:
           args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
             --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
       - name: Upload PHAR file
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
 
+  phpunit:
+    runs-on: ${{ matrix.operating-system }}
+    continue-on-error: ${{ matrix.operating-system == 'windows-latest' }}
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+        php-versions:
+          - '7.4'
+          - '8.0'
+          - '8.1'
+        exclude: # already covered in pre-test with coverage above
+          - operating-system: 'ubuntu-latest'
+            php-versions: '7.4'
+    name: Unit tests
+    needs:
+    - phpunit-with-coverage
+    - phpstan
+    - codestyle
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup cache environment
+      id: cache-env
+      uses: shivammathur/cache-extensions@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: ${{ env.extensions }}
+        key: ${{ env.key }}
+    - name: Cache extensions
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.cache-env.outputs.dir }}
+        key: ${{ steps.cache-env.outputs.key }}
+        restore-keys: ${{ steps.cache-env.outputs.key }}
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: ${{ env.extensions }}
+        ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+        tools: pecl, phive
+    - name: Install Composer dependencies & cache dependencies
+      uses: "ramsey/composer-install@v2"
+      with:
+        composer-options: --optimize-autoloader
+    - name: Restore/cache phive folder
+      uses: actions/cache@v3
+      with:
+        path: tools
+        key: all-build-phive-${{ hashFiles('phive.xml') }}
+        restore-keys: |
+          all-build-phive-${{ hashFiles('phive.xml') }}
+          all-build-phive-
+    - name: Install PHAR dependencies
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit  && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
+    - name: Run PHPUnit
+      run: php tools/phpunit --testsuite=unit,integration
+
   e2e:
     runs-on: ubuntu-latest
-    name: E2E tests [ubuntu-latest]
+    name: E2E pre-flight
     if: github.repository == 'phpDocumentor/phpDocumentor'
+    strategy:
+      matrix:
+        template:
+          - 'clean'
+          - 'default'
     needs:
       - setup
     steps:
@@ -299,91 +380,20 @@ jobs:
         with:
           composer-options: --optimize-autoloader
 
-      - name: Build example project using Clean template
-        run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
-      - name: Build example project using Default template
-        run: ./bin/phpdoc --template=default -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
-      - name: Test Default template using Cypress
-        uses: cypress-io/github-action@v2
+      - name: Build example project template
+        run: ./bin/phpdoc --template=${{ matrix.template }} -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/${{ matrix.template }} --setting="guides.enabled=false"
+
+      - name: Test template using Cypress
+        uses: cypress-io/github-action@v4
         with:
           record: true
-          group: 'template/default'
-          spec: cypress/integration/default/*
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test Clean template using Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          group: 'template/clean'
-          spec: cypress/integration/clean/*
+          group: 'template/${{ matrix.template }}'
+          spec: cypress/integration/${{ matrix.template }}/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  phpunit:
-    runs-on: ${{ matrix.operating-system }}
-    continue-on-error: ${{ matrix.php-versions == '8.0' }}
-    strategy:
-      matrix:
-        operating-system:
-          - ubuntu-latest
-          - windows-latest
-          - macOS-latest
-        php-versions:
-          - '7.4'
-          - '8.0'
-          - '8.1'
-        exclude: # already covered in pre-test with coverage above
-          - operating-system: 'ubuntu-latest'
-            php-versions: '7.4'
-    name: Unit tests [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
-
-    needs:
-    - phpunit-with-coverage
-    - phpstan
-    - codestyle
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup cache environment
-      id: cache-env
-      uses: shivammathur/cache-extensions@v1
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extensions: ${{ env.extensions }}
-        key: ${{ env.key }}
-
-    - name: Cache extensions
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.cache-env.outputs.dir }}
-        key: ${{ steps.cache-env.outputs.key }}
-        restore-keys: ${{ steps.cache-env.outputs.key }}
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extensions: ${{ env.extensions }}
-        ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phive
-
-    - name: Install Composer dependencies & cache dependencies
-      uses: "ramsey/composer-install@v2"
-      with:
-        composer-options: --optimize-autoloader
-
-    - name: Install PHAR dependencies
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
-
-    - name: Run PHPUnit
-      run: php tools/phpunit --testsuite=unit,integration
-
-  e2e-matrix:
+  smoke-tests:
     runs-on: ${{ matrix.operating-system }}
     if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
@@ -396,11 +406,9 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macOS-latest
-    name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Smoke tests
     needs:
-      - e2e
       - build-phar
-    continue-on-error: ${{ matrix.php-versions == '8.0' }}
     steps:
       - uses: actions/checkout@v3
 
@@ -437,30 +445,69 @@ jobs:
         run: php ./build/phpDocumentor.phar --version
 
       - name: Run phpDocumentor on itself
-        run: php ./build/phpDocumentor.phar -vvv  --setting="guides.enabled=false"
+        run: php ./build/phpDocumentor.phar -vvv --setting="guides.enabled=false"
 
-      - name: Build example project using Clean template
-        run: php ./build/phpDocumentor.phar --template=clean --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean --setting="guides.enabled=false"
+  e2e-matrix:
+    runs-on: ${{ matrix.operating-system }}
+    if: github.repository == 'phpDocumentor/phpDocumentor'
+    strategy:
+      matrix:
+        template:
+          - 'clean'
+          - 'default'
+        php-versions:
+          - '7.4'
+          - '8.0'
+          - '8.1'
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    name: E2E
+    needs:
+      - e2e
+      - smoke-tests
+    steps:
+      - uses: actions/checkout@v3
 
-      - name: Build example project using Default template
-        run: php ./build/phpDocumentor.phar --template=default --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/default --setting="guides.enabled=false"
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
 
-      - name: Test Default template using Cypress
-        uses: cypress-io/github-action@v2
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: pecl
+
+      - name: Download PHAR file
+        uses: actions/download-artifact@v3
+        with:
+          name: phpDocumentor.phar
+          path: build
+
+      - name: Build example project
+        run: php ./build/phpDocumentor.phar --template=${{ matrix.template }} --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/${{ matrix.template }} --setting="guides.enabled=false"
+
+      - name: Test template using Cypress
+        uses: cypress-io/github-action@v4
         with:
           record: true
-          group: 'template/default/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
-          spec: cypress/integration/default/*
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Test Clean template using Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          record: true
-          group: 'template/clean/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
-          spec: cypress/integration/clean/*
+          group: 'template/${{ matrix.template }}/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
+          spec: cypress/integration/${{ matrix.template }}/*
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

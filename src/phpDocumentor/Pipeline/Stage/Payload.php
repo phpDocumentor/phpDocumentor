@@ -13,37 +13,31 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
 
+/**
+ * @psalm-import-type ConfigurationMap from Configuration
+ */
 class Payload
 {
-    //phpcs:disable Generic.Files.LineLength.TooLong
-    /** @var array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} */
-    //phpcs:enable Generic.Files.LineLength.TooLong
-    private $config;
+    /** @var ConfigurationMap */
+    private array $config;
 
-    /** @var ProjectDescriptorBuilder */
-    private $builder;
+    private ProjectDescriptorBuilder $builder;
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $config
+     * @param ConfigurationMap $config
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function __construct(array $config, ProjectDescriptorBuilder $builder)
     {
         $this->config = $config;
         $this->builder = $builder;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @return array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}}
+     * @return ConfigurationMap
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function getConfig(): array
     {
         return $this->config;

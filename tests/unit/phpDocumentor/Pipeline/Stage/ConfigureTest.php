@@ -25,6 +25,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
+use function getcwd;
 use function sys_get_temp_dir;
 
 /**
@@ -68,7 +69,8 @@ final class ConfigureTest extends TestCase
             new Configuration($config),
             $logger->reveal(),
             $this->cacheLocator->reveal(),
-            $this->prophesize(EnvironmentFactory::class)->reveal()
+            $this->prophesize(EnvironmentFactory::class)->reveal(),
+            getcwd()
         );
 
         self::assertEquals($config, $stage(['config' => 'none']));
@@ -88,7 +90,8 @@ final class ConfigureTest extends TestCase
             new Configuration(),
             $logger->reveal(),
             $this->cacheLocator->reveal(),
-            $this->prophesize(EnvironmentFactory::class)->reveal()
+            $this->prophesize(EnvironmentFactory::class)->reveal(),
+            getcwd()
         );
 
         $stage(['config' => 'some/invalid/file.xml']);
@@ -115,7 +118,8 @@ final class ConfigureTest extends TestCase
             new Configuration(),
             $logger->reveal(),
             $this->cacheLocator->reveal(),
-            $this->prophesize(EnvironmentFactory::class)->reveal()
+            $this->prophesize(EnvironmentFactory::class)->reveal(),
+            getcwd()
         );
 
         $actual = $stage([]);
@@ -145,7 +149,8 @@ final class ConfigureTest extends TestCase
             new Configuration(),
             $logger->reveal(),
             $this->cacheLocator->reveal(),
-            $this->prophesize(EnvironmentFactory::class)->reveal()
+            $this->prophesize(EnvironmentFactory::class)->reveal(),
+            getcwd()
         );
 
         $actual = $stage(['config' => __FILE__]);

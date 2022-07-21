@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
@@ -27,6 +28,7 @@ use function explode;
 use function get_class;
 use function implode;
 use function is_string;
+use function iterator_to_array;
 use function preg_replace_callback;
 use function sprintf;
 use function strpos;
@@ -37,13 +39,12 @@ class PathGenerator
     /** @var Router */
     private $router;
 
-    /** @var Pathfinder */
-    private $pathfinder;
+    private Engine $queryEngine;
 
-    public function __construct(Router $router, Pathfinder $pathfinder)
+    public function __construct(Router $router, Engine $queryEngine)
     {
         $this->router = $router;
-        $this->pathfinder = $pathfinder;
+        $this->queryEngine = $queryEngine;
     }
 
     /**
@@ -106,7 +107,9 @@ class PathGenerator
                 }
 
                 // Find value in Descriptor's properties / methods
-                $value = (string) current($this->pathfinder->find($descriptor, $variable));
+                $value = (string) current(
+                    iterator_to_array($this->queryEngine->perform($descriptor, '$.' . $variable))
+                );
 
                 // strip any special characters and surrounding \ or /
                 $filepart = trim(trim($value), '\\/');

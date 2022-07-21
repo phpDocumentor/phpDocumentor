@@ -51,9 +51,7 @@ final class DocumentCollector
                 $document->getTitle() ? $document->getTitle()->getValueString() : '',
                 $document->getTitles(),
                 $document->getTocs(),
-                $document->getDependencies(),
-                $metaEntry->getLinks(),
-                $document->getVariables()
+                $document->getDependencies()
             )
         );
     }

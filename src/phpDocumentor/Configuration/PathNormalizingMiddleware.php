@@ -16,11 +16,13 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use Symfony\Component\Filesystem\Path as SymfonyPath;
 
 use function array_map;
 use function array_merge;
 use function ltrim;
 use function rtrim;
+use function str_replace;
 use function strpos;
 use function substr;
 
@@ -57,16 +59,18 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         }
 
         $configFile = Dsn::createFromUri($uri);
-        $configPath = $configFile->withPath(Path::dirname($configFile->getPath()));
+        $configPath = Path::dirname($configFile->getPath());
+        $configDsn = $configFile->withPath($configPath);
 
         $configuration['phpdocumentor']['paths']['output'] =
-            $configuration['phpdocumentor']['paths']['output']->resolve($configPath);
+            $configuration['phpdocumentor']['paths']['output']->resolve($configDsn);
+
         /** @var VersionSpecification $version */
         foreach ($configuration['phpdocumentor']['versions'] as $version) {
             $apiConfigs = [];
 
             foreach ($version->getApi() as $api) {
-                $apiConfigs[] = $api->withSource($api->source()->withDsn($api['source']['dsn']->resolve($configPath)));
+                $apiConfigs[] = $api->withSource($api->source()->withDsn($api['source']['dsn']->resolve($configDsn)));
             }
 
             $version->setApi($apiConfigs);
@@ -74,10 +78,22 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             foreach ($version->getGuides() ?? [] as $key => $guide) {
                 $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
-                        $guide->source()->dsn()->resolve($configPath)
+                        $guide->source()->dsn()->resolve($configDsn)
                     )
                 );
             }
+        }
+
+        /** @var array{name: string, location?: ?Path, parameters?: array<string, mixed>} $template */
+        foreach ($configuration['phpdocumentor']['templates'] as $key => $template) {
+            $location = $template['location'];
+            if ($location instanceof Path && SymfonyPath::isAbsolute((string) $location) === false) {
+                $location = new Path($configPath . '/' . $location);
+            }
+
+            $template['location'] = $location;
+
+            $configuration['phpdocumentor']['templates'][$key] = $template;
         }
 
         return $configuration;
@@ -159,6 +175,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
         $configFile = Dsn::createFromUri($uri);
         $configPath = $configFile->withPath(Path::dirname($configFile->getPath()));
 
-        return Dsn::createFromString((string) $cachePath)->resolve($configPath)->getPath();
+        // Since League URI 6.5 it will url-encode backslashes. Since this is used in windows, we convert it
+        // into a forward slash
+        $cachePathAsString = (string) $cachePath;
+        $cachePathAsString = str_replace('\\', '/', $cachePathAsString);
+
+        return Dsn::createFromString($cachePathAsString)->resolve($configPath)->getPath();
     }
 }

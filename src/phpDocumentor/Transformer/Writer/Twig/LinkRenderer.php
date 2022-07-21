@@ -35,6 +35,7 @@ use phpDocumentor\Transformer\Router\Router;
 use Webmozart\Assert\Assert;
 
 use function array_fill;
+use function array_merge;
 use function count;
 use function current;
 use function end;
@@ -131,6 +132,8 @@ final class LinkRenderer
      */
     public function link(object $value): string
     {
+        Assert::isInstanceOfAny($value, [Descriptor::class, Fqsen::class, Uri::class]);
+
         $uri = $this->router->generate($value);
         if (!$uri) {
             return $uri;
@@ -146,7 +149,7 @@ final class LinkRenderer
     /**
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
-     * @return string[]|string
+     * @return string|list<string>
      */
     public function render($value, string $presentation)
     {
@@ -230,14 +233,19 @@ final class LinkRenderer
     {
         $result = [];
         foreach ($value as $path) {
-            $result[] = $this->render($path, $presentation);
+            $links = $this->render($path, $presentation);
+            if (!is_array($links)) {
+                $links = [$links];
+            }
+
+            $result = array_merge($result, $links);
         }
 
         return $result;
     }
 
     /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Fqsen $node
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $node
      */
     private function renderLink($node, string $presentation): string
     {

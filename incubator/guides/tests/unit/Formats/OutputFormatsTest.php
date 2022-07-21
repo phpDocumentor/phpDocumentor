@@ -15,6 +15,7 @@ namespace phpDocumentor\Guides\Formats;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Guides\Formats\OutputFormats
@@ -22,6 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class OutputFormatsTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @covers ::__construct
      * @covers ::get

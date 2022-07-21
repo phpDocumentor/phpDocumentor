@@ -75,7 +75,7 @@ final class MarkupLanguageParser implements ParserInterface
 
     public function parseDocument(NodeWalker $walker, string $hash): DocumentNode
     {
-        $document = new DocumentNode($hash);
+        $document = new DocumentNode($hash, $this->environment->getCurrentAbsolutePath());
         $this->document = $document;
 
         while ($event = $walker->next()) {
@@ -96,7 +96,7 @@ final class MarkupLanguageParser implements ParserInterface
                 continue;
             }
 
-            if (!$event->isEntering() && $node instanceof Document) {
+            if ($node instanceof Document) {
                 return $document;
             }
 
@@ -115,7 +115,7 @@ final class MarkupLanguageParser implements ParserInterface
             }
 
             if ($node instanceof Text) {
-                $spanNode = SpanNode::create($this, $node->getLiteral());
+                $spanNode = new SpanNode($node->getLiteral(), []);
                 $document->addNode($spanNode);
                 continue;
             }

@@ -28,7 +28,8 @@ trait IoTrait
         $path = $this->normalizeSourcePath($path);
         $destination = $this->normalizeDestination($destination);
 
-        $type = $transformation->template()->files()->getMetadata($path)['type'];
+        $metadata = $transformation->template()->files()->getMetadata($path);
+        $type = $metadata ? ($metadata['type'] ?? null) : null;
 
         if ($type === 'file') {
             if ($transformation->template()->files()->has($destination)) {

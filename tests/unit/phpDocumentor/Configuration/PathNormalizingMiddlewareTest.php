@@ -17,6 +17,8 @@ use League\Uri\Uri;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 
+use function dirname;
+
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware
  * @covers ::__invoke
@@ -76,6 +78,28 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
+    /**
+     * @dataProvider templateLocationProvider
+     */
+    public function testNormalizeTemplateLocations(?string $input, ?string $output, string $configPath): void
+    {
+        $configuration = $this->givenAConfiguration();
+        $configuration['phpdocumentor']['templates'][0]['location'] = $input ? new Path($input) : null;
+
+        $middleware = new PathNormalizingMiddleware();
+        $outputConfig = $middleware(
+            $configuration,
+            Uri::createFromString($configPath)
+        );
+
+        $resultingPath = $outputConfig['phpdocumentor']['templates'][0]['location'];
+        if ($resultingPath instanceof Path) {
+            $resultingPath = (string) $resultingPath;
+        }
+
+        self::assertSame($output, $resultingPath);
+    }
+
     public function testDsnResolvedByConfigPath(): void
     {
         $configuration = $this->givenAConfiguration();
@@ -91,6 +115,25 @@ final class PathNormalizingMiddlewareTest extends TestCase
             '/data/phpDocumentor/',
             (string) $outputConfig['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn']
         );
+    }
+
+    public function templateLocationProvider(): array
+    {
+        $configLocation = '/data/phpdocumentor/config.xml';
+
+        return [
+            'Omitted locations are not normalized' => [null, null, $configLocation],
+            'Relative paths are made absolute, relative from config' => [
+                'data/templates',
+                dirname($configLocation) . '/data/templates',
+                $configLocation,
+            ],
+            'Absolute paths are kept' => [
+                '/home/user/myproject/data/templates',
+                '/home/user/myproject/data/templates',
+                $configLocation,
+            ],
+        ];
     }
 
     public function cachePathProvider(): array

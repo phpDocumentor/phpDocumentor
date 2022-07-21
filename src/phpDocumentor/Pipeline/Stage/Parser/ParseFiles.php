@@ -48,15 +48,21 @@ final class ParseFiles
          * We need to change this later, when we accept more different things
          */
         $apiConfig = current($payload->getApiConfigs());
+        if ($apiConfig === false) {
+            return $payload;
+        }
 
         $builder = $payload->getBuilder();
         $builder->setApiSpecification($apiConfig);
         $builder->setVisibility($apiConfig->calculateVisiblity());
-        $this->reEncodingMiddleware->withEncoding($apiConfig['encoding']);
+        $encoding = $apiConfig['encoding'] ?? '';
+        if ($encoding) {
+            $this->reEncodingMiddleware->withEncoding($encoding);
+        }
 
-        $this->parser->setMarkers($apiConfig['markers']);
-        $this->parser->setValidate($apiConfig['validate']);
-        $this->parser->setDefaultPackageName($apiConfig['default-package-name']);
+        $this->parser->setMarkers($apiConfig['markers'] ?? []);
+        $this->parser->setValidate(($apiConfig['validate'] ?? 'false') === 'true');
+        $this->parser->setDefaultPackageName($apiConfig['default-package-name'] ?? '');
 
         $this->log('Parsing files', LogLevel::NOTICE);
         $project = $this->parser->parse($payload->getFiles());

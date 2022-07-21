@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
@@ -71,11 +72,20 @@ class MethodAssemblerTest extends TestCase
         $argumentName = 'variableName';
 
         $argument = $this->givenAnArgumentWithName($argumentName);
+        $line = 10;
+        $column = 25;
+        $endLine = 264;
+        $endColumn = 9950;
+        $startLocation = $this->givenALocation(10, 25);
+        $endLocation = $this->givenALocation(264, 9950);
         $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
             $methodName,
             $argument,
-            $this->givenADocBlockObject(true)
+            $this->givenADocBlockObject(true),
+            false,
+            $startLocation,
+            $endLocation
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -99,6 +109,8 @@ class MethodAssemblerTest extends TestCase
         $this->assertFalse($descriptor->isAbstract());
         $this->assertFalse($descriptor->isStatic());
         $this->assertFalse($descriptor->getHasReturnByReference());
+        $this->assertSame($startLocation, $descriptor->getStartLocation());
+        $this->assertSame($endLocation, $descriptor->getEndLocation());
 
         $argument = $descriptor->getArguments()->get($argumentName);
         $this->assertSame($argument->getName(), $argumentDescriptor->getName());
@@ -228,7 +240,9 @@ class MethodAssemblerTest extends TestCase
         string $methodName,
         Argument $argumentMock,
         ?DocBlock $docBlockMock = null,
-        bool $hasReturnByReference = false
+        bool $hasReturnByReference = false,
+        ?Location $location = null,
+        ?Location $endLocation = null
     ): Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '\\myClass::' . $methodName . '()'),
@@ -237,8 +251,8 @@ class MethodAssemblerTest extends TestCase
             false,
             false,
             false,
-            null,
-            null,
+            $location,
+            $endLocation,
             null,
             $hasReturnByReference
         );
@@ -275,5 +289,10 @@ class MethodAssemblerTest extends TestCase
     protected function givenAnArgumentWithName(string $argumentName): Argument
     {
         return new Argument($argumentName);
+    }
+
+    protected function givenALocation(int $line, int $column): Location
+    {
+        return new Location($line, $column);
     }
 }

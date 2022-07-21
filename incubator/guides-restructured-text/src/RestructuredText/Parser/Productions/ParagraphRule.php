@@ -15,11 +15,11 @@ namespace phpDocumentor\Guides\RestructuredText\Parser\Productions;
 
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\ParagraphNode;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\Buffer;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 use function array_pop;
 use function implode;
@@ -36,11 +36,13 @@ final class ParagraphRule implements Rule
 
     /** @var DocumentParser */
     private $documentParser;
+    private SpanParser $spanParser;
 
-    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser)
+    public function __construct(MarkupLanguageParser $parser, DocumentParser $documentParser, SpanParser $spanParser)
     {
         $this->parser = $parser;
         $this->documentParser = $documentParser;
+        $this->spanParser = $spanParser;
     }
 
     public function applies(DocumentParser $documentParser): bool
@@ -91,7 +93,7 @@ final class ParagraphRule implements Rule
             return null;
         }
 
-        return new ParagraphNode(SpanNode::create($this->parser, $lines));
+        return new ParagraphNode($this->spanParser->parse($lines, $this->parser->getEnvironment()));
     }
 
     private function isWhiteline(string $line): bool

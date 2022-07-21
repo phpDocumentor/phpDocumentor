@@ -20,7 +20,9 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Twig\Templates;
 use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
@@ -28,6 +30,7 @@ use RecursiveDirectoryIterator;
 use RuntimeException;
 use SimpleXMLElement;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Webmozart\Assert\Assert;
 
 use function array_merge;
 use function file_exists;
@@ -67,7 +70,7 @@ class Factory
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
      *
-     * @param array<int, array{name:string, parameters:array<string, string>}> $templates
+     * @param array<int, array{name:string, location: ?Path, parameters:array<string, string>}> $templates
      */
     public function getTemplates(array $templates, FilesystemInterface $output): Collection
     {
@@ -76,9 +79,15 @@ class Factory
 
         foreach ($templates as $template) {
             $stopWatch->start('load template');
+
+            $location = $template['location'] ?? null;
+            $templateNameOrLocation = $location instanceof Path
+                ? ($location . '/' . $template['name'])
+                : $template['name'];
+
             $loadedTemplates[$template['name']] = $this->loadTemplate(
                 $output,
-                $template['name'],
+                $templateNameOrLocation,
                 $template['parameters'] ?? []
             );
             $stopWatch->stop('load template');
@@ -155,11 +164,13 @@ class Factory
             [
                 'templates' => $this->getTemplatesDirectory(),
                 'template' => $this->resolve($nameOrPath),
+                'guides' => Templates::create(),
                 'destination' => $filesystem,
             ]
         );
 
         $xml = $files->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
+        Assert::string($xml);
 
         $xml = new SimpleXMLElement($xml);
         $template = new Template((string) $xml->name, $files);

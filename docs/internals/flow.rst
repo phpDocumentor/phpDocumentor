@@ -155,7 +155,3 @@ ___________________
 
    stop
 
-Link FQSENs to Descriptors
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. note:: Chapter is to be written

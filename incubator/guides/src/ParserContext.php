@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Guides\Nodes\SpanNode;
+use League\Uri\Uri;
+use League\Uri\UriInfo;
 
 use function array_shift;
 use function dirname;
+use function ltrim;
 use function strtolower;
 use function trim;
 
@@ -36,9 +38,6 @@ class ParserContext
     private $currentDirectory;
 
     /** @var string[] */
-    private $variables = [];
-
-    /** @var string[] */
     private $links = [];
 
     /** @var string[] */
@@ -46,9 +45,6 @@ class ParserContext
 
     /** @var string[] */
     private $errors = [];
-
-    /** @var string */
-    private $currentAbsolutePath = '';
 
     public function __construct(
         string $currentFileName,
@@ -75,22 +71,6 @@ class ParserContext
     public function getInitialHeaderLevel(): int
     {
         return $this->initialHeaderLevel;
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public function setVariable(string $variable, $value): void
-    {
-        $this->variables[$variable] = $value;
-    }
-
-    /**
-     * @return array<string|SpanNode>
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
     }
 
     public function setLink(string $name, string $url): void
@@ -129,6 +109,11 @@ class ParserContext
 
     public function absoluteRelativePath(string $url): string
     {
+        $uri = Uri::createFromString($url);
+        if (UriInfo::isAbsolutePath($uri)) {
+            return $this->currentDirectory . '/' . ltrim($url, '/');
+        }
+
         return $this->currentDirectory . '/' . $this->getDirName() . '/' . $this->relativeUrl($url);
     }
 
@@ -183,17 +168,6 @@ class ParserContext
     }
 
     /**
-     * Register the current file's absolute path on the Origin file system.
-     *
-     * You would more or less expect getCurrentFileName to return this information; but that filename does
-     * not return the absolute position on Origin but the relative path from the Documentation Root.
-     */
-    public function setCurrentAbsolutePath(string $path): void
-    {
-        $this->currentAbsolutePath = $path;
-    }
-
-    /**
      * Return the current file's absolute path on the Origin file system.
      *
      * In order to load files relative to the current file (such as embedding UML diagrams) the environment
@@ -204,7 +178,7 @@ class ParserContext
      */
     public function getCurrentAbsolutePath(): string
     {
-        return $this->currentAbsolutePath;
+        return $this->urlGenerator->absoluteUrl($this->currentDirectory, $this->currentFileName);
     }
 
     /** @return string[] */

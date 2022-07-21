@@ -19,6 +19,7 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 
 use function current;
@@ -26,6 +27,7 @@ use function current;
 final class TableOfContentsBuilderTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     public function testApiDocumentationSetNamespacesAreAddedAsTOC(): void
     {

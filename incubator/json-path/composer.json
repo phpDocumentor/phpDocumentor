@@ -1,0 +1,35 @@
+{
+    "name": "phpdocumentor/json-path",
+    "description": "Access php objects with json path expressions",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "phpDocumentor\\JsonPath\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "phpDocumentor\\JsonPath\\": "tests/unit"
+        }
+    },
+    "authors": [
+        {
+            "name": "jaapio",
+            "email": "jaap@phpdoc.org"
+        }
+    ],
+    "require": {
+        "php": "7.4|8.0.*|8.1.*",
+        "parsica-php/parsica": "^0.8.1",
+        "symfony/property-access": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    }
+}

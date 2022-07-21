@@ -8,8 +8,8 @@ use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionList;
 use phpDocumentor\Guides\Nodes\DefinitionLists\DefinitionListTerm;
 use phpDocumentor\Guides\Nodes\Links\Link;
 use phpDocumentor\Guides\Nodes\Lists\ListItem;
-use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 use function array_map;
 use function count;
@@ -23,10 +23,12 @@ class LineDataParser
 {
     /** @var MarkupLanguageParser */
     private $parser;
+    private SpanParser $spanParser;
 
-    public function __construct(MarkupLanguageParser $parser)
+    public function __construct(MarkupLanguageParser $parser, SpanParser $spanParser)
     {
         $this->parser = $parser;
+        $this->spanParser = $spanParser;
     }
 
     public function parseLink(string $line): ?Link
@@ -160,20 +162,20 @@ class LineDataParser
                     );
                 }
 
-                $parts = explode(':', trim($line));
+                $parts = explode(' : ', trim($line));
 
                 $term = $parts[0];
                 unset($parts[0]);
 
                 $classifiers = array_map(
                     function (string $classifier) {
-                        return SpanNode::create($this->parser, $classifier);
+                        return $this->spanParser->parse($classifier, $this->parser->getEnvironment());
                     },
                     array_map('trim', $parts)
                 );
 
                 $definitionListTerm = [
-                    'term' => SpanNode::create($this->parser, $term),
+                    'term' => $this->spanParser->parse($term, $this->parser->getEnvironment()),
                     'classifiers' => $classifiers,
                     'definitions' => [],
                 ];
@@ -181,7 +183,10 @@ class LineDataParser
                 // last line
             } elseif ($definitionListTerm !== null && trim($line) === '' && count($lines) - 1 === $key) {
                 if ($currentDefinition !== null) {
-                    $definitionListTerm['definitions'][] = SpanNode::create($this->parser, $currentDefinition);
+                    $definitionListTerm['definitions'][] = $this->spanParser->parse(
+                        $currentDefinition,
+                        $this->parser->getEnvironment()
+                    );
 
                     $currentDefinition = null;
                 }
@@ -194,7 +199,10 @@ class LineDataParser
 
                 // empty line, start of a new definition for the current term
             } elseif ($currentDefinition !== null && $definitionListTerm !== null && trim($line) === '') {
-                $definitionListTerm['definitions'][] = SpanNode::create($this->parser, $currentDefinition);
+                $definitionListTerm['definitions'][] = $this->spanParser->parse(
+                    $currentDefinition,
+                    $this->parser->getEnvironment()
+                );
 
                 $currentDefinition = null;
             }

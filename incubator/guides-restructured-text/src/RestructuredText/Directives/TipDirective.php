@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\Directives;
 
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
+
 class TipDirective extends AbstractAdmonitionDirective
 {
-    public function __construct()
+    public function __construct(SpanParser $spanParser)
     {
-        parent::__construct('tip', 'Tip');
+        parent::__construct('tip', 'Tip', $spanParser);
     }
 }

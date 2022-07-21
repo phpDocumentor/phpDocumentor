@@ -49,9 +49,6 @@ final class Entry
     /** @var string[] */
     private $resolvedDependencies = [];
 
-    /** @var string[] */
-    private $links;
-
     /** @var string|null */
     private $parent;
 
@@ -59,7 +56,6 @@ final class Entry
      * @param string[][]|string[][][] $titles
      * @param mixed[][] $tocs
      * @param string[] $depends
-     * @param string[] $links
      */
     public function __construct(
         string $file,
@@ -68,7 +64,6 @@ final class Entry
         array $titles,
         array $tocs,
         array $depends,
-        array $links,
         int $mtime
     ) {
         $this->file = $file;
@@ -77,7 +72,6 @@ final class Entry
         $this->titles = $titles;
         $this->tocs = $tocs;
         $this->depends = $depends;
-        $this->links = $links;
         $this->mtime = $mtime;
     }
 
@@ -171,14 +165,6 @@ final class Entry
         }
 
         unset($this->depends[$key]);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getLinks(): array
-    {
-        return $this->links;
     }
 
     public function getMtime(): int

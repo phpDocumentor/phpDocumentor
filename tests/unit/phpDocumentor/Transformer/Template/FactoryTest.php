@@ -88,7 +88,7 @@ final class FactoryTest extends TestCase
         $this->assertSame('This is the description', $result->getDescription());
         $this->assertEquals(['debug' => new Parameter('debug', 'on')], $result->getParameters());
         $this->assertSame(17, $result->count());
-        $this->assertSame('copy', $result[0]->getQuery());
+        $this->assertSame('$.copy', $result[0]->getQuery());
         $this->assertSame('FileIo', $result[0]->getWriter());
         $this->assertSame('templates/clean/htaccess.dist', $result[0]->getSource());
         $this->assertSame('.htaccess', $result[0]->getArtifact());

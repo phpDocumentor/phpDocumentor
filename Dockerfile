@@ -10,7 +10,7 @@ FROM php:8.0
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
 RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
-    && apt-get install --no-install-recommends -yq graphviz libicu-dev libicu67 zlib1g-dev openjdk-11-jre-headless \
+    && apt-get install --no-install-recommends -yq graphviz libicu-dev libicu67 zlib1g-dev openjdk-11-jre-headless gpg \
     && rm -rf /var/lib/apt/lists/* /usr/share/man/man1 \
     && docker-php-ext-install -j$(nproc) intl
 

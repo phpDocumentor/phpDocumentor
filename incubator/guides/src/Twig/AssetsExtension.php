@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Twig;
 
-use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -24,6 +24,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Webmozart\Assert\Assert;
 
+use function dirname;
 use function sprintf;
 use function trim;
 
@@ -32,20 +33,23 @@ final class AssetsExtension extends AbstractExtension
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var PlantumlRenderer */
+    /** @var PlantumlRenderer|null */
     private $plantumlRenderer;
 
-    /** @var Renderer\OutputFormatRenderer */
+    /** @var Renderer */
     private $renderer;
+    private UrlGenerator $urlGenerator;
 
     public function __construct(
         LoggerInterface $logger,
-        PlantumlRenderer $plantumlRenderer,
-        Renderer\OutputFormatRenderer $renderer
+        Renderer $renderer,
+        UrlGenerator $urlGenerator,
+        ?PlantumlRenderer $plantumlRenderer = null
     ) {
         $this->logger = $logger;
         $this->plantumlRenderer = $plantumlRenderer;
         $this->renderer = $renderer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function getFunctions(): array
@@ -68,11 +72,7 @@ final class AssetsExtension extends AbstractExtension
      */
     public function asset(array $context, string $path): string
     {
-        $outputPath = $this->copyAsset(
-            $context['env'] ?? null,
-            $context['destination'] ?? null,
-            $path
-        );
+        $outputPath = $this->copyAsset($context['env'] ?? null, $path);
 
         // make it relative so it plays nice with the base tag in the HEAD
         return trim($outputPath, '/');
@@ -92,26 +92,31 @@ final class AssetsExtension extends AbstractExtension
             throw new RuntimeException('Environment must be set in the twig global state to render nodes');
         }
 
-        return $this->renderer->render($node, $environment);
+        return $this->renderer->renderNode($node, $environment);
     }
 
     public function uml(string $source): ?string
     {
+        if ($this->plantumlRenderer === null) {
+            throw new RuntimeException('Uml renderer must be set in order to render uml diagrams');
+        }
+
         return $this->plantumlRenderer->render($source);
     }
 
-    private function copyAsset(?RenderContext $environment, ?FilesystemInterface $destination, string $path): string
-    {
+    private function copyAsset(
+        ?RenderContext $environment,
+        string $path
+    ): string {
         if (!$environment instanceof RenderContext) {
             return $path;
         }
 
-        if (!$destination instanceof FilesystemInterface) {
-            return $path;
-        }
-
-        $sourcePath = $environment->getCurrentAbsolutePath() . '/' . $path;
-        $outputPath = $environment->outputUrl($path);
+        $sourcePath = $environment->getSourcePath() . '/' . $path;
+        $outputPath = $this->urlGenerator->absoluteUrl(
+            dirname($environment->getDestinationPath()),
+            $environment->canonicalUrl($path)
+        );
 
         Assert::string($outputPath);
         if ($environment->getOrigin()->has($sourcePath) === false) {
@@ -127,7 +132,7 @@ final class AssetsExtension extends AbstractExtension
             return $outputPath;
         }
 
-        $result = $destination->put($outputPath, $fileContents);
+        $result = $environment->getDestination()->put($outputPath, $fileContents);
         if ($result === false) {
             $this->logger->error(sprintf('Unable to write file "%s"', $outputPath));
         }

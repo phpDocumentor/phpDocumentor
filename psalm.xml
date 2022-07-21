@@ -10,6 +10,7 @@
     <projectFiles>
         <directory name="src" />
         <directory name="incubator/guides/src" />
+        <directory name="incubator/json-path/src" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>
@@ -130,5 +131,11 @@
                 <file name="src/phpDocumentor/Descriptor/Builder/Reflector/Tags/InvalidTagAssembler.php" />
             </errorLevel>
         </InvalidCast>
+
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <referencedFunction name="str_starts_with" />
+            </errorLevel>
+        </UndefinedFunction>
     </issueHandlers>
 </psalm>

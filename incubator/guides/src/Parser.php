@@ -19,11 +19,7 @@ use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use RuntimeException;
 
-use function filemtime;
 use function getcwd;
-use function ltrim;
-use function sprintf;
-use function trim;
 
 /**
  * Determines the correct markup language parser to use based on the input and output format and with it, and parses
@@ -93,20 +89,13 @@ final class Parser
             $this->prepare(new Metas(), null, '', 'index');
         }
 
-        $this->parserContext->setCurrentAbsolutePath(
-            $this->buildPathOnFileSystem(
-                $this->parserContext->getCurrentFileName(),
-                $this->parserContext->getCurrentDirectory(),
-                $inputFormat
-            )
-        );
-
         $parser = $this->determineParser($inputFormat);
 
         $this->parserContext->reset();
 
         $document = $parser->parse($this->parserContext, $text);
-        $document->setVariables($this->parserContext->getVariables());
+        $document->setLinks($this->parserContext->getLinks());
+
         $this->addDocumentToMetas($document);
 
         $this->metas         = null;
@@ -141,11 +130,6 @@ final class Parser
         );
     }
 
-    private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
-    {
-        return ltrim(sprintf('%s/%s.%s', trim($currentDirectory, '/'), $file, $extension), '/');
-    }
-
     /**
      * @return array<array<string|null>>
      */
@@ -169,14 +153,13 @@ final class Parser
     private function addDocumentToMetas(DocumentNode $document): void
     {
         $this->metas->set(
-            $this->parserContext->getCurrentFileName(),
+            $document->getFilePath(),
             $this->parserContext->getUrl(),
             $document->getTitle() ? $document->getTitle()->getValueString() : '',
             $document->getTitles(),
             $this->compileTableOfContents($document, $this->parserContext),
-            (int) filemtime($this->parserContext->getCurrentAbsolutePath()),
-            $document->getDependencies(),
-            $this->parserContext->getLinks()
+            0, //TODO: remove this? as the md5 hash of documents should be used for caching
+            $document->getDependencies()
         );
     }
 }

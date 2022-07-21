@@ -21,7 +21,8 @@ final class EnumCaseAssembler extends AssemblerAbstract
         $descriptor = new EnumCaseDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $descriptor->setName($data->getName());
-        $descriptor->setLine($data->getLocation()->getLineNumber());
+        $descriptor->setStartLocation($data->getLocation());
+        $descriptor->setEndLocation($data->getEndLocation());
         $descriptor->setValue($data->getValue());
         $this->assembleDocBlock($data->getDocBlock() ?? new DocBlock(), $descriptor);
 

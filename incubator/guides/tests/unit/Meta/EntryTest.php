@@ -31,7 +31,6 @@ final class EntryTest extends TestCase
      * @covers ::getTitles
      * @covers ::getTocs
      * @covers ::getDepends
-     * @covers ::getLinks
      * @covers ::getMtime
      */
     public function testWhetherAnEntryCanBeRecorded(): void
@@ -46,7 +45,7 @@ final class EntryTest extends TestCase
         $depends = ['other-file.txt'];
         $links = ['another-file'];
 
-        $entry = new Entry($file, $url, $title, $titles, $tocs, $depends, $links, $mtime);
+        $entry = new Entry($file, $url, $title, $titles, $tocs, $depends, $mtime);
 
         self::assertSame($file, $entry->getFile());
         self::assertSame($url, $entry->getUrl());
@@ -54,7 +53,6 @@ final class EntryTest extends TestCase
         self::assertSame($titles, $entry->getTitles());
         self::assertSame($tocs, $entry->getTocs());
         self::assertSame($depends, $entry->getDepends());
-        self::assertSame($links, $entry->getLinks());
         self::assertSame($mtime, $entry->getMtime());
     }
 
@@ -71,7 +69,6 @@ final class EntryTest extends TestCase
             [['title1'], ['title2']],
             [['dunno?']],
             ['other-file.txt'],
-            ['another-file'],
             time()
         );
 

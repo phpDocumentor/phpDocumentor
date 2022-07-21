@@ -16,9 +16,13 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Twig\AssetsExtension;
+use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\Test\TestLogger;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
@@ -46,7 +50,12 @@ final class EnvironmentFactoryTest extends TestCase
 
         $this->factory = new EnvironmentFactory(
             new LinkRenderer($this->router->reveal()),
-            $markDownConverter->reveal()
+            $markDownConverter->reveal(),
+            new AssetsExtension(
+                new TestLogger(),
+                $this->prophesize(Renderer::class)->reveal(),
+                new UrlGenerator()
+            )
         );
     }
 
@@ -63,7 +72,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(5, $environment->getExtensions());
+        $this->assertCount(6, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
@@ -88,6 +97,7 @@ final class EnvironmentFactoryTest extends TestCase
             [
                 new FlySystemLoader($mountManager->getFilesystem('templates'), '', 'base'),
                 new FlySystemLoader($mountManager->getFilesystem('template')),
+                new FlySystemLoader($mountManager->getFilesystem('guides'), '', 'guides'),
             ],
             $loader->getLoaders()
         );
@@ -110,7 +120,7 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(5, $environment->getExtensions());
+        $this->assertCount(6, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }

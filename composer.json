@@ -11,6 +11,9 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "phpDocumentor\\JsonPath\\" : [
+                "incubator/json-path/tests/unit/"
+            ],
             "phpDocumentor\\": [
                 "tests/unit/phpDocumentor/",
                 "tests/integration/phpDocumentor/",
@@ -24,7 +27,8 @@
     "repositories": [
         { "type": "path", "url": "incubator/guides" },
         { "type": "path", "url": "incubator/guides-restructured-text" },
-        { "type": "path", "url": "incubator/guides-markdown" }
+        { "type": "path", "url": "incubator/guides-markdown" },
+        { "type": "path", "url": "incubator/json-path" }
     ],
     "require": {
         "php": "^7.4.0||^8.0",
@@ -42,14 +46,15 @@
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
         "league/tactician-bundle": "^1.2",
-        "league/uri": "~6.3.0",
+        "league/uri": "~6.5.0",
         "league/uri-interfaces": "^2.0",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
         "phpdocumentor/guides": "*@dev",
         "phpdocumentor/guides-markdown": "*@dev",
         "phpdocumentor/guides-restructured-text": "*@dev",
-        "phpdocumentor/reflection": "^5.1",
+        "phpdocumentor/json-path": "*@dev",
+        "phpdocumentor/reflection": "^5.2",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.0",
         "phpdocumentor/type-resolver": "^1.6",
@@ -66,7 +71,7 @@
         "symfony/expression-language": "^5.0",
         "symfony/filesystem": "^5.0",
         "symfony/finder": "5.4.*",
-        "symfony/flex": "^1.3.1",
+        "symfony/flex": "^1.17",
         "symfony/framework-bundle": "^5.0",
         "symfony/http-foundation": "^5.0.7",
         "symfony/http-kernel": "^5.0.8",

@@ -64,10 +64,10 @@ final class Uml extends Directive
         $node->setClasses(explode(' ', $options['classes'] ?? ''));
         $node->setCaption($caption);
 
+        $document = $parser->getDocument();
         if ($variable !== '') {
-            $environment->setVariable($variable, $node);
+            $document->addVariable($variable, $node);
         } else {
-            $document = $parser->getDocument();
             $document->addNode($node);
         }
     }

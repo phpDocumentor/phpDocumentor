@@ -33,7 +33,10 @@ export default function() {
             .type('pizza');
 
         let searchResults = cy.get('.phpdocumentor-search-results');
-        searchResults.get('ul li').contains('Pizza').click();
+        searchResults
+            .get('ul li').contains('Pizza')
+            .click({force: true});
+
         cy.url().should('include', '/namespaces/marios-pizza.html');
     });
 
@@ -43,7 +46,7 @@ export default function() {
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('have.class', 'phpdocumentor-search--has-results');
         cy.get('.phpdocumentor-header .phpdocumentor-search input[type="search"]')
-            .clear();
+            .clear({ force: true });
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');
 
@@ -58,7 +61,9 @@ export default function() {
             .type('pizza')
             .blur(); // Ensure focus is gone
 
-        cy.get('body').type('{esc}');
+        cy.get('.phpdocumentor-search-results__dialog')
+            .parents('body')
+            .type('{esc}');
 
         cy.get('.phpdocumentor-header .phpdocumentor-search')
             .should('not.have.class', 'phpdocumentor-search--has-results');

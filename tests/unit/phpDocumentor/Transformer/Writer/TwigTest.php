@@ -19,8 +19,8 @@ use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
@@ -62,6 +62,9 @@ final class TwigTest extends TestCase
     /** @var Twig */
     private $writer;
 
+    /** @var PathGenerator&ObjectProphecy */
+    private $pathGenerator;
+
     protected function setUp(): void
     {
         $root = vfsStream::setup();
@@ -83,12 +86,12 @@ final class TwigTest extends TestCase
         $this->template = new Template('My Template', $mountManager);
 
         $this->environmentFactory = $this->prophesize(EnvironmentFactory::class);
+        $this->pathGenerator = $this->prophesize(PathGenerator::class);
+
         $this->writer = new Twig(
             $this->environmentFactory->reveal(),
-            new PathGenerator(
-                $this->prophesize(Router::class)->reveal(),
-                new Pathfinder()
-            )
+            $this->pathGenerator->reveal(),
+            $this->prophesize(Engine::class)->reveal()
         );
     }
 
@@ -107,6 +110,7 @@ final class TwigTest extends TestCase
     {
         $targetDir = $this->destinationFolder->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
+        $this->pathGenerator->generate(Argument::any(), Argument::any())->willReturn('index.html');
 
         $this->givenATwigEnvironmentFactoryWithTemplates(
             ['/index.html.twig' => 'This is a twig file']

@@ -49,10 +49,15 @@ final class StopwatchMiddleware implements Middleware
     {
         $result = $next($command);
 
-        $lap       = $this->stopwatch->lap('parser.parse');
+        $lap = $this->stopwatch->lap('parser.parse');
         $oldMemory = $this->memory;
-        $periods   = $lap->getPeriods();
-        $memory    = end($periods)->getMemory();
+        $periods = $lap->getPeriods();
+        $lastPeriod = end($periods);
+        if (!$lastPeriod) {
+            return $result;
+        }
+
+        $memory = $lastPeriod->getMemory();
 
         $differenceInMemory = $memory - $oldMemory;
         $this->log(

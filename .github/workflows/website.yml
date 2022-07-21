@@ -52,5 +52,5 @@ jobs:
         uses: jaapio/keelsh-deploy@1.0.0
         with:
           keelBaseUrl: ${{ secrets.KEEL_BASE_URL }}
-          image: 'docker.pkg.github.com/phpdocumentor/phpdocumentor/phpdoc-website'
+          image: 'ghcr.io/phpdocumentor/phpdocumentor/phpdoc-website'
           tag: ${{ steps.latest_build.outputs.tag }}

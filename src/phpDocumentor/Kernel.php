@@ -15,11 +15,13 @@ namespace phpDocumentor;
 
 use Phar;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
+use phpDocumentor\Guides\DependencyInjection\NodeRenderersPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Webmozart\Assert\Assert;
 
 use function getcwd;
 use function is_dir;
@@ -51,10 +53,15 @@ class Kernel extends BaseKernel
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
      * ```
+     *
+     * @noinspection PhpUnused this method is used in the services.yaml and the inspection does not pick this up.
      */
     public function getWorkingDir(): string
     {
-        return getcwd();
+        $workingDirectory = getcwd();
+        Assert::stringNotEmpty($workingDirectory);
+
+        return $workingDirectory;
     }
 
     public function getCacheDir(): string
@@ -64,7 +71,7 @@ class Kernel extends BaseKernel
 
     public function getLogDir(): string
     {
-        if ($this->isPhar()) {
+        if (self::isPhar()) {
             return '/tmp/php-doc/log';
         }
 
@@ -77,10 +84,8 @@ class Kernel extends BaseKernel
      * I am not quite sure why, but without this overridden method Symfony will use the 'src' directory as Project Dir
      * when phpDocumentor is installed using Composer. Without being installed with composer it works fine without
      * this hack.
-     *
-     * @return string
      */
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return parent::getProjectDir();
     }
@@ -100,6 +105,7 @@ class Kernel extends BaseKernel
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
+        $container->addCompilerPass(new NodeRenderersPass());
     }
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void

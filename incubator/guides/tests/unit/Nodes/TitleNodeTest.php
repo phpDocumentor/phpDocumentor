@@ -29,7 +29,7 @@ final class TitleNodeTest extends MockeryTestCase
         $parser = m::mock(MarkupLanguageParser::class);
         $parser->shouldReceive('getEnvironment')->andReturn($environment);
 
-        $titleNode = SpanNode::create($parser, 'Raw String');
+        $titleNode = new SpanNode('Raw String');
         $node = new TitleNode($titleNode, 1);
         $node->setTarget('target');
 

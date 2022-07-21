@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\Parser\LineChecker;
 use phpDocumentor\Guides\RestructuredText\Parser\LineDataParser;
 use phpDocumentor\Guides\RestructuredText\Parser\LinesIterator;
 use phpDocumentor\Guides\RestructuredText\Parser\TableParser;
+use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 use function trim;
 
@@ -41,7 +42,7 @@ final class TableRule implements Rule
     public function __construct(MarkupLanguageParser $parser)
     {
         $this->parser = $parser;
-        $this->lineChecker = new LineChecker(new LineDataParser($parser));
+        $this->lineChecker = new LineChecker(new LineDataParser($parser, new SpanParser()));
         $this->tableParser = new TableParser();
     }
 
