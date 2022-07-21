@@ -17,8 +17,8 @@ final class UsedByBuilderTest extends TestCase
 
     public function testCounterPartOfUsesWillGetTagUsedBy(): void
     {
-        $class = $this->faker()->classDescriptor();
-        $counterClass = $this->faker()->classDescriptor();
+        $class = $this->faker()->classDescriptor($this->faker()->fqsen());
+        $counterClass = $this->faker()->classDescriptor($this->faker()->fqsen());
 
         $usesTag = new UsesDescriptor('uses');
         $usesTag->setReference($counterClass);
