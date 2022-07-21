@@ -80,8 +80,9 @@ class Factory
         foreach ($templates as $template) {
             $stopWatch->start('load template');
 
-            $templateNameOrLocation = $template['location'] instanceof Path
-                ? ($template['location'] . '/' . $template['name'])
+            $location = $template['location'] ?? null;
+            $templateNameOrLocation = $location instanceof Path
+                ? ($location . '/' . $template['name'])
                 : $template['name'];
 
             $loadedTemplates[$template['name']] = $this->loadTemplate(
