@@ -6,7 +6,6 @@ namespace phpDocumentor\Configuration\Definition;
 
 interface Upgradable
 {
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Attempt to upgrade the given result of this definition to a newer version of the configuration.
      *
@@ -21,10 +20,9 @@ interface Upgradable
      * The 'configVersion' field in the result will inform the ConfigurationFactory what the next Configuration
      * definition should be used to parse this result.
      *
-     * @param array<string, mixed> $values
+     * @param array<mixed> $values
      *
-     * @return array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: string, cache: string}, version?: array{array{api: array{array{default-package-name: string, extensions: array{extensions: array<array-key, string>}, ignore: array{paths: array<array-key, string>}, markers: array{markers: array<array-key, mixed>}, source: array{paths: array<array-key, string>}, visibilities: non-empty-list<string>}}, number: string}}}, settings?: array<mixed>, templates?: non-empty-list<string>}
+     * @return array<mixed>
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function upgrade(array $values): array;
 }

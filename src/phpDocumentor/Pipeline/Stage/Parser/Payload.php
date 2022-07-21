@@ -14,42 +14,42 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
 use phpDocumentor\Pipeline\Stage\Payload as ApplicationPayload;
 use phpDocumentor\Reflection\File;
+use Webmozart\Assert\Assert;
 
 use function array_merge;
 use function current;
 
+/**
+ * @psalm-import-type ConfigurationMap from Configuration
+ */
 final class Payload extends ApplicationPayload
 {
     /** @var File[] */
-    private $files;
+    private array $files;
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{phpdocumentor: array{configVersion: string, title?: string, use-cache?: bool, paths?: array{output: Dsn, cache: Path}, versions?: array<string, VersionSpecification>, settings?: array<mixed>, templates?: non-empty-list<string>}} $config
+     * @param ConfigurationMap $config
      * @param File[] $files
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function __construct(array $config, ProjectDescriptorBuilder $builder, array $files = [])
     {
         parent::__construct($config, $builder);
         $this->files = $files;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * @return array<int, ApiSpecification>
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public function getApiConfigs(): array
     {
         // Grep only the first version for now. Multi version support will be added later
         $version = current($this->getConfig()['phpdocumentor']['versions']);
+        Assert::isInstanceOf($version, VersionSpecification::class);
 
         return $version->getApi();
     }

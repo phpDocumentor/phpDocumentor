@@ -22,11 +22,9 @@ parameters:
 
     # Bad design of descriptors.
     - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
+
     # https://github.com/phpDocumentor/phpDocumentor/issues/2279
     - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
-
-    # phpstan/phpstan/issues/3951
-    - '#Method phpDocumentor\\Descriptor\\ProjectDescriptorBuilder::filterDescriptor\(\) should return TDescriptor of phpDocumentor\\Descriptor\\Descriptor\|null but returns phpDocumentor\\Descriptor\\Filter\\Filterable\|null\.#'
 
     # PHPStan has issue when involving templates and parent types
     - '#Parameter \#1 \$matcher of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\Matcher<object>, phpDocumentor\\Descriptor\\Builder\\Matcher<.+> given\.#'
@@ -34,11 +32,9 @@ parameters:
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
 
-    # Design improvement of configuration needed
-    - '#Parameter \#1 \$templates of method phpDocumentor\\Transformer\\Template\\Factory::getTemplates\(\) expects array<int, array\(.*\)>, array<int, string> given\.#'
-
-    # Advanced transformations of array. PHPStan doesn't seem to keep nonEmpty flag through some array functions
-    - '#Method phpDocumentor\\Configuration\\Definition\\Version2::upgrade\(\) should return.+#'
+    # PHPStan doesn't support inheritance of a generic in a generic
+    - '/Parameter \#2 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::set\(\)/'
+    - '/Parameter \#1 \$collection of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>::merge\(\)/'
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"
@@ -64,7 +60,8 @@ parameters:
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setFontSize\\(\\) expects float, string given\\.$#"
             count: 1
             path: src/phpDocumentor/Transformer/Writer/Graph/GraphVizClassDiagram.php
-  excludes_analyse:
+
+  excludePaths:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php
     - %currentWorkingDirectory%/tests/data/*.php

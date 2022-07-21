@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use ArrayAccess;
+use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 
+use function array_map;
 use function sprintf;
 
 /**
+ * @psalm-import-type ConfigurationApiMap from Version3
  * @implements ArrayAccess<String, mixed>
  */
 final class ApiSpecification implements ArrayAccess
@@ -33,7 +37,12 @@ final class ApiSpecification implements ArrayAccess
     /** @var string */
     private $output;
 
-    /** @var array{paths: array<Path>} */
+    /** @var array{
+     *      hidden: bool,
+     *      symlinks: bool,
+     *      paths: list<string>
+     *  }
+     */
     private $ignore;
 
     /** @var non-empty-list<string> */
@@ -64,7 +73,7 @@ final class ApiSpecification implements ArrayAccess
     private $validate;
 
     /**
-     * @param array{paths: array<Path>} $ignore
+     * @param array{hidden: bool, symlinks: bool, paths: list<string>} $ignore
      * @param non-empty-list<string> $extensions
      * @param array<string> $visibility
      * @param array<string> $markers
@@ -98,15 +107,19 @@ final class ApiSpecification implements ArrayAccess
         $this->validate = $validate;
     }
 
-    //phpcs:disable Generic.Files.LineLength.TooLong
     /**
-     * @param array{ignore-tags: array<string>, extensions: non-empty-array<string>, markers: non-empty-array<string>, visibility: non-empty-array<string>, source: array{dsn: Dsn, paths: array}, ignore: array{paths: array}, encoding: string, output: string, default-package-name: string, examples: array{dsn: string, paths: array}, include-source: bool, validate: bool} $api
+     * @param ConfigurationApiMap $api
      */
-    //phpcs:enable Generic.Files.LineLength.TooLong
     public static function createFromArray(array $api): self
     {
+        $sourcePaths = $api['source']['paths'];
+        Assert::allIsInstanceOf($sourcePaths, Path::class);
+
+        $sourceDsn = $api['source']['dsn'];
+        Assert::isInstanceOf($sourceDsn, Dsn::class);
+
         return new self(
-            new Source($api['source']['dsn'], $api['source']['paths']),
+            new Source($sourceDsn, $sourcePaths),
             $api['output'],
             $api['ignore'],
             $api['extensions'],
@@ -115,8 +128,11 @@ final class ApiSpecification implements ArrayAccess
             $api['include-source'],
             $api['markers'],
             $api['ignore-tags'],
-            isset($api['examples']) ?
-                new Source(Dsn::createFromString($api['examples']['dsn']), $api['examples']['paths'])
+            isset($api['examples'])
+                ? new Source(
+                    Dsn::createFromString($api['examples']['dsn']),
+                    array_map(static fn (string $path) => new Path($path), $api['examples']['paths'])
+                )
                 : null,
             $api['encoding'],
             $api['validate']
@@ -132,6 +148,8 @@ final class ApiSpecification implements ArrayAccess
             ),
             './api',
             [
+                'hidden' => true,
+                'symlinks' => true,
                 'paths' => [],
             ],
             ['php'],
@@ -155,7 +173,7 @@ final class ApiSpecification implements ArrayAccess
     }
 
     /**
-     * @param array{paths: non-empty-array<Path>} $ignore
+     * @param array{hidden: bool, symlinks: bool, paths: list<string>} $ignore
      */
     public function setIgnore(array $ignore): void
     {

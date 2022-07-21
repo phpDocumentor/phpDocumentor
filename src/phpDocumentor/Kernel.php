@@ -53,6 +53,8 @@ class Kernel extends BaseKernel
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.dist.xml'"
      *           - "@=service('kernel').getWorkingDir() ~ '/phpdoc.xml.dist'"
      * ```
+     *
+     * @noinspection PhpUnused this method is used in the services.yaml and the inspection does not pick this up.
      */
     public function getWorkingDir(): string
     {
@@ -82,10 +84,8 @@ class Kernel extends BaseKernel
      * I am not quite sure why, but without this overridden method Symfony will use the 'src' directory as Project Dir
      * when phpDocumentor is installed using Composer. Without being installed with composer it works fine without
      * this hack.
-     *
-     * @return string
      */
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return parent::getProjectDir();
     }

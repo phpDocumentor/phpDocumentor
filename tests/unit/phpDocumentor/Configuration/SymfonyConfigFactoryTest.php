@@ -6,7 +6,7 @@ namespace phpDocumentor\Configuration;
 
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Definition\Upgradable;
-use phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException;
+use phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
@@ -58,13 +58,13 @@ final class SymfonyConfigFactoryTest extends TestCase
     }
 
     /**
-     * @uses \phpDocumentor\Configuration\Exception\UnSupportedConfigVersionException::create
+     * @uses \phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException::create
      *
      * @covers ::createFromFile
      */
     public function testThrowsExceptionWhenConfigVersionIsNotSupported(): void
     {
-        $this->expectException(UnSupportedConfigVersionException::class);
+        $this->expectException(UnsupportedConfigVersionException::class);
 
         $root = vfsStream::setup();
         $configFile = vfsStream::newFile('config.xml')->withContent(

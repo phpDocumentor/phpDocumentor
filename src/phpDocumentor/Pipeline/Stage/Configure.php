@@ -23,55 +23,44 @@ use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use phpDocumentor\UriFactory;
 use Psr\Log\LoggerInterface;
-use Webmozart\Assert\Assert;
 
-use function getcwd;
 use function realpath;
 use function sprintf;
 
 final class Configure
 {
-    /** @var ConfigurationFactory */
-    private $configFactory;
-
-    /** @var Configuration */
-    private $configuration;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var Locator */
-    private $locator;
-
-    /** @var EnvironmentFactory */
-    private $environmentFactory;
+    private ConfigurationFactory $configFactory;
+    private Configuration $configuration;
+    private LoggerInterface $logger;
+    private Locator $locator;
+    private EnvironmentFactory $environmentFactory;
+    private string $currentWorkingDir;
 
     public function __construct(
         ConfigurationFactory $configFactory,
         Configuration $configuration,
         LoggerInterface $logger,
         Locator $locator,
-        EnvironmentFactory $environmentFactory
+        EnvironmentFactory $environmentFactory,
+        string $currentWorkingDir
     ) {
         $this->configFactory = $configFactory;
         $this->configuration = $configuration;
         $this->logger = $logger;
         $this->locator = $locator;
         $this->environmentFactory = $environmentFactory;
+        $this->currentWorkingDir = $currentWorkingDir;
     }
 
     /**
      * @param array<string|string[]> $options
      *
-     * @return array<string, array>
+     * @return array<string, array<mixed>>
      */
     public function __invoke(array $options): array
     {
-        $currentWorkingDir = getcwd();
-        Assert::stringNotEmpty($currentWorkingDir);
-
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory, $currentWorkingDir)
+            new CommandlineOptionsMiddleware($options, $this->configFactory, $this->currentWorkingDir)
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
         $this->configFactory->addMiddleware(new ProvideTemplateOverridePathMiddleware($this->environmentFactory));

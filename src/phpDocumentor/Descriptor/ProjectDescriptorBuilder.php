@@ -100,7 +100,12 @@ class ProjectDescriptorBuilder
         }
 
         // create Descriptor and populate with the provided data
-        return $this->filterDescriptor($assembler->create($data));
+        $descriptor = $assembler->create($data);
+        if ($descriptor === null) {
+            return null;
+        }
+
+        return $this->filterDescriptor($descriptor);
     }
 
     /**

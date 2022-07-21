@@ -34,10 +34,10 @@ final class Source implements ArrayAccess
     /** @var Dsn */
     private $dsn;
 
-    /** @var Path[] */
+    /** @var array<array-key, Path> */
     private $paths;
 
-    /** @param Path[] $paths */
+    /** @param array<array-key, Path> $paths */
     public function __construct(Dsn $dsn, array $paths)
     {
         $this->dsn = $dsn;
