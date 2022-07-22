@@ -211,4 +211,11 @@ final class Provider extends Base
 
         return $classDescriptor;
     }
+
+    public function fqsen($maxDepth = 3): Fqsen
+    {
+        $parts = $this->generator->words($maxDepth);
+
+        return new Fqsen('\\' . implode('\\', $parts));
+    }
 }
