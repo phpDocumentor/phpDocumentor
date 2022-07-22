@@ -34,7 +34,7 @@ class SinceAssembler extends BaseTagAssembler
     public function buildDescriptor(object $data): SinceDescriptor
     {
         $descriptor = new SinceDescriptor($data->getName());
-        $descriptor->setVersion($data->getVersion());
+        $descriptor->setVersion($data->getVersion() ?? '');
 
         return $descriptor;
     }
