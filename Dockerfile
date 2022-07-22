@@ -24,5 +24,3 @@ COPY --from=build /opt/phpdoc /opt/phpdoc
 RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini && phpdoc cache:warm
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
-
-CMD ["help", "run"]
