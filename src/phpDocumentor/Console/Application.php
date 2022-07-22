@@ -25,6 +25,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use function file_get_contents;
 use function ltrim;
 use function sprintf;
+use function strlen;
 use function trim;
 
 class Application extends BaseApplication
@@ -42,7 +43,7 @@ class Application extends BaseApplication
     protected function getCommandName(InputInterface $input): ?string
     {
         try {
-            if ($input->getFirstArgument() !== null) {
+            if ($this->looksLikeACommandName($input->getFirstArgument())) {
                 $this->find($input->getFirstArgument());
 
                 return $input->getFirstArgument();
@@ -104,5 +105,18 @@ class Application extends BaseApplication
         }
 
         return $version;
+    }
+
+    /**
+     * Only interpret the first argument as a potential command name if it is set and less than 100 characters.
+     *
+     * Anything above 255 characters will cause PHP warnings; and 100  should never occur anyway as a single
+     * command name.
+     *
+     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
+     */
+    private function looksLikeACommandName(?string $argument): bool
+    {
+        return $argument !== null && strlen($argument) < 100;
     }
 }

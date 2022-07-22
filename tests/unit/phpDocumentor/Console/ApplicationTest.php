@@ -22,12 +22,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+use function str_repeat;
+
 /**
  * @coversDefaultClass \phpDocumentor\Console\Application
  * @covers ::__construct
  * @covers ::<private>
  */
-class ApplicationTest extends TestCase
+final class ApplicationTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -66,7 +68,44 @@ class ApplicationTest extends TestCase
             return 2;
         }));
 
-        $this->assertSame(1, $this->feature->run(new StringInput('my:command -q')));
+        self::assertSame(1, $this->feature->run(new StringInput('my:command -q')));
+    }
+
+    /**
+     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
+     *
+     * @covers ::getCommandName
+     */
+    public function testCommandNamesLongerThanHundredCharactersAreIgnored(): void
+    {
+        $commandName = str_repeat('a', 101);
+        $_SERVER['argv'] = ['binary', $commandName];
+        $this->feature->add((new Command('my:command'))->setCode(function () {
+            return 1;
+        }));
+        $this->feature->add((new Command('project:run'))->setCode(function () {
+            return 2;
+        }));
+
+        self::assertSame(2, $this->feature->run(new StringInput($commandName . ' -q')));
+    }
+
+    /**
+     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
+     *
+     * @covers ::getCommandName
+     */
+    public function testUnknownCommandNamesAreIgnored(): void
+    {
+        $_SERVER['argv'] = ['binary', 'unknown'];
+        $this->feature->add((new Command('my:command'))->setCode(function () {
+            return 1;
+        }));
+        $this->feature->add((new Command('project:run'))->setCode(function () {
+            return 2;
+        }));
+
+        self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
     }
 
     /**
@@ -82,7 +121,7 @@ class ApplicationTest extends TestCase
             return 2;
         }));
 
-        $this->assertSame(2, $this->feature->run(new StringInput('-q')));
+        self::assertSame(2, $this->feature->run(new StringInput('-q')));
     }
 
     /**
@@ -92,8 +131,8 @@ class ApplicationTest extends TestCase
     {
         $definition = $this->feature->getDefinition();
 
-        $this->assertTrue($definition->hasOption('config'));
-        $this->assertTrue($definition->hasOption('log'));
+        self::assertTrue($definition->hasOption('config'));
+        self::assertTrue($definition->hasOption('log'));
     }
 
     /**
