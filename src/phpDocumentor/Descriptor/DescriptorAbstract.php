@@ -430,6 +430,20 @@ abstract class DescriptorAbstract implements Filterable
             }
         }
 
+        /** @var Error $error */
+        foreach ($errors as $error) {
+            if ($error->getLine() !== 0) {
+                continue;
+            }
+
+            $startLocation = $this->getStartLocation();
+            if ($startLocation === null) {
+                continue;
+            }
+
+            $error->setLine($startLocation->getLineNumber());
+        }
+
         return $errors;
     }
 
