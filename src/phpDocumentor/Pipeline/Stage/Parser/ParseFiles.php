@@ -54,7 +54,7 @@ final class ParseFiles
 
         $builder = $payload->getBuilder();
         $builder->setApiSpecification($apiConfig);
-        $builder->setVisibility($apiConfig->calculateVisiblity());
+
         $encoding = $apiConfig['encoding'] ?? '';
         if ($encoding) {
             $this->reEncodingMiddleware->withEncoding($encoding);
@@ -66,6 +66,7 @@ final class ParseFiles
 
         $this->log('Parsing files', LogLevel::NOTICE);
         $project = $this->parser->parse($payload->getFiles());
+
         $payload->getBuilder()->createApiDocumentationSet($project);
 
         return $payload;
