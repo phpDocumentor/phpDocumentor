@@ -15,10 +15,8 @@ framework:
         pools:
             files:
                 adapter: app.projectcache.provider
-                default_lifetime: 2629743 # 1 month
             descriptors:
                 adapter: app.projectcache.provider
-                default_lifetime: 2629743 # 1 month
 
 services:
     app.projectcache.provider:
