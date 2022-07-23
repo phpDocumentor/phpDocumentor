@@ -31,15 +31,13 @@ use function unserialize;
 
 final class CacheMiddleware implements Middleware
 {
-    /** @var CacheInterface */
-    private $cache;
+    private CacheInterface $cache;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(CacheInterface $files, LoggerInterface $logger)
     {
-        $this->cache  = $files;
+        $this->cache = $files;
         $this->logger = $logger;
     }
 
@@ -47,13 +45,11 @@ final class CacheMiddleware implements Middleware
      * Executes this middle ware class.
      * A middle ware class MUST return a File object or call the $next callable.
      *
-     * @param callable(Command): object $next
-     *
-     * @return File
+     * @param callable(Command): File $next
      *
      * @throws InvalidArgumentException
      */
-    public function execute(Command $command, callable $next): object
+    public function execute(Command $command, callable $next): File
     {
         Assert::isInstanceOf($command, CreateCommand::class);
 
@@ -69,6 +65,10 @@ final class CacheMiddleware implements Middleware
             }
         );
 
-        return unserialize(base64_decode($cacheResponse));
+        $unserializedObject = unserialize(base64_decode($cacheResponse));
+
+        Assert::isInstanceOf($unserializedObject, File::class);
+
+        return $unserializedObject;
     }
 }

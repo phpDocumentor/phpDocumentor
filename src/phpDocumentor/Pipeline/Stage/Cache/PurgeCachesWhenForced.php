@@ -19,14 +19,9 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 final class PurgeCachesWhenForced
 {
-    /** @var AdapterInterface  */
-    private $filesCache;
-
-    /** @var AdapterInterface  */
-    private $descriptorsCache;
-
-    /** @var LoggerInterface  */
-    private $logger;
+    private AdapterInterface $filesCache;
+    private AdapterInterface $descriptorsCache;
+    private LoggerInterface $logger;
 
     public function __construct(
         AdapterInterface $filesCache,

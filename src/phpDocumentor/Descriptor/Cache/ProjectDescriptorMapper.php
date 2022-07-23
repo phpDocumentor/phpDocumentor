@@ -34,8 +34,7 @@ class ProjectDescriptorMapper
 
     public const KEY_SETTINGS = 'phpDocumentor-projectDescriptor-settings';
 
-    /** @var AdapterInterface $cache */
-    private $cache;
+    private AdapterInterface $cache;
 
     /**
      * Initializes this mapper with the given cache instance.
