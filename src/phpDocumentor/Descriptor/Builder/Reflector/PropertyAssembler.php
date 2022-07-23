@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Php\Property;
 
 use function strlen;
@@ -49,7 +51,22 @@ class PropertyAssembler extends AssemblerAbstract
         $this->assembleDocBlock($data->getDocBlock(), $propertyDescriptor);
         $propertyDescriptor->setStartLocation($data->getLocation());
         $propertyDescriptor->setEndLocation($data->getEndLocation());
+        $this->overwriteTypeFromDocBlock($propertyDescriptor);
 
         return $propertyDescriptor;
+    }
+
+    private function overwriteTypeFromDocBlock(PropertyDescriptor $propertyDescriptor): void
+    {
+        /** @var Collection<VarDescriptor> $varTags */
+        $varTags = $propertyDescriptor->getTags()
+            ->fetch('var', new Collection())
+            ->filter(VarDescriptor::class);
+
+        if ($varTags->count() !== 1) {
+            return;
+        }
+
+        $propertyDescriptor->setType($varTags[0]->getType());
     }
 }
