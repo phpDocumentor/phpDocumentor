@@ -73,7 +73,6 @@ Outline
   - More Specific Type-Hinting
   - Describing Relations
   - Working with Markers
-  - Writing more with less
 - Integrating into your site
   - Add your own menu items
   - Adjust styling to match your own
@@ -83,6 +82,9 @@ Outline
 - Extending phpDocumentor
   - Adding Custom Tags
   - Adding Custom Directives
+- Features
+  - Caching
+  - Inheritance
 - References
   - Command-line arguments
   - Configuration

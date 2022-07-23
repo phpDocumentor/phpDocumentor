@@ -6,6 +6,7 @@
 
    getting-started/index
    guides/index
+   features/index
    references/index
    internals/index
    hand-written-docs/index
