@@ -16,6 +16,7 @@ namespace phpDocumentor\Configuration;
 use League\Uri\Contracts\UriInterface;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use Symfony\Component\Filesystem\Path as SymfonyPath;
 use Webmozart\Assert\Assert;
 
 use function array_map;
@@ -26,6 +27,8 @@ use function current;
 use function end;
 use function explode;
 use function implode;
+
+use const DIRECTORY_SEPARATOR;
 
 final class CommandlineOptionsMiddleware implements MiddlewareInterface
 {
@@ -105,8 +108,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteCacheFolder(Configuration $configuration): Configuration
     {
-        if (isset($this->options['cache-folder']) && $this->options['cache-folder']) {
-            $configuration['phpdocumentor']['paths']['cache'] = new Path($this->options['cache-folder']);
+        $cacheFolder = $this->options['cache-folder'] ?? null;
+        if ($cacheFolder !== null) {
+            if (SymfonyPath::isAbsolute($cacheFolder) === false) {
+                $cacheFolder = $this->currentWorkingDir->getPath() . DIRECTORY_SEPARATOR . $cacheFolder;
+            }
+
+            $configuration['phpdocumentor']['paths']['cache'] = new Path($cacheFolder);
         }
 
         return $configuration;
