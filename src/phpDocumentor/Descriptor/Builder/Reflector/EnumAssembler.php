@@ -102,6 +102,7 @@ final class EnumAssembler extends AssemblerAbstract
                 continue;
             }
 
+            $caseDescriptor->setParent($descriptor);
             $descriptor->getCases()->set($caseDescriptor->getName(), $caseDescriptor);
         }
     }

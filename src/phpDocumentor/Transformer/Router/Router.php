@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
+use phpDocumentor\Descriptor\EnumCaseDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
@@ -94,6 +95,14 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getFullyQualifiedStructuralElementName()
+            );
+        }
+
+        if ($node instanceof EnumCaseDescriptor && $node->getParent() instanceof EnumDescriptor) {
+            return $this->generateUrlForDescriptor(
+                'class',
+                (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
+                'enumcase_' . $node->getName()
             );
         }
 

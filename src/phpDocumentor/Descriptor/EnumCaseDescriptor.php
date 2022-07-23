@@ -19,10 +19,11 @@ namespace phpDocumentor\Descriptor;
  * @api
  * @package phpDocumentor\AST
  */
-final class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
+class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
 {
-    /** @var string|null */
-    private $value;
+    private ?EnumDescriptor $parent = null;
+
+    private ?string $value;
 
     public function setValue(?string $value): void
     {
@@ -32,5 +33,15 @@ final class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\
     public function getValue(): ?string
     {
         return $this->value;
+    }
+
+    public function getParent(): ?EnumDescriptor
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?EnumDescriptor $parent): void
+    {
+        $this->parent = $parent;
     }
 }
