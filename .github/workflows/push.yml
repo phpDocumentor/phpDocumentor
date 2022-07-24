@@ -91,7 +91,7 @@ jobs:
         composer-options: --optimize-autoloader
 
     - name: Install PHPUnit extensions
-      run: mkdir -p tools/phpunit.d && wget -O tools/phpunit.d/prophecy-phpunit.phar https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
+      run: mkdir -p tools/phpunit.d && curl https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
 
     - name: PHPUnit
       run: phpunit --testsuite=unit
@@ -329,7 +329,7 @@ jobs:
         composer-options: --optimize-autoloader
 
     - name: Install PHPUnit extensions
-      run: mkdir -p tools/phpunit.d && wget -O tools/phpunit.d/prophecy-phpunit.phar https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
+      run: mkdir -p tools/phpunit.d && curl https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
 
     - name: Run PHPUnit
       run: phpunit --testsuite=unit,integration
