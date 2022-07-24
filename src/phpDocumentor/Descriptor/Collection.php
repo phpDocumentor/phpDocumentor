@@ -23,6 +23,7 @@ use ReturnTypeWillChange;
 use Webmozart\Assert\Assert;
 
 use function array_filter;
+use function array_key_first;
 use function array_merge;
 use function count;
 
@@ -113,6 +114,18 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
         }
 
         return $this->offsetGet($index);
+    }
+
+    /**
+     * @return ?T
+     */
+    public function first()
+    {
+        if (count($this->items) === 0) {
+            return null;
+        }
+
+        return $this->items[array_key_first($this->items)];
     }
 
     /**

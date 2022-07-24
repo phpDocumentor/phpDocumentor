@@ -17,6 +17,7 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
@@ -323,20 +324,36 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingErrors(): void
     {
-        $tagErrors = new Collection(['myTag Error']);
+        $tagError = new Error('error', 'myTag Error', 0);
+        $descriptorError = new Error('error', 'myDescriptor Error', 10);
+
+        $tagErrors = new Collection([$tagError]);
         $tagDescriptor = $this->prophesize(TagDescriptor::class);
         $tagDescriptor->getErrors()->willReturn($tagErrors);
 
-        $this->fixture->setErrors(new Collection(['myDescriptor Error']));
+        $this->fixture->setErrors(new Collection([$descriptorError]));
         $this->fixture->setTags(new Collection([new Collection([$tagDescriptor->reveal()])]));
 
-        $this->assertEquals(
-            [
-                'myDescriptor Error',
-                'myTag Error',
-            ],
-            $this->fixture->getErrors()->getAll()
-        );
+        self::assertSame([$descriptorError, $tagError], $this->fixture->getErrors()->getAll());
+    }
+
+    /**
+     * @covers ::setErrors
+     * @covers ::getErrors
+     */
+    public function testErrorsInTagsAdoptElementsLineNumberWhenNoneIsAvailable(): void
+    {
+        $lineNumber = 10;
+        $tagError = new Error('error', 'myTag Error', 0);
+
+        $tagErrors = new Collection([$tagError]);
+        $tagDescriptor = $this->prophesize(TagDescriptor::class);
+        $tagDescriptor->getErrors()->willReturn($tagErrors);
+
+        $this->fixture->setStartLocation(new Location($lineNumber));
+        $this->fixture->setTags(new Collection([new Collection([$tagDescriptor->reveal()])]));
+
+        self::assertSame($lineNumber, $this->fixture->getErrors()->first()->getLine());
     }
 
     /**
