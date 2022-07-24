@@ -51,6 +51,11 @@ class Error
         return $this->line;
     }
 
+    public function setLine(int $line): void
+    {
+        $this->line = $line;
+    }
+
     public function getSeverity(): string
     {
         return $this->severity;

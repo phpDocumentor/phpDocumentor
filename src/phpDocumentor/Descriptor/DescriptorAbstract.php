@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
+use Webmozart\Assert\Assert;
 
 use function lcfirst;
 use function strpos;
@@ -428,6 +429,20 @@ abstract class DescriptorAbstract implements Filterable
             foreach ($tags as $tag) {
                 $errors = $errors->merge($tag->getErrors());
             }
+        }
+
+        foreach ($errors as $error) {
+            Assert::isInstanceOf($error, Error::class);
+            if ($error->getLine() !== 0) {
+                continue;
+            }
+
+            $startLocation = $this->getStartLocation();
+            if ($startLocation === null) {
+                continue;
+            }
+
+            $error->setLine($startLocation->getLineNumber());
         }
 
         return $errors;

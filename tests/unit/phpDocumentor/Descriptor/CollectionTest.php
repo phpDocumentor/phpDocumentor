@@ -41,7 +41,7 @@ final class CollectionTest extends TestCase
     {
         $fixture = new Collection();
 
-        $this->assertEmpty($fixture->getAll());
+        self::assertEmpty($fixture->getAll());
     }
 
     /**
@@ -52,7 +52,7 @@ final class CollectionTest extends TestCase
         $expected = [1, 2];
         $fixture = new Collection($expected);
 
-        $this->assertEquals($expected, $fixture->getAll());
+        self::assertEquals($expected, $fixture->getAll());
     }
 
     /**
@@ -65,11 +65,11 @@ final class CollectionTest extends TestCase
 
         $this->fixture->add('abc');
 
-        $this->assertEquals($expected, $this->fixture->getAll());
+        self::assertEquals($expected, $this->fixture->getAll());
 
         $this->fixture->add('def');
 
-        $this->assertEquals($expectedSecondRun, $this->fixture->getAll());
+        self::assertEquals($expectedSecondRun, $this->fixture->getAll());
     }
 
     /**
@@ -81,15 +81,15 @@ final class CollectionTest extends TestCase
         $expected = ['z' => 'abc'];
         $expectedSecondRun = ['z' => 'abc', 'y' => 'def'];
 
-        $this->assertEquals([], $this->fixture->getAll());
+        self::assertEquals([], $this->fixture->getAll());
 
         $this->fixture->set('z', 'abc');
 
-        $this->assertEquals($expected, $this->fixture->getAll());
+        self::assertEquals($expected, $this->fixture->getAll());
 
         $this->fixture->set('y', 'def');
 
-        $this->assertEquals($expectedSecondRun, $this->fixture->getAll());
+        self::assertEquals($expectedSecondRun, $this->fixture->getAll());
     }
 
     /**
@@ -118,13 +118,13 @@ final class CollectionTest extends TestCase
     public function testRetrievalOfItems(): void
     {
         $this->fixture['a'] = 'abc';
-        $this->assertEquals('abc', $this->fixture->__get('a'));
-        $this->assertEquals('abc', $this->fixture['a']);
-        $this->assertEquals('abc', $this->fixture->get('a'));
-        $this->assertCount(1, $this->fixture);
+        self::assertEquals('abc', $this->fixture->__get('a'));
+        self::assertEquals('abc', $this->fixture['a']);
+        self::assertEquals('abc', $this->fixture->get('a'));
+        self::assertCount(1, $this->fixture);
 
-        $this->assertEquals('def', $this->fixture->fetch(1, 'def'));
-        $this->assertCount(2, $this->fixture);
+        self::assertEquals('def', $this->fixture->fetch(1, 'def'));
+        self::assertCount(2, $this->fixture);
     }
 
     /**
@@ -133,7 +133,18 @@ final class CollectionTest extends TestCase
     public function testRetrieveAllItems(): void
     {
         $this->fixture['a'] = 'abc';
-        $this->assertSame(['a' => 'abc'], $this->fixture->getAll());
+        self::assertSame(['a' => 'abc'], $this->fixture->getAll());
+    }
+
+    /**
+     * @covers ::first
+     */
+    public function testRetrieveFirstItem(): void
+    {
+        $this->fixture['a'] = 'abc';
+        $this->fixture['b'] = 'def';
+
+        self::assertSame('abc', $this->fixture->first());
     }
 
     /**
@@ -142,8 +153,8 @@ final class CollectionTest extends TestCase
     public function testGetIterator(): void
     {
         $this->fixture['a'] = 'abc';
-        $this->assertInstanceOf('ArrayIterator', $this->fixture->getIterator());
-        $this->assertSame(['a' => 'abc'], $this->fixture->getIterator()->getArrayCopy());
+        self::assertInstanceOf('ArrayIterator', $this->fixture->getIterator());
+        self::assertSame(['a' => 'abc'], $this->fixture->getIterator()->getArrayCopy());
     }
 
     /**
@@ -152,23 +163,23 @@ final class CollectionTest extends TestCase
      */
     public function testCountReturnsTheNumberOfElements(): void
     {
-        $this->assertCount(0, $this->fixture);
-        $this->assertEquals(0, $this->fixture->count());
+        self::assertCount(0, $this->fixture);
+        self::assertEquals(0, $this->fixture->count());
 
         $this->fixture[0] = 'abc';
 
-        $this->assertCount(1, $this->fixture);
-        $this->assertEquals(1, $this->fixture->count());
+        self::assertCount(1, $this->fixture);
+        self::assertEquals(1, $this->fixture->count());
 
         $this->fixture[1] = 'def';
 
-        $this->assertCount(2, $this->fixture);
-        $this->assertEquals(2, $this->fixture->count());
+        self::assertCount(2, $this->fixture);
+        self::assertEquals(2, $this->fixture->count());
 
         unset($this->fixture[0]);
 
-        $this->assertCount(1, $this->fixture);
-        $this->assertEquals(1, $this->fixture->count());
+        self::assertCount(1, $this->fixture);
+        self::assertEquals(1, $this->fixture->count());
     }
 
     /**
@@ -179,11 +190,11 @@ final class CollectionTest extends TestCase
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 
-        $this->assertCount(2, $this->fixture);
+        self::assertCount(2, $this->fixture);
 
         $this->fixture->clear();
 
-        $this->assertCount(0, $this->fixture);
+        self::assertCount(0, $this->fixture);
     }
 
     /**
@@ -191,13 +202,13 @@ final class CollectionTest extends TestCase
      */
     public function testIfExistingElementsAreDetected(): void
     {
-        $this->assertArrayNotHasKey(0, $this->fixture);
-        $this->assertFalse($this->fixture->offsetExists(0));
+        self::assertArrayNotHasKey(0, $this->fixture);
+        self::assertFalse($this->fixture->offsetExists(0));
 
         $this->fixture[0] = 'abc';
 
-        $this->assertArrayHasKey(0, $this->fixture);
-        $this->assertTrue($this->fixture->offsetExists(0));
+        self::assertArrayHasKey(0, $this->fixture);
+        self::assertTrue($this->fixture->offsetExists(0));
     }
 
     /**
@@ -214,7 +225,7 @@ final class CollectionTest extends TestCase
 
         $result = $this->fixture->merge($collection2);
 
-        $this->assertSame($expected, $result->getAll());
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -230,6 +241,6 @@ final class CollectionTest extends TestCase
 
         $result = $this->fixture->filter(stdClass::class)->getAll();
 
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 }

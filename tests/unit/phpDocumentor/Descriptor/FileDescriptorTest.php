@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Validation\Error;
 
 use function array_merge;
 
@@ -49,17 +50,17 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testInitializesWithEmptyCollections(): void
     {
-        $this->assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
+        self::assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
 
-        $this->assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getIncludes());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getFunctions());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getEnums());
-        $this->assertInstanceOf(Collection::class, $this->fixture->getMarkers());
+        self::assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
+        self::assertInstanceOf(Collection::class, $this->fixture->getIncludes());
+        self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
+        self::assertInstanceOf(Collection::class, $this->fixture->getFunctions());
+        self::assertInstanceOf(Collection::class, $this->fixture->getClasses());
+        self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
+        self::assertInstanceOf(Collection::class, $this->fixture->getTraits());
+        self::assertInstanceOf(Collection::class, $this->fixture->getEnums());
+        self::assertInstanceOf(Collection::class, $this->fixture->getMarkers());
     }
 
     /**
@@ -68,7 +69,7 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testGetHash(): void
     {
-        $this->assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
+        self::assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
     }
 
     /**
@@ -77,11 +78,11 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetPath(): void
     {
-        $this->assertSame('', $this->fixture->getPath());
+        self::assertSame('', $this->fixture->getPath());
 
         $this->fixture->setPath(self::EXAMPLE_PATH);
 
-        $this->assertSame(self::EXAMPLE_PATH, $this->fixture->getPath());
+        self::assertSame(self::EXAMPLE_PATH, $this->fixture->getPath());
     }
 
     /**
@@ -90,11 +91,11 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetSource(): void
     {
-        $this->assertNull($this->fixture->getSource());
+        self::assertNull($this->fixture->getSource());
 
         $this->fixture->setSource(self::EXAMPLE_SOURCE);
 
-        $this->assertSame(self::EXAMPLE_SOURCE, $this->fixture->getSource());
+        self::assertSame(self::EXAMPLE_SOURCE, $this->fixture->getSource());
     }
 
     /**
@@ -103,14 +104,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetNamespaceAliases(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
+        self::assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setNamespaceAliases($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getNamespaceAliases());
+        self::assertSame($mockInstance, $this->fixture->getNamespaceAliases());
     }
 
     /**
@@ -119,14 +120,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetIncludes(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getIncludes());
+        self::assertInstanceOf(Collection::class, $this->fixture->getIncludes());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setIncludes($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getIncludes());
+        self::assertSame($mockInstance, $this->fixture->getIncludes());
     }
 
     /**
@@ -135,14 +136,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetConstants(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
+        self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setConstants($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getConstants());
+        self::assertSame($mockInstance, $this->fixture->getConstants());
     }
 
     /**
@@ -151,14 +152,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetFunctions(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getFunctions());
+        self::assertInstanceOf(Collection::class, $this->fixture->getFunctions());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setFunctions($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getFunctions());
+        self::assertSame($mockInstance, $this->fixture->getFunctions());
     }
 
     /**
@@ -167,14 +168,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetClasses(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getClasses());
+        self::assertInstanceOf(Collection::class, $this->fixture->getClasses());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setClasses($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getClasses());
+        self::assertSame($mockInstance, $this->fixture->getClasses());
     }
 
     /**
@@ -183,14 +184,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetInterfaces(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
+        self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setInterfaces($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getInterfaces());
+        self::assertSame($mockInstance, $this->fixture->getInterfaces());
     }
 
     /**
@@ -199,14 +200,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetTraits(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getTraits());
+        self::assertInstanceOf(Collection::class, $this->fixture->getTraits());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setTraits($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getTraits());
+        self::assertSame($mockInstance, $this->fixture->getTraits());
     }
 
     /**
@@ -215,14 +216,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetEnums(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getEnums());
+        self::assertInstanceOf(Collection::class, $this->fixture->getEnums());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setEnums($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getEnums());
+        self::assertSame($mockInstance, $this->fixture->getEnums());
     }
 
     /**
@@ -231,14 +232,14 @@ final class FileDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetMarkers(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getMarkers());
+        self::assertInstanceOf(Collection::class, $this->fixture->getMarkers());
 
         $mockInstance = m::mock(Collection::class);
         $mock = $mockInstance;
 
         $this->fixture->setMarkers($mock);
 
-        $this->assertSame($mockInstance, $this->fixture->getMarkers());
+        self::assertSame($mockInstance, $this->fixture->getMarkers());
     }
 
     /**
@@ -248,18 +249,19 @@ final class FileDescriptorTest extends MockeryTestCase
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation(): void
     {
         // construct
-        $this->assertInstanceOf(Collection::class, $this->fixture->getAllErrors());
+        self::assertInstanceOf(Collection::class, $this->fixture->getAllErrors());
 
         // default returns empty array
-        $this->assertObjectHasAttribute('items', $this->fixture->getAllErrors());
+        self::assertObjectHasAttribute('items', $this->fixture->getAllErrors());
 
         $items = $this->fixture->getAllErrors()->getAll();
-        $this->assertEmpty($items);
+        self::assertEmpty($items);
     }
 
     /**
      * @covers ::__construct
      * @covers ::getAllErrors
+     * @todo Split this test into its various scenario's instead of one big lump
      */
     public function testGetAllErrors(): void
     {
@@ -279,18 +281,18 @@ final class FileDescriptorTest extends MockeryTestCase
          */
 
         // setup error list
-        $errorGlobal = ['error-global'];
-        $errorClasses = ['error-class'];
-        $errorClassMethods = ['error-class-method'];
-        $errorClassConstants = ['error-class-constant'];
-        $errorClassProperties = ['error-class-property'];
-        $errorInterfaces = ['error-interface'];
-        $errorInterfacesConstants = ['error-interface-constant'];
-        $errorInterfacesMethods = ['error-interface-method'];
-        $errorTraits = ['error-traits'];
-        $errorTraitsProperties = ['error-traits-property'];
-        $errorTraitsMethods = ['error-traits-method'];
-        $errorFunctions = ['error-functions'];
+        $errorGlobal = [new Error('error', 'error-global', 10)];
+        $errorClasses = [new Error('error', 'error-class', 10)];
+        $errorClassMethods = [new Error('error', 'error-class-method', 10)];
+        $errorClassConstants = [new Error('error', 'error-class-constant', 10)];
+        $errorClassProperties = [new Error('error', 'error-class-property', 10)];
+        $errorInterfaces = [new Error('error', 'error-interface', 10)];
+        $errorInterfacesConstants = [new Error('error', 'error-interface-constant', 10)];
+        $errorInterfacesMethods = [new Error('error', 'error-interface-method', 10)];
+        $errorTraits = [new Error('error', 'error-traits', 10)];
+        $errorTraitsProperties = [new Error('error', 'error-traits-property', 10)];
+        $errorTraitsMethods = [new Error('error', 'error-traits-method', 10)];
+        $errorFunctions = [new Error('error', 'error-functions', 10)];
 
         // setup global check
         $collection = new Collection($errorGlobal);
@@ -378,6 +380,6 @@ final class FileDescriptorTest extends MockeryTestCase
             $errorTraitsProperties
         );
 
-        $this->assertSame($expectedErrors, $this->fixture->getAllErrors()->getAll());
+        self::assertSame($expectedErrors, $this->fixture->getAllErrors()->getAll());
     }
 }
