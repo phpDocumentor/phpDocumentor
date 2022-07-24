@@ -37,6 +37,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -75,6 +77,8 @@ jobs:
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
@@ -87,8 +91,6 @@ jobs:
         composer-options: --optimize-autoloader
 
     - name: Install PHPUnit extensions
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mkdir -p tools/phpunit.d && wget -O tools/phpunit.d/prophecy-phpunit.phar https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
 
     - name: PHPUnit
@@ -142,6 +144,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -184,6 +188,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -223,6 +229,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -297,14 +305,18 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         key: ${{ env.key }}
+
     - name: Cache extensions
       uses: actions/cache@v3
       with:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
         restore-keys: ${{ steps.cache-env.outputs.key }}
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
@@ -317,8 +329,6 @@ jobs:
         composer-options: --optimize-autoloader
 
     - name: Install PHPUnit extensions
-      env:
-        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: mkdir -p tools/phpunit.d && wget -O tools/phpunit.d/prophecy-phpunit.phar https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
 
     - name: Run PHPUnit
@@ -355,6 +365,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -415,6 +427,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
@@ -473,6 +487,8 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
