@@ -6,12 +6,12 @@ on:
 # Allow manually triggering the workflow.
   workflow_dispatch:
 name: Qa workflow
+
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
   defaultPHPVersion: '7.4'
-  phiveGPGKeys: 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8A03EA3B385DBAA1,12CE0F1D262429A5,033E5F8D801A2F8D
-  phiveHome: $GITHUB_WORKSPACE/.phive
+
 jobs:
 
   setup:
@@ -79,29 +79,21 @@ jobs:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phive
+        tools: pecl, phpunit:9.5
 
     - name: Install Composer dependencies & cache dependencies
       uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
 
-    - name: Restore/cache phive folder
-      uses: actions/cache@v3
-      with:
-        path: tools
-        key: all-build-phive-${{ hashFiles('phive.xml') }}
-        restore-keys: |
-          all-build-phive-${{ hashFiles('phive.xml') }}
-          all-build-phive-
-
-    - name: Install PHAR dependencies
+    - name: Install PHPUnit extensions
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
+      run: mkdir -p tools/phpunit.d \
+        && wget -O tools/phpunit.d/prophecy-phpunit https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
 
     - name: PHPUnit
-      run: php tools/phpunit --testsuite=unit
+      run: phpunit --testsuite=unit
 
     - name: Quick check code coverage level
       run: php tests/coverage-checker.php 65
@@ -318,25 +310,21 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phive
+        tools: pecl, phpunit:9.5
+
     - name: Install Composer dependencies & cache dependencies
       uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
-    - name: Restore/cache phive folder
-      uses: actions/cache@v3
-      with:
-        path: tools
-        key: all-build-phive-${{ hashFiles('phive.xml') }}
-        restore-keys: |
-          all-build-phive-${{ hashFiles('phive.xml') }}
-          all-build-phive-
-    - name: Install PHAR dependencies
+
+    - name: Install PHPUnit extensions
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned phpunit jaapio/prophecy-phpunit  && mkdir -p tools/phpunit.d && mv tools/prophecy-phpunit tools/phpunit.d/prophecy-phpunit.phar
+      run: mkdir -p tools/phpunit.d \
+           && wget -O tools/phpunit.d/prophecy-phpunit https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar
+
     - name: Run PHPUnit
-      run: php tools/phpunit --testsuite=unit,integration
+      run: phpunit --testsuite=unit,integration
 
   e2e:
     runs-on: ubuntu-latest
