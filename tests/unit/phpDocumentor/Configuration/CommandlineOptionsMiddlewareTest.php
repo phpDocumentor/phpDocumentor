@@ -18,6 +18,10 @@ use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 
 use function current;
+use function sprintf;
+use function str_replace;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware
@@ -26,8 +30,7 @@ use function current;
  */
 final class CommandlineOptionsMiddlewareTest extends TestCase
 {
-    /** @var ConfigurationFactory */
-    private $configurationFactory;
+    private ConfigurationFactory $configurationFactory;
 
     protected function setUp(): void
     {
@@ -76,6 +79,31 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         $newConfiguration = $middleware->__invoke($configuration);
 
         self::assertEquals(new Path($expected), $newConfiguration['phpdocumentor']['paths']['cache']);
+    }
+
+    /**
+     * @covers ::__invoke
+     */
+    public function testItShouldOverwriteTheCacheFolderRelativeToTheCurrentWorkingDirectory(): void
+    {
+        $relativePath = 'abc';
+        $workingDirectory = 'c:\cacheFolder';
+        $expectedCacheFolder = sprintf(
+            '%s%s%s',
+            str_replace('\\', DIRECTORY_SEPARATOR, $workingDirectory),
+            DIRECTORY_SEPARATOR,
+            $relativePath
+        );
+
+        $configuration = new Configuration(['phpdocumentor' => ['paths' => ['cache' => '/tmp']]]);
+        $middleware = $this->createCommandlineOptionsMiddleware(
+            ['cache-folder' => $relativePath],
+            $workingDirectory
+        );
+
+        $newConfiguration = $middleware->__invoke($configuration);
+
+        self::assertEquals(new Path($expectedCacheFolder), $newConfiguration['phpdocumentor']['paths']['cache']);
     }
 
     /**

@@ -162,7 +162,11 @@ class ProjectDescriptorBuilder
 
     public function setApiSpecification(ApiSpecification $apiSpecification): void
     {
+        // TODO: Any change in the API Specification compared to a previous (cached) run should invalidate that cache.
         $this->apiSpecification = $apiSpecification;
+
+        // TODO: The setVisibility call should purge the cache; but once we are here, cache has already been loaded..
+        $this->setVisibility($apiSpecification->calculateVisiblity());
     }
 
     public function createApiDocumentationSet(Project $project): void
@@ -175,6 +179,7 @@ class ProjectDescriptorBuilder
             $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
         }
 
+        // TODO: This call should purge the cache; but once we are here, cache has already been loaded..
         $this->getProjectDescriptor()->getSettings()->setCustom($customSettings);
 
         foreach ($project->getFiles() as $file) {

@@ -7,6 +7,9 @@ parameters:
   inferPrivatePropertyTypeFromConstructor: true
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
+    # This is intended to check if a placeholder was replace by box; but phpstan does not know this :)
+    - "/Strict comparison using !== between '@package_version@' and '@package_version@' will always evaluate to false./"
+
     # PHPStan does not play nice with Symfony Config's fluid interface
     - '#.*NodeDefinition::prototype.*#'
     - '#.*NodeDefinition::addDefaultChildrenIfNoneSet.*#'

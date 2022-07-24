@@ -21,20 +21,19 @@ use phpDocumentor\Configuration\ApiSpecification;
 final class Settings
 {
     /** @var bool Represents whether this settings object has been modified */
-    private $isModified = false;
+    private bool $isModified = false;
 
     /** @var int a bitflag representing which visibilities are contained and allowed in this project */
-    private $visibility = ApiSpecification::VISIBILITY_DEFAULT;
+    private int $visibility = ApiSpecification::VISIBILITY_DEFAULT;
 
-    /** @var bool */
-    private $includeSource = false;
+    private bool $includeSource = false;
 
     /**
      * A flexible list of settings that can be used by Writers, templates and more as additional settings.
      *
-     * @var (string|bool)[]
+     * @var array<string|bool>
      */
-    private $custom = [];
+    private array $custom = [];
 
     /**
      * Stores the visibilities that are allowed to be executed as a bitflag.

@@ -45,14 +45,13 @@ use function sprintf;
  */
 class Locator
 {
-    /** @var ?Path */
-    private $path;
+    private ?Path $path;
 
-    /** @var FilesystemAdapter */
-    private $fileCache;
+    /** @var CacheInterface&FilesystemAdapter */
+    private CacheInterface $fileCache;
 
-    /** @var FilesystemAdapter */
-    private $descriptorCache;
+    /** @var CacheInterface&FilesystemAdapter */
+    private CacheInterface $descriptorCache;
 
     public function __construct(CacheInterface $files, CacheInterface $descriptors)
     {
@@ -73,7 +72,7 @@ class Locator
 
     public function locate(string $namespace = ''): Path
     {
-        $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
+        $namespacePath = rtrim(sprintf('%s/%s', $this->root(), $namespace), '/');
 
         if (!is_dir($namespacePath) && !@mkdir($namespacePath, 0777, true)) {
             $error = error_get_last();
