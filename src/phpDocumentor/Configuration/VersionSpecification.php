@@ -15,14 +15,13 @@ namespace phpDocumentor\Configuration;
 
 class VersionSpecification
 {
-    /** @var string */
-    private $number;
+    private string $number;
 
-    /** @var array<int, ApiSpecification> */
-    public $api;
+    /** @var array<array-key, ApiSpecification> */
+    public array $api = [];
 
     /** @var array<mixed>|null */
-    public $guides;
+    public ?array $guides = null;
 
     /**
      * @param array<int, ApiSpecification> $api
