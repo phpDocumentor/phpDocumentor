@@ -51,7 +51,7 @@ PUML;
             $this->plantUmlBinaryPath = 'plantuml';
         }
 
-        $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 600.0);
+        $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 1200.0);
         $process->run();
 
         if (!$process->isSuccessful()) {
