@@ -78,8 +78,8 @@ Another example is to document the variable in a foreach explicitly; many IDEs
 use this information to help you with auto-completion:
 
 .. code-block:: php
-
    :linenos:
+
     /** @var \Sqlite3 $sqlite */
     foreach ($connections as $sqlite) {
         // There should be no docblock here.
@@ -91,8 +91,8 @@ use this information to help you with auto-completion:
 Even compound class constant and property statements may be documented:
 
 .. code-block:: php
-
    :linenos:
+
     class Foo
     {
         /**
