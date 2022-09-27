@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References\Resolver\Php;
 
+use phpDocumentor\Guides\Nodes\SpanNode;
+use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\References\Resolver\Resolver;
 use phpDocumentor\Guides\RenderContext;
@@ -46,10 +48,9 @@ final class PHPReference implements Resolver
 
         return new ResolvedReference(
             $context->getCurrentFileName(),
-            $node->getUrl(),
+            new TitleNode(new SpanNode($fqsen), 0, ''),
             $url,
             [],
-            ['title' => $node->getUrl()]
         );
     }
 }

@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\DocumentCollector;
 use phpDocumentor\Guides\Event\PostParseDocument;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
-use phpDocumentor\Guides\Metas;
 use phpDocumentor\Parser\FlySystemFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -37,21 +36,18 @@ final class ParseGuides
     private $flySystemFactory;
     /** @var EventDispatcherInterface&EventDispatcher */
     private EventDispatcherInterface $eventDispatcher;
-    private Metas $metas;
 
     /** @param EventDispatcherInterface&EventDispatcher $eventDispatcher */
     public function __construct(
         CommandBus $commandBus,
         LoggerInterface $logger,
         FlySystemFactory $flySystemFactory,
-        EventDispatcherInterface $eventDispatcher,
-        Metas $metas
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->commandBus = $commandBus;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
         $this->eventDispatcher = $eventDispatcher;
-        $this->metas = $metas;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -83,11 +79,7 @@ final class ParseGuides
         $origin = $this->flySystemFactory->create($dsn);
         $sourcePath = (string) ($guideDocumentationSet->getSource()->paths()[0] ?? '');
 
-        $listener = new DocumentCollector(
-            $this->metas,
-            $guideDocumentationSet,
-            $this->logger
-        );
+        $listener = new DocumentCollector($guideDocumentationSet);
 
         $this->eventDispatcher->addListener(PostParseDocument::class, $listener);
         $this->commandBus->handle(

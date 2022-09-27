@@ -18,10 +18,6 @@ parameters:
 
     # FlyFinder plugin adds a find method to FlySystem's Filesystem
     - '#Call to an undefined method League\\Flysystem\\Filesystem::find\(\)#'
-    - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::find\(\)#'
-
-    # Filter nodes by callable in not understanded
-    - '#Method phpDocumentor\\Guides\\Nodes\\DocumentNode::getTocs\(\) should return array<phpDocumentor\\Guides\\Nodes\\TocNode> but returns array<phpDocumentor\\Guides\\Nodes\\Node>\.#'
 
     # PHPStan has issue when involving templates and parent types
     - '#Parameter \#1 \$matcher of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\Matcher<object>, phpDocumentor\\Descriptor\\Builder\\Matcher<.+> given\.#'

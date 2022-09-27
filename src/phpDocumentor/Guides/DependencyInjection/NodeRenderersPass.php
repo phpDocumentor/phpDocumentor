@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\DependencyInjection;
 
 use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\Graphs\Nodes\UmlNode;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,7 +20,7 @@ final class NodeRenderersPass implements CompilerPassInterface
         $count = 0;
         foreach ($config->htmlNodeTemplates() as $node => $template) {
             $container->setDefinition(
-                'phpdoc.guides.noderenderer.html.' . $count++,
+                'phpdoc.guides.noderenderer.html.' . $count,
                 (
                     new Definition(
                         TemplateNodeRenderer::class,
@@ -31,5 +32,18 @@ final class NodeRenderersPass implements CompilerPassInterface
                 )->setAutowired(true)->addTag('phpdoc.guides.noderenderer.html')
             );
         }
+
+        $container->setDefinition(
+            'phpdoc.guides.noderenderer.html.uml',
+            (
+            new Definition(
+                TemplateNodeRenderer::class,
+                [
+                    '$template' => 'uml.html.twig',
+                    '$nodeClass' => UmlNode::class,
+                ]
+            )
+            )->setAutowired(true)->addTag('phpdoc.guides.noderenderer.html')
+        );
     }
 }

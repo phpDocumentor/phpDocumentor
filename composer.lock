@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4a7155bdd0ee75452489caf583ba72c",
+    "content-hash": "a10fe7865e0c05d65ae9011e159594cc",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -406,16 +406,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.8",
+            "version": "2.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47"
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c493585c130544c4e91d2e0e131e6d35cb0cbc47",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
                 "shasum": ""
             },
             "require": {
@@ -508,7 +508,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-10T16:02:17+00:00"
+            "time": "2023-02-15T14:07:24+00:00"
         },
         {
             "name": "league/config",
@@ -1049,33 +1049,36 @@
         },
         {
             "name": "league/uri",
-            "version": "6.5.0",
+            "version": "6.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri.git",
-                "reference": "c68ca445abb04817d740ddd6d0b3551826ef0c5a"
+                "reference": "d3b50812dd51f3fbf176344cc2981db03d10fe06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/c68ca445abb04817d740ddd6d0b3551826ef0c5a",
-                "reference": "c68ca445abb04817d740ddd6d0b3551826ef0c5a",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/d3b50812dd51f3fbf176344cc2981db03d10fe06",
+                "reference": "d3b50812dd51f3fbf176344cc2981db03d10fe06",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "league/uri-interfaces": "^2.3",
-                "php": "^7.3 || ^8.0",
+                "php": "^7.4 || ^8.0",
                 "psr/http-message": "^1.0"
             },
             "conflict": {
                 "league/uri-schemes": "^1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.19 || ^3.0",
-                "phpstan/phpstan": "^0.12.90",
-                "phpstan/phpstan-phpunit": "^0.12.22",
-                "phpstan/phpstan-strict-rules": "^0.12.11",
-                "phpunit/phpunit": "^8.0 || ^9.0",
+                "friendsofphp/php-cs-fixer": "^v3.3.2",
+                "nyholm/psr7": "^1.5",
+                "php-http/psr7-integration-tests": "^1.1",
+                "phpstan/phpstan": "^1.2.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0.0",
+                "phpstan/phpstan-strict-rules": "^1.1.0",
+                "phpunit/phpunit": "^9.5.10",
                 "psr/http-factory": "^1.0"
             },
             "suggest": {
@@ -1107,7 +1110,7 @@
                 }
             ],
             "description": "URI manipulation library",
-            "homepage": "http://uri.thephpleague.com",
+            "homepage": "https://uri.thephpleague.com",
             "keywords": [
                 "data-uri",
                 "file-uri",
@@ -1133,7 +1136,7 @@
                 "docs": "https://uri.thephpleague.com",
                 "forum": "https://thephpleague.slack.com",
                 "issues": "https://github.com/thephpleague/uri/issues",
-                "source": "https://github.com/thephpleague/uri/tree/6.5.0"
+                "source": "https://github.com/thephpleague/uri/tree/6.7.2"
             },
             "funding": [
                 {
@@ -1141,7 +1144,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-08-27T09:54:07+00:00"
+            "time": "2022-09-13T19:50:42+00:00"
         },
         {
             "name": "league/uri-interfaces",
@@ -1382,16 +1385,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.2.8",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368"
+                "reference": "c91bac3470c34b2ecd5400f6e6fdf0b64a836a5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
-                "reference": "02a54c4c872b99e4ec05c4aec54b5a06eb0f6368",
+                "url": "https://api.github.com/repos/nette/utils/zipball/c91bac3470c34b2ecd5400f6e6fdf0b64a836a5c",
+                "reference": "c91bac3470c34b2ecd5400f6e6fdf0b64a836a5c",
                 "shasum": ""
             },
             "require": {
@@ -1401,6 +1404,7 @@
                 "nette/di": "<3.0.6"
             },
             "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
                 "nette/tester": "~2.0",
                 "phpstan/phpstan": "^1.0",
                 "tracy/tracy": "^2.3"
@@ -1461,9 +1465,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.8"
+                "source": "https://github.com/nette/utils/tree/v3.2.9"
             },
-            "time": "2022-09-12T23:36:20+00:00"
+            "time": "2023-01-18T03:26:20+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -1710,10 +1714,16 @@
         {
             "name": "phpdocumentor/guides",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/guides-core.git",
+                "reference": "da44c13391344f6d56566dd2d03bf2f60956b72f"
+            },
             "dist": {
-                "type": "path",
-                "url": "incubator/guides",
-                "reference": "f9b07f40ad875a4e37d3f72f1e9452b0541536c0"
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/da44c13391344f6d56566dd2d03bf2f60956b72f",
+                "reference": "da44c13391344f6d56566dd2d03bf2f60956b72f",
+                "shasum": ""
             },
             "require": {
                 "league/flysystem": "^1.0",
@@ -1724,104 +1734,143 @@
                 "psr/event-dispatcher": "^1.0",
                 "symfony/string": "^5.4",
                 "symfony/translation-contracts": "^2.1",
-                "twig/twig": "~2.0",
-                "webmozart/assert": "^1.3"
+                "twig/twig": "~2.15",
+                "webmozart/assert": "^1.11"
             },
             "require-dev": {
                 "psr/log": "^1.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\Guides\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "phpDocumentor\\Guides\\": [
-                        "tests/unit/"
-                    ]
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "homepage": "https://www.phpdoc.org",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/phpDocumentor/guides-core/issues",
+                "source": "https://github.com/phpDocumentor/guides-core/tree/main"
+            },
+            "time": "2023-02-17T19:20:52+00:00"
+        },
+        {
+            "name": "phpdocumentor/guides-graphs",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/guides-graphs.git",
+                "reference": "16577c71325cd09c07e42ac19874da12d358da15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/16577c71325cd09c07e42ac19874da12d358da15",
+                "reference": "16577c71325cd09c07e42ac19874da12d358da15",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4.0||^8.0",
+                "symfony/process": "^5.4",
+                "twig/twig": "~2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\Guides\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "https://www.phpdoc.org",
+            "support": {
+                "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
+                "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
+            },
+            "time": "2023-02-15T22:13:21+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/guides-markdown.git",
+                "reference": "d104398b6813327fa73c35c014f6e8247bcff22b"
+            },
             "dist": {
-                "type": "path",
-                "url": "incubator/guides-markdown",
-                "reference": "424eeced9b4152084424ce8a9b6c6518272efd30"
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/d104398b6813327fa73c35c014f6e8247bcff22b",
+                "reference": "d104398b6813327fa73c35c014f6e8247bcff22b",
+                "shasum": ""
             },
             "require": {
-                "league/commonmark": "^2.1",
+                "league/commonmark": "^2.3",
                 "php": "^7.4.0||^8.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\Guides\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "phpDocumentor\\Guides\\": [
-                        "tests/unit/"
-                    ]
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "homepage": "https://www.phpdoc.org",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/main"
+            },
+            "time": "2023-02-15T22:13:21+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
             "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
+                "reference": "fa885ede7c27825add6ff9e6f690ee27c1fae17d"
+            },
             "dist": {
-                "type": "path",
-                "url": "incubator/guides-restructured-text",
-                "reference": "479c5eb3cc86b3604c33bf251110c51b23916953"
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/fa885ede7c27825add6ff9e6f690ee27c1fae17d",
+                "reference": "fa885ede7c27825add6ff9e6f690ee27c1fae17d",
+                "shasum": ""
             },
             "require": {
                 "doctrine/event-manager": "^1.1",
                 "doctrine/lexer": "^1.2",
                 "php": ">=7.2.5||^8.0",
-                "webmozart/assert": "^1.3"
+                "webmozart/assert": "^1.11"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\Guides\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "phpDocumentor\\Guides\\": [
-                        "tests/unit/"
-                    ]
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "homepage": "https://www.phpdoc.org",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
+            },
+            "time": "2023-02-15T22:13:21+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-main",
+            "version": "dev-feature/integrate-guides",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -5640,6 +5689,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "phpdocumentor/guides": 20,
+        "phpdocumentor/guides-graphs": 20,
         "phpdocumentor/guides-markdown": 20,
         "phpdocumentor/guides-restructured-text": 20,
         "phpdocumentor/json-path": 20

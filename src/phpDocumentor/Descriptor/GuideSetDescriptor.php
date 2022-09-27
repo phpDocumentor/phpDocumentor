@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Guides\Metas;
 
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
@@ -28,6 +29,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
 
     /** @var int */
     private $initialHeaderLevel;
+    private Metas $metas;
 
     public function __construct(
         string $name,
@@ -51,6 +53,16 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
     public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void
     {
         $this->documents->set($file, $documentDescriptor);
+    }
+
+    public function setMetas(Metas $metas): void
+    {
+        $this->metas = $metas;
+    }
+
+    public function getMetas(): Metas
+    {
+        return $this->metas;
     }
 
     public function getInputFormat(): string

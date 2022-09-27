@@ -6,7 +6,7 @@ chapters included of this section we will talk you through the installation, con
 documentation.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     installing
     configuration

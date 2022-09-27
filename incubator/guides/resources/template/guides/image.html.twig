@@ -1,8 +1,0 @@
-<img
-    src="{{ asset(node.value) }}"
-    {% if node.hasOption('width') %}width="{{ node.option('width') }}"{% endif%}
-    {% if node.hasOption('height') %}height="{{ node.option('height') }}"{% endif%}
-    {% if node.hasOption('align') %}align="{{ node.option('align') }}"{% endif%}
-    {% if node.hasOption('alt') %}alt="{{ node.option('alt') }}"{% endif%}
-    {% if node.classesString %}class="{{ node.classesString }}"{% endif%}
-/>
