@@ -119,7 +119,7 @@ The following keywords are recognized:
        :linenos:
 
         /**
-         * @param boolean $quiet when true 'Hello world' is echo-ed.
+         * @param boolean $quiet when true 'Hello world' is not echo-ed.
          *
          * @return void
          */
