@@ -76,7 +76,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $version->setApi($apiConfigs);
 
             foreach ($version->getGuides() ?? [] as $key => $guide) {
-                $version->guides[$key]->withSource(
+                $version->guides[$key] = $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
                         $guide->source()->dsn()->resolve($configDsn)
                     )
@@ -148,12 +148,22 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $path = '/' . $path;
         }
 
-        return rtrim($path, '/');
+        $path = rtrim($path, '/');
+
+        if ($path === '') {
+            return '.';
+        }
+
+        return $path;
     }
 
     private function pathToGlobPattern(string $path): string
     {
         $path = $this->normalizePath($path);
+
+        if ($path === '.') {
+            return '/**/*';
+        }
 
         if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
             $path .= '/**/*';
