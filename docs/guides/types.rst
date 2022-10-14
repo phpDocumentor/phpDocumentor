@@ -104,7 +104,7 @@ mixed
 
     .. topic:: PHP 8.0
        This keyword was added in PHP 8.0 as a native PHP keyword representing the following union:
-       ``array|bool|callable|int|float |object|resource|string|null``.
+       ``array|bool|callable|int|float|object|resource|string|null``.
 
 void
     *This is not the value that you are looking for.* The tag associated with this type does not intentionally return
