@@ -49,6 +49,8 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: composer-require-checker
         run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
@@ -89,6 +91,8 @@ jobs:
       uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
+        # Bust the cache at least once a month - output format: YYYY-MM-DD.
+        custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
     - name: Install PHPUnit extensions
       run: mkdir -p tools/phpunit.d && curl -sL https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
@@ -156,6 +160,8 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: PHPStan
         uses: phpDocumentor/phpstan-ga@1.8
@@ -200,6 +206,8 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: Psalm
         run: php bin/psalm.phar --output-format=github
@@ -243,6 +251,8 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
@@ -327,6 +337,8 @@ jobs:
       uses: "ramsey/composer-install@v2"
       with:
         composer-options: --optimize-autoloader
+        # Bust the cache at least once a month - output format: YYYY-MM-DD.
+        custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
     - name: Install PHPUnit extensions
       run: mkdir -p tools/phpunit.d && curl -sL https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
@@ -377,6 +389,8 @@ jobs:
         uses: "ramsey/composer-install@v2"
         with:
           composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: Build example project template
         run: ./bin/phpdoc --template=${{ matrix.template }} -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/${{ matrix.template }} --setting="guides.enabled=false"
