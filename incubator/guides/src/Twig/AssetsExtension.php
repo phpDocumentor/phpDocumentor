@@ -22,7 +22,6 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Webmozart\Assert\Assert;
 
 use function dirname;
 use function sprintf;
@@ -118,7 +117,6 @@ final class AssetsExtension extends AbstractExtension
             $environment->canonicalUrl($path)
         );
 
-        Assert::string($outputPath);
         if ($environment->getOrigin()->has($sourcePath) === false) {
             $this->logger->error(sprintf('Image reference not found "%s"', $sourcePath));
 

@@ -330,66 +330,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 },
                 ['is_safe' => ['all']]
             ),
-            'sort' => new TwigFilter(
-                'sort_*',
-                /** @var Collection<Descriptor> $collection */
-                static function (string $direction, Collection $collection): ArrayIterator {
-                    $iterator = $collection->getIterator();
-                    $iterator->uasort(
-                        static function (Descriptor $a, Descriptor $b) use ($direction) {
-                            $aElem = strtolower($a->getName());
-                            $bElem = strtolower($b->getName());
-                            if ($aElem === $bElem) {
-                                return 0;
-                            }
-
-                            if (
-                                ($direction === 'asc' && $aElem > $bElem) ||
-                                ($direction === 'desc' && $aElem < $bElem)
-                            ) {
-                                return 1;
-                            }
-
-                            return -1;
-                        }
-                    );
-
-                    return $iterator;
-                }
-            ),
-            'sortByVisibility' => new TwigFilter(
-                'sortByVisibility',
-                /** @var Collection<Descriptor> $collection */
-                static function (Collection $collection): ArrayIterator {
-                    $visibilityOrder = [
-                        'public' => 0,
-                        'protected' => 1,
-                        'private' => 2,
-                    ];
-                    $iterator        = $collection->getIterator();
-                    $iterator->uasort(
-                        static function (Descriptor $a, Descriptor $b) use ($visibilityOrder) {
-                            $prio = 0;
-                            if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
-                                $visibilityPriorityA = $visibilityOrder[$a->getVisibility()] ?? 0;
-                                $visibilityPriorityB = $visibilityOrder[$b->getVisibility()] ?? 0;
-                                $prio                = $visibilityPriorityA <=> $visibilityPriorityB;
-                            }
-
-                            if ($prio !== 0) {
-                                return $prio;
-                            }
-
-                            $aElem = strtolower($a->getName());
-                            $bElem = strtolower($b->getName());
-
-                            return $aElem <=> $bElem;
-                        }
-                    );
-
-                    return $iterator;
-                }
-            ),
+            'sort' => new TwigFilter('sort_*', [$this, 'sort']),
+            'sortByVisibility' => new TwigFilter('sortByVisibility', [$this, 'sortByVisibility']),
             'export' => new TwigFilter(
                 'export',
                 static function ($var) {
@@ -456,11 +398,79 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return $routeRenderer->render($value, $presentation);
     }
 
-    /** @param mixed[] $context */
+    /**
+     * @param mixed[] $context
+     */
     private function contextRouteRenderer(array $context): LinkRenderer
     {
         return $this->routeRenderer
             ->withDestination(ltrim($context['destinationPath'] ?? $context['env']->getCurrentFileDestination(), '/\\'))
             ->withProject($context['project']);
+    }
+
+    /**
+     * @param Collection<Descriptor> $collection
+     *
+     * @return ArrayIterator<array-key, Descriptor>
+     */
+    public function sort(string $direction, Collection $collection): ArrayIterator
+    {
+        $iterator = $collection->getIterator();
+        $iterator->uasort(
+            static function (Descriptor $a, Descriptor $b) use ($direction) {
+                $aElem = strtolower($a->getName());
+                $bElem = strtolower($b->getName());
+                if ($aElem === $bElem) {
+                    return 0;
+                }
+
+                if (
+                    ($direction === 'asc' && $aElem > $bElem) ||
+                    ($direction === 'desc' && $aElem < $bElem)
+                ) {
+                    return 1;
+                }
+
+                return -1;
+            }
+        );
+
+        return $iterator;
+    }
+
+    /**
+     * @param Collection<Descriptor> $collection
+     *
+     * @return ArrayIterator<array-key, Descriptor>
+     */
+    public function sortByVisibility(Collection $collection): ArrayIterator
+    {
+        $visibilityOrder = [
+            'public' => 0,
+            'protected' => 1,
+            'private' => 2,
+        ];
+        $iterator = $collection->getIterator();
+        $iterator->uasort(
+            static function (Descriptor $a, Descriptor $b) use ($visibilityOrder): int {
+                $prio = 0;
+                if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
+                    $visibilityPriorityA = $visibilityOrder[$a->getVisibility()] ?? 0;
+                    $visibilityPriorityB = $visibilityOrder[$b->getVisibility()] ?? 0;
+                    $prio = $visibilityPriorityA <=> $visibilityPriorityB;
+                }
+
+                if ($prio !== 0) {
+                    return $prio;
+                }
+
+                $aElem = strtolower($a->getName());
+                $bElem = strtolower($b->getName());
+
+                return $aElem <=> $bElem;
+            }
+        );
+
+        return $iterator;
     }
 }

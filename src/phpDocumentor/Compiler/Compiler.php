@@ -29,6 +29,8 @@ class Compiler extends SplPriorityQueue
     /**
      * @param CompilerPassInterface $value
      * @param int $priority
+     *
+     * @return true
      */
     public function insert($value, $priority = self::PRIORITY_DEFAULT): bool
     {

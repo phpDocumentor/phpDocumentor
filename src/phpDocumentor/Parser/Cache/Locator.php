@@ -72,7 +72,7 @@ class Locator
 
     public function locate(string $namespace = ''): Path
     {
-        $namespacePath = rtrim(sprintf('%s/%s', $this->root(), $namespace), '/');
+        $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
 
         if (!is_dir($namespacePath) && !@mkdir($namespacePath, 0777, true)) {
             $error = error_get_last();

@@ -101,7 +101,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return TChild The contents of the element with the given index and the provided default if the key
      *                doesn't exist.
-     * @psalm-return ($valueIfEmpty is null ? ?TChild: TChild)
+     * @psalm-return ($valueIfEmpty is null ? ?TChild : TChild)
      * @phpstan-return T|TChild
      *
      * @template TChild as T
