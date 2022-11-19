@@ -118,7 +118,7 @@ pre-commit-test: test phpcs phpstan psalm composer-require-checker
 
 .PHONY: composer
 composer:
-	${.DOCKER_COMPOSE_RUN} --entrypoint=/usr/bin/composer phpdoc install
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project composer:2 install
 
 .PHONY: composer-mirror
 composer-mirror:
