@@ -43,6 +43,24 @@ describe('Classes', function() {
             .contains('This class provides an interface through which you can order pizza\'s and pasta\'s from Mario\'s Pizzeria.');
     });
 
+    it('Shows a class is readonly', function() {
+        cy.visit('build/default/classes/Marios-Pizza.html');
+        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+            .contains('Read only');
+    });
+
+    it('Shows a class is final', function() {
+        cy.visit('build/default/classes/Marios-Pizza.html');
+        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+            .contains('Final');
+    });
+
+    it('Shows a class is abstract', function() {
+        cy.visit('build/default/classes/Marios-Pizza-Topping.html');
+        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+            .contains('Abstract');
+    });
+
     describe ('Shows tags', function () {
         it('Shows the tags section', function () {
             cy.get('.phpdocumentor-tag-list__heading')
