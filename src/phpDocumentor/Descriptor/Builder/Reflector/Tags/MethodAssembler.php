@@ -41,7 +41,9 @@ class MethodAssembler extends BaseTagAssembler
         $descriptor = new MethodDescriptor($data->getName());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
-        $descriptor->setHasReturnByReference($data->returnsReference());
+
+        // TODO: Uncomment this line as soon as DocBlockReflection 5.4 is released and included
+        // $descriptor->setHasReturnByReference($data->returnsReference());
 
         $response = new ReturnDescriptor('return');
         $response->setType($data->getReturnType());
