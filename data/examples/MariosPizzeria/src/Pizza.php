@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Marios;
 
 use ArrayObject;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * @package Domain
  */
-final class Pizza implements Product
+final readonly class Pizza implements Product
 {
     use SharedTrait { sayHello as private myPrivateHello; }
 

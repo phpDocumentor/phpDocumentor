@@ -1,6 +1,6 @@
 {% set tags = node.tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api']) %}
 
-{% if tags|length > 0 %}
+{% if tags|length > 0 and tags|first|length > 0 %}
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
         <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>

@@ -48,6 +48,7 @@
         "league/tactician-bundle": "^1.2",
         "league/uri": "~6.5.0",
         "league/uri-interfaces": "^2.0",
+        "nikic/php-parser": "^4.14",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
         "phpdocumentor/guides": "*@dev",
