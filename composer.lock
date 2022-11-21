@@ -1870,7 +1870,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-feature/integrate-guides",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
