@@ -2,7 +2,7 @@
 
 namespace Marios\Pizza;
 
-final class Topping
+abstract class Topping
 {
     /**
      * @api

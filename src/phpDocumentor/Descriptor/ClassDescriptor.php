@@ -49,6 +49,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var bool $final Whether this class is marked as final and can't be subclassed. */
     protected $final = false;
 
+    /** @var bool $readOnly Whether this class is marked as readonly. */
+    protected bool $readOnly = false;
+
     /** @var Collection<ConstantDescriptor> $constants References to constants defined in this class. */
     protected $constants;
 
@@ -109,7 +112,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     }
 
     /**
-     * @internal should not be called by any other class than the assamblers
+     * @internal should not be called by any other class than the assemblers
      */
     public function setFinal(bool $final): void
     {
@@ -119,6 +122,19 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     public function isFinal(): bool
     {
         return $this->final;
+    }
+
+    /**
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setReadOnly(bool $readOnly): void
+    {
+        $this->readOnly = $readOnly;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->readOnly;
     }
 
     /**

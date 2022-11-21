@@ -25,8 +25,7 @@ use stdClass;
  */
 final class ClassDescriptorTest extends MockeryTestCase
 {
-    /** @var ClassDescriptor $fixture */
-    protected $fixture;
+    protected ClassDescriptor $fixture;
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;
     use TraitUsageTests;
@@ -46,13 +45,13 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingAParent(): void
     {
-        $this->assertNull($this->fixture->getParent());
+        self::assertNull($this->fixture->getParent());
 
         $mock = m::mock(ClassDescriptor::class);
 
         $this->fixture->setParent($mock);
 
-        $this->assertSame($mock, $this->fixture->getParent());
+        self::assertSame($mock, $this->fixture->getParent());
     }
 
     /**
@@ -64,7 +63,7 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         $this->fixture->setParent($mock);
 
-        $this->assertSame($mock, $this->fixture->getParent());
+        self::assertSame($mock, $this->fixture->getParent());
     }
 
     /**
@@ -73,13 +72,13 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingInterfaces(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
+        self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
         $mock = m::mock(Collection::class);
 
         $this->fixture->setInterfaces($mock);
 
-        $this->assertSame($mock, $this->fixture->getInterfaces());
+        self::assertSame($mock, $this->fixture->getInterfaces());
     }
 
     /**
@@ -88,13 +87,13 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingConstants(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
+        self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
         $mock = m::mock(Collection::class);
 
         $this->fixture->setConstants($mock);
 
-        $this->assertSame($mock, $this->fixture->getConstants());
+        self::assertSame($mock, $this->fixture->getConstants());
     }
 
     /**
@@ -103,13 +102,13 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingProperties(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
+        self::assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
         $mock = m::mock(Collection::class);
 
         $this->fixture->setProperties($mock);
 
-        $this->assertSame($mock, $this->fixture->getProperties());
+        self::assertSame($mock, $this->fixture->getProperties());
     }
 
     /**
@@ -118,13 +117,13 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingMethods(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
+        self::assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
         $mock = m::mock(Collection::class);
 
         $this->fixture->setMethods($mock);
 
-        $this->assertSame($mock, $this->fixture->getMethods());
+        self::assertSame($mock, $this->fixture->getMethods());
     }
 
     /**
@@ -133,8 +132,8 @@ final class ClassDescriptorTest extends MockeryTestCase
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
-        $this->assertInstanceOf(Collection::class, $inheritedMethods);
-        $this->assertCount(0, $inheritedMethods);
+        self::assertInstanceOf(Collection::class, $inheritedMethods);
+        self::assertCount(0, $inheritedMethods);
     }
 
     /**
@@ -149,10 +148,10 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedMethods();
 
-        $this->assertInstanceOf(Collection::class, $result);
+        self::assertInstanceOf(Collection::class, $result);
 
         $expected = ['methods', 'inherited'];
-        $this->assertSame($expected, $result->getAll());
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -161,11 +160,11 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingWhetherClassIsAbstract(): void
     {
-        $this->assertFalse($this->fixture->isAbstract());
+        self::assertFalse($this->fixture->isAbstract());
 
         $this->fixture->setAbstract(true);
 
-        $this->assertTrue($this->fixture->isAbstract());
+        self::assertTrue($this->fixture->isAbstract());
     }
 
     /**
@@ -174,11 +173,24 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingWhetherClassIsFinal(): void
     {
-        $this->assertFalse($this->fixture->isFinal());
+        self::assertFalse($this->fixture->isFinal());
 
         $this->fixture->setFinal(true);
 
-        $this->assertTrue($this->fixture->isFinal());
+        self::assertTrue($this->fixture->isFinal());
+    }
+
+    /**
+     * @covers ::isReadOnly
+     * @covers ::setReadOnly
+     */
+    public function testSettingAndGettingWhetherClassIsReadOnly(): void
+    {
+        self::assertFalse($this->fixture->isReadOnly());
+
+        $this->fixture->setReadOnly(true);
+
+        self::assertTrue($this->fixture->isReadOnly());
     }
 
     /**
@@ -187,10 +199,10 @@ final class ClassDescriptorTest extends MockeryTestCase
     public function testGetInheritedConstantsNoParent(): void
     {
         $descriptor = new ClassDescriptor();
-        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
+        self::assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
 
         $descriptor->setParent(new stdClass());
-        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
+        self::assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
     /**
@@ -207,10 +219,10 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedConstants();
 
-        $this->assertInstanceOf(Collection::class, $result);
+        self::assertInstanceOf(Collection::class, $result);
 
         $expected = ['constants', 'inherited'];
-        $this->assertSame($expected, $result->getAll());
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -219,10 +231,10 @@ final class ClassDescriptorTest extends MockeryTestCase
     public function testGetInheritedPropertiesNoParent(): void
     {
         $descriptor = new ClassDescriptor();
-        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
+        self::assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
 
         $descriptor->setParent(new stdClass());
-        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
+        self::assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
     }
 
     /**
@@ -239,10 +251,10 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedProperties();
 
-        $this->assertInstanceOf(Collection::class, $result);
+        self::assertInstanceOf(Collection::class, $result);
 
         $expected = ['properties', 'inherited'];
-        $this->assertSame($expected, $result->getAll());
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -260,8 +272,8 @@ final class ClassDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getInheritedProperties();
 
         // Assert
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertSame($expected, $result->getAll());
+        self::assertInstanceOf(Collection::class, $result);
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -279,8 +291,8 @@ final class ClassDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getInheritedProperties();
 
         // Assert
-        $this->assertInstanceOf(Collection::class, $result);
-        $this->assertSame($expected, $result->getAll());
+        self::assertInstanceOf(Collection::class, $result);
+        self::assertSame($expected, $result->getAll());
     }
 
     /**
@@ -330,7 +342,7 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         $mock->setPackage($package);
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -340,8 +352,8 @@ final class ClassDescriptorTest extends MockeryTestCase
      */
     public function testCall(): void
     {
-        $this->assertNull($this->fixture->__call('notexisting', []));
-        $this->assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
+        self::assertNull($this->fixture->__call('notexisting', []));
+        self::assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
     }
 
     /**
@@ -359,7 +371,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getSummary();
 
         // Assert
-        $this->assertSame($summary, $result);
+        self::assertSame($summary, $result);
     }
 
     protected function whenFixtureHasParentClass(): ClassDescriptor

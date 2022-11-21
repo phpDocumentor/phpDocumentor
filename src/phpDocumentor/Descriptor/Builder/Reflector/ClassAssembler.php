@@ -56,6 +56,7 @@ class ClassAssembler extends AssemblerAbstract
 
         $classDescriptor->setAbstract($data->isAbstract());
         $classDescriptor->setFinal($data->isFinal());
+        $classDescriptor->setReadOnly($data->isReadOnly());
         $classDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 1));
 
         $interfaces = $classDescriptor->getInterfaces();
