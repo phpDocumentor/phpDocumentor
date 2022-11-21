@@ -13,8 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Descriptor\Traits\CanBeAbstract;
+use phpDocumentor\Descriptor\Traits\CanBeFinal;
+use phpDocumentor\Descriptor\Traits\HasVisibility;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
@@ -29,29 +40,19 @@ use function current;
  */
 class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor|null $parent */
-    protected $parent;
+    use CanBeFinal;
+    use CanBeAbstract;
+    use HasVisibility;
 
-    /** @var bool $abstract */
-    protected $abstract = false;
+    /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null $parent */
+    protected ?ElementInterface $parent = null;
 
-    /** @var bool $final */
-    protected $final = false;
+    /** @var Collection<ArgumentInterface> */
+    protected Collection $arguments;
 
-    /** @var bool $static */
-    protected $static = false;
-
-    /** @var string $visibility */
-    protected $visibility = 'public';
-
-    /** @var Collection<ArgumentDescriptor> */
-    protected $arguments;
-
-    /** @var Type */
-    private $returnType;
-
-    /** @var bool */
-    private $hasReturnByReference = false;
+    protected bool $static = false;
+    private ?Type $returnType = null;
+    private bool $hasReturnByReference = false;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -64,9 +65,9 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor $parent
+     * @param ClassInterface|InterfaceInterface|TraitInterface|EnumInterface $parent
      */
-    public function setParent(DescriptorAbstract $parent): void
+    public function setParent(ElementInterface $parent): void
     {
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()')
@@ -79,31 +80,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @return ClassDescriptor|InterfaceDescriptor|TraitDescriptor|EnumDescriptor|null
+     * @return ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null
      */
-    public function getParent(): ?DescriptorAbstract
+    public function getParent(): ?ElementInterface
     {
         return $this->parent;
-    }
-
-    public function setAbstract(bool $abstract): void
-    {
-        $this->abstract = $abstract;
-    }
-
-    public function isAbstract(): bool
-    {
-        return $this->abstract;
-    }
-
-    public function setFinal(bool $final): void
-    {
-        $this->final = $final;
-    }
-
-    public function isFinal(): bool
-    {
-        return $this->final;
     }
 
     public function setStatic(bool $static): void
@@ -116,34 +97,27 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->static;
     }
 
-    public function setVisibility(string $visibility): void
-    {
-        $this->visibility = $visibility;
-    }
-
-    public function getVisibility(): string
-    {
-        return $this->visibility;
-    }
-
     /**
-     * @param Collection<ArgumentDescriptor> $arguments
+     * @param Collection<ArgumentInterface> $arguments
      */
     public function setArguments(Collection $arguments): void
     {
-        $this->arguments = Collection::fromClassString(ArgumentDescriptor::class);
+        $this->arguments = Collection::fromInterfaceString(ArgumentInterface::class);
 
         foreach ($arguments as $argument) {
             $this->addArgument($argument->getName(), $argument);
         }
     }
 
-    public function addArgument(string $name, ArgumentDescriptor $argument): void
+    public function addArgument(string $name, ArgumentInterface $argument): void
     {
         $argument->setMethod($this);
         $this->arguments->set($name, $argument);
     }
 
+    /**
+     * @return Collection<ArgumentInterface>
+     */
     public function getArguments(): Collection
     {
         return $this->arguments;
@@ -167,7 +141,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * Returns the file associated with the parent class, interface or trait.
      */
-    public function getFile(): FileDescriptor
+    public function getFile(): FileInterface
     {
         $file = $this->getParent()->getFile();
 
@@ -227,7 +201,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
      *    name. If such a method is found, return the first hit.
      */
-    public function getInheritedElement(): ?MethodDescriptor
+    public function getInheritedElement(): ?MethodInterface
     {
         if ($this->inheritedElement !== null) {
             Assert::isInstanceOf($this->inheritedElement, self::class);
@@ -235,19 +209,19 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
             return $this->inheritedElement;
         }
 
-        /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
+        /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();
-        if (!$associatedClass instanceof ClassDescriptor && !$associatedClass instanceof InterfaceDescriptor) {
+        if (!$associatedClass instanceof ClassInterface && !$associatedClass instanceof InterfaceInterface) {
             return null;
         }
 
         $parentClass = $associatedClass->getParent();
-        if ($parentClass instanceof ClassDescriptor || $parentClass instanceof Collection) {
+        if ($parentClass instanceof ClassInterface || $parentClass instanceof Collection) {
             // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
-            $parents = $parentClass instanceof ClassDescriptor ? [$parentClass] :
-                $parentClass->filter(InterfaceDescriptor::class);
+            $parents = $parentClass instanceof ClassInterface ? [$parentClass] :
+                $parentClass->filter(InterfaceInterface::class);
             foreach ($parents as $parent) {
-                /** @var MethodDescriptor|null $parentMethod */
+                /** @var MethodInterface|null $parentMethod */
                 $parentMethod = $parent->getMethods()->fetch($this->getName());
                 if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;
@@ -258,14 +232,14 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         }
 
         // also check all implemented interfaces next if the parent is a class and not an interface
-        if ($associatedClass instanceof ClassDescriptor) {
-            /** @var InterfaceDescriptor|Fqsen $interface */
+        if ($associatedClass instanceof ClassInterface) {
+            /** @var InterfaceInterface|Fqsen $interface */
             foreach ($associatedClass->getInterfaces() as $interface) {
                 if ($interface instanceof Fqsen) {
                     continue;
                 }
 
-                /** @var ?MethodDescriptor $parentMethod */
+                /** @var ?MethodInterface $parentMethod */
                 $parentMethod = $interface->getMethods()->fetch($this->getName());
                 if ($parentMethod instanceof self) {
                     $this->inheritedElement = $parentMethod;

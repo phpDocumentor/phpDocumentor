@@ -2,9 +2,19 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
@@ -33,6 +43,10 @@ trait HasTags
      */
     public function getTags(): Collection
     {
+        if (!isset($this->tags)) {
+            $this->tags = new Collection();
+        }
+
         return $this->tags;
     }
 
@@ -47,9 +61,11 @@ trait HasTags
             return $author;
         }
 
-        $inheritedElement = $this->getInheritedElement();
-        if ($inheritedElement) {
-            return $inheritedElement->getAuthor();
+        if ($this instanceof InheritsFromElement) {
+            $inheritedElement = $this->getInheritedElement();
+            if ($inheritedElement instanceof self) {
+                return $inheritedElement->getAuthor();
+            }
         }
 
         return new Collection();
@@ -68,9 +84,11 @@ trait HasTags
             return $version;
         }
 
-        $inheritedElement = $this->getInheritedElement();
-        if ($inheritedElement) {
-            return $inheritedElement->getVersion();
+        if ($this instanceof InheritsFromElement) {
+            $inheritedElement = $this->getInheritedElement();
+            if ($inheritedElement instanceof self) {
+                return $inheritedElement->getVersion();
+            }
         }
 
         return new Collection();
@@ -89,9 +107,11 @@ trait HasTags
             return $copyright;
         }
 
-        $inheritedElement = $this->getInheritedElement();
-        if ($inheritedElement) {
-            return $inheritedElement->getCopyright();
+        if ($this instanceof InheritsFromElement) {
+            $inheritedElement = $this->getInheritedElement();
+            if ($inheritedElement instanceof self) {
+                return $inheritedElement->getCopyright();
+            }
         }
 
         return new Collection();

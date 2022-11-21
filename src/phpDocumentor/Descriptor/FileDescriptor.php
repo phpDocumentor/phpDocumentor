@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -342,12 +347,12 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        $types = Collection::fromClassString(DescriptorAbstract::class)
+        $types = Collection::fromInterfaceString(ElementInterface::class)
             ->merge($this->getClasses())
             ->merge($this->getInterfaces())
             ->merge($this->getTraits());
 
-        $elements = Collection::fromClassString(DescriptorAbstract::class)
+        $elements = Collection::fromInterfaceString(ElementInterface::class)
             ->merge($this->getFunctions())
             ->merge($this->getConstants())
             ->merge($types);
@@ -358,10 +363,10 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
 
         foreach ($types as $element) {
             if (
-                $element instanceof ClassDescriptor ||
-                $element instanceof InterfaceDescriptor ||
-                $element instanceof TraitDescriptor ||
-                $element instanceof EnumDescriptor
+                $element instanceof ClassInterface ||
+                $element instanceof InterfaceInterface ||
+                $element instanceof TraitInterface ||
+                $element instanceof EnumInterface
             ) {
                 foreach ($element->getMethods() as $item) {
                     $errors = $errors->merge($item->getErrors());
@@ -369,8 +374,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             }
 
             if (
-                $element instanceof ClassDescriptor ||
-                $element instanceof InterfaceDescriptor
+                $element instanceof ClassInterface ||
+                $element instanceof InterfaceInterface
             ) {
                 foreach ($element->getConstants() as $item) {
                     $errors = $errors->merge($item->getErrors());
@@ -378,8 +383,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             }
 
             if (
-                !$element instanceof ClassDescriptor &&
-                !$element instanceof TraitDescriptor
+                !$element instanceof ClassInterface &&
+                !$element instanceof TraitInterface
             ) {
                 continue;
             }

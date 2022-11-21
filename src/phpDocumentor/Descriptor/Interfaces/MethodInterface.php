@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Validation\Error;
 
 /**
  * Describes the public interface of the description for a method.
  */
-interface MethodInterface extends ElementInterface, TypeInterface
+interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromElement
 {
     public function setAbstract(bool $abstract): void;
 
     public function isAbstract(): bool;
 
     /**
-     * @return Collection<ArgumentDescriptor>
+     * @return Collection<ArgumentInterface>
      */
     public function getArguments(): Collection;
 
@@ -39,4 +39,11 @@ interface MethodInterface extends ElementInterface, TypeInterface
     public function isStatic(): bool;
 
     public function setVisibility(string $visibility): void;
+
+    /**
+     * Returns all errors associated with this tag.
+     *
+     * @return Collection<Error>
+     */
+    public function getErrors(): Collection;
 }

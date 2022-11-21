@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
-use phpDocumentor\Reflection\DocBlock\Description;
 
 /**
  * Base class for any tag descriptor and used when a tag has no specific descriptor.

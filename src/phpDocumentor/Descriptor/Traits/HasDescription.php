@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Traits;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
 
 trait HasDescription
 {
     protected ?DescriptionDescriptor $description = null;
 
     /**
-     * Sets a description or none if there is no description.
+     * Sets a description or none to inherit from a parent.
      */
     public function setDescription(?DescriptionDescriptor $description): void
     {
@@ -24,19 +33,19 @@ trait HasDescription
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription(): ?DescriptionDescriptor
+    public function getDescription(): DescriptionDescriptor
     {
         if ($this->description !== null) {
             return $this->description;
         }
 
-        if ($this instanceof DescriptorAbstract) {
+        if ($this instanceof InheritsFromElement) {
             $parentElement = $this->getInheritedElement();
             if ($parentElement instanceof self) {
                 return $parentElement->getDescription();
             }
         }
 
-        return null;
+        return DescriptionDescriptor::createEmpty();
     }
 }

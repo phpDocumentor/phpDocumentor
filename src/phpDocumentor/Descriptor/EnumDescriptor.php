@@ -15,8 +15,10 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Type;
 
@@ -28,24 +30,14 @@ use phpDocumentor\Reflection\Type;
  */
 final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
 {
-    /**
-     * References to interfaces that are implemented by this enum.
-     *
-     * @var Collection<InterfaceDescriptor|Fqsen> $implements
-     */
-    private $implements;
-
-    /** @var Collection<MethodDescriptor> $methods References to methods defined in this class. */
-    private $methods;
-
-    /** @var Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits References to traits consumed by this class */
-    private $usedTraits;
+    use Traits\ImplementsInterfaces;
+    use Traits\HasMethods;
+    use Traits\UsesTraits;
 
     /** @var Collection<EnumCaseInterface> */
-    private $cases;
+    private Collection $cases;
 
-    /** @var Type|null */
-    private $backedType;
+    private ?Type $backedType = null;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -54,48 +46,18 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
     {
         parent::__construct();
 
-        $this->setInterfaces(new Collection());
-        $this->setUsedTraits(new Collection());
-        $this->setMethods(new Collection());
         $this->setCases(new Collection());
     }
 
     /**
-     * @internal should not be called by any other class than the assamblers
-     *
-     * @param Collection<InterfaceDescriptor|Fqsen> $implements
+     * @return Collection<MethodInterface>
      */
-    public function setInterfaces(Collection $implements): void
-    {
-        $this->implements = $implements;
-    }
-
-    public function getInterfaces(): Collection
-    {
-        return $this->implements;
-    }
-
-    /**
-     * @internal should not be called by any other class than the assamblers
-     *
-     * @param Collection<MethodDescriptor> $methods
-     */
-    public function setMethods(Collection $methods): void
-    {
-        $this->methods = $methods;
-    }
-
-    public function getMethods(): Collection
-    {
-        return $this->methods;
-    }
-
     public function getInheritedMethods(): Collection
     {
-        $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
+        $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
 
         foreach ($this->getUsedTraits() as $trait) {
-            if (!$trait instanceof TraitDescriptor) {
+            if (!$trait instanceof TraitInterface) {
                 continue;
             }
 
@@ -106,13 +68,13 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
     }
 
     /**
-     * @return Collection<MethodDescriptor>
+     * @return Collection<MethodInterface>
      */
     public function getMagicMethods(): Collection
     {
         $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
 
-        $methods = Collection::fromClassString(MethodDescriptor::class);
+        $methods = Collection::fromInterfaceString(MethodInterface::class);
 
         foreach ($methodTags as $methodTag) {
             $method = new MethodDescriptor();
@@ -152,34 +114,13 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         }
     }
 
-    public function setLocation(FileDescriptor $file, Location $startLocation): void
+    public function setLocation(FileInterface $file, Location $startLocation): void
     {
         parent::setLocation($file, $startLocation);
+
         foreach ($this->getCases() as $case) {
             $case->setFile($file);
         }
-    }
-
-    /**
-     * Sets a collection of all traits used by this class.
-     *
-     * @param Collection<TraitDescriptor>|Collection<Fqsen> $usedTraits
-     */
-    public function setUsedTraits(Collection $usedTraits): void
-    {
-        $this->usedTraits = $usedTraits;
-    }
-
-    /**
-     * Returns the traits used by this class.
-     *
-     * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
-     *
-     * @return Collection<TraitDescriptor>|Collection<Fqsen>
-     */
-    public function getUsedTraits(): Collection
-    {
-        return $this->usedTraits;
     }
 
     /**

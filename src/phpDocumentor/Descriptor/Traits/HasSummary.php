@@ -4,6 +4,21 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Traits;
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
+
+use function strtolower;
+use function trim;
+
 trait HasSummary
 {
     /** @var string $summary A summary describing the function of this element in short. */
@@ -30,9 +45,11 @@ trait HasSummary
             return $this->summary;
         }
 
-        $parent = $this->getInheritedElement();
-        if ($parent instanceof self) {
-            return $parent->getSummary();
+        if ($this instanceof InheritsFromElement) {
+            $parent = $this->getInheritedElement();
+            if ($parent instanceof ElementInterface) {
+                return $parent->getSummary();
+            }
         }
 
         return $this->summary;

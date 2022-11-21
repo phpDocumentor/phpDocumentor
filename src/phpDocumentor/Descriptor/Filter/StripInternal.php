@@ -47,15 +47,13 @@ class StripInternal implements FilterInterface
             return $payload;
         }
 
-        if ($filterable->getDescription() !== null) {
-            // remove inline @internal tags
-            foreach ($filterable->getDescription()->getTags() as $position => $tag) {
-                if ($tag->getName() !== 'internal') {
-                    continue;
-                }
-
-                $filterable->getDescription()->replaceTag($position, null);
+        // remove inline @internal tags
+        foreach ($filterable->getDescription()->getTags() as $position => $tag) {
+            if ($tag->getName() !== 'internal') {
+                continue;
             }
+
+            $filterable->getDescription()->replaceTag($position, null);
         }
 
         if ($filterable instanceof DescriptorAbstract) {

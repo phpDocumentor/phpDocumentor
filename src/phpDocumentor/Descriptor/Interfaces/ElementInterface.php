@@ -15,8 +15,6 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
@@ -69,7 +67,7 @@ interface ElementInterface
     /**
      * Sets the file and location for this element.
      */
-    public function setLocation(FileDescriptor $file, Location $startLocation): void;
+    public function setLocation(FileInterface $file, Location $startLocation): void;
 
     /**
      * Returns the file location for this element relative to the project root.
@@ -95,12 +93,12 @@ interface ElementInterface
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param PackageDescriptor|string $package
+     * @param PackageInterface|string $package
      */
     public function setPackage($package): void;
 
     /**
      * Returns the package name for this element.
      */
-    public function getPackage(): ?PackageDescriptor;
+    public function getPackage(): ?PackageInterface;
 }

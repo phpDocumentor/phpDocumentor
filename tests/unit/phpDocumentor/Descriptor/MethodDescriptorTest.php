@@ -32,8 +32,7 @@ use function iterator_to_array;
  */
 final class MethodDescriptorTest extends MockeryTestCase
 {
-    /** @var MethodDescriptor $fixture */
-    private $fixture;
+    private MethodDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.

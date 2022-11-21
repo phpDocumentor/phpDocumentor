@@ -13,7 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\Traits\HasVisibility;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
@@ -28,32 +35,24 @@ class PropertyDescriptor extends DescriptorAbstract implements
     Interfaces\PropertyInterface,
     Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|TraitDescriptor|null $parent */
+    use HasVisibility;
+
+    /** @var ClassInterface|TraitInterface|null $parent */
     protected $parent;
 
-    /** @var Type|null $type */
-    protected $type;
-
-    /** @var string $default */
-    protected $default;
-
-    /** @var bool $static */
-    protected $static = false;
-
-    /** @var string $visibility */
-    protected $visibility = 'public';
-
-    /** @var bool */
-    private $readOnly = false;
-
-    /** @var bool */
-    private $writeOnly = false;
+    protected ?Type $type = null;
+    protected ?string $default = null;
+    protected bool $static = false;
+    private bool $readOnly = false;
+    private bool $writeOnly = false;
 
     /**
-     * @param ClassDescriptor|TraitDescriptor $parent
+     * @param ClassInterface|TraitInterface $parent
      */
-    public function setParent(DescriptorAbstract $parent): void
+    public function setParent(ElementInterface $parent): void
     {
+        Assert::isInstanceOfAny($parent, [ClassInterface::class, TraitInterface::class]);
+
         $this->parent = $parent;
 
         $this->setFullyQualifiedStructuralElementName(
@@ -62,9 +61,9 @@ class PropertyDescriptor extends DescriptorAbstract implements
     }
 
     /**
-     * @return ClassDescriptor|TraitDescriptor|null
+     * @return ClassInterface|TraitInterface|null
      */
-    public function getParent(): ?DescriptorAbstract
+    public function getParent(): ?ElementInterface
     {
         return $this->parent;
     }
@@ -119,16 +118,6 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->type;
     }
 
-    public function setVisibility(string $visibility): void
-    {
-        $this->visibility = $visibility;
-    }
-
-    public function getVisibility(): string
-    {
-        return $this->visibility;
-    }
-
     /**
      * @return Collection<VarDescriptor>
      */
@@ -151,7 +140,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * Returns the file associated with the parent class or trait.
      */
-    public function getFile(): FileDescriptor
+    public function getFile(): FileInterface
     {
         $file = $this->getParent()->getFile();
 
@@ -163,18 +152,18 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * Returns the property from which this one should inherit, if any.
      */
-    public function getInheritedElement(): ?PropertyDescriptor
+    public function getInheritedElement(): ?PropertyInterface
     {
-        /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
+        /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();
 
         if (
-            ($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
-            && ($associatedClass->getParent() instanceof ClassDescriptor
-                || $associatedClass->getParent() instanceof InterfaceDescriptor
+            ($associatedClass instanceof ClassInterface || $associatedClass instanceof InterfaceInterface)
+            && ($associatedClass->getParent() instanceof ClassInterface
+                || $associatedClass->getParent() instanceof InterfaceInterface
             )
         ) {
-            /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
+            /** @var ClassInterface|InterfaceInterface $parentClass */
             $parentClass = $associatedClass->getParent();
 
             return $parentClass->getProperties()->fetch($this->getName());

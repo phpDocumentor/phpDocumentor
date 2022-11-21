@@ -28,9 +28,9 @@ final class StripIgnoredTagsTest extends TestCase
                 return 'someTag';
             }
 
-            public function getDescription(): ?DocBlock\DescriptionDescriptor
+            public function getDescription(): DocBlock\DescriptionDescriptor
             {
-                return null;
+                return DocBlock\DescriptionDescriptor::createEmpty();
             }
 
             public function setErrors(Collection $errors): void

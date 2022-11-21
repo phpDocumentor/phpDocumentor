@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 
@@ -105,8 +106,8 @@ final class DocumentDescriptor implements Descriptor
         return $this->title;
     }
 
-    public function getDescription(): ?DocBlock\DescriptionDescriptor
+    public function getDescription(): DocBlock\DescriptionDescriptor
     {
-        return null;
+        return DescriptionDescriptor::createEmpty();
     }
 }

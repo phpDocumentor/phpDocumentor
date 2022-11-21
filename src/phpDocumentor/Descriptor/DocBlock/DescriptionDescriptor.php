@@ -27,6 +27,11 @@ final class DescriptionDescriptor
         $this->inlineTags = $inlineTags;
     }
 
+    public static function createEmpty(): self
+    {
+        return new self(new Description(''), []);
+    }
+
     public function getBodyTemplate(): string
     {
         return $this->description->getBodyTemplate();

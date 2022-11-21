@@ -2,28 +2,37 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor\Traits;
 
-use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Reflection\Location;
 
 trait IsInFile
 {
-    /** @var FileDescriptor|null $fileDescriptor The file to which this element belongs; if applicable */
-    protected ?FileDescriptor $fileDescriptor = null;
+    /** @var FileInterface|null $fileDescriptor The file to which this element belongs; if applicable */
+    protected ?FileInterface $fileDescriptor = null;
 
     /** @var int $line The line number on which this element occurs. */
     protected int $line = 0;
 
-    protected Location $startLocation;
-    protected Location $endLocation;
+    protected ?Location $startLocation = null;
+    protected ?Location $endLocation = null;
 
     /**
      * Sets the file and linenumber where this element is at.
      *
      * @internal should not be called by any other class than the assemblers
      */
-    public function setLocation(FileDescriptor $file, Location $startLocation): void
+    public function setLocation(FileInterface $file, Location $startLocation): void
     {
         $this->setFile($file);
         $this->setStartLocation($startLocation);
@@ -40,7 +49,7 @@ trait IsInFile
     /**
      * Returns the file in which this element resides or null in case the element is not bound to a file..
      */
-    public function getFile(): ?FileDescriptor
+    public function getFile(): ?FileInterface
     {
         return $this->fileDescriptor;
     }
@@ -50,7 +59,7 @@ trait IsInFile
      *
      * @internal should not be called by any other class than the assemblers
      */
-    public function setFile(FileDescriptor $file): void
+    public function setFile(FileInterface $file): void
     {
         $this->fileDescriptor = $file;
     }

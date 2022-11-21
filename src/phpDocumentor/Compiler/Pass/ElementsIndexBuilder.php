@@ -17,6 +17,7 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
@@ -85,9 +86,9 @@ class ElementsIndexBuilder implements CompilerPassInterface
      * their methods, properties and constants accordingly, or an empty array if no sub-elements
      * are applicable.
      *
-     * @return DescriptorAbstract[]
+     * @return ElementInterface[]
      */
-    protected function getSubElements(DescriptorAbstract $element): array
+    protected function getSubElements(ElementInterface $element): array
     {
         $subElements = [];
 

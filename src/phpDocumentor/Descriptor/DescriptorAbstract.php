@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Validation\Error;
 use Webmozart\Assert\Assert;
 
@@ -24,7 +26,7 @@ use function substr;
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Filterable
+abstract class DescriptorAbstract implements Filterable, ElementInterface, InheritsFromElement
 {
     use Traits\HasFqsen;
     use Traits\HasName;
@@ -42,6 +44,7 @@ abstract class DescriptorAbstract implements Filterable
      */
     public function __construct()
     {
+        $this->setErrors(new Collection());
         $this->setTags(new Collection());
     }
 

@@ -114,7 +114,7 @@ final class StripInternalTest extends TestCase
         $collection->fetch('internal')->shouldBeCalled()->willReturn(true);
 
         $descriptor = $this->prophesize(DescriptorAbstract::class);
-        $descriptor->getDescription()->shouldBeCalled()->willReturn();
+        $descriptor->getDescription()->shouldBeCalled()->willReturn(DescriptionDescriptor::createEmpty());
         $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
 
         self::assertNull(
@@ -145,7 +145,7 @@ final class StripInternalTest extends TestCase
     {
         $apiSpec = ApiSpecification::createDefault();
         $descriptor = $this->prophesize(DescriptorAbstract::class);
-        $descriptor->getDescription()->willReturn(null);
+        $descriptor->getDescription()->willReturn(DescriptionDescriptor::createEmpty());
         $descriptor->getTags()->willReturn(new Collection());
 
         self::assertSame(

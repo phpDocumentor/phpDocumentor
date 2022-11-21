@@ -14,10 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -28,10 +24,10 @@ use phpDocumentor\Reflection\Fqsen;
  */
 interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 {
-    /** @param Collection<InterfaceDescriptor|Fqsen> $implements */
+    /** @param Collection<InterfaceInterface|Fqsen> $implements */
     public function setInterfaces(Collection $implements): void;
 
-    /** @return Collection<InterfaceDescriptor|Fqsen> */
+    /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfaces(): Collection;
 
     public function setFinal(bool $final): void;
@@ -42,27 +38,27 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 
     public function isAbstract(): bool;
 
-    /** @param Collection<ConstantDescriptor> $constants */
+    /** @param Collection<ConstantInterface> $constants */
     public function setConstants(Collection $constants): void;
 
-    /** @return Collection<ConstantDescriptor> */
+    /** @return Collection<ConstantInterface> */
     public function getConstants(): Collection;
 
-    /** @param Collection<MethodDescriptor> $methods */
+    /** @param Collection<MethodInterface> $methods */
     public function setMethods(Collection $methods): void;
 
-    /** @return Collection<MethodDescriptor> */
+    /** @return Collection<MethodInterface> */
     public function getMethods(): Collection;
 
-    /** @return Collection<MethodDescriptor> */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection;
 
-    /** @param Collection<PropertyDescriptor> $properties */
+    /** @param Collection<PropertyInterface> $properties */
     public function setProperties(Collection $properties): void;
 
-    /** @return Collection<PropertyDescriptor> */
+    /** @return Collection<PropertyInterface> */
     public function getProperties(): Collection;
 
-    /** @return Collection<PropertyDescriptor> */
+    /** @return Collection<PropertyInterface> */
     public function getInheritedProperties(): Collection;
 }

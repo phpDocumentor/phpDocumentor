@@ -64,11 +64,11 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingFullyQualifiedStructuralElementName(): void
     {
-        $this->assertSame(null, $this->fixture->getFullyQualifiedStructuralElementName());
+        self::assertSame(null, $this->fixture->getFullyQualifiedStructuralElementName());
 
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\phpDocumentor'));
 
-        $this->assertSame('\phpDocumentor', (string) $this->fixture->getFullyQualifiedStructuralElementName());
+        self::assertSame('\phpDocumentor', (string) $this->fixture->getFullyQualifiedStructuralElementName());
     }
 
     /**
@@ -77,11 +77,11 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingName(): void
     {
-        $this->assertSame('', $this->fixture->getName());
+        self::assertSame('', $this->fixture->getName());
 
         $this->fixture->setName('name');
 
-        $this->assertSame('name', $this->fixture->getName());
+        self::assertSame('name', $this->fixture->getName());
     }
 
     /**
@@ -90,13 +90,13 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingNamespace(): void
     {
-        $this->assertEquals('', $this->fixture->getNamespace());
+        self::assertEquals('', $this->fixture->getNamespace());
 
         $mock = m::mock(NamespaceDescriptor::class);
 
         $this->fixture->setNamespace($mock);
 
-        $this->assertSame($mock, $this->fixture->getNamespace());
+        self::assertSame($mock, $this->fixture->getNamespace());
     }
 
     /**
@@ -105,11 +105,11 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingSummary(): void
     {
-        $this->assertSame('', $this->fixture->getSummary());
+        self::assertSame('', $this->fixture->getSummary());
 
         $this->fixture->setSummary('summary');
 
-        $this->assertSame('summary', $this->fixture->getSummary());
+        self::assertSame('summary', $this->fixture->getSummary());
     }
 
     /**
@@ -129,7 +129,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $result = $this->fixture->getSummary();
 
         // Assert
-        $this->assertSame($summary, $result);
+        self::assertSame($summary, $result);
     }
 
     /**
@@ -138,12 +138,14 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingDescription(): void
     {
-        $this->assertNull($this->fixture->getDescription());
+        $description = new DescriptionDescriptor(new Description(''), []);
+        self::assertEquals($description, $this->fixture->getDescription());
+        self::assertNotSame($description, $this->fixture->getDescription());
 
         $description = new DescriptionDescriptor(new Description('description'), []);
         $this->fixture->setDescription($description);
 
-        $this->assertSame($description, $this->fixture->getDescription());
+        self::assertSame($description, $this->fixture->getDescription());
     }
 
     public function testWhenDescriptionIsNullParentDescriptionIsInherited(): void
@@ -163,11 +165,11 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();
-        $this->assertNull($this->fixture->getPackage());
+        self::assertNull($this->fixture->getPackage());
 
         $this->fixture->setPackage($package);
 
-        $this->assertSame($package, $this->fixture->getPackage());
+        self::assertSame($package, $this->fixture->getPackage());
     }
 
     /**
@@ -188,7 +190,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $collection->offsetSet('author', $author);
 
         $mock->shouldReceive('getTags')->andReturn($collection);
-        $this->assertSame($author, $mock->getAuthor());
+        self::assertSame($author, $mock->getAuthor());
     }
 
     /**
@@ -209,7 +211,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $collection->offsetSet('version', $version);
 
         $mock->shouldReceive('getTags')->andReturn($collection);
-        $this->assertSame($version, $mock->getVersion());
+        self::assertSame($version, $mock->getVersion());
     }
 
     /**
@@ -230,7 +232,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $collection->offsetSet('copyright', $copyright);
 
         $mock->shouldReceive('getTags')->andReturn($collection);
-        $this->assertSame($copyright, $mock->getCopyright());
+        self::assertSame($copyright, $mock->getCopyright());
     }
 
     /**
@@ -240,14 +242,14 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingLocation(): void
     {
-        $this->assertNull($this->fixture->getFile());
-        $this->assertSame(0, $this->fixture->getLine());
+        self::assertNull($this->fixture->getFile());
+        self::assertSame(0, $this->fixture->getLine());
 
         $startLocation = new Location(5, 100);
         $this->fixture->setLocation(m::mock(FileDescriptor::class), $startLocation);
 
-        $this->assertInstanceOf(FileDescriptor::class, $this->fixture->getFile());
-        $this->assertSame($startLocation, $this->fixture->getStartLocation());
+        self::assertInstanceOf(FileDescriptor::class, $this->fixture->getFile());
+        self::assertSame($startLocation, $this->fixture->getStartLocation());
     }
 
     /**
@@ -256,12 +258,12 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingStartLocation(): void
     {
-        $this->assertNull($this->fixture->getStartLocation());
+        self::assertNull($this->fixture->getStartLocation());
 
         $startLocation = new Location(10, 200);
         $this->fixture->setStartLocation($startLocation);
 
-        $this->assertSame($startLocation, $this->fixture->getStartLocation());
+        self::assertSame($startLocation, $this->fixture->getStartLocation());
     }
 
     /**
@@ -270,12 +272,12 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testSettingAndGettingEndLocation(): void
     {
-        $this->assertNull($this->fixture->getEndLocation());
+        self::assertNull($this->fixture->getEndLocation());
 
         $endLocation = new Location(99, 5200);
         $this->fixture->setEndLocation($endLocation);
 
-        $this->assertSame($endLocation, $this->fixture->getEndLocation());
+        self::assertSame($endLocation, $this->fixture->getEndLocation());
     }
 
     /**
@@ -283,14 +285,14 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testGetPath(): void
     {
-        $this->assertSame('', $this->fixture->getPath());
+        self::assertSame('', $this->fixture->getPath());
 
         /** @var m\MockInterface $file */
         $file = m::mock(FileDescriptor::class);
         $file->shouldReceive('getPath')->andReturn('path');
         $this->fixture->setLocation($file, new Location(10));
 
-        $this->assertSame('path', $this->fixture->getPath());
+        self::assertSame('path', $this->fixture->getPath());
     }
 
     /**
@@ -303,7 +305,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $mock = m::mock(Collection::class);
         $this->fixture->setTags($mock);
 
-        $this->assertSame($mock, $this->fixture->getTags());
+        self::assertSame($mock, $this->fixture->getTags());
     }
 
     /**
@@ -311,11 +313,11 @@ class DescriptorAbstractTest extends MockeryTestCase
      */
     public function testIsDeprecated(): void
     {
-        $this->assertFalse($this->fixture->isDeprecated());
+        self::assertFalse($this->fixture->isDeprecated());
 
         $this->fixture->setTags(new Collection(['deprecated' => 'deprecated']));
 
-        $this->assertTrue($this->fixture->isDeprecated());
+        self::assertTrue($this->fixture->isDeprecated());
     }
 
     /**
@@ -362,6 +364,6 @@ class DescriptorAbstractTest extends MockeryTestCase
     public function testToString(): void
     {
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\Fqn'));
-        $this->assertSame('\Fqn', (string) $this->fixture);
+        self::assertSame('\Fqn', (string) $this->fixture);
     }
 }

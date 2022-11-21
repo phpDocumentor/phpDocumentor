@@ -280,4 +280,19 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
 
         return new Collection($elements);
     }
+
+    /**
+     * @param class-string<C> $interfaceString
+     * @param array<C> $elements
+     *
+     * @return Collection<C>
+     *
+     * @template C
+     */
+    public static function fromInterfaceString(string $interfaceString, array $elements = []): Collection
+    {
+        Assert::interfaceExists($interfaceString);
+
+        return new Collection($elements);
+    }
 }

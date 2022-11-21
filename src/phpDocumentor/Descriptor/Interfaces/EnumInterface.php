@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 
@@ -27,19 +25,19 @@ use phpDocumentor\Reflection\Type;
  */
 interface EnumInterface extends ElementInterface, TypeInterface
 {
-    /** @param Collection<InterfaceDescriptor|Fqsen> $implements */
+    /** @param Collection<InterfaceInterface|Fqsen> $implements */
     public function setInterfaces(Collection $implements): void;
 
-    /** @return Collection<InterfaceDescriptor|Fqsen> */
+    /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfaces(): Collection;
 
-    /** @param Collection<MethodDescriptor> $methods */
+    /** @param Collection<MethodInterface> $methods */
     public function setMethods(Collection $methods): void;
 
-    /** @return Collection<MethodDescriptor> */
+    /** @return Collection<MethodInterface> */
     public function getMethods(): Collection;
 
-    /** @return Collection<MethodDescriptor> */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection;
 
     /** @param Collection<EnumCaseInterface> $cases */
