@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use Webmozart\Assert\Assert;
 
 trait BelongsToMethod
 {
-    protected ?MethodInterface $method = null;
+    private MethodInterface $method;
 
     /**
      * To which method does this argument belong to
@@ -27,8 +28,12 @@ trait BelongsToMethod
         $this->method = $method;
     }
 
-    public function getMethod(): ?MethodInterface
+    public function getMethod(): MethodInterface
     {
-        return $this->method;
+        $method = $this->method ?? null;
+
+        Assert::isInstanceOf($method, MethodInterface::class);
+
+        return $method;
     }
 }

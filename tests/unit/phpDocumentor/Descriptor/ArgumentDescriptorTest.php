@@ -30,7 +30,9 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetTypes(): void
     {
         $fixture = new ArgumentDescriptor();
-        self::assertSame(null, $fixture->getType());
+        $fixture->setMethod(new MethodDescriptor());
+
+        self::assertNull($fixture->getType());
 
         $type = new Integer();
         $fixture->setType($type);
@@ -65,9 +67,8 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetMethod(): void
     {
         $fixture = new ArgumentDescriptor();
-        self::assertSame(null, $fixture->getMethod());
-
         $method = new MethodDescriptor();
+
         $fixture->setMethod($method);
 
         self::assertSame($method, $fixture->getMethod());
@@ -123,17 +124,15 @@ final class ArgumentDescriptorTest extends TestCase
     {
         $fixture = new ArgumentDescriptor();
 
-        self::assertNull(
-            $fixture->getInheritedElement(),
-            'By default, an argument does not have an inherited element'
-        );
-
         $method = new MethodDescriptor();
         $method->setName('same');
         $method->addArgument('abc', $fixture);
         $fixture->setMethod($method);
 
-        self::assertNull($fixture->getInheritedElement());
+        self::assertNull(
+            $fixture->getInheritedElement(),
+            'By default, an argument does not have an inherited element'
+        );
 
         $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName($fixture, 'abcd');
 

@@ -25,7 +25,7 @@ interface ArgumentInterface extends ElementInterface
      */
     public function setMethod(MethodInterface $method): void;
 
-    public function getMethod(): ?MethodInterface;
+    public function getMethod(): MethodInterface;
 
     /**
      * Sets a normalized list of types that the argument represents.
