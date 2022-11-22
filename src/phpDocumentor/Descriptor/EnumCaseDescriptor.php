@@ -43,6 +43,9 @@ class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCa
         return $this->parent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setParent($parent): void
     {
         Assert::nullOrIsInstanceOf($parent, EnumInterface::class);

@@ -47,8 +47,9 @@ trait HasProperties
     }
 
     /**
-     * @todo check whether this function works properly, the business logic feels off somehow
      * @return Collection<PropertyInterface>
+     *
+     * @todo check whether this function works properly, the business logic feels off somehow
      */
     public function getInheritedProperties(): Collection
     {

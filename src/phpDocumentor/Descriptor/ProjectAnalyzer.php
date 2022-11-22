@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
+
 use function count;
 use function get_class;
 use function is_string;
@@ -127,6 +128,9 @@ TEXT;
      */
     protected function findAllElements(ProjectInterface $projectDescriptor): Collection
     {
-        return $projectDescriptor->getIndexes()->fetch('elements', Collection::fromInterfaceString(ElementInterface::class));
+        return $projectDescriptor->getIndexes()->fetch(
+            'elements',
+            Collection::fromInterfaceString(ElementInterface::class)
+        );
     }
 }

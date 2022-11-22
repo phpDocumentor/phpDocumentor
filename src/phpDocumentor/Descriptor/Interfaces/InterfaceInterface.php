@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Reflection\Fqsen;
 
 /**

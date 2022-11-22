@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\EnumCaseDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
-use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
@@ -102,7 +102,7 @@ final class EnumAssembler extends AssemblerAbstract
     private function addCases(array $cases, EnumInterface $descriptor): void
     {
         foreach ($cases as $case) {
-            $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseInterface::class);
+            $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseDescriptor::class);
             if ($caseDescriptor === null) {
                 continue;
             }
