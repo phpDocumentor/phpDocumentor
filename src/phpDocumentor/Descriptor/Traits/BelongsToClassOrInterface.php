@@ -32,7 +32,7 @@ trait BelongsToClassOrInterface
      *
      * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
      */
-    public function setParent(?ElementInterface $parent): void
+    public function setParent($parent): void
     {
         Assert::nullOrIsInstanceOfAny($parent, [ClassInterface::class, InterfaceInterface::class]);
 

@@ -49,4 +49,20 @@ interface EnumInterface extends ElementInterface, TypeInterface
     public function setBackedType(?Type $type): void;
 
     public function getBackedType(): ?Type;
+
+    /**
+     * Sets a collection of all traits used by this class.
+     *
+     * @param Collection<TraitInterface|Fqsen> $usedTraits
+     */
+    public function setUsedTraits(Collection $usedTraits): void;
+
+    /**
+     * Returns the traits used by this class.
+     *
+     * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
+     *
+     * @return Collection<TraitInterface|Fqsen>
+     */
+    public function getUsedTraits(): Collection;
 }

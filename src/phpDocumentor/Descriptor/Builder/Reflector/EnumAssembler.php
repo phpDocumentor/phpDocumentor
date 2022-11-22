@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Enum_;
@@ -87,9 +88,12 @@ final class EnumAssembler extends AssemblerAbstract
      *
      * @param array<Fqsen> $traits
      */
-    private function addUses(array $traits, EnumDescriptor $descriptor): void
+    private function addUses(array $traits, EnumInterface $descriptor): void
     {
-        $descriptor->setUsedTraits(Collection::fromInterfaceString(Fqsen::class, $traits));
+        /** @var Collection<TraitInterface|Fqsen> $usedTraits */
+        $usedTraits = new Collection($traits);
+
+        $descriptor->setUsedTraits($usedTraits);
     }
 
     /**

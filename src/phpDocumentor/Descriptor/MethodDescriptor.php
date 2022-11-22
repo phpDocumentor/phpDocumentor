@@ -67,8 +67,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     /**
      * @param ClassInterface|InterfaceInterface|TraitInterface|EnumInterface $parent
      */
-    public function setParent(ElementInterface $parent): void
+    public function setParent($parent): void
     {
+        Assert::isInstanceOfAny(
+            $parent,
+            [ClassInterface::class, TraitInterface::class, InterfaceInterface::class, EnumInterface::class]
+        );
+
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()')
         );

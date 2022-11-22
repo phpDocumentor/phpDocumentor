@@ -21,9 +21,11 @@ use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Enum_;
@@ -58,7 +60,10 @@ class FileAssembler extends AssemblerAbstract
         $fileDescriptor->setSource($data->getSource());
 
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
-        $fileDescriptor->setNamespaceAliases(new Collection($data->getNamespaces()));
+
+        /** @var Collection<NamespaceInterface|Fqsen> $namespaceAliases */
+        $namespaceAliases = new Collection($data->getNamespaces());
+        $fileDescriptor->setNamespaceAliases($namespaceAliases);
 
         $this->assembleDocBlock($data->getDocBlock(), $fileDescriptor);
         $this->overridePackageTag($data, $fileDescriptor);

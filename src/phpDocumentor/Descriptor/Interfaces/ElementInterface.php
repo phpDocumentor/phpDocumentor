@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
@@ -22,7 +23,7 @@ use phpDocumentor\Reflection\Location;
 /**
  * Represents the public interface to which all descriptors should be held.
  */
-interface ElementInterface extends TracksErrors
+interface ElementInterface extends Descriptor, TracksErrors
 {
     /**
      * Returns the namespace for this element (defaults to global "\")
@@ -56,11 +57,6 @@ interface ElementInterface extends TracksErrors
     public function setName(string $name): void;
 
     /**
-     * Returns the local name for this element.
-     */
-    public function getName(): string;
-
-    /**
      * Sets a summary describing this element.
      */
     public function setSummary(string $summary): void;
@@ -74,11 +70,6 @@ interface ElementInterface extends TracksErrors
      * Sets a longer description for this element.
      */
     public function setDescription(DescriptionDescriptor $description): void;
-
-    /**
-     * Returns a longer description for this element.
-     */
-    public function getDescription(): ?DescriptionDescriptor;
 
     /**
      * Sets the file and location for this element.

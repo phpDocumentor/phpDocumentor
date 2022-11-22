@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
@@ -135,6 +136,9 @@ class ClassAssembler extends AssemblerAbstract
      */
     protected function addUses(array $traits, ClassInterface $classDescriptor): void
     {
-        $classDescriptor->setUsedTraits(Collection::fromInterfaceString(Fqsen::class, $traits));
+        /** @var Collection<TraitInterface|Fqsen> $usedTraits */
+        $usedTraits = new Collection($traits);
+
+        $classDescriptor->setUsedTraits($usedTraits);
     }
 }

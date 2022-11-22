@@ -49,7 +49,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * @param ClassInterface|TraitInterface $parent
      */
-    public function setParent(ElementInterface $parent): void
+    public function setParent($parent): void
     {
         Assert::isInstanceOfAny($parent, [ClassInterface::class, TraitInterface::class]);
 
