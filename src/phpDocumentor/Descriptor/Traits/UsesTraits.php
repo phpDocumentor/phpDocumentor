@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
 
 trait UsesTraits
 {
-    /** @var Collection<TraitDescriptor|Fqsen> $usedTraits References to traits consumed by this class */
+    /** @var Collection<TraitInterface|Fqsen> $usedTraits References to traits consumed by this class */
     protected Collection $usedTraits;
 
     /**
      * Sets a collection of all traits used by this class.
      *
-     * @param Collection<TraitDescriptor|Fqsen> $usedTraits
+     * @param Collection<TraitInterface|Fqsen> $usedTraits
      */
     public function setUsedTraits(Collection $usedTraits): void
     {
@@ -37,7 +37,7 @@ trait UsesTraits
      *
      * Returned values may either be a string (when the Trait is not in this project) or a TraitDescriptor.
      *
-     * @return Collection<TraitDescriptor|Fqsen>
+     * @return Collection<TraitInterface|Fqsen>
      */
     public function getUsedTraits(): Collection
     {

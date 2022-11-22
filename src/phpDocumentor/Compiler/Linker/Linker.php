@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -81,9 +82,9 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectInterface $project): void
     {
-        $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->elements->getAll());
+        $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->get('elements')->getAll());
         $this->substitute($project);
     }
 

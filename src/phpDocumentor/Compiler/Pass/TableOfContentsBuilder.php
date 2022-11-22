@@ -18,8 +18,8 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Transformer\Router\Router;
@@ -30,11 +30,8 @@ use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
-    /** @var Router */
-    private $router;
-
-    /** @var LoggerInterface */
-    private $logger;
+    private Router $router;
+    private LoggerInterface $logger;
 
     public function __construct(Router $router, LoggerInterface $logger)
     {
@@ -47,7 +44,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         return 'Builds table of contents for api documentation sets';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function execute(ProjectInterface $project): void
     {
         //This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
         foreach ($project->getVersions() as $version) {
@@ -91,7 +88,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
     }
 
     private function createNamespaceEntries(
-        NamespaceDescriptor $namespace,
+        NamespaceInterface $namespace,
         TocDescriptor $namespacesToc,
         ?Entry $parent = null
     ): void {

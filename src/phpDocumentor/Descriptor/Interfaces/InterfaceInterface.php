@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -27,49 +26,54 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
     /**
      * Returns the parent for this descriptor.
      *
-     * @return Collection<InterfaceDescriptor|Fqsen>
+     * @return Collection<InterfaceInterface|Fqsen>
      */
     public function getParent(): Collection;
 
     /**
      * Sets the parent for this Descriptor.
      *
-     * @param Collection<InterfaceDescriptor|Fqsen> $parents
+     * @param Collection<InterfaceInterface|Fqsen> $parents
      */
     public function setParent(Collection $parents): void;
 
     /**
      * Sets the constants associated with this interface.
      *
-     * @param Collection<ConstantDescriptor> $constants
+     * @param Collection<ConstantInterface> $constants
      */
     public function setConstants(Collection $constants): void;
 
     /**
      * Returns the constants associated with this interface.
      *
-     * @return Collection<ConstantDescriptor>
+     * @return Collection<ConstantInterface>
      */
     public function getConstants(): Collection;
 
     /**
+     * @return Collection<ConstantInterface>
+     */
+    public function getInheritedConstants(): Collection;
+
+    /**
      * Sets the methods belonging to this interface.
      *
-     * @param Collection<MethodDescriptor> $methods
+     * @param Collection<MethodInterface> $methods
      */
     public function setMethods(Collection $methods): void;
 
     /**
      * Returns the methods belonging to this interface.
      *
-     * @return Collection<MethodDescriptor>
+     * @return Collection<MethodInterface>
      */
     public function getMethods(): Collection;
 
     /**
      * Returns a list of all methods that were inherited from parent interfaces.
      *
-     * @return Collection<MethodDescriptor>
+     * @return Collection<MethodInterface>
      */
     public function getInheritedMethods(): Collection;
 }

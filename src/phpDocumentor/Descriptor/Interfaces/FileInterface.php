@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\Validation;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -30,7 +28,7 @@ interface FileInterface extends ElementInterface, ContainerInterface
     public function getSource(): ?string;
 
     /**
-     * @return Collection<NamespaceDescriptor>|Collection<Fqsen>
+     * @return Collection<NamespaceInterface|Fqsen>
      */
     public function getNamespaceAliases(): Collection;
 
@@ -38,9 +36,4 @@ interface FileInterface extends ElementInterface, ContainerInterface
      * @return Collection<string>
      */
     public function getIncludes(): Collection;
-
-    /**
-     * @return Collection<Validation\Error>
-     */
-    public function getErrors(): Collection;
 }

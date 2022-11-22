@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Validation\Error;
+use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 
 /**
  * Describes the public interface of the description for a method.
  */
-interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromElement
+interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromElement, ChildInterface
 {
     public function setAbstract(bool $abstract): void;
 
@@ -41,9 +42,12 @@ interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromE
     public function setVisibility(string $visibility): void;
 
     /**
-     * Returns all errors associated with this tag.
-     *
-     * @return Collection<Error>
+     * @return Collection<ParamDescriptor>
      */
-    public function getErrors(): Collection;
+    public function getParam(): Collection;
+
+    /**
+     * @return Collection<ReturnDescriptor>
+     */
+    public function getReturn(): Collection;
 }

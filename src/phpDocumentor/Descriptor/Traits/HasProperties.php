@@ -14,6 +14,7 @@ namespace phpDocumentor\Descriptor\Traits;
  */
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
@@ -46,6 +47,7 @@ trait HasProperties
     }
 
     /**
+     * @todo check whether this function works properly, the business logic feels off somehow
      * @return Collection<PropertyInterface>
      */
     public function getInheritedProperties(): Collection
@@ -62,11 +64,7 @@ trait HasProperties
             }
         }
 
-        if (
-            $this instanceof ClassInterface
-            && $this->getParent() instanceof ClassInterface === false
-            && $this->getParent() instanceof TraitInterface === false
-        ) {
+        if ($this instanceof ChildInterface && $this->getParent() instanceof ClassInterface === false) {
             return $inheritedProperties;
         }
 

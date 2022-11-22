@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Validation\Error;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends ElementInterface, TypeInterface
+interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface
 {
     /**
      * Returns true when this property is intended to be read-only.
@@ -74,9 +74,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface
     public function setVisibility(string $visibility): void;
 
     /**
-     * Returns all errors associated with this tag.
-     *
-     * @return Collection<Error>
+     * @return Collection<VarDescriptor>
      */
-    public function getErrors(): Collection;
+    public function getVar(): Collection;
 }

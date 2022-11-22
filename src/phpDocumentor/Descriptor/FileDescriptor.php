@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TracksErrors;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
@@ -33,41 +37,36 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface
 {
-    /** @var string $hash */
-    protected $hash;
+    protected string $hash = '';
+    protected string $path = '';
+    protected ?string $source = null;
 
-    /** @var string $path */
-    protected $path = '';
-
-    /** @var string|null $source */
-    protected $source = null;
-
-    /** @var Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases */
-    protected $namespaceAliases;
+    /** @var Collection<NamespaceInterface|Fqsen> $namespaceAliases */
+    protected Collection $namespaceAliases;
 
     /** @var Collection<string> $includes */
-    protected $includes;
+    protected Collection $includes;
 
-    /** @var Collection<ConstantDescriptor> $constants */
-    protected $constants;
+    /** @var Collection<ConstantInterface> $constants */
+    protected Collection $constants;
 
-    /** @var Collection<FunctionDescriptor> $functions */
-    protected $functions;
+    /** @var Collection<FunctionInterface> $functions */
+    protected Collection $functions;
 
-    /** @var Collection<ClassDescriptor> $classes */
-    protected $classes;
+    /** @var Collection<ClassInterface> $classes */
+    protected Collection $classes;
 
-    /** @var Collection<InterfaceDescriptor> $interfaces */
-    protected $interfaces;
+    /** @var Collection<InterfaceInterface> $interfaces */
+    protected Collection $interfaces;
 
-    /** @var Collection<TraitDescriptor> $traits */
-    protected $traits;
+    /** @var Collection<TraitInterface> $traits */
+    protected Collection $traits;
 
     /** @var Collection<array<int|string, mixed>> $markers */
-    protected $markers;
+    protected Collection $markers;
 
-    /** @var Collection<EnumDescriptor> */
-    private $enums;
+    /** @var Collection<EnumInterface> */
+    private Collection $enums;
 
     /**
      * Initializes a new file descriptor with the given hash of its contents.
@@ -82,12 +81,12 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $this->setNamespaceAliases(new Collection());
         $this->setIncludes(new Collection());
 
-        $this->setConstants(new Collection());
-        $this->setFunctions(new Collection());
-        $this->setClasses(new Collection());
-        $this->setInterfaces(new Collection());
-        $this->setTraits(new Collection());
-        $this->setEnums(Collection::fromClassString(EnumDescriptor::class));
+        $this->setConstants(Collection::fromInterfaceString(ConstantInterface::class));
+        $this->setFunctions(Collection::fromInterfaceString(FunctionInterface::class));
+        $this->setClasses(Collection::fromInterfaceString(ClassInterface::class));
+        $this->setInterfaces(Collection::fromInterfaceString(InterfaceInterface::class));
+        $this->setTraits(Collection::fromInterfaceString(TraitInterface::class));
+        $this->setEnums(Collection::fromInterfaceString(EnumInterface::class));
         $this->setMarkers(new Collection());
     }
 
@@ -134,7 +133,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      * when the namespace was not part of the processed code. When it is a {@see NamespaceDescriptor} it
      * will contain all structural elements in the namespace not just the once in this particlar file.
      *
-     * @return Collection<NamespaceDescriptor>|Collection<Fqsen>
+     * @return Collection<NamespaceInterface|Fqsen>
      */
     public function getNamespaceAliases(): Collection
     {
@@ -146,7 +145,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<NamespaceDescriptor>|Collection<Fqsen> $namespaceAliases
+     * @param Collection<NamespaceInterface|Fqsen> $namespaceAliases
      */
     public function setNamespaceAliases(Collection $namespaceAliases): void
     {
@@ -190,7 +189,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<ConstantDescriptor> $constants
+     * @param Collection<ConstantInterface> $constants
      */
     public function setConstants(Collection $constants): void
     {
@@ -212,7 +211,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<FunctionDescriptor> $functions
+     * @param Collection<FunctionInterface> $functions
      */
     public function setFunctions(Collection $functions): void
     {
@@ -234,7 +233,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<ClassDescriptor> $classes
+     * @param Collection<ClassInterface> $classes
      */
     public function setClasses(Collection $classes): void
     {
@@ -256,7 +255,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<InterfaceDescriptor> $interfaces
+     * @param Collection<InterfaceInterface> $interfaces
      */
     public function setInterfaces(Collection $interfaces): void
     {
@@ -278,7 +277,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<TraitDescriptor> $traits
+     * @param Collection<TraitInterface> $traits
      */
     public function setTraits(Collection $traits): void
     {
@@ -286,7 +285,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     }
 
     /**
-     * @return Collection<EnumDescriptor>
+     * @return Collection<EnumInterface>
      */
     public function getEnums(): Collection
     {
@@ -298,7 +297,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<EnumDescriptor> $enums
+     * @param Collection<EnumInterface> $enums
      */
     public function setEnums(Collection $enums): void
     {
@@ -339,7 +338,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of all errors in this file and all its child elements.
      *
-     * All errors from structual elements in the file are collected to the deepes level.
+     * All errors from structural elements in the file are collected to the deepest level.
      *
      * @return Collection<Error>
      */
@@ -347,21 +346,39 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     {
         $errors = $this->getErrors();
 
-        $types = Collection::fromInterfaceString(ElementInterface::class)
-            ->merge($this->getClasses())
-            ->merge($this->getInterfaces())
-            ->merge($this->getTraits());
+        $structuralElements = Collection::fromInterfaceString(TracksErrors::class);
 
-        $elements = Collection::fromInterfaceString(ElementInterface::class)
-            ->merge($this->getFunctions())
-            ->merge($this->getConstants())
-            ->merge($types);
+        /** @var Collection<TracksErrors> $classes */
+        $classes = $this->getClasses();
+        /** @var Collection<TracksErrors> $interfaces */
+        $interfaces = $this->getInterfaces();
+        /** @var Collection<TracksErrors> $traits */
+        $traits = $this->getTraits();
+        /** @var Collection<TracksErrors> $enums */
+        $enums = $this->getEnums();
+
+        $structuralElements = $structuralElements
+            ->merge($classes)
+            ->merge($interfaces)
+            ->merge($traits)
+            ->merge($enums);
+
+        /** @var Collection<TracksErrors> $functions */
+        $functions = $this->getFunctions();
+        /** @var Collection<TracksErrors> $constants */
+        $constants = $this->getConstants();
+
+        $elements = Collection::fromInterfaceString(TracksErrors::class);
+        $elements = $elements
+            ->merge($functions)
+            ->merge($constants)
+            ->merge($structuralElements);
 
         foreach ($elements as $element) {
             $errors = $errors->merge($element->getErrors());
         }
 
-        foreach ($types as $element) {
+        foreach ($structuralElements as $element) {
             if (
                 $element instanceof ClassInterface ||
                 $element instanceof InterfaceInterface ||

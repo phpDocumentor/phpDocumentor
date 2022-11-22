@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+
 /**
  * Descriptor representing a property.
  *
@@ -21,7 +23,7 @@ namespace phpDocumentor\Descriptor;
  */
 class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
 {
-    private ?EnumDescriptor $parent = null;
+    private ?EnumInterface $parent = null;
 
     private ?string $value;
 
@@ -35,12 +37,12 @@ class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCa
         return $this->value;
     }
 
-    public function getParent(): ?EnumDescriptor
+    public function getParent(): ?EnumInterface
     {
         return $this->parent;
     }
 
-    public function setParent(?EnumDescriptor $parent): void
+    public function setParent(?EnumInterface $parent): void
     {
         $this->parent = $parent;
     }

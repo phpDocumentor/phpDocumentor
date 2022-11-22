@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\EnumCaseDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
+use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Enum_;
@@ -35,7 +36,7 @@ final class EnumAssembler extends AssemblerAbstract
     /**
      * @param Enum_ $data
      */
-    protected function buildDescriptor(object $data): EnumDescriptor
+    protected function buildDescriptor(object $data): EnumInterface
     {
         $descriptor = new EnumDescriptor();
 
@@ -68,7 +69,7 @@ final class EnumAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    private function addMethods(array $methods, EnumDescriptor $descriptor): void
+    private function addMethods(array $methods, EnumInterface $descriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
@@ -88,16 +89,16 @@ final class EnumAssembler extends AssemblerAbstract
      */
     private function addUses(array $traits, EnumDescriptor $descriptor): void
     {
-        $descriptor->setUsedTraits(new Collection($traits));
+        $descriptor->setUsedTraits(Collection::fromInterfaceString(Fqsen::class, $traits));
     }
 
     /**
      * @param EnumCase[] $cases
      */
-    private function addCases(array $cases, EnumDescriptor $descriptor): void
+    private function addCases(array $cases, EnumInterface $descriptor): void
     {
         foreach ($cases as $case) {
-            $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseDescriptor::class);
+            $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseInterface::class);
             if ($caseDescriptor === null) {
                 continue;
             }

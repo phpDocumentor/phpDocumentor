@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
@@ -39,7 +40,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Class_ $data
      */
-    public function create(object $data): ClassDescriptor
+    public function create(object $data): ClassInterface
     {
         $classDescriptor = new ClassDescriptor();
 
@@ -96,7 +97,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      */
-    protected function addProperties(array $properties, ClassDescriptor $classDescriptor): void
+    protected function addProperties(array $properties, ClassInterface $classDescriptor): void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
@@ -114,7 +115,7 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, ClassDescriptor $classDescriptor): void
+    protected function addMethods(array $methods, ClassInterface $classDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
@@ -132,8 +133,8 @@ class ClassAssembler extends AssemblerAbstract
      *
      * @param array<Fqsen> $traits
      */
-    protected function addUses(array $traits, ClassDescriptor $classDescriptor): void
+    protected function addUses(array $traits, ClassInterface $classDescriptor): void
     {
-        $classDescriptor->setUsedTraits(new Collection($traits));
+        $classDescriptor->setUsedTraits(Collection::fromInterfaceString(Fqsen::class, $traits));
     }
 }

@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,29 +30,28 @@ use Webmozart\Assert\Assert;
  */
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
-    /** @var NamespaceDescriptor|null $parent */
-    protected $parent;
+    protected ?NamespaceInterface $parent = null;
 
-    /** @var Collection<NamespaceDescriptor> $children */
-    protected $children;
+    /** @var Collection<NamespaceInterface> $children */
+    protected Collection $children;
 
-    /** @var Collection<FunctionDescriptor> $functions */
-    protected $functions;
+    /** @var Collection<FunctionInterface> $functions */
+    protected Collection $functions;
 
-    /** @var Collection<ConstantDescriptor> $constants */
-    protected $constants;
+    /** @var Collection<ConstantInterface> $constants */
+    protected Collection $constants;
 
-    /** @var Collection<ClassDescriptor> $classes */
-    protected $classes;
+    /** @var Collection<ClassInterface> $classes */
+    protected Collection $classes;
 
-    /** @var Collection<InterfaceDescriptor> $interfaces */
-    protected $interfaces;
+    /** @var Collection<InterfaceInterface> $interfaces */
+    protected Collection $interfaces;
 
-    /** @var Collection<TraitDescriptor> $traits */
-    protected $traits;
+    /** @var Collection<TraitInterface> $traits */
+    protected Collection $traits;
 
-    /** @var Collection<EnumDescriptor> */
-    private $enums;
+    /** @var Collection<EnumInterface> */
+    private Collection $enums;
 
     /**
      * Initializes the namespace with collections for its children.
@@ -53,14 +59,15 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     public function __construct()
     {
         parent::__construct();
-        $this->setChildren(new Collection());
-        $this->setFunctions(new Collection());
-        $this->setConstants(new Collection());
-        $this->setClasses(new Collection());
-        $this->setInterfaces(new Collection());
-        $this->setTraits(new Collection());
+
+        $this->setChildren(Collection::fromInterfaceString(NamespaceInterface::class));
+        $this->setFunctions(Collection::fromInterfaceString(FunctionInterface::class));
+        $this->setConstants(Collection::fromInterfaceString(ConstantInterface::class));
+        $this->setClasses(Collection::fromInterfaceString(ClassInterface::class));
+        $this->setInterfaces(Collection::fromInterfaceString(InterfaceInterface::class));
+        $this->setTraits(Collection::fromInterfaceString(TraitInterface::class));
         $this->setTags(new Collection());
-        $this->setEnums(Collection::fromClassString(EnumDescriptor::class));
+        $this->setEnums(Collection::fromInterfaceString(EnumInterface::class));
     }
 
     /**
@@ -78,7 +85,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns the parent namespace for this namespace.
      */
-    public function getParent(): ?NamespaceDescriptor
+    public function getParent(): ?NamespaceInterface
     {
         return $this->parent;
     }
@@ -86,7 +93,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all classes in this project.
      *
-     * @param Collection<ClassDescriptor> $classes
+     * @param Collection<ClassInterface> $classes
      */
     public function setClasses(Collection $classes): void
     {
@@ -96,7 +103,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all classes in this namespace.
      *
-     * @return Collection<ClassDescriptor>
+     * @return Collection<ClassInterface>
      */
     public function getClasses(): Collection
     {
@@ -106,7 +113,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all constants in this namespace.
      *
-     * @param Collection<ConstantDescriptor> $constants
+     * @param Collection<ConstantInterface> $constants
      */
     public function setConstants(Collection $constants): void
     {
@@ -116,7 +123,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all constants in this namespace.
      *
-     * @return Collection<ConstantDescriptor>
+     * @return Collection<ConstantInterface>
      */
     public function getConstants(): Collection
     {
@@ -126,7 +133,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all functions in this namespace.
      *
-     * @param Collection<FunctionDescriptor> $functions
+     * @param Collection<FunctionInterface> $functions
      */
     public function setFunctions(Collection $functions): void
     {
@@ -136,7 +143,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all functions in this namespace.
      *
-     * @return Collection<FunctionDescriptor>
+     * @return Collection<FunctionInterface>
      */
     public function getFunctions(): Collection
     {
@@ -146,7 +153,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all interfaces in this namespace.
      *
-     * @param Collection<InterfaceDescriptor> $interfaces
+     * @param Collection<InterfaceInterface> $interfaces
      */
     public function setInterfaces(Collection $interfaces): void
     {
@@ -156,14 +163,14 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all interfaces in this namespace.
      *
-     * @return Collection<InterfaceDescriptor>
+     * @return Collection<InterfaceInterface>
      */
     public function getInterfaces(): Collection
     {
         return $this->interfaces;
     }
 
-    public function addChild(NamespaceDescriptor $namespaceDescriptor): void
+    public function addChild(NamespaceInterface $namespaceDescriptor): void
     {
         $this->children->set($namespaceDescriptor->getName(), $namespaceDescriptor);
         $namespaceDescriptor->setParent($this);
@@ -172,7 +179,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all child namespaces in this namespace.
      *
-     * @param Collection<NamespaceDescriptor> $children
+     * @param Collection<NamespaceInterface> $children
      */
     public function setChildren(Collection $children): void
     {
@@ -182,7 +189,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all namespaces contained in this namespace and its children.
      *
-     * @return Collection<NamespaceDescriptor>
+     * @return Collection<NamespaceInterface>
      */
     public function getChildren(): Collection
     {
@@ -192,7 +199,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all traits contained in this namespace.
      *
-     * @param Collection<TraitDescriptor> $traits
+     * @param Collection<TraitInterface> $traits
      */
     public function setTraits(Collection $traits): void
     {
@@ -202,7 +209,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all traits in this namespace.
      *
-     * @return Collection<TraitDescriptor>
+     * @return Collection<TraitInterface>
      */
     public function getTraits(): Collection
     {
@@ -212,7 +219,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns a list of all enums in this namespace.
      *
-     * @return Collection<EnumDescriptor>
+     * @return Collection<EnumInterface>
      */
     public function getEnums(): Collection
     {
@@ -222,7 +229,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Sets a list of all enums contained in this namespace.
      *
-     * @param Collection<EnumDescriptor> $enums
+     * @param Collection<EnumInterface> $enums
      */
     public function setEnums(Collection $enums): void
     {

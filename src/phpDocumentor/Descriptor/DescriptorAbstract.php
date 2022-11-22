@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
+use phpDocumentor\Descriptor\Interfaces\TracksErrors;
 use phpDocumentor\Descriptor\Validation\Error;
 use Webmozart\Assert\Assert;
 

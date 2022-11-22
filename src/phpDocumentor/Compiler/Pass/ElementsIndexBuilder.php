@@ -15,7 +15,6 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
@@ -127,8 +126,8 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * Adds a series of descriptors to the given list of collections.
      *
-     * @param DescriptorAbstract|DescriptorAbstract[] $elements
-     * @param list<Collection<DescriptorAbstract>>    $indexes
+     * @param ElementInterface|ElementInterface[] $elements
+     * @param list<Collection<ElementInterface>> $indexes
      */
     protected function addElementsToIndexes($elements, array $indexes): void
     {
@@ -136,9 +135,9 @@ class ElementsIndexBuilder implements CompilerPassInterface
             $elements = [$elements];
         }
 
-        /** @var DescriptorAbstract $element */
+        /** @var ElementInterface $element */
         foreach ($elements as $element) {
-            /** @var Collection<DescriptorAbstract> $collection */
+            /** @var Collection<ElementInterface> $collection */
             foreach ($indexes as $collection) {
                 $collection->set($this->getIndexKey($element), $element);
             }
@@ -148,7 +147,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
     /**
      * Retrieves a key for the index for the provided element.
      */
-    protected function getIndexKey(DescriptorAbstract $element): string
+    protected function getIndexKey(ElementInterface $element): string
     {
         return (string) $element->getFullyQualifiedStructuralElementName();
     }

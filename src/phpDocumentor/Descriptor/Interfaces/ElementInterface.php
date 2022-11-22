@@ -22,8 +22,24 @@ use phpDocumentor\Reflection\Location;
 /**
  * Represents the public interface to which all descriptors should be held.
  */
-interface ElementInterface
+interface ElementInterface extends TracksErrors
 {
+    /**
+     * Returns the namespace for this element (defaults to global "\")
+     *
+     * @return NamespaceInterface|string
+     */
+    public function getNamespace();
+
+    /**
+     * Sets the namespace (name) for this element.
+     *
+     * @internal should not be called by any other class than the assemblers
+     *
+     * @param NamespaceInterface|string $namespace
+     */
+    public function setNamespace($namespace): void;
+
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
      */

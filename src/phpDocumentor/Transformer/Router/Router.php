@@ -14,20 +14,21 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router;
 
 use League\Uri\Contracts\UriInterface;
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Descriptor\EnumCaseDescriptor;
-use phpDocumentor\Descriptor\EnumDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PackageInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -37,14 +38,9 @@ use function substr;
 
 class Router
 {
-    /** @var ClassBasedFqsenUrlGenerator */
-    private $fqsenUrlGenerator;
-
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-
-    /** @var SluggerInterface */
-    private $slugger;
+    private ClassBasedFqsenUrlGenerator $fqsenUrlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
+    private SluggerInterface $slugger;
 
     public function __construct(
         ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
@@ -57,7 +53,7 @@ class Router
     }
 
     /**
-     * @param Descriptor|Fqsen|UriInterface $node
+     * @param ElementInterface|Descriptor|Fqsen|UriInterface $node
      */
     public function generate(object $node): string
     {
@@ -68,18 +64,18 @@ class Router
             );
         }
 
-        if ($node instanceof FileDescriptor) {
+        if ($node instanceof FileInterface) {
             return $this->generateUrlForDescriptor('file', $node->getPath());
         }
 
-        if ($node instanceof PackageDescriptor) {
+        if ($node instanceof PackageInterface) {
             return $this->generateUrlForDescriptor(
                 'package',
                 (string) $node->getFullyQualifiedStructuralElementName()
             );
         }
 
-        if ($node instanceof NamespaceDescriptor) {
+        if ($node instanceof NamespaceInterface) {
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getFullyQualifiedStructuralElementName()
@@ -87,10 +83,10 @@ class Router
         }
 
         if (
-            $node instanceof ClassDescriptor
-            || $node instanceof InterfaceDescriptor
-            || $node instanceof TraitDescriptor
-            || $node instanceof EnumDescriptor
+            $node instanceof ClassInterface
+            || $node instanceof InterfaceInterface
+            || $node instanceof TraitInterface
+            || $node instanceof EnumInterface
         ) {
             return $this->generateUrlForDescriptor(
                 'class',
@@ -98,7 +94,7 @@ class Router
             );
         }
 
-        if ($node instanceof EnumCaseDescriptor && $node->getParent() instanceof EnumDescriptor) {
+        if ($node instanceof EnumCaseInterface && $node->getParent() instanceof EnumInterface) {
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
@@ -106,7 +102,7 @@ class Router
             );
         }
 
-        if ($node instanceof ConstantDescriptor && $node->getParent() === null) {
+        if ($node instanceof ConstantInterface && $node->getParent() === null) {
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
@@ -114,7 +110,7 @@ class Router
             );
         }
 
-        if ($node instanceof ConstantDescriptor && $node->getParent() !== null) {
+        if ($node instanceof ConstantInterface && $node->getParent() !== null) {
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
@@ -122,7 +118,7 @@ class Router
             );
         }
 
-        if ($node instanceof MethodDescriptor) {
+        if ($node instanceof MethodInterface) {
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
@@ -130,7 +126,7 @@ class Router
             );
         }
 
-        if ($node instanceof FunctionDescriptor) {
+        if ($node instanceof FunctionInterface) {
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
@@ -138,7 +134,7 @@ class Router
             );
         }
 
-        if ($node instanceof PropertyDescriptor) {
+        if ($node instanceof PropertyInterface) {
             if ($node->getParent() === null) {
                 return '';
             }

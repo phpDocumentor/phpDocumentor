@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
@@ -34,7 +35,7 @@ final class UsedByBuilder implements CompilerPassInterface
             $uses = $element->getTags()->fetch('uses', Collection::fromClassString(TagDescriptor::class));
             foreach ($uses->filter(UsesDescriptor::class) as $usesTag) {
                 $counterSide = $usesTag->getReference();
-                if ($counterSide instanceof DescriptorAbstract === false) {
+                if ($counterSide instanceof ElementInterface === false) {
                     continue;
                 }
 

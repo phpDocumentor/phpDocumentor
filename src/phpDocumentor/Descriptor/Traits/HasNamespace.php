@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Traits;
 
-use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 
 trait HasNamespace
 {
-    /** @var NamespaceDescriptor|string $namespace The namespace for this element */
+    /** @var NamespaceInterface|string $namespace The namespace for this element */
     protected $namespace = '';
 
     /**
@@ -25,7 +25,7 @@ trait HasNamespace
      *
      * @internal should not be called by any other class than the assemblers
      *
-     * @param NamespaceDescriptor|string $namespace
+     * @param NamespaceInterface|string $namespace
      */
     public function setNamespace($namespace): void
     {
@@ -35,7 +35,7 @@ trait HasNamespace
     /**
      * Returns the namespace for this element (defaults to global "\")
      *
-     * @return NamespaceDescriptor|string
+     * @return NamespaceInterface|string
      */
     public function getNamespace()
     {

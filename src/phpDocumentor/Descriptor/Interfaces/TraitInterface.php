@@ -61,4 +61,9 @@ interface TraitInterface extends ElementInterface, TypeInterface
      * @return Collection<MethodInterface>
      */
     public function getInheritedMethods(): Collection;
+
+    /**
+     * Returns the file associated with the parent class or trait.
+     */
+    public function getFile(): ?FileInterface;
 }

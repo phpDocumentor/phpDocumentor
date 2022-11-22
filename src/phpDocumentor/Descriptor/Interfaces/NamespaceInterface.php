@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
 
 /**
  * Describes the public interface for the description of a namespace.
@@ -22,7 +21,7 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 interface NamespaceInterface extends ElementInterface, ContainerInterface, ChildInterface
 {
     /**
-     * @return Collection<NamespaceDescriptor>
+     * @return Collection<NamespaceInterface>
      */
     public function getChildren(): Collection;
 }

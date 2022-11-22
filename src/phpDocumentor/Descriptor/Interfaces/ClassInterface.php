@@ -44,6 +44,9 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
     /** @return Collection<ConstantInterface> */
     public function getConstants(): Collection;
 
+    /** @return Collection<ConstantInterface> */
+    public function getInheritedConstants(): Collection;
+
     /** @param Collection<MethodInterface> $methods */
     public function setMethods(Collection $methods): void;
 
@@ -61,4 +64,9 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
 
     /** @return Collection<PropertyInterface> */
     public function getInheritedProperties(): Collection;
+
+    /**
+     * Returns the file associated with the parent class or trait.
+     */
+    public function getFile(): ?FileInterface;
 }

@@ -13,13 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ConstantDescriptor;
-use phpDocumentor\Descriptor\EnumDescriptor;
-use phpDocumentor\Descriptor\FunctionDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
 
 /**
  * Interface representing the common interface for all elements that can contain sub-elements.
@@ -27,32 +21,32 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 interface ContainerInterface
 {
     /**
-     * @return Collection<ConstantDescriptor>
+     * @return Collection<ConstantInterface>
      */
     public function getConstants(): Collection;
 
     /**
-     * @return Collection<FunctionDescriptor>
+     * @return Collection<FunctionInterface>
      */
     public function getFunctions(): Collection;
 
     /**
-     * @return Collection<ClassDescriptor>
+     * @return Collection<ClassInterface>
      */
     public function getClasses(): Collection;
 
     /**
-     * @return Collection<InterfaceDescriptor>
+     * @return Collection<InterfaceInterface>
      */
     public function getInterfaces(): Collection;
 
     /**
-     * @return Collection<TraitDescriptor>
+     * @return Collection<TraitInterface>
      */
     public function getTraits(): Collection;
 
     /**
-     * @return Collection<EnumDescriptor>
+     * @return Collection<EnumInterface>
      */
     public function getEnums(): Collection;
 }

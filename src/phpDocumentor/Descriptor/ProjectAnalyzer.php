@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use function count;
 use function get_class;
 use function is_string;
@@ -30,25 +33,17 @@ use const PHP_EOL;
  */
 class ProjectAnalyzer
 {
-    /** @var int $elementCount */
-    protected $elementCount = 0;
+    protected int $fileCount = 0;
+    protected int $topLevelNamespaceCount = 0;
+    protected int $unresolvedParentClassesCount = 0;
 
-    /** @var int $fileCount */
-    protected $fileCount = 0;
-
-    /** @var int $topLevelNamespaceCount */
-    protected $topLevelNamespaceCount = 0;
-
-    /** @var int $unresolvedParentClassesCount */
-    protected $unresolvedParentClassesCount = 0;
-
-    /** @var int[] $descriptorCountByType */
-    protected $descriptorCountByType = [];
+    /** @var array<array-key, int> $descriptorCountByType */
+    protected array $descriptorCountByType = [];
 
     /**
      * Analyzes the given project descriptor and populates this object's properties.
      */
-    public function analyze(ProjectDescriptor $projectDescriptor): void
+    public function analyze(ProjectInterface $projectDescriptor): void
     {
         $this->unresolvedParentClassesCount = 0;
 
@@ -93,12 +88,12 @@ TEXT;
      * Increments the counter for element's class in the class counters.
      *
      * @param array<string, int> $classCounters
-     * @phpstan-param array<class-string<DescriptorAbstract>, int> $classCounters
+     * @phpstan-param array<class-string<ElementInterface>, int> $classCounters
      *
      * @return array<string, int>
-     * @phpstan-return array<class-string<DescriptorAbstract>, int>
+     * @phpstan-return array<class-string<ElementInterface>, int>
      */
-    protected function addElementToCounter(array $classCounters, DescriptorAbstract $element): array
+    protected function addElementToCounter(array $classCounters, ElementInterface $element): array
     {
         if (!isset($classCounters[get_class($element)])) {
             $classCounters[get_class($element)] = 0;
@@ -112,9 +107,9 @@ TEXT;
     /**
      * Checks whether the given element is a class and if its parent could not be resolved; increment the counter.
      */
-    protected function incrementUnresolvedParentCounter(DescriptorAbstract $element): void
+    protected function incrementUnresolvedParentCounter(ElementInterface $element): void
     {
-        if (!$element instanceof ClassDescriptor) {
+        if (!$element instanceof ClassInterface) {
             return;
         }
 
@@ -128,10 +123,10 @@ TEXT;
     /**
      * Returns all elements from the project descriptor.
      *
-     * @return Collection<DescriptorAbstract>
+     * @return Collection<ElementInterface>
      */
-    protected function findAllElements(ProjectDescriptor $projectDescriptor): Collection
+    protected function findAllElements(ProjectInterface $projectDescriptor): Collection
     {
-        return $projectDescriptor->getIndexes()->fetch('elements', new Collection());
+        return $projectDescriptor->getIndexes()->fetch('elements', Collection::fromInterfaceString(ElementInterface::class));
     }
 }

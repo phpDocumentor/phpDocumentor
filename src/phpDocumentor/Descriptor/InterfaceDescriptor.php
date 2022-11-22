@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -23,14 +26,14 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
-    /** @var Collection<InterfaceDescriptor|Fqsen> $parents */
-    protected $parents;
+    /** @var Collection<InterfaceInterface|Fqsen> $parents */
+    protected Collection $parents;
 
-    /** @var Collection<ConstantDescriptor> $constants */
-    protected $constants;
+    /** @var Collection<ConstantInterface> $constants */
+    protected Collection $constants;
 
-    /** @var Collection<MethodDescriptor> $methods */
-    protected $methods;
+    /** @var Collection<MethodInterface> $methods */
+    protected Collection $methods;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -65,13 +68,13 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return Collection<ConstantDescriptor>
+     * @return Collection<ConstantInterface>
      */
     public function getInheritedConstants(): Collection
     {
-        $inheritedConstants = Collection::fromClassString(ConstantDescriptor::class);
+        $inheritedConstants = Collection::fromInterfaceString(ConstantInterface::class);
 
-        /** @var InterfaceDescriptor|Fqsen $parent */
+        /** @var InterfaceInterface|Fqsen $parent */
         foreach ($this->getParent() as $parent) {
             if (!$parent instanceof Interfaces\InterfaceInterface) {
                 continue;
@@ -94,11 +97,14 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $this->methods;
     }
 
+    /**
+     * @return Collection<MethodInterface>
+     */
     public function getInheritedMethods(): Collection
     {
-        $inheritedMethods = Collection::fromClassString(MethodDescriptor::class);
+        $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
 
-        /** @var InterfaceDescriptor|Fqsen $parent */
+        /** @var InterfaceInterface|Fqsen $parent */
         foreach ($this->getParent() as $parent) {
             if ($parent instanceof Fqsen) {
                 continue;
@@ -128,7 +134,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     }
 
     /**
-     * @return InterfaceDescriptor|Fqsen|null
+     * @return InterfaceInterface|Fqsen|null
      */
     public function getInheritedElement(): ?object
     {
