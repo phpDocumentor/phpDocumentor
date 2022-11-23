@@ -42,6 +42,22 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     use Traits\ImplementsInterfaces;
     use Traits\UsesTraits;
 
+    /** @var bool $readOnly Whether this class is marked as readonly. */
+    protected bool $readOnly = false;
+
+    /**
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setReadOnly(bool $readOnly): void
+    {
+        $this->readOnly = $readOnly;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return $this->readOnly;
+    }
+
     /**
      * @return Collection<MethodInterface>
      */

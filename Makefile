@@ -118,7 +118,7 @@ pre-commit-test: test phpcs phpstan psalm composer-require-checker
 
 .PHONY: composer
 composer:
-	${.DOCKER_COMPOSE_RUN} --entrypoint=/usr/bin/composer phpdoc install
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project composer:2 install
 
 .PHONY: composer-mirror
 composer-mirror:
@@ -132,10 +132,10 @@ shell:
 node_modules/.bin/cypress:
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/opt/phpdoc/var/cache/.cypress" -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-build/default/index.html: data/examples/MariosPizzeria/**/*
+build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/default/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default --force
 
-build/clean/index.html: data/examples/MariosPizzeria/**/*
+build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean --force
 
 .PHONY: docs
