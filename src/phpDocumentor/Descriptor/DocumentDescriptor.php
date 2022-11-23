@@ -13,32 +13,29 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\TocNode;
 
 final class DocumentDescriptor implements Descriptor
 {
-    /** @var DocumentNode */
-    private $documentNode;
+    use HasName;
+    use HasDescription;
 
-    /** @var string */
-    private $hash;
-
-    /** @var string */
-    private $file;
-
-    /** @var string */
-    private $title;
+    private DocumentNode $documentNode;
+    private string $hash;
+    private string $file;
+    private string $title;
 
     /** @var string[][] */
-    private $titles;
+    private array $titles;
 
     /** @var TocNode[] */
-    private $tocs;
+    private array $tocs;
 
     /** @var string[] */
-    private $depends;
+    private array $depends;
 
     /**
      * @param string[][] $titles
@@ -104,10 +101,5 @@ final class DocumentDescriptor implements Descriptor
     public function getName(): string
     {
         return $this->title;
-    }
-
-    public function getDescription(): DocBlock\DescriptionDescriptor
-    {
-        return DescriptionDescriptor::createEmpty();
     }
 }

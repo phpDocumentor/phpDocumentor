@@ -47,7 +47,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     private bool $writeOnly = false;
 
     /**
-     * @param ClassInterface|TraitInterface $parent
+     * {@inheritDoc}
      */
     public function setParent($parent): void
     {

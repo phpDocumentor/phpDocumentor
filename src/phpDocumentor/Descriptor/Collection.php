@@ -34,13 +34,13 @@ use function count;
  * templates becomes easier.
  *
  * @template T
- * @template-implements ArrayAccess<string|int, T>
- * @template-implements IteratorAggregate<string|int, T>
+ * @template-implements ArrayAccess<array-key, T>
+ * @template-implements IteratorAggregate<array-key, T>
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
     /** @var array<T> $items */
-    protected $items = [];
+    protected array $items = [];
 
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
@@ -65,7 +65,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Sets a new object onto the collection or clear it using null.
      *
-     * @param string|int $index An index value to recognize this item with.
+     * @param array-key $index An index value to recognize this item with.
      * @param T          $item  The item to store, generally a Descriptor but may be something else.
      */
     public function set($index, $item): void
@@ -76,7 +76,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves a specific item from the Collection with its index. If index is not found, an exception is thrown
      *
-     * @param string|int $index
+     * @param array-key $index
      *
      * @return T The contents of the element with the given index
      */
@@ -96,7 +96,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * be created with the value provided by the $valueIfEmpty argument. This will allow for easy initialization during
      * tree building operations.
      *
-     * @param string|int $index
+     * @param array-key $index
      * @param ?TChild      $valueIfEmpty If the index does not exist it will be created with this value and returned.
      *
      * @return TChild The contents of the element with the given index and the provided default if the key
@@ -141,7 +141,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an iterator to traverse this object.
      *
-     * @return ArrayIterator<string|int, T>
+     * @return ArrayIterator<array-key, T>
      */
     #[ReturnTypeWillChange]
     public function getIterator(): ArrayIterator
@@ -180,7 +180,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Checks whether an item in this collection exists.
      *
-     * @param string|int $offset The index to check on.
+     * @param array-key $offset The index to check on.
      */
     #[ReturnTypeWillChange]
     public function offsetExists($offset): bool
@@ -191,7 +191,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Retrieves an item from the collection with the given index.
      *
-     * @param string|int $offset The offset to retrieve.
+     * @param array-key $offset The offset to retrieve.
      *
      * @return ?T
      */
@@ -204,7 +204,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Sets an item at the given index.
      *
-     * @param string|int|null $offset The offset to assign the value to.
+     * @param array-key|null $offset The offset to assign the value to.
      * @param T           $value  The value to set.
      *
      * @throws InvalidArgumentException If the key is null or an empty string.
@@ -224,7 +224,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Removes an item with the given index from the collection.
      *
-     * @param string|int $offset The offset to unset.
+     * @param array-key $offset The offset to unset.
      */
     #[ReturnTypeWillChange]
     public function offsetUnset($offset): void

@@ -28,19 +28,17 @@ trait BelongsToClassOrInterface
     /**
      * Registers a parent class or interface with this constant.
      *
-     * @param ClassInterface|InterfaceInterface|null $parent
+     * @throws InvalidArgumentException If anything other than a class or interface was passed.
      *
-     * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
+     * @inheritDoc
      */
     public function setParent($parent): void
     {
-        Assert::nullOrIsInstanceOfAny($parent, [ClassInterface::class, InterfaceInterface::class]);
+        Assert::isInstanceOfAny($parent, [ClassInterface::class, InterfaceInterface::class]);
 
-        $fqsen = $parent !== null
-            ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
-            : $this->getName();
-
-        $this->setFullyQualifiedStructuralElementName(new Fqsen($fqsen));
+        $this->setFullyQualifiedStructuralElementName(
+            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName())
+        );
 
         $this->parent = $parent;
     }

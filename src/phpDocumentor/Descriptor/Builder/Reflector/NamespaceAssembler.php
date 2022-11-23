@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Php\Namespace_;
 
@@ -20,7 +21,7 @@ use function strlen;
 use function substr;
 
 /**
- * @extends AssemblerAbstract<NamespaceDescriptor, Namespace_>
+ * @extends AssemblerAbstract<NamespaceInterface, Namespace_>
  */
 final class NamespaceAssembler extends AssemblerAbstract
 {
@@ -29,7 +30,7 @@ final class NamespaceAssembler extends AssemblerAbstract
      *
      * @param Namespace_ $data
      */
-    public function create(object $data): NamespaceDescriptor
+    public function create(object $data): NamespaceInterface
     {
         $descriptor = new NamespaceDescriptor();
         $descriptor->setName($data->getName());

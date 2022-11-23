@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
@@ -31,18 +32,19 @@ use function substr;
 /**
  * Assembles a MethodDescriptor from a MethodReflector.
  *
- * @extends AssemblerAbstract<MethodDescriptor, Method>
+ * @extends AssemblerAbstract<MethodInterface, Method>
  */
 class MethodAssembler extends AssemblerAbstract
 {
-    /** @var ArgumentAssembler */
-    protected $argumentAssembler;
+    private ArgumentAssembler $argumentAssembler;
 
     /**
      * Initializes this assembler with its dependencies.
      */
     public function __construct(ArgumentAssembler $argumentAssembler)
     {
+        parent::__construct();
+
         $this->argumentAssembler = $argumentAssembler;
     }
 
@@ -51,7 +53,7 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method $data
      */
-    public function create(object $data): MethodDescriptor
+    public function create(object $data): MethodInterface
     {
         $methodDescriptor = new MethodDescriptor();
         $methodDescriptor->setNamespace(

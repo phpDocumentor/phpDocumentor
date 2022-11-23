@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -39,7 +40,7 @@ use function count;
 /**
  * Assembles an FileDescriptor using an FileReflector and ParamDescriptors.
  *
- * @extends AssemblerAbstract<FileDescriptor, File>
+ * @extends AssemblerAbstract<FileInterface, File>
  */
 class FileAssembler extends AssemblerAbstract
 {
@@ -48,7 +49,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param File $data
      */
-    public function create(object $data): FileDescriptor
+    public function create(object $data): FileInterface
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
@@ -84,7 +85,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, FileDescriptor $fileDescriptor): void
+    protected function addConstants(array $constants, FileInterface $fileDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
@@ -110,7 +111,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Function_[] $functions
      */
-    protected function addFunctions(array $functions, FileDescriptor $fileDescriptor): void
+    protected function addFunctions(array $functions, FileInterface $fileDescriptor): void
     {
         foreach ($functions as $function) {
             $functionDescriptor = $this->getBuilder()->buildDescriptor($function, FunctionDescriptor::class);
@@ -136,7 +137,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Class_[] $classes
      */
-    protected function addClasses(array $classes, FileDescriptor $fileDescriptor): void
+    protected function addClasses(array $classes, FileInterface $fileDescriptor): void
     {
         foreach ($classes as $class) {
             $classDescriptor = $this->getBuilder()->buildDescriptor($class, ClassDescriptor::class);
@@ -164,7 +165,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Enum_[] $enums
      */
-    private function addEnums(array $enums, FileDescriptor $fileDescriptor): void
+    private function addEnums(array $enums, FileInterface $fileDescriptor): void
     {
         foreach ($enums as $enum) {
             $enumDescriptor = $this->getBuilder()->buildDescriptor($enum, EnumDescriptor::class);
@@ -192,7 +193,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Interface_[] $interfaces
      */
-    protected function addInterfaces(array $interfaces, FileDescriptor $fileDescriptor): void
+    protected function addInterfaces(array $interfaces, FileInterface $fileDescriptor): void
     {
         foreach ($interfaces as $interface) {
             $interfaceDescriptor = $this->getBuilder()->buildDescriptor($interface, InterfaceDescriptor::class);
@@ -218,7 +219,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param Trait_[] $traits
      */
-    protected function addTraits(array $traits, FileDescriptor $fileDescriptor): void
+    protected function addTraits(array $traits, FileInterface $fileDescriptor): void
     {
         foreach ($traits as $trait) {
             $traitDescriptor = $this->getBuilder()->buildDescriptor($trait, TraitDescriptor::class);
@@ -239,7 +240,7 @@ class FileAssembler extends AssemblerAbstract
         }
     }
 
-    protected function overridePackageTag(File $data, FileDescriptor $fileDescriptor): void
+    protected function overridePackageTag(File $data, FileInterface $fileDescriptor): void
     {
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());

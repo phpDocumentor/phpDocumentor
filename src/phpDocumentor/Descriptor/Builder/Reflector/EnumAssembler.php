@@ -30,7 +30,7 @@ use function substr;
 /**
  * Assembles an EnumDescriptor using an ClassReflector.
  *
- * @extends AssemblerAbstract<EnumDescriptor, Enum_>
+ * @extends AssemblerAbstract<EnumInterface, Enum_>
  */
 final class EnumAssembler extends AssemblerAbstract
 {

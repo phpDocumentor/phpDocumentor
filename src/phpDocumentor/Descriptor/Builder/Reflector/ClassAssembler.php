@@ -32,7 +32,7 @@ use function substr;
 /**
  * Assembles an ClassDescriptor using an ClassReflector.
  *
- * @extends AssemblerAbstract<ClassDescriptor, Class_>
+ * @extends AssemblerAbstract<ClassInterface, Class_>
  */
 class ClassAssembler extends AssemblerAbstract
 {

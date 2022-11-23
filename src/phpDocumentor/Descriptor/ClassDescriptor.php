@@ -94,8 +94,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $methods->add($method);
         }
 
-        if ($this->getParent() instanceof static) {
-            $methods = $methods->merge($this->getParent()->getMagicMethods());
+        $parent = $this->getParent();
+        if ($parent instanceof static) {
+            $methods = $methods->merge($parent->getMagicMethods());
         }
 
         return $methods;
@@ -140,8 +141,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $properties->add($property);
         }
 
-        if ($this->getParent() instanceof self) {
-            $properties = $properties->merge($this->getParent()->getMagicProperties());
+        $parent = $this->getParent();
+        if ($parent instanceof self) {
+            $properties = $properties->merge($parent->getMagicProperties());
         }
 
         return $properties;

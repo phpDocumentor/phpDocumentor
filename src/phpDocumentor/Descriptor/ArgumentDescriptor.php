@@ -71,8 +71,10 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     public function getInheritedElement(): ?ArgumentInterface
     {
         $method = $this->getMethod();
-        if ($method->getInheritedElement() instanceof MethodInterface) {
-            $parents = $method->getInheritedElement()->getArguments();
+        $inheritedElement = $method->getInheritedElement();
+
+        if ($inheritedElement instanceof MethodInterface) {
+            $parents = $inheritedElement->getArguments();
             /** @var ArgumentInterface $parentArgument */
             foreach ($parents as $parentArgument) {
                 if ($parentArgument->getName() === $this->getName()) {

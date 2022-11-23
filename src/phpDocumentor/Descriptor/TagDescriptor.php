@@ -22,7 +22,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
  * @api
  * @package phpDocumentor\AST
  */
-class TagDescriptor implements Filterable
+class TagDescriptor implements Descriptor, Filterable
 {
     use Traits\HasName;
     use Traits\HasDescription;

@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
@@ -52,11 +51,6 @@ interface ElementInterface extends Descriptor, TracksErrors
     public function getFullyQualifiedStructuralElementName(): ?Fqsen;
 
     /**
-     * Sets the local name for this element.
-     */
-    public function setName(string $name): void;
-
-    /**
      * Sets a summary describing this element.
      */
     public function setSummary(string $summary): void;
@@ -67,14 +61,28 @@ interface ElementInterface extends Descriptor, TracksErrors
     public function getSummary(): string;
 
     /**
-     * Sets a longer description for this element.
-     */
-    public function setDescription(DescriptionDescriptor $description): void;
-
-    /**
      * Sets the file and location for this element.
      */
     public function setLocation(FileInterface $file, Location $startLocation): void;
+
+    /**
+     * Sets this element's start location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setStartLocation(Location $startLocation): void;
+
+    /**
+     * Returns the end location where the definition for this element can be found.
+     */
+    public function getEndLocation(): ?Location;
+
+    /**
+     * Sets this element's end location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setEndLocation(Location $endLocation): void;
 
     /**
      * Returns the file location for this element relative to the project root.
