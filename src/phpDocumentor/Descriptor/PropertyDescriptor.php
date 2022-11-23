@@ -38,7 +38,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     use HasVisibility;
 
     /** @var ClassInterface|TraitInterface|null $parent */
-    protected $parent;
+    protected ?ElementInterface $parent = null;
 
     protected ?Type $type = null;
     protected ?string $default = null;
@@ -51,13 +51,14 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function setParent($parent): void
     {
+        /** @var ClassInterface|TraitInterface $parent */
         Assert::isInstanceOfAny($parent, [ClassInterface::class, TraitInterface::class]);
-
-        $this->parent = $parent;
 
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName())
         );
+
+        $this->parent = $parent;
     }
 
     /**

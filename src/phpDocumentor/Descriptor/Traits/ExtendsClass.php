@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Reflection\Fqsen;
+use Webmozart\Assert\Assert;
 
 trait ExtendsClass
 {
@@ -26,12 +28,18 @@ trait ExtendsClass
     protected $parent;
 
     /**
-     * @internal should not be called by any other class than the assamblers
+     * @internal should not be called by any other class than the assemblers.
      *
-     * @param ClassInterface|Fqsen|string|null $parent
+     * @param ElementInterface|Fqsen|string $parent
+     *
+     * @psalm-ignore MoreSpecificImplementedParamType
      */
     public function setParent($parent): void
     {
+        if ($parent instanceof ElementInterface) {
+            Assert::isInstanceOf($parent, ClassInterface::class);
+        }
+
         $this->parent = $parent;
     }
 

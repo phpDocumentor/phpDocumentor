@@ -37,20 +37,22 @@ trait HasPackage
 
         if ($this instanceof ClassInterface || $this instanceof InterfaceInterface) {
             foreach ($this->getConstants() as $constant) {
+                /** @psalm-suppress UndefinedMethod */
                 $constant->setPackage($package);
             }
 
             foreach ($this->getMethods() as $method) {
+                /** @psalm-suppress UndefinedMethod */
                 $method->setPackage($package);
             }
         }
 
-        if (!$this instanceof ClassInterface) {
-            return;
-        }
-
-        foreach ($this->getProperties() as $property) {
-            $property->setPackage($package);
+        // @phpcs:ignore SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed
+        if ($this instanceof ClassInterface) {
+            foreach ($this->getProperties() as $property) {
+                /** @psalm-suppress UndefinedMethod */
+                $property->setPackage($package);
+            }
         }
     }
 

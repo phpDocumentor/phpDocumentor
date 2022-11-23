@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Reflection\Type;
@@ -70,7 +71,14 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
 
     public function getInheritedElement(): ?ArgumentInterface
     {
-        $method = $this->getMethod();
+        try {
+            $method = $this->getMethod();
+        } catch (InvalidArgumentException $e) {
+            // TODO: Apparently, in our Mario's example this can be null. But that is weird. Investigate this after
+            //       this PR
+            return null;
+        }
+
         $inheritedElement = $method->getInheritedElement();
 
         if ($inheritedElement instanceof MethodInterface) {

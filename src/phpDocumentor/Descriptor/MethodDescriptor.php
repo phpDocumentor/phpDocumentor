@@ -65,10 +65,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     }
 
     /**
-     * @param ClassInterface|InterfaceInterface|TraitInterface|EnumInterface $parent
+     * {@inheritDoc}
      */
     public function setParent($parent): void
     {
+        /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface $parent */
         Assert::isInstanceOfAny(
             $parent,
             [ClassInterface::class, TraitInterface::class, InterfaceInterface::class, EnumInterface::class]
