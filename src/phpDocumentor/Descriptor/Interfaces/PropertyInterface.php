@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends ElementInterface, TypeInterface
+interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface
 {
     /**
      * Returns true when this property is intended to be read-only.
@@ -70,4 +72,9 @@ interface PropertyInterface extends ElementInterface, TypeInterface
      * @param string $visibility May be either 'public', 'private' or 'protected'.
      */
     public function setVisibility(string $visibility): void;
+
+    /**
+     * @return Collection<VarDescriptor>
+     */
+    public function getVar(): Collection;
 }

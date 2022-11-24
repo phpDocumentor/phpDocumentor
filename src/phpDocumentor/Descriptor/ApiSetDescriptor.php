@@ -18,8 +18,7 @@ use phpDocumentor\Configuration\Source;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
-    /** @var ApiSpecification */
-    private $apiSpecification;
+    private ApiSpecification $apiSpecification;
 
     public function __construct(
         string $name,

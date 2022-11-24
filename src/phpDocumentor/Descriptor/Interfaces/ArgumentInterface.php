@@ -21,6 +21,13 @@ use phpDocumentor\Reflection\Type;
 interface ArgumentInterface extends ElementInterface
 {
     /**
+     * To which method does this argument belong to
+     */
+    public function setMethod(MethodInterface $method): void;
+
+    public function getMethod(): MethodInterface;
+
+    /**
      * Sets a normalized list of types that the argument represents.
      *
      * Arguments should have one of the types mentioned in this array. If this array is empty than that is considered

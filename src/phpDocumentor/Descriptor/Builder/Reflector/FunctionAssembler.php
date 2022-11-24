@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
-use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -30,18 +31,19 @@ use function trim;
 /**
  * Assembles a FunctionDescriptor from a FunctionReflector.
  *
- * @extends AssemblerAbstract<FunctionDescriptor, Function_>
+ * @extends AssemblerAbstract<FunctionInterface, Function_>
  */
 class FunctionAssembler extends AssemblerAbstract
 {
-    /** @var ArgumentAssembler */
-    protected $argumentAssembler;
+    private ArgumentAssembler $argumentAssembler;
 
     /**
      * Initializes this assembler and its dependencies.
      */
     public function __construct(ArgumentAssembler $argumentAssembler)
     {
+        parent::__construct();
+
         $this->argumentAssembler = $argumentAssembler;
     }
 
@@ -50,7 +52,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Function_ $data
      */
-    public function create(object $data): FunctionDescriptor
+    public function create(object $data): FunctionInterface
     {
         $functionDescriptor = new FunctionDescriptor();
 
@@ -113,8 +115,8 @@ class FunctionAssembler extends AssemblerAbstract
      * Adds the given argument to the function.
      */
     protected function addArgumentDescriptorToFunction(
-        FunctionDescriptor $functionDescriptor,
-        ArgumentDescriptor $argumentDescriptor
+        FunctionInterface $functionDescriptor,
+        ArgumentInterface $argumentDescriptor
     ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
@@ -125,7 +127,7 @@ class FunctionAssembler extends AssemblerAbstract
     protected function createArgumentDescriptor(
         FunctionDescriptor $functionDescriptor,
         Argument $argument
-    ): ArgumentDescriptor {
+    ): ArgumentInterface {
         /** @var Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 

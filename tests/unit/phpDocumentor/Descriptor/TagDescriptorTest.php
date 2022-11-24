@@ -12,8 +12,7 @@ class TagDescriptorTest extends TestCase
 {
     public const TAG_NAME = 'test';
 
-    /** @var TagDescriptor */
-    private $fixture;
+    private TagDescriptor $fixture;
 
     /**
      * Instantiates the fixture with its dependencies.
@@ -30,7 +29,7 @@ class TagDescriptorTest extends TestCase
      */
     public function testNameIsRegisteredOnInstantiationAndReturned(): void
     {
-        $this->assertSame(self::TAG_NAME, $this->fixture->getName());
+        self::assertSame(self::TAG_NAME, $this->fixture->getName());
     }
 
     /**
@@ -39,8 +38,8 @@ class TagDescriptorTest extends TestCase
      */
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getErrors());
-        $this->assertEmpty($this->fixture->getErrors()->getAll());
+        self::assertInstanceOf(Collection::class, $this->fixture->getErrors());
+        self::assertEmpty($this->fixture->getErrors()->getAll());
     }
 
     /**
@@ -56,7 +55,7 @@ class TagDescriptorTest extends TestCase
         $this->fixture->setErrors($collection);
 
         // Assert
-        $this->assertSame($collection, $this->fixture->getErrors());
+        self::assertSame($collection, $this->fixture->getErrors());
     }
 
     /**
@@ -67,12 +66,12 @@ class TagDescriptorTest extends TestCase
     {
         // Arrange
         $description = new DescriptionDescriptor(new Description('Description'), []);
-        $this->assertEquals(new DescriptionDescriptor(new Description(''), []), $this->fixture->getDescription());
+        self::assertEquals(new DescriptionDescriptor(new Description(''), []), $this->fixture->getDescription());
 
         // Act
         $this->fixture->setDescription($description);
 
         // Assert
-        $this->assertSame($description, $this->fixture->getDescription());
+        self::assertSame($description, $this->fixture->getDescription());
     }
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use InvalidArgumentException;
+use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Reflection\Type;
 
 use function array_filter;
@@ -28,33 +31,19 @@ use const E_USER_DEPRECATED;
  */
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {
-    /** @var MethodDescriptor $method */
-    protected $method;
+    use Traits\BelongsToMethod;
 
     /** @var Type|null $type normalized type of this argument */
-    protected $type = null;
+    protected ?Type $type = null;
 
     /** @var string|null $default the default value for an argument or null if none is provided */
-    protected $default;
+    protected ?string $default = null;
 
     /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
-    protected $byReference = false;
+    protected bool $byReference = false;
 
     /** @var bool Determines if this Argument represents a variadic argument */
-    protected $isVariadic = false;
-
-    /**
-     * To which method does this argument belong to
-     */
-    public function setMethod(MethodDescriptor $method): void
-    {
-        $this->method = $method;
-    }
-
-    public function getMethod(): ?MethodDescriptor
-    {
-        return $this->method;
-    }
+    protected bool $isVariadic = false;
 
     public function setType(?Type $type): void
     {
@@ -80,14 +69,21 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         return array_filter([$this->getType()]);
     }
 
-    public function getInheritedElement(): ?ArgumentDescriptor
+    public function getInheritedElement(): ?ArgumentInterface
     {
-        if (
-            $this->method instanceof MethodDescriptor &&
-            $this->method->getInheritedElement() instanceof MethodDescriptor
-        ) {
-            $parents = $this->method->getInheritedElement()->getArguments();
-            /** @var ArgumentDescriptor $parentArgument */
+        try {
+            $method = $this->getMethod();
+        } catch (InvalidArgumentException $e) {
+            // TODO: Apparently, in our Mario's example this can be null. But that is weird. Investigate this after
+            //       this PR
+            return null;
+        }
+
+        $inheritedElement = $method->getInheritedElement();
+
+        if ($inheritedElement instanceof MethodInterface) {
+            $parents = $inheritedElement->getArguments();
+            /** @var ArgumentInterface $parentArgument */
             foreach ($parents as $parentArgument) {
                 if ($parentArgument->getName() === $this->getName()) {
                     return $parentArgument;

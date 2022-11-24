@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -26,7 +27,7 @@ use function substr;
 /**
  * Assembles an TraitDescriptor using an TraitReflector.
  *
- * @extends AssemblerAbstract<TraitDescriptor, Trait_>
+ * @extends AssemblerAbstract<TraitInterface, Trait_>
  */
 class TraitAssembler extends AssemblerAbstract
 {
@@ -35,7 +36,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Trait_ $data
      */
-    public function create(object $data): TraitDescriptor
+    public function create(object $data): TraitInterface
     {
         $traitDescriptor = new TraitDescriptor();
 
@@ -63,7 +64,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Property[] $properties
      */
-    protected function addProperties(array $properties, TraitDescriptor $traitDescriptor): void
+    protected function addProperties(array $properties, TraitInterface $traitDescriptor): void
     {
         foreach ($properties as $property) {
             $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
@@ -81,7 +82,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, TraitDescriptor $traitDescriptor): void
+    protected function addMethods(array $methods, TraitInterface $traitDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);

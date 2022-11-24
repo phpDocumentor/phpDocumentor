@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
-use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -25,13 +25,13 @@ use phpDocumentor\Reflection\Fqsen;
  */
 final class UsedByDescriptor extends TagDescriptor
 {
-    /** @var Fqsen|Descriptor|null the FQSEN where the uses tag refers to */
+    /** @var Fqsen|ElementInterface|null the FQSEN where the uses tag refers to */
     private $reference;
 
     /**
      * Returns the FQSEN, or Descriptor after linking, to which this tag points.
      *
-     * @return Fqsen|Descriptor|null
+     * @return Fqsen|ElementInterface|null
      */
     public function getReference(): ?object
     {
@@ -41,7 +41,7 @@ final class UsedByDescriptor extends TagDescriptor
     /**
      * Sets the FQSEN or Descriptor to which this tag points.
      *
-     * @param Fqsen|Descriptor|null $reference
+     * @param Fqsen|ElementInterface|null $reference
      */
     public function setReference(?object $reference): void
     {

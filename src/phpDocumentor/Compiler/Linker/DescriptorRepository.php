@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\EnumDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
 use function sprintf;
 use function str_replace;
@@ -30,8 +30,8 @@ class DescriptorRepository
 {
     private const CONTEXT_MARKER = '@context';
 
-    /** @var array<DescriptorAbstract> */
-    private $elementList = [];
+    /** @var array<array-key, ElementInterface> */
+    private array $elementList = [];
 
     /**
      * Attempts to find a Descriptor object alias with the FQSEN of the element it represents.
@@ -54,9 +54,9 @@ class DescriptorRepository
      * `\My\myFunction()`). The calling method {@see substitute()} will then replace the value of the field containing
      * the context marker with this normalized string.
      *
-     * @return DescriptorAbstract|string|null
+     * @return ElementInterface|string|null
      */
-    public function findAlias(string $fqsen, ?DescriptorAbstract $container = null)
+    public function findAlias(string $fqsen, ?ElementInterface $container = null)
     {
         if ($container === null) {
             return $this->fetchElementByFqsen($fqsen);
@@ -95,7 +95,7 @@ class DescriptorRepository
     /**
      * Sets the list of object aliases to resolve the FQSENs with.
      *
-     * @param array<DescriptorAbstract> $elementList
+     * @param array<ElementInterface> $elementList
      */
     public function setObjectAliasesList(array $elementList): void
     {
@@ -106,7 +106,7 @@ class DescriptorRepository
      * Replaces pseudo-types, such as `self`, into a normalized version based on the last container that was
      * encountered.
      */
-    private function replacePseudoTypes(string $fqsen, DescriptorAbstract $container): string
+    private function replacePseudoTypes(string $fqsen, ElementInterface $container): string
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
@@ -135,13 +135,13 @@ class DescriptorRepository
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait/enum as parent.
      */
-    private function getTypeWithClassAsContext(string $fqsen, DescriptorAbstract $container): string
+    private function getTypeWithClassAsContext(string $fqsen, ElementInterface $container): string
     {
         if (
-            !$container instanceof ClassDescriptor
-            && !$container instanceof InterfaceDescriptor
-            && !$container instanceof TraitDescriptor
-            && !$container instanceof EnumDescriptor
+            !$container instanceof ClassInterface
+            && !$container instanceof InterfaceInterface
+            && !$container instanceof TraitInterface
+            && !$container instanceof EnumInterface
         ) {
             return $fqsen;
         }
@@ -154,10 +154,10 @@ class DescriptorRepository
     /**
      * Normalizes the given FQSEN as if the context marker represents a class/interface/trait as parent.
      */
-    private function getTypeWithNamespaceAsContext(string $fqsen, DescriptorAbstract $container): string
+    private function getTypeWithNamespaceAsContext(string $fqsen, ElementInterface $container): string
     {
-        $namespace = $container instanceof NamespaceDescriptor ? $container : $container->getNamespace();
-        $fqnn = $namespace instanceof NamespaceDescriptor
+        $namespace = $container instanceof NamespaceInterface ? $container : $container->getNamespace();
+        $fqnn = $namespace instanceof NamespaceInterface
             ? $namespace->getFullyQualifiedStructuralElementName()
             : $namespace;
 
@@ -176,7 +176,7 @@ class DescriptorRepository
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      */
-    private function fetchElementByFqsen(string $fqsen): ?DescriptorAbstract
+    private function fetchElementByFqsen(string $fqsen): ?ElementInterface
     {
         return $this->elementList[$fqsen] ?? null;
     }

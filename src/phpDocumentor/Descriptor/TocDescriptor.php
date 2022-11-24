@@ -5,31 +5,23 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\TableOfContents\Entry;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
 
 use function array_filter;
 
 final class TocDescriptor implements Descriptor
 {
-    /** @var string */
-    private $name;
+    use HasName;
+    use HasDescription;
 
     /** @var Collection<Entry> */
-    private $entries;
+    private Collection $entries;
 
     public function __construct(string $name)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->entries = Collection::fromClassString(Entry::class);
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getDescription(): ?DocBlock\DescriptionDescriptor
-    {
-        return null;
     }
 
     public function addEntry(TableOfContents\Entry $entry): void

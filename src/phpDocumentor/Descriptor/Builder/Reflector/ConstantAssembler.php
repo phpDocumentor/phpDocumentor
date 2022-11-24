@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Reflection\Php\Constant;
 
 use function strlen;
@@ -23,7 +24,7 @@ use function substr;
 /**
  * Assembles a ConstantDescriptor from a ConstantReflector.
  *
- * @extends AssemblerAbstract<ConstantDescriptor, Constant>
+ * @extends AssemblerAbstract<ConstantInterface, Constant>
  */
 class ConstantAssembler extends AssemblerAbstract
 {
@@ -34,7 +35,7 @@ class ConstantAssembler extends AssemblerAbstract
      *
      * @param Constant $data
      */
-    public function create(object $data): ConstantDescriptor
+    public function create(object $data): ConstantInterface
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());

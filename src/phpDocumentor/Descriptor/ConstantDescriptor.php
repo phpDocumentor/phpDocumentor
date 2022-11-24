@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use InvalidArgumentException;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 
@@ -31,46 +33,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
     Interfaces\ConstantInterface,
     Interfaces\VisibilityInterface
 {
-    /** @var ClassDescriptor|InterfaceDescriptor|null $parent */
-    protected $parent;
+    use Traits\CanBeFinal;
+    use Traits\HasVisibility;
+    use Traits\BelongsToClassOrInterface;
 
-    /** @var Type|null $types */
-    protected $types;
-
-    /** @var string $value */
-    protected $value = '';
-
-    /** @var string $visibility */
-    protected $visibility = 'public';
-
-    /** @var bool */
-    private $isFinal = false;
-
-    /**
-     * Registers a parent class or interface with this constant.
-     *
-     * @param ClassDescriptor|InterfaceDescriptor|null $parent
-     *
-     * @throws InvalidArgumentException If anything other than a class, interface or null was passed.
-     */
-    public function setParent(?DescriptorAbstract $parent): void
-    {
-        $fqsen = $parent !== null
-            ? $parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()
-            : $this->getName();
-
-        $this->setFullyQualifiedStructuralElementName(new Fqsen($fqsen));
-
-        $this->parent = $parent;
-    }
-
-    /**
-     * @return ClassDescriptor|InterfaceDescriptor|null
-     */
-    public function getParent(): ?DescriptorAbstract
-    {
-        return $this->parent;
-    }
+    protected ?Type $types = null;
+    protected string $value = '';
 
     public function setTypes(Type $types): void
     {
@@ -129,7 +97,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * Returns the file associated with the parent class, interface or trait when inside a container.
      */
-    public function getFile(): FileDescriptor
+    public function getFile(): FileInterface
     {
         $file = parent::getFile() ?? $this->getParent()->getFile();
 
@@ -141,43 +109,23 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * Returns the Constant from which this one should inherit, if any.
      */
-    public function getInheritedElement(): ?ConstantDescriptor
+    public function getInheritedElement(): ?ConstantInterface
     {
-        /** @var ClassDescriptor|InterfaceDescriptor|null $associatedClass */
+        /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();
 
         if (
-            ($associatedClass instanceof ClassDescriptor || $associatedClass instanceof InterfaceDescriptor)
-            && ($associatedClass->getParent() instanceof ClassDescriptor
-                || $associatedClass->getParent() instanceof InterfaceDescriptor
+            ($associatedClass instanceof ClassInterface || $associatedClass instanceof InterfaceInterface)
+            && ($associatedClass->getParent() instanceof ClassInterface
+                || $associatedClass->getParent() instanceof InterfaceInterface
             )
         ) {
-            /** @var ClassDescriptor|InterfaceDescriptor $parentClass */
+            /** @var ClassInterface|InterfaceInterface $parentClass */
             $parentClass = $associatedClass->getParent();
 
             return $parentClass->getConstants()->fetch($this->getName());
         }
 
         return null;
-    }
-
-    public function setVisibility(string $visibility): void
-    {
-        $this->visibility = $visibility;
-    }
-
-    public function getVisibility(): string
-    {
-        return $this->visibility;
-    }
-
-    public function setFinal(bool $final): void
-    {
-        $this->isFinal = $final;
-    }
-
-    public function isFinal(): bool
-    {
-        return $this->isFinal;
     }
 }

@@ -16,7 +16,8 @@ namespace phpDocumentor\Compiler\Pass;
 use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
@@ -59,7 +60,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToNamespace($project, $file->getEnums()->getAll(), 'enums');
         }
 
-        /** @var NamespaceDescriptor $namespace */
+        /** @var NamespaceInterface $namespace */
         foreach ($project->getIndexes()->get('namespaces')->getAll() as $namespace) {
             if ($namespace->getNamespace() === '') {
                 continue;
@@ -75,11 +76,10 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the namespace as registered in the namespace field of that
      * element. If a namespace does not exist yet it will automatically be created.
      *
-     * @param DescriptorAbstract[] $elements Series of elements to add to their respective namespace.
-     * @param string               $type     Declares which field of the namespace will be populated with the given
-     *                                       series of elements. This name will be transformed to a getter which must
-     *                                       exist. Out of performance considerations will no effort be done to verify
-     *                                       whether the provided type is valid.
+     * @param ElementInterface[] $elements Series of elements to add to their respective namespace.
+     * @param string $type Declares which field of the namespace will be populated with the given series of elements.
+     *     This name will be transformed to a getter which must exist. Out of performance considerations will no effort
+     *     be done to verify whether the provided type is valid.
      */
     protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type): void
     {
@@ -105,7 +105,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $this->addToParentNamespace($project, $namespace);
             }
 
-            Assert::isInstanceOf($namespace, NamespaceDescriptor::class);
+            Assert::isInstanceOf($namespace, NamespaceInterface::class);
 
             // replace textual representation with an object representation
             $element->setNamespace($namespace);
@@ -113,15 +113,15 @@ class NamespaceTreeBuilder implements CompilerPassInterface
             // add element to namespace
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection<DescriptorAbstract> $collection */
+            /** @var Collection<ElementInterface> $collection */
             $collection = $namespace->{$getter}();
             $collection->add($element);
         }
     }
 
-    private function addToParentNamespace(ProjectDescriptor $project, NamespaceDescriptor $namespace): void
+    private function addToParentNamespace(ProjectDescriptor $project, NamespaceInterface $namespace): void
     {
-        /** @var NamespaceDescriptor|null $parent */
+        /** @var NamespaceInterface|null $parent */
         $parent = $project->getIndexes()->fetch(
             'namespaces',
             new Collection()

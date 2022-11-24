@@ -7,19 +7,19 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Docblock;
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Webmozart\Assert\Assert;
 
 /**
- * @extends AssemblerAbstract<DescriptorAbstract, object>
+ * @extends AssemblerAbstract<Descriptor, object>
  */
 final class DescriptionAssemblerReducer extends AssemblerAbstract implements AssemblerReducer
 {
     /**
-     * @return DescriptorAbstract|TagDescriptor|null
+     * @return ElementInterface|TagDescriptor|null
      */
     public function create(object $data, ?Descriptor $descriptor = null): ?Descriptor
     {
@@ -27,10 +27,9 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
             return null;
         }
 
-        Assert::isInstanceOfAny($descriptor, [DescriptorAbstract::class, TagDescriptor::class]);
+        Assert::isInstanceOfAny($descriptor, [ElementInterface::class, TagDescriptor::class]);
 
-        /** @phpstan-var DescriptorAbstract|TagDescriptor $descriptor */
-
+        /** @phpstan-var ElementInterface|TagDescriptor $descriptor */
         $description = new DescriptionDescriptor(
             $data->getDescription(),
             $data->getDescription() !== null ? $this->createTags($data->getDescription()->getTags()) : []

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
 
@@ -26,14 +27,11 @@ use function current;
  */
 class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {
-    /** @var Collection<ArgumentDescriptor> $arguments */
-    protected $arguments;
+    /** @var Collection<ArgumentInterface> $arguments */
+    protected Collection $arguments;
 
-    /** @var Type */
-    private $returnType;
-
-    /** @var bool */
-    private $hasReturnByReference = false;
+    private Type $returnType;
+    private bool $hasReturnByReference = false;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.

@@ -30,12 +30,14 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetTypes(): void
     {
         $fixture = new ArgumentDescriptor();
-        $this->assertSame(null, $fixture->getType());
+        $fixture->setMethod(new MethodDescriptor());
+
+        self::assertNull($fixture->getType());
 
         $type = new Integer();
         $fixture->setType($type);
 
-        $this->assertSame($type, $fixture->getType());
+        self::assertSame($type, $fixture->getType());
     }
 
     /**
@@ -55,7 +57,7 @@ final class ArgumentDescriptorTest extends TestCase
 
         $result = $fixture->getType();
 
-        $this->assertSame($types, $result);
+        self::assertSame($types, $result);
     }
 
     /**
@@ -65,12 +67,11 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetMethod(): void
     {
         $fixture = new ArgumentDescriptor();
-        $this->assertSame(null, $fixture->getMethod());
-
         $method = new MethodDescriptor();
+
         $fixture->setMethod($method);
 
-        $this->assertSame($method, $fixture->getMethod());
+        self::assertSame($method, $fixture->getMethod());
     }
 
     /**
@@ -80,11 +81,11 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetDefault(): void
     {
         $fixture = new ArgumentDescriptor();
-        $this->assertNull($fixture->getDefault());
+        self::assertNull($fixture->getDefault());
 
         $fixture->setDefault('a');
 
-        $this->assertSame('a', $fixture->getDefault());
+        self::assertSame('a', $fixture->getDefault());
     }
 
     /**
@@ -94,11 +95,11 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetWhetherArgumentIsPassedByReference(): void
     {
         $fixture = new ArgumentDescriptor();
-        $this->assertFalse($fixture->isByReference());
+        self::assertFalse($fixture->isByReference());
 
         $fixture->setByReference(true);
 
-        $this->assertTrue($fixture->isByReference());
+        self::assertTrue($fixture->isByReference());
     }
 
     /**
@@ -108,11 +109,11 @@ final class ArgumentDescriptorTest extends TestCase
     public function testSetAndGetWhetherArgumentIsAVariadic(): void
     {
         $fixture = new ArgumentDescriptor();
-        $this->assertFalse($fixture->isVariadic());
+        self::assertFalse($fixture->isVariadic());
 
         $fixture->setVariadic(true);
 
-        $this->assertTrue($fixture->isVariadic());
+        self::assertTrue($fixture->isVariadic());
     }
 
     /**
@@ -123,21 +124,19 @@ final class ArgumentDescriptorTest extends TestCase
     {
         $fixture = new ArgumentDescriptor();
 
-        $this->assertNull(
-            $fixture->getInheritedElement(),
-            'By default, an argument does not have an inherited element'
-        );
-
         $method = new MethodDescriptor();
         $method->setName('same');
         $method->addArgument('abc', $fixture);
         $fixture->setMethod($method);
 
-        $this->assertNull($fixture->getInheritedElement());
+        self::assertNull(
+            $fixture->getInheritedElement(),
+            'By default, an argument does not have an inherited element'
+        );
 
         $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName($fixture, 'abcd');
 
-        $this->assertNotNull($fixture->getInheritedElement());
+        self::assertNotNull($fixture->getInheritedElement());
     }
 
     private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(

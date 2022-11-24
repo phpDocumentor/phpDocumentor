@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
+use phpDocumentor\Descriptor\Traits\HasNamespace;
+use phpDocumentor\Descriptor\Traits\HasPackage;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -26,32 +30,24 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {
-    /** @var string $name */
-    private $name = '';
+    use HasName;
+    use HasDescription;
+    use HasPackage;
+    use HasNamespace;
 
-    /** @var NamespaceDescriptor $namespace */
-    private $namespace;
+    /** @var Collection<FileInterface> $files */
+    private Collection $files;
 
-    /** @var PackageDescriptor $package */
-    private $package;
+    /** @var Collection<Collection<ElementInterface>> $indexes */
+    private Collection $indexes;
 
-    /** @var Collection<FileDescriptor> $files */
-    private $files;
-
-    /** @var Collection<Collection<DescriptorAbstract>> $indexes */
-    private $indexes;
-
-    /** @var Settings $settings */
-    private $settings;
+    private Settings $settings;
 
     /** @var Collection<string> $partials */
-    private $partials;
+    private Collection $partials;
 
     /** @var Collection<VersionDescriptor> $versions */
-    private $versions;
-
-    /** @var DescriptionDescriptor */
-    private $description;
+    private Collection $versions;
 
     /**
      * Initializes this descriptor.
@@ -76,38 +72,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
         $this->setPartials(new Collection());
         $this->versions = Collection::fromClassString(VersionDescriptor::class);
-
-        $this->description = new DescriptionDescriptor(new Description(''), []);
-    }
-
-    /**
-     * Sets the name for this project.
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Returns the name of this project.
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Returns the description for this element.
-     */
-    public function getDescription(): DescriptionDescriptor
-    {
-        return $this->description;
     }
 
     /**
      * Sets all files on this project.
      *
-     * @param Collection<FileDescriptor> $files
+     * @param Collection<FileInterface> $files
      */
     public function setFiles(Collection $files): void
     {
@@ -116,8 +86,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
     /**
      * Returns all files with their sub-elements.
-     *
-     * @return Collection<FileDescriptor>
      */
     public function getFiles(): Collection
     {
@@ -131,7 +99,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
      *
-     * @param Collection<Collection<DescriptorAbstract>> $indexes
+     * @param Collection<Collection<ElementInterface>> $indexes
      */
     public function setIndexes(Collection $indexes): void
     {
@@ -142,28 +110,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns all indexes in this project.
      *
      * @see setIndexes() for more information on what indexes are.
-     *
-     * @return Collection<Collection<DescriptorAbstract>>
      */
     public function getIndexes(): Collection
     {
         return $this->indexes;
-    }
-
-    /**
-     * Sets the root namespace for this project together with all sub-namespaces.
-     */
-    public function setNamespace(NamespaceDescriptor $namespace): void
-    {
-        $this->namespace = $namespace;
-    }
-
-    /**
-     * Returns the root (global) namespace.
-     */
-    public function getNamespace(): NamespaceDescriptor
-    {
-        return $this->namespace;
     }
 
     /**
@@ -207,23 +157,13 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
-    public function findElement(Fqsen $fqsen): ?Descriptor
+    public function findElement(Fqsen $fqsen): ?ElementInterface
     {
         if (!isset($this->getIndexes()['elements'])) {
             return null;
         }
 
         return $this->getIndexes()['elements']->fetch((string) $fqsen);
-    }
-
-    private function setPackage(PackageDescriptor $package): void
-    {
-        $this->package = $package;
-    }
-
-    public function getPackage(): PackageDescriptor
-    {
-        return $this->package;
     }
 
     /**

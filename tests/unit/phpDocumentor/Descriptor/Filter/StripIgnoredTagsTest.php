@@ -6,8 +6,9 @@ namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DocBlock;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
 use PHPUnit\Framework\TestCase;
 
 final class StripIgnoredTagsTest extends TestCase
@@ -23,14 +24,12 @@ final class StripIgnoredTagsTest extends TestCase
     public function testIgnoresNonTagDescriptors(): void
     {
         $object = new class implements Filterable {
+            use HasName;
+            use HasDescription;
+
             public function getName(): string
             {
                 return 'someTag';
-            }
-
-            public function getDescription(): ?DocBlock\DescriptionDescriptor
-            {
-                return null;
             }
 
             public function setErrors(Collection $errors): void

@@ -16,6 +16,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\EnumCaseDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Enum_;
@@ -28,14 +30,14 @@ use function substr;
 /**
  * Assembles an EnumDescriptor using an ClassReflector.
  *
- * @extends AssemblerAbstract<EnumDescriptor, Enum_>
+ * @extends AssemblerAbstract<EnumInterface, Enum_>
  */
 final class EnumAssembler extends AssemblerAbstract
 {
     /**
      * @param Enum_ $data
      */
-    protected function buildDescriptor(object $data): EnumDescriptor
+    protected function buildDescriptor(object $data): EnumInterface
     {
         $descriptor = new EnumDescriptor();
 
@@ -68,7 +70,7 @@ final class EnumAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    private function addMethods(array $methods, EnumDescriptor $descriptor): void
+    private function addMethods(array $methods, EnumInterface $descriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);
@@ -86,15 +88,18 @@ final class EnumAssembler extends AssemblerAbstract
      *
      * @param array<Fqsen> $traits
      */
-    private function addUses(array $traits, EnumDescriptor $descriptor): void
+    private function addUses(array $traits, EnumInterface $descriptor): void
     {
-        $descriptor->setUsedTraits(new Collection($traits));
+        /** @var Collection<TraitInterface|Fqsen> $usedTraits */
+        $usedTraits = new Collection($traits);
+
+        $descriptor->setUsedTraits($usedTraits);
     }
 
     /**
      * @param EnumCase[] $cases
      */
-    private function addCases(array $cases, EnumDescriptor $descriptor): void
+    private function addCases(array $cases, EnumInterface $descriptor): void
     {
         foreach ($cases as $case) {
             $caseDescriptor = $this->getBuilder()->buildDescriptor($case, EnumCaseDescriptor::class);

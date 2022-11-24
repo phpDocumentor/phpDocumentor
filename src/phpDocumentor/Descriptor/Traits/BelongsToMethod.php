@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
+namespace phpDocumentor\Descriptor\Traits;
+
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use Webmozart\Assert\Assert;
+
+trait BelongsToMethod
+{
+    private MethodInterface $method;
+
+    /**
+     * To which method does this argument belong to
+     */
+    public function setMethod(MethodInterface $method): void
+    {
+        $this->method = $method;
+    }
+
+    public function getMethod(): MethodInterface
+    {
+        $method = $this->method ?? null;
+
+        Assert::isInstanceOf($method, MethodInterface::class);
+
+        return $method;
+    }
+}

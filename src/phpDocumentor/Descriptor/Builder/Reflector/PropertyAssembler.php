@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Php\Property;
@@ -24,7 +25,7 @@ use function substr;
 /**
  * Assembles a PropertyDescriptor from a PropertyReflector.
  *
- * @extends AssemblerAbstract<PropertyDescriptor, Property>
+ * @extends AssemblerAbstract<PropertyInterface, Property>
  */
 class PropertyAssembler extends AssemblerAbstract
 {
@@ -33,7 +34,7 @@ class PropertyAssembler extends AssemblerAbstract
      *
      * @param Property $data
      */
-    public function create(object $data): PropertyDescriptor
+    public function create(object $data): PropertyInterface
     {
         $propertyDescriptor = new PropertyDescriptor();
         $propertyDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 3));
@@ -56,7 +57,7 @@ class PropertyAssembler extends AssemblerAbstract
         return $propertyDescriptor;
     }
 
-    private function overwriteTypeFromDocBlock(PropertyDescriptor $propertyDescriptor): void
+    private function overwriteTypeFromDocBlock(PropertyInterface $propertyDescriptor): void
     {
         /** @var Collection<VarDescriptor> $varTags */
         $varTags = $propertyDescriptor->getTags()

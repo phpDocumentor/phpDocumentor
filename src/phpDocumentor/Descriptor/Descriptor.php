@@ -24,9 +24,19 @@ interface Descriptor
     public function getName(): string;
 
     /**
+     * Sets the local name for this element.
+     */
+    public function setName(string $name): void;
+
+    /**
      * Returns the description for this element.
      *
      * This method will automatically attempt to inherit the parent's description if this one has none.
      */
-    public function getDescription(): ?DocBlock\DescriptionDescriptor;
+    public function getDescription(): DocBlock\DescriptionDescriptor;
+
+    /**
+     * Sets a longer description for this element.
+     */
+    public function setDescription(DocBlock\DescriptionDescriptor $description): void;
 }

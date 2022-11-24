@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\MethodDescriptor;
-use phpDocumentor\Descriptor\PropertyDescriptor;
 
 /**
  * Public interface definition for object representing traits.
@@ -25,42 +23,47 @@ interface TraitInterface extends ElementInterface, TypeInterface
     /**
      * Sets the properties associated with this trait.
      *
-     * @param Collection<PropertyDescriptor> $properties
+     * @param Collection<PropertyInterface> $properties
      */
     public function setProperties(Collection $properties): void;
 
     /**
      * Returns the properties associated with this trait.
      *
-     * @return Collection<PropertyDescriptor>
+     * @return Collection<PropertyInterface>
      */
     public function getProperties(): Collection;
 
     /**
      * Returns all properties inherited from parent traits.
      *
-     * @return Collection<PropertyDescriptor>
+     * @return Collection<PropertyInterface>
      */
     public function getInheritedProperties(): Collection;
 
     /**
      * Sets all methods belonging to this trait.
      *
-     * @param Collection<MethodDescriptor> $methods
+     * @param Collection<MethodInterface> $methods
      */
     public function setMethods(Collection $methods): void;
 
     /**
      * Returns all methods belonging to this trait.
      *
-     * @return Collection<MethodDescriptor>
+     * @return Collection<MethodInterface>
      */
     public function getMethods(): Collection;
 
     /**
      * Returns a list of all methods inherited from parent traits.
      *
-     * @return Collection<MethodDescriptor>
+     * @return Collection<MethodInterface>
      */
     public function getInheritedMethods(): Collection;
+
+    /**
+     * Returns the file associated with the parent class or trait.
+     */
+    public function getFile(): ?FileInterface;
 }

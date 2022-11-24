@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a constant on a class, trait, property or file.
  */
-interface ConstantInterface extends ElementInterface, TypeInterface
+interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterface
 {
     /**
      * Sets the types that this constant may contain.
@@ -45,4 +47,9 @@ interface ConstantInterface extends ElementInterface, TypeInterface
     public function setFinal(bool $final): void;
 
     public function isFinal(): bool;
+
+    /**
+     * @return Collection<VarDescriptor>
+     */
+    public function getVar(): Collection;
 }

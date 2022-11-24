@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use Webmozart\Assert\Assert;
+
 /**
  * Descriptor representing a property.
  *
@@ -21,7 +24,7 @@ namespace phpDocumentor\Descriptor;
  */
 class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
 {
-    private ?EnumDescriptor $parent = null;
+    private ?EnumInterface $parent = null;
 
     private ?string $value;
 
@@ -35,13 +38,18 @@ class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCa
         return $this->value;
     }
 
-    public function getParent(): ?EnumDescriptor
+    public function getParent(): ?EnumInterface
     {
         return $this->parent;
     }
 
-    public function setParent(?EnumDescriptor $parent): void
+    /**
+     * {@inheritDoc}
+     */
+    public function setParent($parent): void
     {
+        Assert::nullOrIsInstanceOf($parent, EnumInterface::class);
+
         $this->parent = $parent;
     }
 }

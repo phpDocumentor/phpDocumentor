@@ -23,21 +23,11 @@ parameters:
     # Filter nodes by callable in not understanded
     - '#Method phpDocumentor\\Guides\\Nodes\\DocumentNode::getTocs\(\) should return array<phpDocumentor\\Guides\\Nodes\\TocNode> but returns array<phpDocumentor\\Guides\\Nodes\\Node>\.#'
 
-    # Bad design of descriptors.
-    - '#Access to an undefined property phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::\$[a-z]+#'
-
-    # https://github.com/phpDocumentor/phpDocumentor/issues/2279
-    - '#Instanceof between phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\InterfaceDescriptor\|phpDocumentor\\Reflection\\Fqsen>\|phpDocumentor\\Reflection\\Fqsen\|string\|null and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
-
     # PHPStan has issue when involving templates and parent types
     - '#Parameter \#1 \$matcher of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\Matcher<object>, phpDocumentor\\Descriptor\\Builder\\Matcher<.+> given\.#'
 
     # PHPStan doesn't support inheritance of TDescriptor
     - '#Parameter \#2 \$assembler of method phpDocumentor\\Descriptor\\Builder\\AssemblerFactory::(register|registerFallback)\(\) expects phpDocumentor\\Descriptor\\Builder\\AssemblerInterface.* given\.#'
-
-    # PHPStan doesn't support inheritance of a generic in a generic
-    - '/Parameter \#2 \$item of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>>::set\(\)/'
-    - '/Parameter \#1 \$collection of method phpDocumentor\\Descriptor\\Collection<phpDocumentor\\Descriptor\\DescriptorAbstract>::merge\(\)/'
 
     -
             message: "#^Parameter \\#1 \\$value of method phpDocumentor\\\\GraphViz\\\\Graph\\:\\:setCenter\\(\\) expects bool, string given\\.$#"

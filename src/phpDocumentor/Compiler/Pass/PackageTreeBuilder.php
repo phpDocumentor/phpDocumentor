@@ -15,13 +15,16 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\PackageInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Fqsen;
+use Webmozart\Assert\Assert;
 
 use function explode;
 use function ltrim;
@@ -58,10 +61,13 @@ final class PackageTreeBuilder implements CompilerPassInterface
 
     public function execute(ProjectDescriptor $project): void
     {
-        $packages = Collection::fromClassString(PackageDescriptor::class);
-        $packages['\\'] = $project->getPackage();
+        $package = $project->getPackage();
+        Assert::isInstanceOf($package, PackageInterface::class);
 
-        /** @var FileDescriptor $file */
+        $packages = Collection::fromInterfaceString(PackageInterface::class);
+        $packages['\\'] = $package;
+
+        /** @var FileInterface $file */
         foreach ($project->getFiles() as $file) {
             $this->addElementsOfTypeToPackage($packages, [$file], 'files');
             $this->addElementsOfTypeToPackage($packages, $file->getConstants()->getAll(), 'constants');
@@ -72,7 +78,10 @@ final class PackageTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToPackage($packages, $file->getEnums()->getAll(), 'enums');
         }
 
-        $project->getIndexes()->set('packages', $packages);
+        $project->getIndexes()->set(
+            'packages',
+            Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
+        );
     }
 
     /**
@@ -81,8 +90,8 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * This method will assign the given elements to the package as registered in the package field of that
      * element. If a package does not exist yet it will automatically be created.
      *
-     * @param Collection<PackageDescriptor> $packages
-     * @param array<DescriptorAbstract>     $elements Series of elements to add to their respective package.
+     * @param Collection<PackageInterface> $packages
+     * @param array<ElementInterface> $elements Series of elements to add to their respective package.
      * @param string $type Declares which field of the package will be populated with the given
      *                     series of elements. This name will be transformed to a getter which must exist. Out of
      *                     performance considerations will no effort be done to verify whether the provided type is
@@ -118,7 +127,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
                 $this->createPackageDescriptorTree($packages, $packageName);
             }
 
-            /** @var PackageDescriptor $package */
+            /** @var PackageInterface $package */
             $package = $packages[$packageIndexName];
 
             // replace textual representation with an object representation
@@ -127,7 +136,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
             // add element to package
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection<DescriptorAbstract> $collection */
+            /** @var Collection<ElementInterface> $collection */
             $collection = $package->{$getter}();
             $collection->add($element);
         }
@@ -144,10 +153,10 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * created PackageDescriptors. Each index key is prefixed with a tilde (~) so that it will not conflict with
      * other FQSEN's, such as classes or interfaces.
      *
-     * @see PackageDescriptor::getChildren() for the child packages of a given package.
-     * @see ProjectDescriptor::getPackage() for the root package.
+     * @see PackageInterface::getChildren() for the child packages of a given package.
+     * @see ProjectInterface::getPackage() for the root package.
      *
-     * @param Collection<PackageDescriptor> $packages
+     * @param Collection<PackageInterface> $packages
      * @param string $packageName A FQNN of the package (and parents) to create.
      */
     private function createPackageDescriptorTree(Collection $packages, string $packageName): void
@@ -158,7 +167,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
         // this method does not use recursion to traverse the tree but uses a pointer that will be overridden with the
         // next item that is to be traversed (child package) at the end of the loop.
 
-        /** @var PackageDescriptor $pointer */
+        /** @var PackageInterface $pointer */
         $pointer = $packages['\\'];
         foreach ($parts as $part) {
             $fqnn .= '\\' . $part;

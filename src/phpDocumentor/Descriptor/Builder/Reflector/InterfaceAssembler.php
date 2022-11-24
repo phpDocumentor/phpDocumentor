@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
@@ -26,7 +27,7 @@ use function substr;
 /**
  * Assembles an InterfaceDescriptor using an InterfaceReflector.
  *
- * @extends AssemblerAbstract<InterfaceDescriptor, Interface_>
+ * @extends AssemblerAbstract<InterfaceInterface, Interface_>
  */
 class InterfaceAssembler extends AssemblerAbstract
 {
@@ -35,7 +36,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Interface_ $data
      */
-    public function create(object $data): InterfaceDescriptor
+    public function create(object $data): InterfaceInterface
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 
@@ -65,7 +66,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Constant[] $constants
      */
-    protected function addConstants(array $constants, InterfaceDescriptor $interfaceDescriptor): void
+    protected function addConstants(array $constants, InterfaceInterface $interfaceDescriptor): void
     {
         foreach ($constants as $constant) {
             $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
@@ -83,7 +84,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Method[] $methods
      */
-    protected function addMethods(array $methods, InterfaceDescriptor $interfaceDescriptor): void
+    protected function addMethods(array $methods, InterfaceInterface $interfaceDescriptor): void
     {
         foreach ($methods as $method) {
             $methodDescriptor = $this->getBuilder()->buildDescriptor($method, MethodDescriptor::class);

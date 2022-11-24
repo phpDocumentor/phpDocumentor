@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\PackageDescriptor;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
@@ -24,8 +22,24 @@ use phpDocumentor\Reflection\Location;
 /**
  * Represents the public interface to which all descriptors should be held.
  */
-interface ElementInterface
+interface ElementInterface extends Descriptor, TracksErrors
 {
+    /**
+     * Returns the namespace for this element (defaults to global "\")
+     *
+     * @return NamespaceInterface|string
+     */
+    public function getNamespace();
+
+    /**
+     * Sets the namespace (name) for this element.
+     *
+     * @internal should not be called by any other class than the assemblers
+     *
+     * @param NamespaceInterface|string $namespace
+     */
+    public function setNamespace($namespace): void;
+
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
@@ -35,16 +49,6 @@ interface ElementInterface
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
     public function getFullyQualifiedStructuralElementName(): ?Fqsen;
-
-    /**
-     * Sets the local name for this element.
-     */
-    public function setName(string $name): void;
-
-    /**
-     * Returns the local name for this element.
-     */
-    public function getName(): string;
 
     /**
      * Sets a summary describing this element.
@@ -57,19 +61,28 @@ interface ElementInterface
     public function getSummary(): string;
 
     /**
-     * Sets a longer description for this element.
-     */
-    public function setDescription(DescriptionDescriptor $description): void;
-
-    /**
-     * Returns a longer description for this element.
-     */
-    public function getDescription(): ?DescriptionDescriptor;
-
-    /**
      * Sets the file and location for this element.
      */
-    public function setLocation(FileDescriptor $file, Location $startLocation): void;
+    public function setLocation(FileInterface $file, Location $startLocation): void;
+
+    /**
+     * Sets this element's start location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setStartLocation(Location $startLocation): void;
+
+    /**
+     * Returns the end location where the definition for this element can be found.
+     */
+    public function getEndLocation(): ?Location;
+
+    /**
+     * Sets this element's end location in the source file.
+     *
+     * @internal should not be called by any other class than the assemblers
+     */
+    public function setEndLocation(Location $endLocation): void;
 
     /**
      * Returns the file location for this element relative to the project root.
@@ -95,12 +108,12 @@ interface ElementInterface
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param PackageDescriptor|string $package
+     * @param PackageInterface|string $package
      */
     public function setPackage($package): void;
 
     /**
      * Returns the package name for this element.
      */
-    public function getPackage(): ?PackageDescriptor;
+    public function getPackage(): ?PackageInterface;
 }
