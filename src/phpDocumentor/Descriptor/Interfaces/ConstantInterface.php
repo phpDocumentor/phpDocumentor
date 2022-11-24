@@ -25,7 +25,7 @@ interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterf
     /**
      * Sets the types that this constant may contain.
      */
-    public function setTypes(Type $types): void;
+    public function setType(Type $type): void;
 
     /**
      * Returns the types that may be present in this constant.

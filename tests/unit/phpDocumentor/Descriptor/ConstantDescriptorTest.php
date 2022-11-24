@@ -32,8 +32,7 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class ConstantDescriptorTest extends MockeryTestCase
 {
-    /** @var ConstantDescriptor $fixture */
-    private $fixture;
+    private ConstantDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -51,7 +50,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetParentClass(): void
     {
-        $this->assertNull($this->fixture->getParent());
+        self::assertNull($this->fixture->getParent());
 
         $parentMock = m::mock(ClassDescriptor::class);
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
@@ -59,7 +58,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
         $this->fixture->setParent($parentMock);
 
-        $this->assertSame($parentMock, $this->fixture->getParent());
+        self::assertSame($parentMock, $this->fixture->getParent());
     }
 
     /**
@@ -68,30 +67,29 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetParentInterface(): void
     {
-        $this->assertNull($this->fixture->getParent());
+        self::assertNull($this->fixture->getParent());
 
         $parentMock = m::mock(InterfaceDescriptor::class);
         $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
             ->andReturn(new Fqsen('\TestInterface'));
         $this->fixture->setParent($parentMock);
 
-        $this->assertSame($parentMock, $this->fixture->getParent());
+        self::assertSame($parentMock, $this->fixture->getParent());
     }
 
     /**
      * @covers ::getType
      * @covers ::getTypes
-     * @covers ::setTypes
+     * @covers ::setType
      */
     public function testSetAndGetTypes(): void
     {
-        $this->assertEquals(null, $this->fixture->getType());
+        self::assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
 
-        $this->fixture->setTypes($expected);
+        $this->fixture->setType($expected);
 
-        $this->assertSame($expected, $this->fixture->getType());
-        $this->assertSame([$expected], $this->fixture->getTypes());
+        self::assertSame($expected, $this->fixture->getType());
     }
 
     /**
@@ -108,7 +106,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
         $this->fixture->getTags()->set('var', new Collection([$varTag]));
 
-        $this->assertEquals($expected, $this->fixture->getType());
+        self::assertEquals($expected, $this->fixture->getType());
     }
 
     /**
@@ -116,7 +114,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent(): void
     {
-        $this->assertEquals(new Collection(), $this->fixture->getVar());
+        self::assertEquals(new Collection(), $this->fixture->getVar());
     }
 
     /**
@@ -136,7 +134,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $this->fixture->setParent($parentClass);
         $types = $this->fixture->getType();
 
-        $this->assertSame($expected, $types);
+        self::assertSame($expected, $types);
     }
 
     /**
@@ -145,11 +143,11 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetValue(): void
     {
-        $this->assertEmpty($this->fixture->getValue());
+        self::assertEmpty($this->fixture->getValue());
 
         $this->fixture->setValue('a');
 
-        $this->assertSame('a', $this->fixture->getValue());
+        self::assertSame('a', $this->fixture->getValue());
     }
 
     /**
@@ -164,7 +162,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getFile();
 
         // Assert
-        $this->assertSame($file, $result);
+        self::assertSame($file, $result);
     }
 
     /**
@@ -179,7 +177,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getFile();
 
         // Assert
-        $this->assertSame($file, $result);
+        self::assertSame($file, $result);
     }
 
     /**
@@ -197,7 +195,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getSummary();
 
         // Assert
-        $this->assertSame($summary, $result);
+        self::assertSame($summary, $result);
     }
 
     /**
@@ -216,7 +214,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getVar();
 
         // Assert
-        $this->assertSame($varCollection, $result);
+        self::assertSame($varCollection, $result);
     }
 
     /**
@@ -234,7 +232,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getPackage();
 
         // Assert
-        $this->assertSame($packageTagDescriptor, $result);
+        self::assertSame($packageTagDescriptor, $result);
     }
 
     /**
@@ -253,7 +251,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getAuthor();
 
         // Assert
-        $this->assertSame($authorCollection, $result);
+        self::assertSame($authorCollection, $result);
     }
 
     /**
@@ -272,7 +270,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getVersion();
 
         // Assert
-        $this->assertSame($versionCollection, $result);
+        self::assertSame($versionCollection, $result);
     }
 
     /**
@@ -291,7 +289,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getCopyright();
 
         // Assert
-        $this->assertSame($copyrightCollection, $result);
+        self::assertSame($copyrightCollection, $result);
     }
 
     /**
@@ -389,10 +387,10 @@ final class ConstantDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingVisibility(): void
     {
-        $this->assertEquals('public', $this->fixture->getVisibility());
+        self::assertEquals('public', $this->fixture->getVisibility());
 
         $this->fixture->setVisibility('private');
 
-        $this->assertEquals('private', $this->fixture->getVisibility());
+        self::assertEquals('private', $this->fixture->getVisibility());
     }
 }

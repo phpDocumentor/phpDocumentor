@@ -39,7 +39,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
     /**
      * Stores a textual representation of the default value for a property.
      */
-    public function setDefault(string $default): void;
+    public function setDefault(string $value): void;
 
     /**
      * Returns the textual representation of the default value for a property, or null if none is provided.

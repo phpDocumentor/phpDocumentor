@@ -33,9 +33,9 @@ class ReturnDescriptorTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setTypes
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getTypes
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
+     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
      * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
      */
     public function testSetAndGetType(): void
