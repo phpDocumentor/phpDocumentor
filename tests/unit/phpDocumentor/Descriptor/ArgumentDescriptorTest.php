@@ -72,6 +72,7 @@ final class ArgumentDescriptorTest extends TestCase
 
     /**
      * @covers ::getSummary
+     * @covers ::getInheritedElement
      */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
@@ -106,6 +107,7 @@ final class ArgumentDescriptorTest extends TestCase
 
     /**
      * @covers ::getDescription
+     * @covers ::getInheritedElement
      */
     public function testWhenDescriptionIsNullParentDescriptionIsInherited(): void
     {
@@ -182,6 +184,7 @@ final class ArgumentDescriptorTest extends TestCase
 
     /**
      * @covers ::getType
+     * @covers ::getInheritedElement
      */
     public function testTypeIsInheritedWhenNoneIsPresent(): void
     {
