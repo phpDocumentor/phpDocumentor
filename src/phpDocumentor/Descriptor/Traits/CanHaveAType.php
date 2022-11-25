@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Traits;
 
-use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
-use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
-use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
+use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Reflection\Type;
 
 use function array_filter;
@@ -36,16 +34,9 @@ trait CanHaveAType
 
     public function getType(): ?Type
     {
-        if (
-            $this->type === null
-            && $this instanceof InheritsFromElement
-        ){
+        if ($this->type === null && $this instanceof InheritsFromElement) {
             $inheritedElement = $this->getInheritedElement();
-            if (
-                $inheritedElement instanceof PropertyInterface
-                || $inheritedElement instanceof ConstantInterface
-                || $inheritedElement instanceof TypedAbstract
-            ) {
+            if ($inheritedElement instanceof IsTyped) {
                 $this->setType($inheritedElement->getType());
             }
         }

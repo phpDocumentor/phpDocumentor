@@ -13,31 +13,171 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class ArgumentDescriptorTest extends TestCase
 {
     /**
+     * @covers ::setName
+     * @covers ::getName
+     */
+    public function testCanHaveAName(): void
+    {
+        $argument = new ArgumentDescriptor();
+        self::assertSame('', $argument->getName());
+
+        $argument->setName('name');
+        self::assertSame('name', $argument->getName());
+    }
+
+    /**
+     * @covers ::getMethod
+     * @covers ::setMethod
+     */
+    public function testCanBelongToAMethod(): void
+    {
+        $method = $this->givenAnExampleMethod();
+
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
+        $this->whenArgumentBelongsToMethod($argument, $method);
+
+        self::assertSame($method, $argument->getMethod());
+    }
+
+    /**
+     * @covers ::setSummary
+     * @covers ::getSummary
+     */
+    public function testArgumentsCanHaveASummary(): void
+    {
+        $argument = new ArgumentDescriptor();
+        self::assertSame('', $argument->getSummary());
+
+        $argument->setSummary('summary');
+
+        self::assertSame('summary', $argument->getSummary());
+    }
+
+    /**
+     * @covers ::getSummary
+     */
+    public function testSummaryInheritsWhenNoneIsPresent(): void
+    {
+        $parentSummary = 'This is a summary';
+
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
+        $argument->setSummary('');
+
+        $parentArgument = $this->givenAnArgumentFromWhichItCanInherit($argument);
+        $parentArgument->setSummary($parentSummary);
+
+        self::assertSame($parentSummary, $argument->getSummary());
+    }
+
+    /**
+     * @covers ::setDescription
+     * @covers ::getDescription
+     */
+    public function testArgumentsCanHaveADescription(): void
+    {
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
+
+        self::assertEquals(DescriptionDescriptor::createEmpty(), $argument->getDescription());
+
+        $description = new DescriptionDescriptor(new Description('description'), []);
+        $argument->setDescription($description);
+
+        self::assertSame($description, $argument->getDescription());
+    }
+
+    /**
+     * @covers ::getDescription
+     */
+    public function testWhenDescriptionIsNullParentDescriptionIsInherited(): void
+    {
+        $parentDescription = new DescriptionDescriptor(new Description('description'), []);
+
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
+
+        $parentArgument = $this->givenAnArgumentFromWhichItCanInherit($argument);
+        $parentArgument->setDescription($parentDescription);
+
+        self::assertSame($parentDescription, $argument->getDescription());
+    }
+
+    /**
+     * @covers ::getDefault
+     * @covers ::setDefault
+     */
+    public function testArgumentsCanHaveADefaultValue(): void
+    {
+        $argument = new ArgumentDescriptor();
+        self::assertNull($argument->getDefault());
+
+        $argument->setDefault('a');
+
+        self::assertSame('a', $argument->getDefault());
+    }
+
+    /**
+     * @covers ::isByReference
+     * @covers ::setByReference
+     */
+    public function testWhetherAnArgumentCouldBePassedByReference(): void
+    {
+        $argument = new ArgumentDescriptor();
+        self::assertFalse($argument->isByReference());
+
+        $argument->setByReference(true);
+
+        self::assertTrue($argument->isByReference());
+    }
+
+    /**
+     * @covers ::isVariadic
+     * @covers ::setVariadic
+     */
+    public function testArgumentCanBeAVariadic(): void
+    {
+        $argument = new ArgumentDescriptor();
+        self::assertFalse($argument->isVariadic());
+
+        $argument->setVariadic(true);
+
+        self::assertTrue($argument->isVariadic());
+    }
+
+    /**
      * @covers ::getType
      * @covers ::setType
      */
-    public function testSetAndGetTypes(): void
+    public function testCanBeAssociatedWithAType(): void
     {
-        $fixture = new ArgumentDescriptor();
-        $fixture->setMethod(new MethodDescriptor());
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
 
-        self::assertNull($fixture->getType());
+        $method = $this->givenAnExampleMethod();
+        $this->whenArgumentBelongsToMethod($argument, $method);
+        $this->thenArgumentHasType(null, $argument);
 
         $type = new Integer();
-        $fixture->setType($type);
-
-        self::assertSame($type, $fixture->getType());
+        $this->whenArgumentIsTypeHintedWith($argument, $type);
+        $this->thenArgumentHasType($type, $argument);
     }
 
     /**
@@ -47,73 +187,16 @@ final class ArgumentDescriptorTest extends TestCase
     {
         $types = new String_();
 
-        $fixture = new ArgumentDescriptor();
-        $parentArgument = $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName(
-            $fixture,
-            'argumentName'
-        );
-        $fixture->setType(null);
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
+        $argument->setType(null);
+
+        $parentArgument = $this->givenAnArgumentFromWhichItCanInherit($argument);
         $parentArgument->setType($types);
 
-        $result = $fixture->getType();
+        $result = $argument->getType();
 
         self::assertSame($types, $result);
-    }
-
-    /**
-     * @covers ::getMethod
-     * @covers ::setMethod
-     */
-    public function testSetAndGetMethod(): void
-    {
-        $fixture = new ArgumentDescriptor();
-        $method = new MethodDescriptor();
-
-        $fixture->setMethod($method);
-
-        self::assertSame($method, $fixture->getMethod());
-    }
-
-    /**
-     * @covers ::getDefault
-     * @covers ::setDefault
-     */
-    public function testSetAndGetDefault(): void
-    {
-        $fixture = new ArgumentDescriptor();
-        self::assertNull($fixture->getDefault());
-
-        $fixture->setDefault('a');
-
-        self::assertSame('a', $fixture->getDefault());
-    }
-
-    /**
-     * @covers ::isByReference
-     * @covers ::setByReference
-     */
-    public function testSetAndGetWhetherArgumentIsPassedByReference(): void
-    {
-        $fixture = new ArgumentDescriptor();
-        self::assertFalse($fixture->isByReference());
-
-        $fixture->setByReference(true);
-
-        self::assertTrue($fixture->isByReference());
-    }
-
-    /**
-     * @covers ::isVariadic
-     * @covers ::setVariadic
-     */
-    public function testSetAndGetWhetherArgumentIsAVariadic(): void
-    {
-        $fixture = new ArgumentDescriptor();
-        self::assertFalse($fixture->isVariadic());
-
-        $fixture->setVariadic(true);
-
-        self::assertTrue($fixture->isVariadic());
     }
 
     /**
@@ -122,52 +205,81 @@ final class ArgumentDescriptorTest extends TestCase
      */
     public function testGetTheArgumentFromWhichThisArgumentInherits(): void
     {
-        $fixture = new ArgumentDescriptor();
+        $argument = new ArgumentDescriptor();
+        $argument->setName('abc');
 
-        $method = new MethodDescriptor();
-        $method->setName('same');
-        $method->addArgument('abc', $fixture);
-        $fixture->setMethod($method);
+        $method = $this->givenAnExampleMethod();
+        $this->whenArgumentBelongsToMethod($argument, $method);
 
         self::assertNull(
-            $fixture->getInheritedElement(),
+            $argument->getInheritedElement(),
             'By default, an argument does not have an inherited element'
         );
 
-        $this->whenFixtureHasMethodAndArgumentInParentClassWithSameName($fixture, 'abcd');
+        $this->givenAnArgumentFromWhichItCanInherit($argument);
 
-        self::assertNotNull($fixture->getInheritedElement());
+        self::assertNotNull($argument->getInheritedElement());
     }
 
-    private function whenFixtureHasMethodAndArgumentInParentClassWithSameName(
-        ArgumentDescriptor $fixture,
-        string $argumentName
-    ): ArgumentDescriptor {
-        $fixture->setName($argumentName);
+    /**
+     * @return ArgumentDescriptor A 'parent' argument that can be manipulated to test whether inheritance works.
+     */
+    private function givenAnArgumentFromWhichItCanInherit(ArgumentDescriptor $currentArgument): ArgumentDescriptor
+    {
+        $argumentName = $currentArgument->getName();
 
         $parentArgument = new ArgumentDescriptor();
         $parentArgument->setName($argumentName);
 
-        $parentMethod = new MethodDescriptor();
-        $parentMethod->setName('same');
-        $parentMethod->addArgument($argumentName, $parentArgument);
+        $superClass = $this->givenAClass(new Fqsen('\My\Super\Class'));
+        $parentMethod = $this->givenAnExampleMethod();
+        $this->whenMethodBelongsToClass($superClass, $parentMethod);
+        $this->whenArgumentBelongsToMethod($parentArgument, $parentMethod);
 
-        $method = new MethodDescriptor();
-        $method->setName('same');
-        $method->addArgument($argumentName, $fixture);
-        $fixture->setMethod($method);
-
-        $parent = new ClassDescriptor();
-        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Super\Class'));
-        $parent->getMethods()->set('same', $parentMethod);
-        $parentMethod->setParent($parent);
-
-        $class = new ClassDescriptor();
-        $class->setFullyQualifiedStructuralElementName(new Fqsen('\My\Sub\Class'));
-        $class->setParent($parent);
-        $class->getMethods()->set('same', $method);
-        $method->setParent($class);
+        $class = $this->givenAClass(new Fqsen('\My\Sub\Class'));
+        $class->setParent($superClass);
+        $method = $this->givenAnExampleMethod($parentMethod->getName());
+        $this->whenMethodBelongsToClass($class, $method);
+        $this->whenArgumentBelongsToMethod($currentArgument, $method);
 
         return $parentArgument;
+    }
+
+    private function givenAnExampleMethod(string $methodName = 'same'): MethodDescriptor
+    {
+        $method = new MethodDescriptor();
+        $method->setName($methodName);
+
+        return $method;
+    }
+
+    private function whenArgumentBelongsToMethod(ArgumentDescriptor $argument, MethodDescriptor $method): void
+    {
+        $argument->setMethod($method);
+        $method->addArgument($argument->getName(), $argument);
+    }
+
+    private function thenArgumentHasType(?Type $type, ArgumentDescriptor $argument): void
+    {
+        self::assertSame($type, $argument->getType());
+    }
+
+    private function whenArgumentIsTypeHintedWith(ArgumentDescriptor $argument, Integer $type): void
+    {
+        $argument->setType($type);
+    }
+
+    private function givenAClass(Fqsen $fqsen): ClassDescriptor
+    {
+        $parent = new ClassDescriptor();
+        $parent->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $parent;
+    }
+
+    private function whenMethodBelongsToClass(ClassDescriptor $class, MethodDescriptor $method): void
+    {
+        $class->getMethods()->set($method->getName(), $method);
+        $method->setParent($class);
     }
 }

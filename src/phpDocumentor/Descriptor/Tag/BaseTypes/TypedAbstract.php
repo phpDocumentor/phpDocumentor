@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag\BaseTypes;
 
+use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\Traits\CanHaveAType;
 
 /**
  * Base descriptor for tags that have a type associated with them.
  */
-abstract class TypedAbstract extends TagDescriptor
+abstract class TypedAbstract extends TagDescriptor implements IsTyped
 {
     use CanHaveAType;
 }
