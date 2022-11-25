@@ -7,5 +7,6 @@ module.exports = defineConfig({
         specPattern: "**/*.spec.js",
         retries: 2,
         videoUploadOnPasses: false
+        defaultCommandTimeout: 10000
     }
 })
