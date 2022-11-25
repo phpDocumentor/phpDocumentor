@@ -16,12 +16,6 @@ namespace phpDocumentor\Descriptor;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
-use phpDocumentor\Reflection\Type;
-
-use function array_filter;
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 /**
  * Descriptor representing a single Argument of a method or function.
@@ -32,42 +26,14 @@ use const E_USER_DEPRECATED;
 class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\ArgumentInterface
 {
     use Traits\BelongsToMethod;
-
-    /** @var Type|null $type normalized type of this argument */
-    protected ?Type $type = null;
-
-    /** @var string|null $default the default value for an argument or null if none is provided */
-    protected ?string $default = null;
+    use Traits\CanHaveAType;
+    use Traits\CanHaveADefaultValue;
 
     /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
     protected bool $byReference = false;
 
     /** @var bool Determines if this Argument represents a variadic argument */
     protected bool $isVariadic = false;
-
-    public function setType(?Type $type): void
-    {
-        $this->type = $type;
-    }
-
-    public function getType(): ?Type
-    {
-        if ($this->type === null && $this->getInheritedElement() !== null) {
-            $this->setType($this->getInheritedElement()->getType());
-        }
-
-        return $this->type;
-    }
-
-    /**
-     * @return list<Type>
-     */
-    public function getTypes(): array
-    {
-        trigger_error('Please use getType', E_USER_DEPRECATED);
-
-        return array_filter([$this->getType()]);
-    }
 
     public function getInheritedElement(): ?ArgumentInterface
     {
@@ -92,16 +58,6 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         }
 
         return null;
-    }
-
-    public function setDefault(?string $value): void
-    {
-        $this->default = $value;
-    }
-
-    public function getDefault(): ?string
-    {
-        return $this->default;
     }
 
     public function setByReference(bool $byReference): void
