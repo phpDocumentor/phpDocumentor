@@ -28,12 +28,8 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     use Traits\BelongsToMethod;
     use Traits\CanHaveAType;
     use Traits\CanHaveADefaultValue;
-
-    /** @var bool $byReference whether the argument passes the parameter by reference instead of by value */
-    protected bool $byReference = false;
-
-    /** @var bool Determines if this Argument represents a variadic argument */
-    protected bool $isVariadic = false;
+    use Traits\CanBeByReference;
+    use Traits\CanBeVariadic;
 
     public function getInheritedElement(): ?ArgumentInterface
     {
@@ -58,31 +54,5 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
         }
 
         return null;
-    }
-
-    public function setByReference(bool $byReference): void
-    {
-        $this->byReference = $byReference;
-    }
-
-    public function isByReference(): bool
-    {
-        return $this->byReference;
-    }
-
-    /**
-     * Sets whether this argument represents a variadic argument.
-     */
-    public function setVariadic(bool $isVariadic): void
-    {
-        $this->isVariadic = $isVariadic;
-    }
-
-    /**
-     * Returns whether this argument represents a variadic argument.
-     */
-    public function isVariadic(): bool
-    {
-        return $this->isVariadic;
     }
 }
