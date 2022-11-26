@@ -21,8 +21,6 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 
-use function array_filter;
-
 /**
  * Descriptor representing a constant
  *
@@ -36,33 +34,20 @@ class ConstantDescriptor extends DescriptorAbstract implements
     use Traits\CanBeFinal;
     use Traits\HasVisibility;
     use Traits\BelongsToClassOrInterface;
+    use Traits\CanHaveAType;
 
-    protected ?Type $types = null;
     protected string $value = '';
-
-    public function setTypes(Type $types): void
-    {
-        $this->types = $types;
-    }
-
-    /**
-     * @return list<Type>
-     */
-    public function getTypes(): array
-    {
-        return array_filter([$this->getType()]);
-    }
 
     public function getType(): ?Type
     {
-        if ($this->types === null) {
+        if ($this->type === null) {
             $var = $this->getVar()->fetch(0);
             if ($var instanceof VarDescriptor) {
                 return $var->getType();
             }
         }
 
-        return $this->types;
+        return $this->type;
     }
 
     public function setValue(string $value): void

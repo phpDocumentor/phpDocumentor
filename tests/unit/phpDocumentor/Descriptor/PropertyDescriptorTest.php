@@ -28,8 +28,7 @@ use phpDocumentor\Reflection\Types\Array_;
  */
 final class PropertyDescriptorTest extends MockeryTestCase
 {
-    /** @var PropertyDescriptor $fixture */
-    protected $fixture;
+    protected PropertyDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -46,11 +45,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingWhetherPropertyIsStatic(): void
     {
-        $this->assertFalse($this->fixture->isStatic());
+        self::assertFalse($this->fixture->isStatic());
 
         $this->fixture->setStatic(true);
 
-        $this->assertTrue($this->fixture->isStatic());
+        self::assertTrue($this->fixture->isStatic());
     }
 
     /**
@@ -59,11 +58,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingWhetherPropertyIsReadOnly(): void
     {
-        $this->assertFalse($this->fixture->isReadOnly());
+        self::assertFalse($this->fixture->isReadOnly());
 
         $this->fixture->setReadOnly(true);
 
-        $this->assertTrue($this->fixture->isReadOnly());
+        self::assertTrue($this->fixture->isReadOnly());
     }
 
     /**
@@ -72,11 +71,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingWhetherPropertyIsWriteOnly(): void
     {
-        $this->assertFalse($this->fixture->isWriteOnly());
+        self::assertFalse($this->fixture->isWriteOnly());
 
         $this->fixture->setWriteOnly(true);
 
-        $this->assertTrue($this->fixture->isWriteOnly());
+        self::assertTrue($this->fixture->isWriteOnly());
     }
 
     /**
@@ -85,11 +84,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingVisibility(): void
     {
-        $this->assertEquals('public', $this->fixture->getVisibility());
+        self::assertEquals('public', $this->fixture->getVisibility());
 
         $this->fixture->setVisibility('private');
 
-        $this->assertEquals('private', $this->fixture->getVisibility());
+        self::assertEquals('private', $this->fixture->getVisibility());
     }
 
     /**
@@ -98,25 +97,12 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetTypes(): void
     {
-        $this->assertEquals(null, $this->fixture->getType());
+        self::assertEquals(null, $this->fixture->getType());
         $expected = new Array_();
 
         $this->fixture->setType($expected);
 
-        $this->assertSame($expected, $this->fixture->getType());
-    }
-
-    /**
-     * @covers ::getTypes
-     */
-    public function testGetTypesCollection(): void
-    {
-        $this->assertSame([], $this->fixture->getTypes());
-        $expected = new Array_();
-
-        $this->fixture->setType($expected);
-
-        $this->assertSame(['array'], $this->fixture->getTypes());
+        self::assertSame($expected, $this->fixture->getType());
     }
 
     /**
@@ -137,7 +123,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getType();
 
         // Assert
-        $this->assertSame($typesCollection, $result);
+        self::assertSame($typesCollection, $result);
     }
 
     /**
@@ -146,11 +132,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testSetAndGetDefault(): void
     {
-        $this->assertNull($this->fixture->getDefault());
+        self::assertNull($this->fixture->getDefault());
 
         $this->fixture->setDefault('a');
 
-        $this->assertSame('a', $this->fixture->getDefault());
+        self::assertSame('a', $this->fixture->getDefault());
     }
 
     /**
@@ -165,7 +151,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getFile();
 
         // Assert
-        $this->assertSame($file, $result);
+        self::assertSame($file, $result);
     }
 
     /**
@@ -184,7 +170,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getVar();
 
         // Assert
-        $this->assertSame($varCollection, $result);
+        self::assertSame($varCollection, $result);
     }
 
     /**
@@ -195,7 +181,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $varCollection = new Collection();
         $result = $this->fixture->getVar();
 
-        $this->assertEquals($varCollection, $result);
+        self::assertEquals($varCollection, $result);
     }
 
     /**
@@ -215,7 +201,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getAuthor();
 
         // Assert
-        $this->assertSame($authorCollection, $result);
+        self::assertSame($authorCollection, $result);
     }
 
     /**
@@ -235,7 +221,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getVersion();
 
         // Assert
-        $this->assertSame($versionCollection, $result);
+        self::assertSame($versionCollection, $result);
     }
 
     /**
@@ -255,7 +241,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getCopyright();
 
         // Assert
-        $this->assertSame($copyrightCollection, $result);
+        self::assertSame($copyrightCollection, $result);
     }
 
     /**
@@ -264,7 +250,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     public function testFqsenHasDollarSignWhenParentIsSet(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $this->assertSame(
+        self::assertSame(
             '\MyOther\Class::$property',
             (string) $this->fixture->getFullyQualifiedStructuralElementName()
         );
@@ -277,7 +263,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     public function testSettingAndGettingAParent(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
-        $this->assertInstanceOf(ClassDescriptor::class, $this->fixture->getParent());
+        self::assertInstanceOf(ClassDescriptor::class, $this->fixture->getParent());
     }
 
     /**
@@ -289,7 +275,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
 
         $inheritedProperty = $this->fixture->getInheritedElement();
 
-        $this->assertSame($inheritedProperty->getName(), $this->fixture->getName());
+        self::assertSame($inheritedProperty->getName(), $this->fixture->getName());
     }
 
     /**
@@ -297,7 +283,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
      */
     public function testGettingAnInheritedElementWhenThereIsNone(): void
     {
-        $this->assertNull($this->fixture->getInheritedElement());
+        self::assertNull($this->fixture->getInheritedElement());
     }
 
     /**

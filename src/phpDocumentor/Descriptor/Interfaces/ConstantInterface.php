@@ -14,26 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a constant on a class, trait, property or file.
  */
-interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterface
+interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped
 {
-    /**
-     * Sets the types that this constant may contain.
-     */
-    public function setTypes(Type $types): void;
-
-    /**
-     * Returns the types that may be present in this constant.
-     *
-     * @return list<Type>
-     */
-    public function getTypes(): array;
-
     /**
      * Sets the value representation for this constant.
      */

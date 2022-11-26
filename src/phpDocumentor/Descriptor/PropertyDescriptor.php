@@ -20,7 +20,6 @@ use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Descriptor\Traits\HasVisibility;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
@@ -35,13 +34,13 @@ class PropertyDescriptor extends DescriptorAbstract implements
     Interfaces\PropertyInterface,
     Interfaces\VisibilityInterface
 {
-    use HasVisibility;
+    use Traits\HasVisibility;
+    use Traits\CanHaveAType;
+    use Traits\CanHaveADefaultValue;
 
     /** @var ClassInterface|TraitInterface|null $parent */
     protected ?ElementInterface $parent = null;
 
-    protected ?Type $type = null;
-    protected ?string $default = null;
     protected bool $static = false;
     private bool $readOnly = false;
     private bool $writeOnly = false;
@@ -69,16 +68,6 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->parent;
     }
 
-    public function setDefault(?string $default): void
-    {
-        $this->default = $default;
-    }
-
-    public function getDefault(): ?string
-    {
-        return $this->default;
-    }
-
     public function setStatic(bool $static): void
     {
         $this->static = $static;
@@ -87,23 +76,6 @@ class PropertyDescriptor extends DescriptorAbstract implements
     public function isStatic(): bool
     {
         return $this->static;
-    }
-
-    public function setType(?Type $type): void
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function getTypes(): array
-    {
-        if ($this->getType() instanceof Type) {
-            return [(string) $this->getType()];
-        }
-
-        return [];
     }
 
     public function getType(): ?Type

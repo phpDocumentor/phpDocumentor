@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Reflection\Type;
 
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface
+interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped
 {
     /**
      * Returns true when this property is intended to be read-only.
@@ -39,7 +39,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
     /**
      * Stores a textual representation of the default value for a property.
      */
-    public function setDefault(string $default): void;
+    public function setDefault(string $value): void;
 
     /**
      * Returns the textual representation of the default value for a property, or null if none is provided.
@@ -55,16 +55,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
      * Returns whether this property is static in scope.
      */
     public function isStatic(): bool;
-
-    /**
-     * Sets the types associated with the value(s) for this property.
-     */
-    public function setType(Type $type): void;
-
-    /**
-     * Returns the types associated with the value(s) for this property.
-     */
-    public function getType(): ?Type;
 
     /**
      * Sets whether this property is available from inside or outside its class and/or descendants.

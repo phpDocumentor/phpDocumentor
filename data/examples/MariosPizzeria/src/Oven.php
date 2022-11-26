@@ -12,9 +12,9 @@ final class Oven
     private const DEFAULT_TEMPERATURE=220;
 
     /**
-     * @param int $temp the temperature in degrees celicus
+     * @param int $temp the temperature in degrees celcius
      */
-    public function heatToTemp(int $temp = self::DEFAULT_TEMPERATURE) : void
+    public function heatToTemp(int &$temp = self::DEFAULT_TEMPERATURE) : void
     {
 
     }
