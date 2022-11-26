@@ -26,6 +26,8 @@ use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
@@ -135,6 +137,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigTest('file', static fn (Descriptor $el) => $el instanceof FileInterface),
             new TwigTest('class', static fn (Descriptor $el) => $el instanceof ClassInterface),
             new TwigTest('interface', static fn (Descriptor $el) => $el instanceof InterfaceInterface),
+            new TwigTest('enum', static fn (Descriptor $el) => $el instanceof EnumInterface),
+            new TwigTest('enumCase', static fn (Descriptor $el) => $el instanceof EnumCaseInterface),
             new TwigTest('trait', static fn (Descriptor $el) => $el instanceof TraitInterface),
             new TwigTest('property', static fn (Descriptor $el) => $el instanceof PropertyInterface),
             new TwigTest('method', static fn (Descriptor $el) => $el instanceof MethodInterface),

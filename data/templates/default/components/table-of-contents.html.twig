@@ -56,27 +56,56 @@
 {% set constants = constants(node) %}
 {% set properties = properties(node) %}
 {% set methods = methods(node) %}
+{% set cases = cases(node) %}
+{% set functions = node.functions|default([]) %}
 
-{% if constants is not empty or node.functions is not empty or methods is not empty or properties is not empty %}
-<h3 id="toc">
-    Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
+{% if constants is not empty or functions is not empty or methods is not empty or properties is not empty or cases is not empty %}
+    <h3 id="toc">
+        Table of Contents
+        <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    </h3>
+{% endif %}
 
+{% if constants is not empty %}
+<h4>Constants</h4>
 <dl class="phpdocumentor-table-of-contents">
-    {% for constant in constants(node)|sortByVisibility %}
+    {% for constant in constants|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
     {% endfor %}
-    {% for case in cases(node)|sortByVisibility %}
+</dl>
+{% endif %}
+
+{% if cases is not empty %}
+<h4>Cases</h4>
+<dl class="phpdocumentor-table-of-contents">
+    {% for case in cases|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'case', 'node': case}) }}
     {% endfor %}
-    {% for property in properties(node)|sortByVisibility %}
+</dl>
+{% endif %}
+
+{% if properties is not empty %}
+<h4>Properties</h4>
+<dl class="phpdocumentor-table-of-contents">
+    {% for property in properties|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
     {% endfor %}
-    {% for method in methods(node)|sortByVisibility %}
+</dl>
+{% endif %}
+
+{% if methods is not empty %}
+<h4>Methods</h4>
+<dl class="phpdocumentor-table-of-contents">
+    {% for method in methods|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
     {% endfor %}
-    {% for function in node.functions|default([]) %}
+</dl>
+{% endif %}
+
+{% if functions is not empty %}
+<h4>Functions</h4>
+<dl class="phpdocumentor-table-of-contents">
+    {% for function in functions %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'function', 'node': function}) }}
     {% endfor %}
 </dl>
