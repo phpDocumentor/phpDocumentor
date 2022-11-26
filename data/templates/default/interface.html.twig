@@ -13,3 +13,42 @@
         {{ include('components/source-modal.html.twig') }}
     </article>
 {% endblock %}
+
+{% block on_this_page %}
+    {% set constants = constants(node) %}
+    {% set methods = methods(node) %}
+
+    <div class="phpdocumentor-on-this-page__content">
+        <strong>On this page</strong>
+        <ul class="phpdocumentor-list -clean">
+            <li><a href="{{ link(node) }}#toc">Table Of Contents</a></li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                    <li><a href="{{ link(node) }}#toc-constants">Constants</a></li>
+                    <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
+                </ul>
+            </li>
+            {% if methods is not empty %}
+                <li>Methods</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for method in methods|sortByVisibility %}
+                            <li><a href="{{ link(method) }}">{{ method.name }}()</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if constants is not empty %}
+                <li>Constants</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for constant in constants|sortByVisibility %}
+                            <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

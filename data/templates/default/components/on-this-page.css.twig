@@ -1,0 +1,19 @@
+.phpdocumentor-on-this-page__sidebar {
+    display: none;
+}
+
+@media (min-width: {{ breakpoints['menu'] }}) {
+    .phpdocumentor-on-this-page__sidebar {
+        display: block;
+        position: relative;
+    }
+
+    .phpdocumentor-on-this-page__content {
+        position: fixed;
+        max-height: calc(100vh - var(--header-height));
+        overflow-y: auto;
+        border-left: 1px solid silver;
+        padding-left: var(--spacing-lg);
+        font-size: 90%
+    }
+}

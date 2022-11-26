@@ -1,9 +1,19 @@
-{% if packages|default([]) is not empty %}
-<h3 id="packages">
-    Packages
-    <a href="#packages" class="headerlink"><i class="fas fa-link"></i></a>
+{% set constants = constants(node) %}
+{% set properties = properties(node) %}
+{% set methods = methods(node) %}
+{% set cases = cases(node) %}
+{% set functions = node.functions|default([]) %}
+
+<h3 id="toc">
+    Table of Contents
+    <a href="{{ link(node) }}#toc" class="headerlink"><i class="fas fa-link"></i></a>
 </h3>
 
+{% if packages|default([]) is not empty %}
+<h4 id="packages">
+    Packages
+    <a href="{{ link(node) }}#packages" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for package in packages %}
         <dt class="phpdocumentor-table-of-contents__entry -package">{{ package|route('class:short') }}</dt>
@@ -12,11 +22,10 @@
 {% endif %}
 
 {% if namespaces|default([]) is not empty %}
-<h3 id="namespaces">
+<h4 id="namespaces">
     Namespaces
-    <a href="#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
-
+    <a href="{{ link(node) }}#namespaces" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for namespace in namespaces %}
         <dt class="phpdocumentor-table-of-contents__entry -namespace">{{ namespace|route('class:short') }}</dt>
@@ -24,28 +33,49 @@
 </dl>
 {% endif %}
 
-{% if node is element container and (node.interfaces is not empty or node.classes is not empty or node.traits is not empty or node.enums is not empty) %}
-<h3 id="interfaces_class_traits">
-    Interfaces, Classes, Traits and Enums
-    <a href="#interfaces_class_traits" class="headerlink"><i class="fas fa-link"></i></a>
-</h3>
+{% if node.interfaces is not empty %}
+    <h4 id="toc-interfaces">
+        Interfaces
+        <a href="{{ link(node) }}#toc-interfaces" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+        {% for interface in node.interfaces %}
+            <dt class="phpdocumentor-table-of-contents__entry -interface">{{ interface|route('class:short') }}</dt>
+            <dd>{{ interface.summary }}</dd>
+        {% endfor %}
+    </dl>
+{% endif %}
 
-<dl class="phpdocumentor-table-of-contents">
-    {% for interface in node.interfaces %}
-        <dt class="phpdocumentor-table-of-contents__entry -interface">{{ interface|route('class:short') }}</dt>
-        <dd>{{ interface.summary }}</dd>
-    {% endfor %}
-
-    {% for class in node.classes %}
-        <dt class="phpdocumentor-table-of-contents__entry -class">{{ class|route('class:short') }}</dt>
-        <dd>{{ class.summary }}</dd>
-    {% endfor %}
-
+{% if node.classes is not empty %}
+    <h4 id="toc-classes">
+        Classes
+        <a href="{{ link(node) }}#toc-classes" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
+        {% for class in node.classes %}
+            <dt class="phpdocumentor-table-of-contents__entry -class">{{ class|route('class:short') }}</dt>
+            <dd>{{ class.summary }}</dd>
+        {% endfor %}
+    </dl>
+{% endif %}
+{% if node.traits is not empty %}
+    <h4 id="toc-traits">
+        Traits
+        <a href="{{ link(node) }}#toc-traits" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
     {% for trait in node.traits %}
         <dt class="phpdocumentor-table-of-contents__entry -trait">{{ trait|route('class:short') }}</dt>
         <dd>{{ trait.summary }}</dd>
     {% endfor %}
-
+    </dl>
+{% endif %}
+{% if node.enums is not empty %}
+    <h4 id="toc-enums">
+        Enums
+        <a href="{{ link(node) }}#toc-enums" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <dl class="phpdocumentor-table-of-contents">
     {% for enum in node.enums %}
         <dt class="phpdocumentor-table-of-contents__entry -enum">{{ enum|route('class:short') }}</dt>
         <dd>{{ enum.summary }}</dd>
@@ -53,21 +83,11 @@
 </dl>
 {% endif %}
 
-{% set constants = constants(node) %}
-{% set properties = properties(node) %}
-{% set methods = methods(node) %}
-{% set cases = cases(node) %}
-{% set functions = node.functions|default([]) %}
-
-{% if constants is not empty or functions is not empty or methods is not empty or properties is not empty or cases is not empty %}
-    <h3 id="toc">
-        Table of Contents
-        <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
-    </h3>
-{% endif %}
-
 {% if constants is not empty %}
-<h4>Constants</h4>
+<h4 id="toc-constants">
+    Constants
+    <a href="{{ link(node) }}#toc-constants" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for constant in constants|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'constant', 'node': constant}) }}
@@ -76,7 +96,10 @@
 {% endif %}
 
 {% if cases is not empty %}
-<h4>Cases</h4>
+<h4 id="toc-cases">
+    Cases
+    <a href="{{ link(node) }}#toc-cases" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for case in cases|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'case', 'node': case}) }}
@@ -85,7 +108,10 @@
 {% endif %}
 
 {% if properties is not empty %}
-<h4>Properties</h4>
+<h4 id="toc-properties">
+    Properties
+    <a href="{{ link(node) }}#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for property in properties|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'property', 'node': property}) }}
@@ -94,7 +120,10 @@
 {% endif %}
 
 {% if methods is not empty %}
-<h4>Methods</h4>
+<h4 id="toc-methods">
+    Methods
+    <a href="{{ link(node) }}#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for method in methods|sortByVisibility %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'method', 'node': method}) }}
@@ -103,7 +132,10 @@
 {% endif %}
 
 {% if functions is not empty %}
-<h4>Functions</h4>
+<h4 id="toc-functions">
+    Functions
+    <a href="{{ link(node) }}#toc-functions" class="headerlink"><i class="fas fa-link"></i></a>
+</h4>
 <dl class="phpdocumentor-table-of-contents">
     {% for function in functions %}
         {{ include('components/table-of-contents-entry.html.twig', {'type': 'function', 'node': function}) }}

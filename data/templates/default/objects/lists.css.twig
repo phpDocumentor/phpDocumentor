@@ -16,8 +16,15 @@ div.phpdocumentor-list > ul,
 ol.phpdocumentor-list,
 ul.phpdocumentor-list {
     margin-top: 0;
-    padding-left: 1rem;
-    margin-bottom: var(--spacing-md);
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.phpdocumentor-column ul.-clean,
+div.phpdocumentor-list > ul.-clean,
+ul.phpdocumentor-list.-clean {
+    list-style: none;
+    padding-left: 0;
 }
 
 dl {
@@ -31,7 +38,7 @@ ul.phpdocumentor-list ol.phpdocumentor-list,
 ol.phpdocumentor-list ol.phpdocumentor-list,
 ol.phpdocumentor-list ul.phpdocumentor-list {
     font-size: var(--text-sm);
-    margin: var(--spacing-xs) 0 var(--spacing-xs) calc(var(--spacing-xs) * 2);
+    margin: 0 0 0 calc(var(--spacing-xs) * 2);
 }
 
 .phpdocumentor-column ul li,

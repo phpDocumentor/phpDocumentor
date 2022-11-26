@@ -35,8 +35,17 @@
         <div class="phpdocumentor-section">
             {% include 'components/sidebar.html.twig' %}
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                {% block content %}{% endblock %}
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                {% if block('on_this_page') is defined %}
+                <section class="phpdocumentor-column -nine">
+                {% endif %}
+                    {% block content %}{% endblock %}
+                {% if block('on_this_page') is defined %}
+                </section>
+                <section class="phpdocumentor-column -three phpdocumentor-on-this-page__sidebar">
+                    {{ block('on_this_page') }}
+                </section>
+                {% endif %}
                 {% include 'components/search-results.html.twig' %}
             </div>
         </div>
