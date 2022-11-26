@@ -22,6 +22,18 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PackageInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
@@ -39,6 +51,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Twig\TwigTest;
 use Webmozart\Assert\Assert;
 
 use function array_unshift;
@@ -73,11 +86,8 @@ use function vsprintf;
  */
 final class Extension extends AbstractExtension implements ExtensionInterface, GlobalsInterface
 {
-    /** @var LinkRenderer */
-    private $routeRenderer;
-
-    /** @var ConverterInterface */
-    private $markdownConverter;
+    private LinkRenderer $routeRenderer;
+    private ConverterInterface $markdownConverter;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -110,6 +120,27 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'destinationPath' => null,
             'parameter' => [],
             'env' => null,
+        ];
+    }
+
+    /**
+     * @return list<TwigTest>
+     */
+    public function getTests(): array
+    {
+        return [
+            new TwigTest('element container', static fn (Descriptor $el) => $el instanceof ContainerInterface),
+            new TwigTest('namespace', static fn (Descriptor $el) => $el instanceof NamespaceInterface),
+            new TwigTest('package', static fn (Descriptor $el) => $el instanceof PackageInterface),
+            new TwigTest('file', static fn (Descriptor $el) => $el instanceof FileInterface),
+            new TwigTest('class', static fn (Descriptor $el) => $el instanceof ClassInterface),
+            new TwigTest('interface', static fn (Descriptor $el) => $el instanceof InterfaceInterface),
+            new TwigTest('trait', static fn (Descriptor $el) => $el instanceof TraitInterface),
+            new TwigTest('property', static fn (Descriptor $el) => $el instanceof PropertyInterface),
+            new TwigTest('method', static fn (Descriptor $el) => $el instanceof MethodInterface),
+            new TwigTest('argument', static fn (Descriptor $el) => $el instanceof ArgumentInterface),
+            new TwigTest('function', static fn (Descriptor $el) => $el instanceof FunctionInterface),
+            new TwigTest('constant', static fn (Descriptor $el) => $el instanceof ConstantInterface),
         ];
     }
 
