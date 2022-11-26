@@ -59,19 +59,23 @@ describe('Frontpage', function() {
     describe('Global constants and functions', function() {
         it('Shows a section "Table Of Contents"', function() {
             cy.get('h3#toc').should('contain', 'Table of Contents');
-            cy.get('h3#toc').next('.phpdocumentor-table-of-contents');
+            cy.get('h3#toc')
+                .siblings('.phpdocumentor-table-of-contents')
+                .should('exist');
         });
 
         it('Shows the "HIGHER_OVEN_TEMPERATURE" constant', function() {
             cy.get('h3#toc')
-                .next('.phpdocumentor-table-of-contents')
-                .find('.-constant').should('contain', 'HIGHER_OVEN_TEMPERATURE')
+                .siblings('.phpdocumentor-table-of-contents')
+                .find('.-constant')
+                .should('contain', 'HIGHER_OVEN_TEMPERATURE')
         });
 
         // TODO: Is this the outcome that we want?
         it('Opens the "HIGHER_OVEN_TEMPERATURE" constant', function() {
             cy
-                .get('h3#toc').next('.phpdocumentor-table-of-contents')
+                .get('h3#toc')
+                .siblings('.phpdocumentor-table-of-contents')
                 .find('.phpdocumentor-table-of-contents__entry.-constant')
                 .contains('HIGHER_OVEN_TEMPERATURE')
                 .click();
