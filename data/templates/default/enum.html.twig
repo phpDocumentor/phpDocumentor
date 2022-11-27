@@ -13,3 +13,46 @@
         {{ include('components/source-modal.html.twig') }}
     </article>
 {% endblock %}
+
+{% block on_this_page %}
+    {% set cases = cases(node) %}
+    {% set methods = methods(node) %}
+
+    <div class="phpdocumentor-on-this-page__content">
+        <strong>On this page</strong>
+        <ul class="phpdocumentor-list -clean">
+            <li><a href="{{ link(node) }}#toc">Table Of Contents</a></li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                    {% if cases is not empty %}
+                        <li><a href="{{ link(node) }}#toc-cases">Cases</a></li>
+                    {% endif %}
+                    {% if methods is not empty %}
+                        <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% if cases is not empty %}
+                <li>Cases</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for case in cases %}
+                            <li><a href="{{ link(case) }}">{{ case.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if methods is not empty %}
+                <li>Methods</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for method in methods|sortByVisibility %}
+                            <li><a href="{{ link(method) }}">{{ method.name }}()</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
