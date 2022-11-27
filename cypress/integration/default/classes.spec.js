@@ -24,7 +24,7 @@ describe('Classes', function() {
     });
 
     it('Has "Pizzeria" as title', function() {
-        cy.get('.phpdocumentor-content__title').contains("Pizzeria");
+        cy.get('.phpdocumentor-content__title').contains('Pizzeria');
     });
 
     it('Shows a single implemented interface; which is not clickable because it is external', function() {

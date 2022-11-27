@@ -27,18 +27,18 @@ describe('Namespaces', function() {
     describe('Table of Contents', function() {
         describe('Child namespaces', function () {
             it('Has a section "Namespaces" featuring the "Pizza" sub-namespace', function () {
-                cy.get('h3#namespaces').contains("Namespaces")
+                cy.get('h4#namespaces').contains("Namespaces")
                     .next('.phpdocumentor-table-of-contents')
                     .find('.phpdocumentor-table-of-contents__entry')
                     .should('contain', 'Pizza');
             });
 
             it('Goes to the "Pizza" sub-namespace when you click on it', function () {
-                cy.get('h3#namespaces')
+                cy.get('h4#namespaces')
                     .contains("Namespaces")
                     .next('.phpdocumentor-table-of-contents')
                     .find('.phpdocumentor-table-of-contents__entry')
-                    .contains("Pizza")
+                    .contains('Pizza')
                     .click();
 
                 shouldVisitPageWithTitle('/namespaces/marios-pizza.html', 'Pizza');
@@ -46,19 +46,11 @@ describe('Namespaces', function() {
         })
 
         describe('Interfaces, Classes, Traits and Enums', function () {
-            const sectionTitle = 'Interfaces, Classes, Traits and Enums';
-
-            it('Has a section "Interfaces, Classes, Traits and Enums" with a table of contents', function () {
-                cy.get('h3#interfaces_class_traits')
-                    .contains(sectionTitle)
-                    .next('.phpdocumentor-table-of-contents');
-            });
-
             it('Features the "Product" interface', function () {
                 const name = 'Product';
 
-                cy.get('h3#interfaces_class_traits')
-                    .contains(sectionTitle)
+                cy.get('h4#toc-interfaces')
+                    .contains('Interfaces')
                     .next('.phpdocumentor-table-of-contents')
                     .contains('.phpdocumentor-table-of-contents__entry', name)
                     .should('have.class', '-interface');
@@ -68,8 +60,8 @@ describe('Namespaces', function() {
                 const title = 'Pizzeria';
                 const description = 'Entrypoint for this pizza ordering application.';
 
-                cy.get('h3#interfaces_class_traits')
-                    .contains(sectionTitle)
+                cy.get('h4#toc-classes')
+                    .contains('Classes')
                     .next('.phpdocumentor-table-of-contents')
                     .contains('.phpdocumentor-table-of-contents__entry', title)
                     .should('have.class', '-class')
@@ -80,8 +72,8 @@ describe('Namespaces', function() {
             it('Goes to "Pizzeria" its detail page when you click on it', function () {
                 const title = 'Pizzeria';
 
-                cy.get('h3#interfaces_class_traits')
-                    .contains(sectionTitle)
+                cy.get('h4#toc-classes')
+                    .contains('Classes')
                     .next('.phpdocumentor-table-of-contents')
                     .contains('.phpdocumentor-table-of-contents__entry a', title)
                     .click();
@@ -92,8 +84,8 @@ describe('Namespaces', function() {
             it('Features the "SharedTrait" trait with its description', function () {
                 const name = 'SharedTrait';
 
-                cy.get('h3#interfaces_class_traits')
-                    .contains(sectionTitle)
+                cy.get('h4#toc-traits')
+                    .contains('Traits')
                     .next('.phpdocumentor-table-of-contents')
                     .contains('.phpdocumentor-table-of-contents__entry', name)
                     .should('have.class', '-trait')
@@ -103,7 +95,7 @@ describe('Namespaces', function() {
         });
     });
 
-    describe('Constants section', function() {
+    describe('Shows details on constants', function() {
         let sectionTitle = 'Constants';
 
         it('Shows the title "Constants"', function () {
@@ -122,7 +114,7 @@ describe('Namespaces', function() {
         });
     });
 
-    describe('Functions section', function() {
+    describe('Shows details on functions', function() {
         let sectionTitle = 'Functions';
 
         it('Shows the title "Functions"', function () {
