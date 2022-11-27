@@ -48,7 +48,7 @@ final class IsApplicable implements Equals
 
     public function isFalse(): bool
     {
-        return $this->value === true;
+        return $this->value === false;
     }
 
     public function inverse(): self
@@ -58,6 +58,7 @@ final class IsApplicable implements Equals
 
     public function equals(Equals $other): bool
     {
-        return $this->value === $other->value;
+        return $other instanceof self
+            && $this->value === $other->value;
     }
 }
