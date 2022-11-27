@@ -2,20 +2,44 @@
     display: none;
 }
 
+.phpdocumentor-on-this-page__title {
+    display: block;
+    font-weight: bold;
+    margin-bottom: var(--spacing-sm);
+    color: var(--link-color-primary);
+}
+
 @media (min-width: {{ breakpoints['menu'] }}) {
     .phpdocumentor-on-this-page__sidebar {
         display: block;
         position: relative;
     }
 
+    .phpdocumentor-on-this-page__content::-webkit-scrollbar,
+    [scrollbars]::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+    }
+
+    .phpdocumentor-on-this-page__content::-webkit-scrollbar-corner,
+    [scrollbars]::-webkit-scrollbar-corner {
+        background: 0;
+    }
+
+    .phpdocumentor-on-this-page__content::-webkit-scrollbar-thumb,
+    [scrollbars]::-webkit-scrollbar-thumb {
+        background: rgba(128,134,139,0.26);
+        border-radius: 8px;
+    }
+
     .phpdocumentor-on-this-page__content {
         position: fixed;
-        max-height: calc(100vh - var(--header-height));
+        height: calc(100vh - var(--header-height));
         overflow-y: auto;
-        border-left: 1px solid silver;
+        border-left: 1px solid var(--sidebar-border-color);
         padding-left: var(--spacing-lg);
         font-size: 90%;
-        width: 18%; /* This magic number probably indicates a problem, revisit this */
-        right: 0;
+        width: calc(18% - var(--spacing-xs) - var(--spacing-xs)); /* This magic number probably indicates a problem, revisit this */
+        right: var(--spacing-xs);
     }
 }

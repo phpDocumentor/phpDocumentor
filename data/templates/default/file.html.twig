@@ -17,8 +17,9 @@
     {% set constants = constants(node) %}
     {% set functions = node.functions|default([]) %}
 
-    <div class="phpdocumentor-on-this-page__content">
-        <strong>On this page</strong>
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
         <ul class="phpdocumentor-list -clean">
             <li><a href="{{ link(node) }}#toc">Table Of Contents</a></li>
             <li>
@@ -72,5 +73,5 @@
                 </li>
             {% endif %}
         </ul>
-    </div>
+    </section>
 {% endblock %}
