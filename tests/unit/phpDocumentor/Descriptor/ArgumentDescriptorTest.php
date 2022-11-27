@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
@@ -145,7 +146,7 @@ final class ArgumentDescriptorTest extends TestCase
         $argument = new ArgumentDescriptor();
         self::assertFalse($argument->isByReference());
 
-        $argument->setByReference(true);
+        $argument->setByReference(IsApplicable::true());
 
         self::assertTrue($argument->isByReference());
     }
@@ -159,7 +160,7 @@ final class ArgumentDescriptorTest extends TestCase
         $argument = new ArgumentDescriptor();
         self::assertFalse($argument->isVariadic());
 
-        $argument->setVariadic(true);
+        $argument->setVariadic(IsApplicable::true());
 
         self::assertTrue($argument->isVariadic());
     }

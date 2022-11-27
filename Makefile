@@ -132,10 +132,10 @@ shell:
 node_modules/.bin/cypress:
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/opt/phpdoc/var/cache/.cypress" -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/default/**/*
+build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/default/**/* src/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default --force
 
-build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/*
+build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/* src/**/*
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean --force
 
 .PHONY: docs

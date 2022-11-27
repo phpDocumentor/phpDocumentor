@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\IsTyped;
+use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 
 /**
  * Describes the public interface for a descriptor of an Argument.
@@ -44,21 +45,21 @@ interface ArgumentInterface extends ElementInterface, IsTyped
     /**
      * Sets whether this argument passes its parameter by reference or by value.
      *
-     * @param bool $byReference True if the parameter is passed by reference, otherwise it is by value.
+     * @param IsApplicable $byReference True if the parameter is passed by reference, otherwise it is by value.
      */
-    public function setByReference(bool $byReference): void;
+    public function setByReference(IsApplicable $byReference): void;
 
     /**
      * Returns whether the parameter is passed by reference or by value.
      *
-     * @return bool True if the parameter is passed by reference, otherwise it is by value.
+     * @return bool if the parameter is passed by reference, otherwise it is by value.
      */
     public function isByReference(): bool;
 
     /**
      * Sets whether this argument represents a variadic argument.
      */
-    public function setVariadic(bool $isVariadic): void;
+    public function setVariadic(IsApplicable $isVariadic): void;
 
     /**
      * Returns whether this argument represents a variadic argument.

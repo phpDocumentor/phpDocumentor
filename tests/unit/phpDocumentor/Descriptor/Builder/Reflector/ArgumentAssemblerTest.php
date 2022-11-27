@@ -94,11 +94,11 @@ class ArgumentAssemblerTest extends TestCase
 
         // Assert
         $this->assertSame($name, $descriptor->getName());
+        $this->assertSame($description, $descriptor->getDescription());
         $this->assertSame($type, $descriptor->getType());
         $this->assertNull($descriptor->getDefault());
         $this->assertFalse($descriptor->isByReference());
         $this->assertFalse($descriptor->isVariadic());
-        $this->assertSame($description, $descriptor->getDescription());
     }
 
     /**
