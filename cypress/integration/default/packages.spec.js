@@ -1,68 +1,74 @@
 import {shouldVisitPageWithTitle} from "./helpers/pages.lib";
 import sidebar from "./sidebar.inc";
 import search from "./search.inc";
+import {getEntryIn, getSummaryEntry} from "./helpers/onThisPage.lib";
+import {getToc, getTocEntry} from "./helpers/tableOfContents.lib";
 
 describe('Packages', function() {
-    beforeEach(function(){
+    beforeEach(function() {
         cy.visit('build/default/packages/Marios.html');
-    });
-
-    it('Has a title', function() {
-        cy.get('.phpdocumentor-content__title')
-            .contains("Marios");
     });
 
     describe('Search', search);
     describe('In the sidebar', sidebar);
 
+    describe('Synopsis', function() {
+        it('Has a title', function() {
+            cy.get('.phpdocumentor-content__title')
+                .contains("Marios");
+        });
+    });
+
     describe('Table of Contents', function() {
-        describe('Interfaces, Classes, Traits and Enums', function () {
-            it('Features the "Product" interface', function () {
-                const name = 'Product';
+        it('Features the "Product" interface', function () {
+            getTocEntry(getToc('interfaces', 'Interfaces'), 'Product')
+                .should('have.class', '-interface');
+        });
 
-                cy.get('h4#toc-interfaces')
-                    .contains('Interfaces')
-                    .next('.phpdocumentor-table-of-contents')
-                    .contains('.phpdocumentor-table-of-contents__entry', name)
-                    .should('have.class', '-interface');
-            });
+        it('Features the "Pizzeria" class and its description', function () {
+            const title = 'Pizzeria';
+            const description = 'Entrypoint for this pizza ordering application.';
 
-            it('Features the "Pizzeria" class and its description', function () {
-                const title = 'Pizzeria';
-                const description = 'Entrypoint for this pizza ordering application.';
+            getTocEntry(getToc('classes', 'Classes'), title)
+                .should('have.class', '-class')
+                .next('dd')
+                .should('have.text', description)
+        });
 
-                cy.get('h4#toc-classes')
-                    .contains('Classes')
-                    .next('.phpdocumentor-table-of-contents')
-                    .contains('.phpdocumentor-table-of-contents__entry', title)
-                    .should('have.class', '-class')
-                    .next('dd')
-                    .should('have.text', description)
-            });
+        it('Goes to "Pizzeria" its detail page when you click on it', function () {
+            const title = 'Pizzeria';
 
-            it('Goes to "Pizzeria" its detail page when you click on it', function () {
-                const title = 'Pizzeria';
+            getTocEntry(getToc('classes', 'Classes'), title)
+                .find('a').click();
 
-                cy.get('h4#toc-classes')
-                    .contains('Classes')
-                    .next('.phpdocumentor-table-of-contents')
-                    .contains('.phpdocumentor-table-of-contents__entry a', title)
-                    .click();
+            shouldVisitPageWithTitle('/classes/Marios-Pizzeria.html', title);
+        });
 
-                shouldVisitPageWithTitle('/classes/Marios-Pizzeria.html', title);
-            });
+        it('Features the "SharedTrait" trait with its description', function () {
+            const title = 'SharedTrait';
 
-            it('Features the "SharedTrait" trait with its description', function () {
-                const name = 'SharedTrait';
+            getTocEntry(getToc('traits', 'Traits'), title)
+                .should('have.class', '-trait')
+                .next('dd')
+                .should('have.text', 'Trait that all pizza\'s could share.');
+        });
+    });
 
-                cy.get('h4#toc-traits')
-                    .contains('Traits')
-                    .next('.phpdocumentor-table-of-contents')
-                    .contains('.phpdocumentor-table-of-contents__entry', name)
-                    .should('have.class', '-trait')
-                    .next('dd')
-                    .should('have.text', 'Trait that all pizza\'s could share.');
-            });
+    describe('On This Page', function() {
+        it('renders links to the summary items', function() {
+            getSummaryEntry('Interfaces').should('exist');
+            getSummaryEntry('Classes').should('exist');
+            getSummaryEntry('Traits').should('exist');
+            getSummaryEntry('Enums').should('exist');
+            getSummaryEntry('Constants').should('exist');
+            getSummaryEntry('Functions').should('exist');
+        });
+        it('renders references to constants on this page', function() {
+            getEntryIn('Constants', 'OVEN_TEMPERATURE').should('exist');
+        });
+        it('renders references to functions on this page', function() {
+            getEntryIn('Functions', 'coolOven').should('exist');
+            getEntryIn('Functions', 'heatOven').should('exist');
         });
     });
 
