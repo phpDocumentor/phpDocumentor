@@ -97,6 +97,8 @@ describe('Classes', function() {
     describe('On This Page', function() {
         it('renders links to the summary items', function() {
             getSummaryEntry('Methods').should('exist');
+        });
+        it('renders references to methods on this page', function() {
             getEntryIn('Methods', 'jsonSerialize()').should('exist');
             getEntryIn('Methods', 'order()').should('exist');
             getEntryIn('Methods', 'doOrder()').should('exist');
