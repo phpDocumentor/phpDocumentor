@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Php\Argument;
@@ -151,7 +152,7 @@ class MethodAssembler extends AssemblerAbstract
         $argument->setDescription(new DescriptionDescriptor($lastParamTag->getDescription(), []));
         $argument->setStartLocation($methodDescriptor->getStartLocation());
         $argument->setEndLocation($methodDescriptor->getEndLocation());
-        $argument->setVariadic(true);
+        $argument->setVariadic(IsApplicable::true());
 
         $methodDescriptor->getArguments()->set($argument->getName(), $argument);
     }

@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract as BaseAssembler;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\Php\Argument;
 
 use function stripcslashes;
@@ -45,8 +46,8 @@ class ArgumentAssembler extends BaseAssembler
         }
 
         $argumentDescriptor->setDefault($this->prettifyValue($data->getDefault()));
-        $argumentDescriptor->setByReference($data->isByReference());
-        $argumentDescriptor->setVariadic($data->isVariadic());
+        $argumentDescriptor->setByReference(IsApplicable::fromBoolean($data->isByReference()));
+        $argumentDescriptor->setVariadic(IsApplicable::fromBoolean($data->isVariadic()));
 
         return $argumentDescriptor;
     }
