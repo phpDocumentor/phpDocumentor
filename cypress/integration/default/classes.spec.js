@@ -1,5 +1,6 @@
-import sidebar from "./sidebar.inc";
-import search from "./search.inc";
+import sidebar from './sidebar.inc';
+import search from './search.inc';
+import {getToc, getTocEntry} from './helpers/tableOfContents.lib';
 
 describe('Classes', function() {
     beforeEach(function(){
@@ -23,70 +24,75 @@ describe('Classes', function() {
         });
     });
 
-    it('Has "Pizzeria" as title', function() {
-        cy.get('.phpdocumentor-content__title').contains('Pizzeria');
-    });
-
-    it('Shows a single implemented interface; which is not clickable because it is external', function() {
-        cy.get('.phpdocumentor-element__implements').contains("JsonSerializable");
-        cy.get('.phpdocumentor-element__implements abbr')
-            .should("have.attr", 'title', '\\JsonSerializable');
-    });
-
-    it('Has a summary', function() {
-        cy.get('.phpdocumentor-element.-class > .phpdocumentor-summary')
-            .contains("Entrypoint for this pizza ordering application.");
-    });
-
-    it('Has a description', function() {
-        cy.get('.phpdocumentor-element.-class > .phpdocumentor-description')
-            .contains('This class provides an interface through which you can order pizza\'s and pasta\'s from Mario\'s Pizzeria.');
-    });
-
-    it('Shows a class is readonly', function() {
-        cy.visit('build/default/classes/Marios-Pizza.html');
-        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
-            .contains('Read only');
-    });
-
-    it('Shows a class is final', function() {
-        cy.visit('build/default/classes/Marios-Pizza.html');
-        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
-            .contains('Final');
-    });
-
-    it('Shows a class is abstract', function() {
-        cy.visit('build/default/classes/Marios-Pizza-Topping.html');
-        cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
-            .contains('Abstract');
-    });
-
-    describe ('Shows tags', function () {
-        it('Shows the tags section', function () {
-            cy.get('.phpdocumentor-tag-list__heading')
-                .contains("Tags")
-        })
-
-        it('Shows link without description', function() {
-            cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
-                .contains('https://wwww.phpdoc.org')
-                .should('have.attr', 'href', 'https://wwww.phpdoc.org')
+    describe('Synopsis', function() {
+        it('Has "Pizzeria" as title', function () {
+            cy.get('.phpdocumentor-content__title').contains('Pizzeria');
         });
 
-        it('Shows link with description', function() {
-            cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
-                .contains('docs')
-                .parent()
-                .should('have.attr', 'href', 'https://docs.phpdoc.org')
+        it('Shows a single implemented interface; which is not clickable because it is external', function () {
+            cy.get('.phpdocumentor-element__implements').contains("JsonSerializable");
+            cy.get('.phpdocumentor-element__implements abbr')
+                .should("have.attr", 'title', '\\JsonSerializable');
+        });
+
+        it('Has a summary', function () {
+            cy.get('.phpdocumentor-element.-class > .phpdocumentor-summary')
+                .contains("Entrypoint for this pizza ordering application.");
+        });
+
+        it('Has a description', function () {
+            cy.get('.phpdocumentor-element.-class > .phpdocumentor-description')
+                .contains('This class provides an interface through which you can order pizza\'s and pasta\'s from Mario\'s Pizzeria.');
+        });
+
+        it('Shows a class is readonly', function () {
+            cy.visit('build/default/classes/Marios-Pizza.html');
+            cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+                .contains('Read only');
+        });
+
+        it('Shows a class is final', function () {
+            cy.visit('build/default/classes/Marios-Pizza.html');
+            cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+                .contains('Final');
+        });
+
+        it('Shows a class is abstract', function () {
+            cy.visit('build/default/classes/Marios-Pizza-Topping.html');
+            cy.get('.phpdocumentor-element.-class .phpdocumentor-label')
+                .contains('Abstract');
+        });
+
+        describe('Shows tags', function () {
+            it('Shows the tags section', function () {
+                cy.get('.phpdocumentor-tag-list__heading')
+                    .contains("Tags")
+            })
+
+            it('Shows link without description', function () {
+                cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
+                    .contains('https://wwww.phpdoc.org')
+                    .should('have.attr', 'href', 'https://wwww.phpdoc.org')
+            });
+
+            it('Shows link with description', function () {
+                cy.get('.phpdocumentor-element.-class  > .phpdocumentor-tag-list >.phpdocumentor-tag-list__definition > a')
+                    .contains('docs')
+                    .parent()
+                    .should('have.attr', 'href', 'https://docs.phpdoc.org')
+            });
         });
     });
 
-    describe('Table of Contents', function(){
-        it('Show methods', function() {
-            cy.get('.phpdocumentor-table-of-contents__entry')
-                .contains("jsonSerialize()")
-                .parent()
-                .contains(': array'); // type
+    describe('Table of Contents', function() {
+        it('Shows methods with their return type and visibility', function() {
+            const toc = getToc('methods', 'Methods');
+            const entry = getTocEntry(toc, 'jsonSerialize()');
+
+            entry
+                .should('have.class', '-method')
+                .and('have.class', '-public')
+                .and('contain', ': array<string|int, mixed>'); // type including generic arguments
         });
     });
 

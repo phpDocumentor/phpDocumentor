@@ -5,7 +5,12 @@ describe('Showing constants for a class', function() {
         cy.visit('build/default/classes/Marios-Pizza.html');
     });
 
-    describe('Meta-data', function() {
+    describe('Synopsis', function() {
+        it('Show the name', function() {
+            getElementWithName('constant', 'TYPE_ITALIAN')
+                .should('be.visible');
+        });
+
         it('Can be marked "public" (visibility) to influence styling', function () {
             getElementWithName('constant', 'TYPE_ITALIAN')
                 .should('have.class', '-public')
@@ -25,13 +30,6 @@ describe('Showing constants for a class', function() {
                 .should('not.have.class', '-public')
                 .and('not.have.class', '-protected')
                 .and('have.class', '-private');
-        });
-    });
-
-    describe('Synopsis', function() {
-        it('Show the name', function() {
-            getElementWithName('constant', 'TYPE_ITALIAN')
-                .should('be.visible');
         });
 
         it('Show the file name where the constant is located in the project', function() {
@@ -108,7 +106,20 @@ describe('Showing constants for an interface', function() {
         cy.visit('build/default/classes/Marios-Product.html');
     });
 
-    describe('Meta-data', function() {
+    describe('Synopsis', function() {
+        it('Show the name', function() {
+            getElementWithName('constant', 'PUBLIC_CONSTANT')
+                .should('be.visible');
+        });
+
+        it('Show the file name where the constant is located in the project', function() {
+            getElementWithName('constant', 'PUBLIC_CONSTANT')
+                .find('.phpdocumentor-element-found-in__file')
+                .contains('a', 'Product.php')
+                .find('abbr')
+                .should('have.attr', 'title', 'src/Product.php');
+        });
+
         it('Can be marked "public" (visibility) to influence styling', function () {
             getElementWithName('constant', 'PUBLIC_CONSTANT')
                 .should('have.class', '-public')
@@ -128,21 +139,6 @@ describe('Showing constants for an interface', function() {
                 .should('not.have.class', '-public')
                 .and('not.have.class', '-protected')
                 .and('have.class', '-private');
-        });
-    });
-
-    describe('Synopsis', function() {
-        it('Show the name', function() {
-            getElementWithName('constant', 'PUBLIC_CONSTANT')
-                .should('be.visible');
-        });
-
-        it('Show the file name where the constant is located in the project', function() {
-            getElementWithName('constant', 'PUBLIC_CONSTANT')
-                .find('.phpdocumentor-element-found-in__file')
-                .contains('a', 'Product.php')
-                .find('abbr')
-                .should('have.attr', 'title', 'src/Product.php');
         });
 
         it('Links to the file documentation wherein the constant is', function() {
