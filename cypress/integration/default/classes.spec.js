@@ -1,6 +1,7 @@
 import sidebar from './sidebar.inc';
 import search from './search.inc';
 import {getToc, getTocEntry} from './helpers/tableOfContents.lib';
+import {getEntryIn, getSummaryEntry} from './helpers/onThisPage.lib';
 
 describe('Classes', function() {
     beforeEach(function(){
@@ -86,13 +87,19 @@ describe('Classes', function() {
 
     describe('Table of Contents', function() {
         it('Shows methods with their return type and visibility', function() {
-            const toc = getToc('methods', 'Methods');
-            const entry = getTocEntry(toc, 'jsonSerialize()');
-
-            entry
+            getTocEntry(getToc('methods', 'Methods'), 'jsonSerialize()')
                 .should('have.class', '-method')
                 .and('have.class', '-public')
                 .and('contain', ': array<string|int, mixed>'); // type including generic arguments
+        });
+    });
+
+    describe('On This Page', function() {
+        it('renders links to the summary items', function() {
+            getSummaryEntry('Methods').should('exist');
+            getEntryIn('Methods', 'jsonSerialize()').should('exist');
+            getEntryIn('Methods', 'order()').should('exist');
+            getEntryIn('Methods', 'doOrder()').should('exist');
         });
     });
 

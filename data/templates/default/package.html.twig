@@ -20,7 +20,7 @@
         <strong class="phpdocumentor-on-this-page__title">On this page</strong>
 
         <ul class="phpdocumentor-list -clean">
-            <li><a href="{{ link(node) }}#toc">Table Of Contents</a></li>
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
                     {% if node.packages is not empty %}
@@ -51,7 +51,7 @@
             </li>
 
             {% if constants is not empty %}
-                <li>Constants</li>
+                <li class="phpdocumentor-on-this-page-section__title">Constants</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for constant in constants|sortByVisibility %}
@@ -62,7 +62,7 @@
             {% endif %}
 
             {% if functions is not empty %}
-                <li>Functions</li>
+                <li class="phpdocumentor-on-this-page-section__title">Functions</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for function in functions|sortByVisibility %}
