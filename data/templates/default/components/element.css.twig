@@ -2,8 +2,16 @@
     position: relative;
 }
 
+.phpdocumentor .phpdocumentor-elements__header {
+    margin-top: var(--spacing-xxl);
+    margin-bottom: var(--spacing-lg);
+}
+
 .phpdocumentor .phpdocumentor-element__name {
     line-height: 1;
+    margin-top: 0;
+    font-weight: 300;
+    font-size: var(--spacing-lg);
 }
 
 .phpdocumentor-element__package,
@@ -19,9 +27,11 @@
     display: inline;
 }
 
-.phpdocumentor-element:not(:last-child) {
-    border-bottom: 1px solid var(--primary-color-lighten);
-    padding-bottom: var(--spacing-lg);
+.phpdocumentor-element .phpdocumentor-element {
+    border: 1px solid var(--primary-color-lighten);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: 5px;
 }
 
 .phpdocumentor-element.-deprecated .phpdocumentor-element__name {

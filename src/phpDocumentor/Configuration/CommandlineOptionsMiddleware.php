@@ -398,7 +398,19 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $value = false;
             }
 
-            $configuration['phpdocumentor']['settings'][$key] = $value;
+            // if a key has a dot-notation, convert it into an array
+            $customSettings = [];
+            $customSettingsHead = &$customSettings;
+            $keys = explode('.', $key);
+            foreach ($keys as $key) {
+                $customSettingsHead = &$customSettingsHead[$key];
+            }
+            $customSettingsHead = $value;
+
+            $configuration['phpdocumentor']['settings'] = array_merge_recursive(
+                $configuration['phpdocumentor']['settings'],
+                $customSettings
+            );
         }
 
         return $configuration;

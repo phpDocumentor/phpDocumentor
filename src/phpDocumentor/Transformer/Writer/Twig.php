@@ -88,19 +88,23 @@ use function substr;
  * @see self::getDestinationPath() for more information about variables in the
  *     Artifact attribute.
  */
-final class Twig extends WriterAbstract implements Initializable
+final class Twig extends WriterAbstract implements Initializable, ProjectDescriptor\WithCustomSettings
 {
     use IoTrait;
 
-    /** @var EnvironmentFactory */
-    private $environmentFactory;
+    /**
+     * Setting with which to provide options to a template.
+     *
+     * This setting can be a semicolon separated string of key=value pairs that will be merged into the
+     * transformation parameters provided by the config file and default template parameters.
+     *
+     * This also means that this command line setting can override parameters from the config.
+     */
+    private const SETTING_TEMPLATE_OPTIONS = 'template';
 
-    /** @var PathGenerator */
-    private $pathGenerator;
-
-    /** @var Environment */
-    private $environment;
-
+    private EnvironmentFactory $environmentFactory;
+    private PathGenerator $pathGenerator;
+    private Environment $environment;
     private Engine $queryEngine;
 
     public function __construct(
@@ -157,6 +161,13 @@ final class Twig extends WriterAbstract implements Initializable
         }
     }
 
+    public function getDefaultSettings(): array
+    {
+        return [
+            self::SETTING_TEMPLATE_OPTIONS => []
+        ];
+    }
+
     /** @param DescriptorCollection<Descriptor> $nodes */
     private function transformNodeCollection(
         DescriptorCollection $nodes,
@@ -188,13 +199,16 @@ final class Twig extends WriterAbstract implements Initializable
             return;
         }
 
+        $extraParameters = $project->getSettings()->getCustom()[self::SETTING_TEMPLATE_OPTIONS];
+        $parameters = array_merge_recursive($transformation->getParameters(), $extraParameters);
+
         $this->environment->addGlobal('project', $project);
         $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
         $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
         $this->environment->addGlobal('documentationSet', $project);
         $this->environment->addGlobal('node', $node);
         $this->environment->addGlobal('destinationPath', $path);
-        $this->environment->addGlobal('parameter', $transformation->getParameters());
+        $this->environment->addGlobal('parameter', $parameters);
 
         // pre-set the global variable so that we can update it later
         // TODO: replace env with origin filesystem, as this will help us to copy assets.

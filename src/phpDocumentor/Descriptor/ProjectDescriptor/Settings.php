@@ -93,7 +93,7 @@ final class Settings
      * various locations through the accessor {@see ProjectDescriptor::getSettings()} or in the templates using
      * the `project.settings.other` variable.
      *
-     * @return array<string, bool|string>
+     * @return array<string, bool|string|array<bool|string>>
      */
     public function getCustom(): array
     {

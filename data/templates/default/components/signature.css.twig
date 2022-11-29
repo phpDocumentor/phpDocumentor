@@ -1,9 +1,11 @@
-.phpdocumentor-signature {
+.phpdocumentor .phpdocumentor-signature {
     display: inline-block;
     font-size: var(--text-sm);
-    margin-bottom: var(--spacing-md);
+    margin-left: calc(var(--spacing-xl) * -1);
+    width: calc(100% + var(--spacing-xl));
+    border: 1px solid #f0f0f0;
 }
 
-.phpdocumentor-signature.-deprecated .phpdocumentor-signature__name {
+.phpdocumentor .phpdocumentor-signature.-deprecated .phpdocumentor-signature__name {
     text-decoration: line-through;
 }
