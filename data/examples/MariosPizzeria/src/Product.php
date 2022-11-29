@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Marios;
 
+/**
+ * Contract between products.
+ *
+ * This is a description on an interface.
+ */
 interface Product
 {
     public const PUBLIC_CONSTANT = 1;

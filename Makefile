@@ -28,8 +28,12 @@ help:
 	@echo "unit-test        - runs unit tests";
 	@echo "integration-test - runs integration tests";
 	@echo "functional-test  - runs functional tests";
-	@echo "e2e-test         - runs phpDocumentor and verifies the output using Cypress";
 	@echo "composer-require-checker - checks for any missing composer packages";
+	@echo "";
+	@echo "e2e-test         - runs phpDocumentor and verifies the output using Cypress";
+	@echo "build/default/index.html - builds the 'default' template's example project";
+	@echo "build/clean/index.html - builds the 'clean' template's example project";
+	@echo "cypress/integration/*.spec.js - runs e2e tests on a specific specification";
 	@echo "";
 	@echo "== Code Quality ==";
 	@echo "lint             - performs all linting on the code";
@@ -41,7 +45,7 @@ help:
 	@echo "== Release tools ==";
 	@echo "composer-mirror  - Runs a production-version of composer install for, i.e., the phar building";
 	@echo "phar             - Creates the PHAR file";
-	@echo "docs			    - Creates local docs docker image";
+	@echo "docs             - Creates local docs docker image";
 	@echo "";
 
 .PHONY: phar
@@ -109,6 +113,12 @@ unit-test integration-test functional-test:
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0
 
+cypress/integration/default/%.spec.js: node_modules/.bin/cypress build/default/index.html .RUN_ALWAYS
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0 -s $@
+
+cypress/integration/clean/%.spec.js: node_modules/.bin/cypress build/clean/index.html .RUN_ALWAYS
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0 -s $@
+
 .PHONY: composer-require-checker
 composer-require-checker:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=./tools/composer-require-checker phpdoc  check --config-file /opt/phpdoc/composer-require-config.json composer.json
@@ -132,10 +142,10 @@ shell:
 node_modules/.bin/cypress:
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/opt/phpdoc/var/cache/.cypress" -v ${CURDIR}:/opt/phpdoc -w /opt/phpdoc node npm install
 
-build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/default/**/* src/**/*
+build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/default/**/* .RUN_ALWAYS
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=default --target=build/default --force
 
-build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/* src/**/*
+build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/* .RUN_ALWAYS
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean --force
 
 .PHONY: docs
@@ -152,3 +162,6 @@ build-website: demo docs
 demo:
 	${.DOCKER_COMPOSE_RUN} phpdoc --template=default -t ./build/website/demo/default
 	${.DOCKER_COMPOSE_RUN} phpdoc --template=clean -t ./build/website/demo/clean
+
+.PHONY: .RUN_ALWAYS
+.RUN_ALWAYS:

@@ -14,3 +14,62 @@
         {{ include('components/source-modal.html.twig') }}
     </article>
 {% endblock %}
+
+{% block on_this_page %}
+    {% set constants = constants(node) %}
+    {% set properties = properties(node) %}
+    {% set methods = methods(node) %}
+
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                    {% if constants is not empty %}
+                    <li><a href="{{ link(node) }}#toc-constants">Constants</a></li>
+                    {% endif %}
+                    {% if properties is not empty %}
+                    <li><a href="{{ link(node) }}#toc-properties">Properties</a></li>
+                    {% endif %}
+                    {% if methods is not empty %}
+                    <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% if constants is not empty %}
+                <li class="phpdocumentor-on-this-page-section__title">Constants</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for constant in constants|sortByVisibility %}
+                            <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if properties is not empty %}
+                <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for property in properties|sortByVisibility %}
+                            <li><a href="{{ link(property) }}">${{ property.name }}<a href="{{ link(node) }}"></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if methods is not empty %}
+            <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                    {% for method in methods|sortByVisibility %}
+                        <li><a href="{{ link(method) }}">{{ method.name }}()</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+        </ul>
+    </section>
+{% endblock %}
