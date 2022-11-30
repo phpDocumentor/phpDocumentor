@@ -26,6 +26,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
 
+use function array_merge_recursive;
 use function count;
 use function ltrim;
 use function preg_split;
@@ -100,7 +101,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      *
      * This also means that this command line setting can override parameters from the config.
      */
-    private const SETTING_TEMPLATE_OPTIONS = 'template';
+    public const SETTING_TEMPLATE_OPTIONS = 'template';
 
     private EnvironmentFactory $environmentFactory;
     private PathGenerator $pathGenerator;
@@ -161,10 +162,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         }
     }
 
+    /**
+     * @return array<string, bool|string|array<bool|string>>
+     */
     public function getDefaultSettings(): array
     {
         return [
-            self::SETTING_TEMPLATE_OPTIONS => []
+            self::SETTING_TEMPLATE_OPTIONS => [],
         ];
     }
 
