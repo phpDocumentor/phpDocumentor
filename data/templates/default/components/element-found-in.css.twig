@@ -1,9 +1,24 @@
 .phpdocumentor-element-found-in {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
-    font-size: var(--text-sm);
-    color: gray;
+    display: none;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-element-found-in {
+        display: block;
+        font-size: var(--text-sm);
+        color: gray;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: {{ breakpoints['xxl'] }}) {
+    .phpdocumentor-element-found-in {
+        position: absolute;
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+        font-size: var(--text-sm);
+        margin-bottom: 0;
+    }
 }
 
 .phpdocumentor-element-found-in .phpdocumentor-element-found-in__source {

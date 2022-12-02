@@ -24,6 +24,7 @@
     {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     {% endblock %}
@@ -37,17 +38,17 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                 {% if block('on_this_page') is defined %}
-                <section class="phpdocumentor-column -nine">
+                <section>
                 {% endif %}
                     {% block content %}{% endblock %}
                 {% if block('on_this_page') is defined %}
                 </section>
-                <section class="phpdocumentor-column -three phpdocumentor-on-this-page__sidebar">
+                <section class="phpdocumentor-on-this-page__sidebar">
                     {{ block('on_this_page') }}
                 </section>
                 {% endif %}
-                {% include 'components/search-results.html.twig' %}
             </div>
+            {% include 'components/search-results.html.twig' %}
         </div>
         {{ include('components/back-to-top.html.twig') }}
     </main>

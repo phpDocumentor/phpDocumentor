@@ -2,6 +2,33 @@
     position: relative;
 }
 
+.phpdocumentor-element .phpdocumentor-element {
+    border: 1px solid var(--primary-color-lighten);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs);
+    border-radius: 5px;
+}
+
+.phpdocumentor-element.-deprecated .phpdocumentor-element__name {
+    text-decoration: line-through;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-element .phpdocumentor-element {
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-md);
+    }
+}
+
+.phpdocumentor-element__modifier {
+    font-size: var(--text-xxs);
+    padding: calc(var(--spacing-base-size) / 4) calc(var(--spacing-base-size) / 2);
+    color: var(--text-color);
+    background-color: var(--light-gray);
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
 .phpdocumentor .phpdocumentor-elements__header {
     margin-top: var(--spacing-xxl);
     margin-bottom: var(--spacing-lg);
@@ -11,7 +38,22 @@
     line-height: 1;
     margin-top: 0;
     font-weight: 300;
-    font-size: var(--spacing-lg);
+    font-size: var(--text-lg);
+    word-break: break-all;
+    margin-bottom: var(--spacing-sm);
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor .phpdocumentor-element__name {
+        font-size: var(--text-xl);
+        margin-bottom: var(--spacing-xs);
+    }
+}
+
+@media (min-width: {{ breakpoints['xxl'] }}) {
+    .phpdocumentor .phpdocumentor-element__name {
+        margin-bottom: var(--spacing-md);
+    }
 }
 
 .phpdocumentor-element__package,
@@ -25,24 +67,4 @@
 
 .phpdocumentor-element__package .phpdocumentor-breadcrumbs {
     display: inline;
-}
-
-.phpdocumentor-element .phpdocumentor-element {
-    border: 1px solid var(--primary-color-lighten);
-    margin-bottom: var(--spacing-lg);
-    padding: var(--spacing-md);
-    border-radius: 5px;
-}
-
-.phpdocumentor-element.-deprecated .phpdocumentor-element__name {
-    text-decoration: line-through;
-}
-
-.phpdocumentor-element__modifier {
-    font-size: var(--text-xxs);
-    padding: calc(var(--spacing-base-size) / 4) calc(var(--spacing-base-size) / 2);
-    color: var(--text-color);
-    background-color: var(--light-gray);
-    border-radius: 3px;
-    text-transform: uppercase;
 }

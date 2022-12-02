@@ -14,8 +14,9 @@
     <transformation writer="twig" query="indexes.enums" source="templates/default/enum.html.twig" />
     <transformation writer="twig" query="indexes.interfaces" source="templates/default/interface.html.twig" />
     <transformation writer="twig" query="indexes.traits" source="templates/default/trait.html.twig" />
-    <transformation writer="twig" source="templates/default/search.js.twig" artifact="js/search.js" />
-    <transformation writer="twig" source="templates/default/searchIndex.js.twig" artifact="js/searchIndex.js" />
+    <transformation writer="twig" source="templates/default/js/template.js.twig" artifact="js/template.js" />
+    <transformation writer="twig" source="templates/default/js/search.js.twig" artifact="js/search.js" />
+    <transformation writer="twig" source="templates/default/js/searchIndex.js.twig" artifact="js/searchIndex.js" />
     <transformation writer="twig" source="templates/default/graphs/class.html.twig" artifact="graphs/classes.html" />
     <transformation writer="twig" source="templates/default/reports/errors.html.twig" artifact="reports/errors.html" />
     <transformation writer="twig" source="templates/default/reports/deprecated.html.twig" artifact="reports/deprecated.html" />
