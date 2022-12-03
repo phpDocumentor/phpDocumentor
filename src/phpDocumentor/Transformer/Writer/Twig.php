@@ -162,9 +162,6 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         }
     }
 
-    /**
-     * @return array<string, bool|string|array<bool|string>>
-     */
     public function getDefaultSettings(): array
     {
         return [
