@@ -154,8 +154,8 @@ docs:
 
 .PHONY: build-website
 build-website: demo docs
-	cp -p --update ./data/xsd/phpdoc.xsd ./build/website/
-	cp -p -r --update ./data/website/* ./build/website
+	cp -p -r ./data/website/* ./build/website
+	cp -p ./data/xsd/phpdoc.xsd ./build/website/docs/
 	docker build -t phpdocumentor/phpdocumentor/phpdoc.org:local ./build/website
 
 .PHONY: demo
