@@ -1,3 +1,5 @@
+{% import 'css/macros/colours.macro.twig' as colours %}
+
 .phpdocumentor-table-of-contents {
 }
 
@@ -37,7 +39,7 @@
     width: 1.25rem;
     height: 1.25rem;
     line-height: 1.25rem;
-    background: transparent url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}') no-repeat center center;
+    background: transparent url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig', {'hue': colours.hue(parameter.color|default('phpdocumentor-green'))})|trim|raw }}') no-repeat center center;
     content: '';
     position: absolute;
     left: 0;
@@ -51,12 +53,14 @@
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-method:before {
     content: 'M';
-    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}');
+    color: '{{ hues[parameter.color|default('phpdocumentor-green')] }}';
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig', {'hue': colours.hue(parameter.color|default('phpdocumentor-green'))})|trim|raw }}');
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-function:before {
     content: 'M';
-    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig')|trim|raw }}');
+    color: '{{ colours.hue(parameter.color|default('phpdocumentor-green')) }}';
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/method.svg.twig', {'hue': colours.hue(parameter.color|default('phpdocumentor-green'))})|trim|raw }}');
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-property:before {
@@ -66,7 +70,7 @@
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-constant:before {
     content: 'C';
     background-color: transparent;
-    background-image: url('data:image/svg+xml;utf8,{{ include('icons/constant.svg.twig')|trim|raw }}');
+    background-image: url('data:image/svg+xml;utf8,{{ include('icons/constant.svg.twig', {'hue': colours.hue(parameter.color|default('phpdocumentor-green'))})|trim|raw }}');
 }
 
 .phpdocumentor-table-of-contents .phpdocumentor-table-of-contents__entry.-class:before {

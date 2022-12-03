@@ -1,3 +1,5 @@
+{% import 'css/macros/colours.macro.twig' as colours %}
+
 :root {
     /* Typography */
     --font-primary: 'Open Sans', Helvetica, Arial, sans-serif;
@@ -19,24 +21,24 @@
     --text-xxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
-    --color-hue-red: 4;
-    --color-hue-pink: 340;
-    --color-hue-purple: 291;
-    --color-hue-deep-purple: 262;
-    --color-hue-indigo: 231;
-    --color-hue-blue: 207;
-    --color-hue-light-blue: 199;
-    --color-hue-cyan: 187;
-    --color-hue-teal: 174;
-    --color-hue-green: 122;
-    --color-hue-phpdocumentor-green: 96;
-    --color-hue-light-green: 88;
-    --color-hue-lime: 66;
-    --color-hue-yellow: 54;
-    --color-hue-amber: 45;
-    --color-hue-orange: 36;
-    --color-hue-deep-orange: 14;
-    --color-hue-brown: 16;
+    --color-hue-red: {{ colours.hue('red') }};
+    --color-hue-pink: {{ colours.hue('pink') }};
+    --color-hue-purple: {{ colours.hue('purple') }};
+    --color-hue-deep-purple: {{ colours.hue('deep-purple') }};
+    --color-hue-indigo: {{ colours.hue('indigo') }};
+    --color-hue-blue: {{ colours.hue('blue') }};
+    --color-hue-light-blue: {{ colours.hue('light-blue') }};
+    --color-hue-cyan: {{ colours.hue('cyan') }};
+    --color-hue-teal: {{ colours.hue('teal') }};
+    --color-hue-green: {{ colours.hue('green') }};
+    --color-hue-phpdocumentor-green: {{ colours.hue('phpdocumentor-green') }};
+    --color-hue-light-green: {{ colours.hue('light-green') }};
+    --color-hue-lime: {{ colours.hue('lime') }};
+    --color-hue-yellow: {{ colours.hue('yellow') }};
+    --color-hue-amber: {{ colours.hue('amber') }};
+    --color-hue-orange: {{ colours.hue('orange') }};
+    --color-hue-deep-orange: {{ colours.hue('deep-orange') }};
+    --color-hue-brown: {{ colours.hue('brown') }};
 
     /* Colors */
     --primary-color-hue: var(--color-hue-{{ parameter.color|default('phpdocumentor-green') }}, --color-hue-phpdocumentor-green);
