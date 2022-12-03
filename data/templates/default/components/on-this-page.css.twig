@@ -33,14 +33,19 @@
     }
 
     .phpdocumentor-on-this-page__content {
-        position: fixed;
+        position: sticky;
         height: calc(100vh - var(--header-height));
         overflow-y: auto;
         border-left: 1px solid var(--sidebar-border-color);
         padding-left: var(--spacing-lg);
         font-size: 90%;
-        width: calc(18% - var(--spacing-xs) - var(--spacing-xs)); /* This magic number probably indicates a problem, revisit this */
-        right: var(--spacing-xs);
+        top: -1px; /* Needed for the javascript to make the .-stuck trick work */
+        flex: 0 1 auto;
+        width: 15vw;
+    }
+
+    .phpdocumentor-on-this-page__content.-stuck {
+        height: 100vh;
     }
 
     .phpdocumentor-on-this-page__content li {

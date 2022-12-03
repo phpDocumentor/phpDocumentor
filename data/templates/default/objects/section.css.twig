@@ -2,9 +2,15 @@
     box-sizing: border-box;
     margin: 0 auto;
     max-width: var(--container-width);
-    padding: 0 var(--spacing-lg);
+    padding: 0 var(--spacing-sm);
     position: relative;
     width: 100%;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor-section {
+        padding: 0 var(--spacing-lg);
+    }
 }
 
 @media (min-width: {{ breakpoints['xxl'] }}) {

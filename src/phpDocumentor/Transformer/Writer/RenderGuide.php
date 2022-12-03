@@ -69,7 +69,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
+        if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
             return;
         }
 
@@ -84,7 +84,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                     continue;
                 }
 
-                //TODO Extract this, as this code is dupplicated
+                //TODO Extract this, as this code is duplicated
                 $this->environmentBuilder->setEnvironmentFactory(
                     function () use ($transformation, $project, $documentationSet) {
                         $twig = $this->environmentFactory->create($project, $transformation->template());
@@ -105,7 +105,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     public function getDefaultSettings(): array
     {
-        return [self::FEATURE_FLAG => false];
+        return ['guides.enabled' => false];
     }
 
     private function renderDocumentationSet(

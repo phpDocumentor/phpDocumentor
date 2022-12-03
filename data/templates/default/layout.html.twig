@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/base.css">
     {% block stylesheets %}
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -24,6 +24,7 @@
     {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     {% endblock %}
@@ -37,17 +38,17 @@
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
                 {% if block('on_this_page') is defined %}
-                <section class="phpdocumentor-column -nine">
+                <section>
                 {% endif %}
                     {% block content %}{% endblock %}
                 {% if block('on_this_page') is defined %}
                 </section>
-                <section class="phpdocumentor-column -three phpdocumentor-on-this-page__sidebar">
+                <section class="phpdocumentor-on-this-page__sidebar">
                     {{ block('on_this_page') }}
                 </section>
                 {% endif %}
-                {% include 'components/search-results.html.twig' %}
             </div>
+            {% include 'components/search-results.html.twig' %}
         </div>
         {{ include('components/back-to-top.html.twig') }}
     </main>

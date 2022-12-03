@@ -1,7 +1,9 @@
+{% import 'css/macros/colours.macro.twig' as colours %}
+
 :root {
     /* Typography */
-    --font-primary: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-    --font-secondary: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    --font-primary: 'Open Sans', Helvetica, Arial, sans-serif;
+    --font-secondary: 'Open Sans', Helvetica, Arial, sans-serif;
     --font-monospace: 'Source Code Pro', monospace;
     --line-height--primary: 1.6;
     --letter-spacing--primary: .05rem;
@@ -19,15 +21,34 @@
     --text-xxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
     --text-xxxxxl: calc(var(--text-base-size) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
 
+    --color-hue-red: {{ colours.hue('red') }};
+    --color-hue-pink: {{ colours.hue('pink') }};
+    --color-hue-purple: {{ colours.hue('purple') }};
+    --color-hue-deep-purple: {{ colours.hue('deep-purple') }};
+    --color-hue-indigo: {{ colours.hue('indigo') }};
+    --color-hue-blue: {{ colours.hue('blue') }};
+    --color-hue-light-blue: {{ colours.hue('light-blue') }};
+    --color-hue-cyan: {{ colours.hue('cyan') }};
+    --color-hue-teal: {{ colours.hue('teal') }};
+    --color-hue-green: {{ colours.hue('green') }};
+    --color-hue-phpdocumentor-green: {{ colours.hue('phpdocumentor-green') }};
+    --color-hue-light-green: {{ colours.hue('light-green') }};
+    --color-hue-lime: {{ colours.hue('lime') }};
+    --color-hue-yellow: {{ colours.hue('yellow') }};
+    --color-hue-amber: {{ colours.hue('amber') }};
+    --color-hue-orange: {{ colours.hue('orange') }};
+    --color-hue-deep-orange: {{ colours.hue('deep-orange') }};
+    --color-hue-brown: {{ colours.hue('brown') }};
+
     /* Colors */
-    --primary-color-hue: 96;
+    --primary-color-hue: var(--color-hue-{{ parameter.color|default('phpdocumentor-green') }}, --color-hue-phpdocumentor-green);
     --primary-color-saturation: 57%;
     --primary-color: hsl(var(--primary-color-hue), var(--primary-color-saturation), 60%);
     --primary-color-darken: hsl(var(--primary-color-hue), var(--primary-color-saturation), 40%);
     --primary-color-darker: hsl(var(--primary-color-hue), var(--primary-color-saturation), 25%);
     --primary-color-darkest: hsl(var(--primary-color-hue), var(--primary-color-saturation), 10%);
-    --primary-color-lighten: hsl(var(--primary-color-hue), var(--primary-color-saturation), 80%);
-    --primary-color-lighter: hsl(var(--primary-color-hue), var(--primary-color-saturation), 99%);
+    --primary-color-lighten: hsl(var(--primary-color-hue), calc(var(--primary-color-saturation) - 20%), 85%);
+    --primary-color-lighter: hsl(var(--primary-color-hue), calc(var(--primary-color-saturation) - 45%), 97.5%);
     --dark-gray: #d1d1d1;
     --light-gray: #f0f0f0;
 

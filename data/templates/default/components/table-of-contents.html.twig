@@ -41,7 +41,9 @@
     <dl class="phpdocumentor-table-of-contents">
         {% for interface in node.interfaces %}
             <dt class="phpdocumentor-table-of-contents__entry -interface">{{ interface|route('class:short') }}</dt>
+            {%- if interface.summary -%}
             <dd>{{ interface.summary }}</dd>
+            {%- endif -%}
         {% endfor %}
     </dl>
 {% endif %}
@@ -54,10 +56,13 @@
     <dl class="phpdocumentor-table-of-contents">
         {% for class in node.classes %}
             <dt class="phpdocumentor-table-of-contents__entry -class">{{ class|route('class:short') }}</dt>
+            {%- if class.summary -%}
             <dd>{{ class.summary }}</dd>
+            {%- endif -%}
         {% endfor %}
     </dl>
 {% endif %}
+
 {% if node.traits is not empty %}
     <h4 id="toc-traits">
         Traits
@@ -66,10 +71,13 @@
     <dl class="phpdocumentor-table-of-contents">
     {% for trait in node.traits %}
         <dt class="phpdocumentor-table-of-contents__entry -trait">{{ trait|route('class:short') }}</dt>
+        {%- if trait.summary -%}
         <dd>{{ trait.summary }}</dd>
+        {%- endif -%}
     {% endfor %}
     </dl>
 {% endif %}
+
 {% if node.enums is not empty %}
     <h4 id="toc-enums">
         Enums
@@ -78,7 +86,9 @@
     <dl class="phpdocumentor-table-of-contents">
     {% for enum in node.enums %}
         <dt class="phpdocumentor-table-of-contents__entry -enum">{{ enum|route('class:short') }}</dt>
+        {%- if enum.summary -%}
         <dd>{{ enum.summary }}</dd>
+        {%- endif -%}
     {% endfor %}
 </dl>
 {% endif %}
