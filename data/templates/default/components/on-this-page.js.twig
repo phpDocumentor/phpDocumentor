@@ -1,9 +1,13 @@
 (function(){
-    const el = document.querySelector('.phpdocumentor-on-this-page__content')
-    const observer = new IntersectionObserver(
-        ([e]) => e.target.classList.toggle("-stuck", e.intersectionRatio < 1),
-        {threshold: [1]}
-    );
+    document.addEventListener('DOMContentLoaded', () => {
+        const el = document.querySelector('.phpdocumentor-on-this-page__content')
+        const observer = new IntersectionObserver(
+            ([e]) => {
+                e.target.classList.toggle("-stuck", e.intersectionRatio < 1);
+            },
+            {threshold: [1]}
+        );
 
-    observer.observe(el);
+        observer.observe(el);
+    })
 })();
