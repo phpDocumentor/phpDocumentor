@@ -21,7 +21,6 @@ use Webmozart\Assert\Assert;
 
 use function array_map;
 use function array_merge;
-use function array_merge_recursive;
 use function array_unique;
 use function count;
 use function current;
@@ -399,25 +398,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $value = false;
             }
 
-            // if a key has a dot-notation, convert it into an array.
-            $customSettings = [];
-            $customSettingsHead = &$customSettings;
-            $keys = explode('.', $key);
-            foreach ($keys as $key) {
-                /** @var array<string, bool|string|array<string, bool|string>> $customSettingsHead */
-                if (!isset($customSettingsHead[$key])) {
-                    $customSettingsHead[$key] = [];
-                }
-
-                $customSettingsHead = &$customSettingsHead[$key];
-            }
-
-            $customSettingsHead = $value;
-
-            $configuration['phpdocumentor']['settings'] = array_merge_recursive(
-                $configuration['phpdocumentor']['settings'],
-                $customSettings
-            );
+            $configuration['phpdocumentor']['settings'][$key] = $value;
         }
 
         return $configuration;

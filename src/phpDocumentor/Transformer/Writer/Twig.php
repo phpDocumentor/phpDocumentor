@@ -26,11 +26,12 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
 
-use function array_merge_recursive;
+use function array_merge;
 use function count;
 use function ltrim;
 use function preg_split;
 use function strlen;
+use function strpos;
 use function substr;
 
 /**
@@ -93,16 +94,6 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 {
     use IoTrait;
 
-    /**
-     * Setting with which to provide options to a template.
-     *
-     * This setting can be a semicolon separated string of key=value pairs that will be merged into the
-     * transformation parameters provided by the config file and default template parameters.
-     *
-     * This also means that this command line setting can override parameters from the config.
-     */
-    public const SETTING_TEMPLATE_OPTIONS = 'template';
-
     private EnvironmentFactory $environmentFactory;
     private PathGenerator $pathGenerator;
     private Environment $environment;
@@ -164,9 +155,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
     public function getDefaultSettings(): array
     {
-        return [
-            self::SETTING_TEMPLATE_OPTIONS => [],
-        ];
+        return [];
     }
 
     /** @param DescriptorCollection<Descriptor> $nodes */
@@ -200,8 +189,16 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
             return;
         }
 
-        $extraParameters = $project->getSettings()->getCustom()[self::SETTING_TEMPLATE_OPTIONS];
-        $parameters = array_merge_recursive($transformation->getParameters(), $extraParameters);
+        $extraParameters = [];
+        foreach ($project->getSettings()->getCustom() as $key => $value) {
+            if (strpos($key, 'template.') !== 0) {
+                continue;
+            }
+
+            $extraParameters[substr($key, strlen('template.'))] = $value;
+        }
+
+        $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
         $this->environment->addGlobal('project', $project);
         $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);

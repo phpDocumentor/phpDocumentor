@@ -21,7 +21,7 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
 interface WithCustomSettings
 {
     /**
-     * @return array<string, bool|string|array<string, bool|string>>
+     * @return array<string, bool|string>
      */
     public function getDefaultSettings(): array;
 }

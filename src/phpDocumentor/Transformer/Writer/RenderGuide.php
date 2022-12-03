@@ -69,7 +69,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()['guides']['enabled'] ?? false)) {
+        if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
             return;
         }
 
@@ -105,7 +105,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     public function getDefaultSettings(): array
     {
-        return ['guides' => ['enabled' => false]];
+        return ['guides.enabled' => false];
     }
 
     private function renderDocumentationSet(
