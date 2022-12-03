@@ -7,52 +7,54 @@
 {% endblock %}
 
 {% block content %}
-    <ul class="phpdocumentor-breadcrumbs">
-        <li><a href="{{ path("/") }}">Home</a></li>
-    </ul>
+    <section>
+        <ul class="phpdocumentor-breadcrumbs">
+            <li><a href="{{ path("/") }}">Home</a></li>
+        </ul>
 
-    <div class="phpdocumentor-row">
-        <h2 class="phpdocumentor-content__title">Markers</h2>
+        <div class="phpdocumentor-row">
+            <h2 class="phpdocumentor-content__title">Markers</h2>
 
-        {% if filesWithMarkers is not empty %}
-            <h3>Table of Contents</h3>
-            <table class="phpdocumentor-table_of_contents">
-                {% for file in filesWithMarkers %}
-                    {% if file.markers.count > 0 %}
-                        <tr>
-                            <td class="phpdocumentor-cell"><a href="{{ target_path }}#{{ file.path }}">{{ file.path }}</a></td>
-                            <td class="phpdocumentor-cell">{{ file.markers.count }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        {% else %}
-            <div class="phpdocumentor-admonition phpdocumentor-admonition--success">
-                No markers have been found in this project.
-            </div>
-        {% endif %}
+            {% if filesWithMarkers is not empty %}
+                <h3>Table of Contents</h3>
+                <table class="phpdocumentor-table_of_contents">
+                    {% for file in filesWithMarkers %}
+                        {% if file.markers.count > 0 %}
+                            <tr>
+                                <td class="phpdocumentor-cell"><a href="{{ target_path }}#{{ file.path }}">{{ file.path }}</a></td>
+                                <td class="phpdocumentor-cell">{{ file.markers.count }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                <div class="phpdocumentor-admonition phpdocumentor-admonition--success">
+                    No markers have been found in this project.
+                </div>
+            {% endif %}
 
-        {% for file in filesWithMarkers %}
-            <a id="{{ file.path }}"></a>
-            <h3><abbr title="{{ file.path }}">{{ file.name }}</abbr></h3>
-            <table>
-                <thead>
-                <tr>
-                    <th class="phpdocumentor-heading">Type</th>
-                    <th class="phpdocumentor-heading">Line</th>
-                    <th class="phpdocumentor-heading">Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for marker in file.markers %}
+            {% for file in filesWithMarkers %}
+                <a id="{{ file.path }}"></a>
+                <h3><abbr title="{{ file.path }}">{{ file.name }}</abbr></h3>
+                <table>
+                    <thead>
                     <tr>
-                        <td class="phpdocumentor-cell">{{ marker.type }}</td>
-                        <td class="phpdocumentor-cell">{{ marker.line }}</td>
-                        <td class="phpdocumentor-cell">{{ marker.message }}</td>
+                        <th class="phpdocumentor-heading">Type</th>
+                        <th class="phpdocumentor-heading">Line</th>
+                        <th class="phpdocumentor-heading">Description</th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endfor %}
-    </div>
+                    </thead>
+                    <tbody>
+                    {% for marker in file.markers %}
+                        <tr>
+                            <td class="phpdocumentor-cell">{{ marker.type }}</td>
+                            <td class="phpdocumentor-cell">{{ marker.line }}</td>
+                            <td class="phpdocumentor-cell">{{ marker.message }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
