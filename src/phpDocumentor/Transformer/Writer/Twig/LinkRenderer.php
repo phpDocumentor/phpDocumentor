@@ -25,6 +25,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\AbstractList;
+use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Iterable_;
@@ -273,6 +274,10 @@ final class LinkRenderer
 
         if ($node instanceof AbstractList) {
             return $this->renderAbstractListLinks($node, $presentation);
+        }
+
+        if ($node instanceof AggregatedType) {
+            return implode($node->getToken(), $this->renderASeriesOfLinks($node, $presentation));
         }
 
         // With an unlinked object, we don't know if the page for it exists; so we don't render a link to it.
