@@ -33,6 +33,7 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     use Traits\HasProperties;
     use Traits\HasMethods;
     use Traits\UsesTraits;
+    use Traits\HasConstants;
 
     /**
      * @return Collection<MethodInterface>

@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
@@ -53,10 +56,29 @@ class TraitAssembler extends AssemblerAbstract
 
         $this->assembleDocBlock($data->getDocBlock(), $traitDescriptor);
 
+        $this->addConstants($data->getConstants(), $traitDescriptor);
         $this->addProperties($data->getProperties(), $traitDescriptor);
         $this->addMethods($data->getMethods(), $traitDescriptor);
 
         return $traitDescriptor;
+    }
+
+    /**
+     * Registers the child constants with the generated Class Descriptor.
+     *
+     * @param Constant[] $constants
+     */
+    protected function addConstants(array $constants, TraitDescriptor $traitDescriptor): void
+    {
+        foreach ($constants as $constant) {
+            $constantDescriptor = $this->getBuilder()->buildDescriptor($constant, ConstantDescriptor::class);
+            if ($constantDescriptor === null) {
+                continue;
+            }
+
+            $constantDescriptor->setParent($traitDescriptor);
+            $traitDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+        }
     }
 
     /**
