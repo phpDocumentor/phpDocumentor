@@ -39,14 +39,14 @@
 
 <div class="phpdocumentor-label-line">
 {% if node.isReadOnly %}
-    <div class="phpdocumentor-label phpdocumentor-label--success"><span>Read only</span><span>Yes</span></div>
+    {{ include('components/label.html.twig', {name: 'Read only', value: 'Yes'}, with_context = false) }}
 {% endif %}
 
 {% if node.isFinal %}
-    <div class="phpdocumentor-label phpdocumentor-label--success"><span>Final</span><span>Yes</span></div>
+    {{ include('components/label.html.twig', {name: 'Final', value: 'Yes'}, with_context = false) }}
 {% endif %}
 
 {% if node.isAbstract %}
-    <div class="phpdocumentor-label phpdocumentor-label--success"><span>Abstract</span><span>Yes</span></div>
+    {{ include('components/label.html.twig', {name: 'Abstract', value: 'Yes'}, with_context = false) }}
 {% endif %}
 </div>

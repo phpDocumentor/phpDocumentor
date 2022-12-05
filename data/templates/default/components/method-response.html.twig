@@ -1,8 +1,10 @@
-{% if (node.response.type and node.response.type != 'void') or node.response.description %}
-    <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">{{ node.response.type|route('class:short')|join('|')|raw }}</span>
-    {% if node.response %}
-        &mdash;
-        {{ include('components/description.html.twig', {'node': node.response}) }}
-    {% endif %}
+{% if (node.response.type and node.response.type != 'void' and node.response.type != 'mixed') or not node.response.description.empty %}
+        <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">{{ node.response.type|route('class:short')|join('|')|raw }}</span>
+        {% if not node.response.description.empty %}
+            &mdash;
+            {{ include('components/description.html.twig', {'node': node.response}) }}
+        {% endif %}
+    </section>
 {% endif %}
