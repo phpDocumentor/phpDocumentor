@@ -57,8 +57,7 @@ final class ListRule implements Rule
          # (or eol, if text starts on a new line)
         /ux';
 
-    /** @var MarkupLanguageParser */
-    private $parser;
+    private MarkupLanguageParser $parser;
 
     public function __construct(MarkupLanguageParser $parser)
     {

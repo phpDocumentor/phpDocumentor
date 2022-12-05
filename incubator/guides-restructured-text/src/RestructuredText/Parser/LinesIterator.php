@@ -18,8 +18,11 @@ use OutOfBoundsException;
 
 use function chr;
 use function explode;
+use function preg_replace_callback;
 use function sprintf;
+use function str_repeat;
 use function str_replace;
+use function strlen;
 use function trim;
 
 /**
@@ -28,16 +31,30 @@ use function trim;
 class LinesIterator implements Iterator
 {
     /** @var string[] */
-    private $lines = [];
-
-    /** @var int */
-    private $position = 0;
+    private array $lines = [];
+    private int $position = 0;
 
     public function load(string $document): void
     {
         $document = trim($this->prepareDocument($document));
         $this->lines = explode("\n", $document);
+
+        foreach ($this->lines as $key => $line) {
+            $this->lines[$key] = $this->tabToSpaces($line);
+        }
+
         $this->rewind();
+    }
+
+    private function tabToSpaces(string $line): string
+    {
+        $tabStop = 8;
+
+        return preg_replace_callback(
+            '/^(\t*)/',
+            static fn ($matches) => str_repeat(' ', strlen($matches[1]) * $tabStop),
+            $line
+        );
     }
 
     public function getNextLine(): ?string
