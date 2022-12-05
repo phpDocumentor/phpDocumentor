@@ -16,10 +16,12 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -88,24 +90,6 @@ final class TraitAssemblerTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Descriptor\Collection
-     * @uses \phpDocumentor\Descriptor\MethodDescriptor
-     *
-     * @covers ::create
-     */
-    public function testTraitWillHaveMethods(): void
-    {
-        $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));
-        $reflectedMethod = $this->givenReflectedMethodInTrait('method', $reflectedTrait);
-
-        $method = $this->whenDescriptorBuilderReturnsMethodBasedOn($reflectedMethod);
-
-        $result = $this->assembler->create($reflectedTrait);
-
-        self::assertSame($method, $result->getMethods()->fetch($reflectedMethod->getName(), false));
-    }
-
-    /**
-     * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\ConstantDescriptor
      *
      * @covers ::create
@@ -122,25 +106,40 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($method, $result->getConstants()->fetch($reflectedConstant->getName(), false));
     }
 
-    private function givenReflectedMethodInTrait(string $methodName, Trait_ $reflectedTrait): Method
+    /**
+     * @uses \phpDocumentor\Descriptor\Collection
+     * @uses \phpDocumentor\Descriptor\PropertyDescriptor
+     *
+     * @covers ::create
+     */
+    public function testTraitWillHaveProperties(): void
     {
-        $reflectedMethod = new Method(
-            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $methodName))
-        );
-        $reflectedTrait->addMethod($reflectedMethod);
+        $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));
+        $reflectedProperty = $this->givenReflectedPropertyInTrait('PROPERTY', $reflectedTrait);
 
-        return $reflectedMethod;
+        $method = $this->whenDescriptorBuilderReturnsPropertyBasedOn($reflectedProperty);
+
+        $result = $this->assembler->create($reflectedTrait);
+
+        self::assertSame($method, $result->getProperties()->fetch($reflectedProperty->getName(), false));
     }
 
-    private function whenDescriptorBuilderReturnsMethodBasedOn(Method $reflectedMethod): MethodDescriptor
+    /**
+     * @uses \phpDocumentor\Descriptor\Collection
+     * @uses \phpDocumentor\Descriptor\MethodDescriptor
+     *
+     * @covers ::create
+     */
+    public function testTraitWillHaveMethods(): void
     {
-        $method = new MethodDescriptor();
-        $method->setName($reflectedMethod->getName());
-        $this->builder->buildDescriptor($reflectedMethod, MethodDescriptor::class)
-            ->shouldBeCalled()
-            ->willReturn($method);
+        $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));
+        $reflectedMethod = $this->givenReflectedMethodInTrait('method', $reflectedTrait);
 
-        return $method;
+        $method = $this->whenDescriptorBuilderReturnsMethodBasedOn($reflectedMethod);
+
+        $result = $this->assembler->create($reflectedTrait);
+
+        self::assertSame($method, $result->getMethods()->fetch($reflectedMethod->getName(), false));
     }
 
     private function givenReflectedConstantInTrait(string $constantName, Trait_ $reflectedTrait): Constant
@@ -162,5 +161,47 @@ final class TraitAssemblerTest extends TestCase
             ->willReturn($constant);
 
         return $constant;
+    }
+
+    private function givenReflectedPropertyInTrait(string $propertyName, Trait_ $reflectedTrait): Property
+    {
+        $reflectedProperty = new Property(
+            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $propertyName))
+        );
+        $reflectedTrait->addProperty($reflectedProperty);
+
+        return $reflectedProperty;
+    }
+
+    private function whenDescriptorBuilderReturnsPropertyBasedOn(Property $reflectedProperty): PropertyDescriptor
+    {
+        $property = new PropertyDescriptor();
+        $property->setName($reflectedProperty->getName());
+        $this->builder->buildDescriptor($reflectedProperty, PropertyDescriptor::class)
+            ->shouldBeCalled()
+            ->willReturn($property);
+
+        return $property;
+    }
+
+    private function givenReflectedMethodInTrait(string $methodName, Trait_ $reflectedTrait): Method
+    {
+        $reflectedMethod = new Method(
+            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $methodName))
+        );
+        $reflectedTrait->addMethod($reflectedMethod);
+
+        return $reflectedMethod;
+    }
+
+    private function whenDescriptorBuilderReturnsMethodBasedOn(Method $reflectedMethod): MethodDescriptor
+    {
+        $method = new MethodDescriptor();
+        $method->setName($reflectedMethod->getName());
+        $this->builder->buildDescriptor($reflectedMethod, MethodDescriptor::class)
+            ->shouldBeCalled()
+            ->willReturn($method);
+
+        return $method;
     }
 }

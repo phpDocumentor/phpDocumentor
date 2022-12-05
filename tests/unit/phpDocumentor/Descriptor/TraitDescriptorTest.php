@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -25,10 +24,10 @@ use phpDocumentor\Reflection\Fqsen;
  */
 final class TraitDescriptorTest extends MockeryTestCase
 {
-    /** @var TraitDescriptor $fixture */
-    private $fixture;
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;
+
+    private TraitDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -43,10 +42,21 @@ final class TraitDescriptorTest extends MockeryTestCase
      * @covers ::setProperties
      * @covers ::getProperties
      */
+    public function testSettingAndGettingConstants(): void
+    {
+        $collection = new Collection();
+
+        $this->fixture->setConstants($collection);
+
+        $this->assertSame($collection, $this->fixture->getConstants());
+    }
+
+    /**
+     * @covers ::setProperties
+     * @covers ::getProperties
+     */
     public function testSettingAndGettingProperties(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
-
         $collection = new Collection();
 
         $this->fixture->setProperties($collection);
@@ -60,8 +70,6 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingMethods(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
-
         $collection = new Collection();
 
         $this->fixture->setMethods($collection);
@@ -70,49 +78,31 @@ final class TraitDescriptorTest extends MockeryTestCase
     }
 
     /**
-     * @covers ::getInheritedMethods
-     */
-    public function testGetInheritedMethods(): void
-    {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedMethods());
-
-        $collection = $this->fixture->getInheritedMethods();
-
-        $this->assertEquals(0, $collection->count());
-    }
-
-    /**
-     * @covers ::getInheritedProperties
-     */
-    public function testGetInheritedProperties(): void
-    {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getInheritedProperties());
-
-        $collection = $this->fixture->getInheritedProperties();
-
-        $this->assertEquals(0, $collection->count());
-    }
-
-    /**
      * @covers ::setPackage
      */
     public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();
-        $mockPropertyDescriptor = m::mock(PropertyDescriptor::class);
-        $mockPropertyDescriptor->shouldReceive('setPackage')->with($package);
 
-        $mockMethodDescriptor = m::mock(MethodDescriptor::class);
-        $mockMethodDescriptor->shouldReceive('setPackage')->with($package);
+        $propertyDescriptor = new PropertyDescriptor();
+        $propertyDescriptor->setPackage($package);
 
-        $propertyCollection = new Collection([$mockPropertyDescriptor]);
-        $methodCollection = new Collection([$mockMethodDescriptor]);
-        $this->fixture->setProperties($propertyCollection);
-        $this->fixture->setMethods($methodCollection);
+        $methodDescriptor = new MethodDescriptor();
+        $methodDescriptor->setPackage($package);
+
+        $constantDescriptor = new ConstantDescriptor();
+        $constantDescriptor->setPackage($package);
+
+        $this->fixture->setConstants(new Collection([$constantDescriptor]));
+        $this->fixture->setProperties(new Collection([$propertyDescriptor]));
+        $this->fixture->setMethods(new Collection([$methodDescriptor]));
 
         $this->fixture->setPackage($package);
 
         $this->assertSame($package, $this->fixture->getPackage());
+        $this->assertSame($package, $this->fixture->getConstants()->first()->getPackage());
+        $this->assertSame($package, $this->fixture->getProperties()->first()->getPackage());
+        $this->assertSame($package, $this->fixture->getMethods()->first()->getPackage());
     }
 
     /**
@@ -121,8 +111,6 @@ final class TraitDescriptorTest extends MockeryTestCase
      */
     public function testSettingAndGettingUsedTraits(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->fixture->getUsedTraits());
-
         $usedTraitsCollection = new Collection();
         $this->fixture->setUsedTraits($usedTraitsCollection);
 
