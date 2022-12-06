@@ -9,6 +9,8 @@ namespace Marios;
  */
 trait SharedTrait
 {
+    public const MY_CONSTANT = 'A';
+
     public Pizza\Base $base;
 
     protected string $sharedProperty;
