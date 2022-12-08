@@ -1709,7 +1709,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1753,7 +1753,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1786,7 +1786,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1821,7 +1821,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -1862,16 +1862,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "5.3.0",
+            "version": "5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "9887ef960405afc97e0e3da48be3656fa4a81a13"
+                "reference": "41cb981a699f757dc5bd75d99b277ffa1097e4aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/9887ef960405afc97e0e3da48be3656fa4a81a13",
-                "reference": "9887ef960405afc97e0e3da48be3656fa4a81a13",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/41cb981a699f757dc5bd75d99b277ffa1097e4aa",
+                "reference": "41cb981a699f757dc5bd75d99b277ffa1097e4aa",
                 "shasum": ""
             },
             "require": {
@@ -1891,8 +1891,8 @@
                 "phpstan/phpstan-php-parser": "^1.1",
                 "phpstan/phpstan-webmozart-assert": "^1.2",
                 "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.14.5",
-                "vimeo/psalm": "^4.25"
+                "rector/rector": "^0.15.0",
+                "vimeo/psalm": "^5.0"
             },
             "type": "library",
             "extra": {
@@ -1919,9 +1919,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
-                "source": "https://github.com/phpDocumentor/Reflection/tree/5.3.0"
+                "source": "https://github.com/phpDocumentor/Reflection/tree/5.3.1"
             },
-            "time": "2022-10-14T08:02:22+00:00"
+            "time": "2022-12-07T20:59:44+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
