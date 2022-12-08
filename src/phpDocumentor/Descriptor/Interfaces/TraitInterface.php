@@ -21,6 +21,21 @@ use phpDocumentor\Descriptor\Collection;
 interface TraitInterface extends ElementInterface, TypeInterface
 {
     /**
+     * @param Collection<ConstantInterface> $constants
+     */
+    public function setConstants(Collection $constants): void;
+
+    /**
+     * @return Collection<ConstantInterface>
+     */
+    public function getConstants(): Collection;
+
+    /**
+     * @return Collection<ConstantInterface>
+     */
+    public function getInheritedConstants(): Collection;
+
+    /**
      * Sets the properties associated with this trait.
      *
      * @param Collection<PropertyInterface> $properties

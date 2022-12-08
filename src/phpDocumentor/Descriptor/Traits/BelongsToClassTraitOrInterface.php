@@ -17,24 +17,28 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
-trait BelongsToClassOrInterface
+trait BelongsToClassTraitOrInterface
 {
-    /** @var ClassInterface|InterfaceInterface|null $parent */
+    /** @var ClassInterface|InterfaceInterface|TraitInterface|null $parent */
     protected ?ElementInterface $parent = null;
 
     /**
-     * Registers a parent class or interface with this constant.
+     * Registers a parent class, interface or trait.
      *
-     * @throws InvalidArgumentException If anything other than a class or interface was passed.
+     * @throws InvalidArgumentException If anything other than a class, interface or trait was passed.
      *
      * @inheritDoc
      */
     public function setParent($parent): void
     {
-        Assert::isInstanceOfAny($parent, [ClassInterface::class, InterfaceInterface::class]);
+        Assert::isInstanceOfAny(
+            $parent,
+            [ClassInterface::class, InterfaceInterface::class, TraitInterface::class]
+        );
 
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName())
@@ -44,7 +48,7 @@ trait BelongsToClassOrInterface
     }
 
     /**
-     * @return ClassInterface|InterfaceInterface|null
+     * @return ClassInterface|InterfaceInterface|TraitInterface|null
      */
     public function getParent(): ?ElementInterface
     {

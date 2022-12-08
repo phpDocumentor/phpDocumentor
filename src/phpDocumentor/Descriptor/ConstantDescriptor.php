@@ -33,7 +33,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
 {
     use Traits\CanBeFinal;
     use Traits\HasVisibility;
-    use Traits\BelongsToClassOrInterface;
+    use Traits\BelongsToClassTraitOrInterface;
     use Traits\CanHaveAType;
 
     protected string $value = '';
