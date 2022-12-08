@@ -15,6 +15,11 @@
     {{ include('components/element-found-in.html.twig', {'node': method}) }}
     {{ include('components/summary.html.twig', {'node': method}) }}
     {{ include('components/method-signature.html.twig', {'node': method}) }}
+    <div class="phpdocumentor-label-line">
+    {% if method.tags.api %}
+        {{ include('components/label.html.twig', {name: 'API', value: 'Yes'}, with_context = false) }}
+    {% endif %}
+    </div>
     {{ include('components/description.html.twig', {'node': method}) }}
     {{ include('components/method-arguments.html.twig', {'node': method}) }}
     {{ include('components/tags.html.twig', {'node': method }) }}
