@@ -1,0 +1,34 @@
+.phpdocumentor h1 .headerlink,
+.phpdocumentor h2 .headerlink,
+.phpdocumentor h3 .headerlink,
+.phpdocumentor h4 .headerlink,
+.phpdocumentor h5 .headerlink,
+.phpdocumentor h6 .headerlink
+{
+    display: none;
+}
+
+@media (min-width: {{ breakpoints['md'] }}) {
+    .phpdocumentor h1 .headerlink,
+    .phpdocumentor h2 .headerlink,
+    .phpdocumentor h3 .headerlink,
+    .phpdocumentor h4 .headerlink,
+    .phpdocumentor h5 .headerlink,
+    .phpdocumentor h6 .headerlink {
+        display: inline;
+        transition: all .3s ease-in-out;
+        opacity: 0;
+        text-decoration: none;
+        color: silver;
+        font-size: 80%;
+    }
+
+    .phpdocumentor h1:hover .headerlink,
+    .phpdocumentor h2:hover .headerlink,
+    .phpdocumentor h3:hover .headerlink,
+    .phpdocumentor h4:hover .headerlink,
+    .phpdocumentor h5:hover .headerlink,
+    .phpdocumentor h6:hover .headerlink {
+        opacity: 1;
+    }
+}

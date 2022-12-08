@@ -4,7 +4,7 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="{{ link(node) }}#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            {{ include('components/headerlink.html.twig', {'on': node, 'at': 'properties'}, with_context = false) }}
         </h3>
         {% for property in properties %}
             {% include 'components/property.html.twig' %}

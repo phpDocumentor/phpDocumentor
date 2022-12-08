@@ -11,7 +11,7 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_{{ property.name }}">
         ${{ property.name }}
-        <a href="{{ link(property) }}" class="headerlink"><i class="fas fa-link"></i></a>
+        {{ include('components/headerlink.html.twig', {'on': property}, with_context = false) }}
         <span class="phpdocumentor-element__modifiers">
             {% if property.writeOnly %}<small class="phpdocumentor-element__modifier">write-only</small>{% endif %}
             {% if property.readOnly %}<small class="phpdocumentor-element__modifier">read-only</small>{% endif %}
