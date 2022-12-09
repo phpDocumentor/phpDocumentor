@@ -1,7 +1,7 @@
 <article class="phpdocumentor-element -constant -{{ constant.visibility }} {% if constant.deprecated %}-deprecated{% endif %}">
     <h4 class="phpdocumentor-element__name" id="constant_{{ constant.name }}">
         {{ constant.name }}
-        <a href="{{ link(constant) }}" class="headerlink"><i class="fas fa-link"></i></a>
+        {{ include('components/headerlink.html.twig', {'on': constant}, with_context = false) }}
     </h4>
 
     {{ include('components/element-found-in.html.twig', {'node': constant}) }}

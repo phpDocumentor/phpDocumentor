@@ -3,7 +3,7 @@
 {% if tags|length > 0 and tags|first|length > 0 %}
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        {{ include('components/headerlink.html.twig', {'on': node, 'at': 'tags'}, with_context = false) }}
     </h5>
     <dl class="phpdocumentor-tag-list">
         {% for name,seriesOfTag in tags %}
