@@ -12,3 +12,4 @@ several configuration options and -for advanced use- you can even override piece
     :maxdepth: 2
 
     changing-the-color
+    adding-your-own-navigation
