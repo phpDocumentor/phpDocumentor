@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4a7155bdd0ee75452489caf583ba72c",
+    "content-hash": "280d20254f5c493818b0fdf9c7aa1b97",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1709,7 +1709,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1753,7 +1753,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1786,7 +1786,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1821,7 +1821,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -5602,16 +5602,16 @@
         },
         {
             "name": "psalm/phar",
-            "version": "4.30.0",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "33723713902e1345904a5c9064ef7848bee0d490"
+                "reference": "921a18ca58540c7c528f492a290d59e0eb04452f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/33723713902e1345904a5c9064ef7848bee0d490",
-                "reference": "33723713902e1345904a5c9064ef7848bee0d490",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/921a18ca58540c7c528f492a290d59e0eb04452f",
+                "reference": "921a18ca58540c7c528f492a290d59e0eb04452f",
                 "shasum": ""
             },
             "require": {
@@ -5631,9 +5631,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/4.30.0"
+                "source": "https://github.com/psalm/phar/tree/5.3.0"
             },
-            "time": "2022-11-06T20:41:58+00:00"
+            "time": "2022-12-18T18:45:10+00:00"
         }
     ],
     "aliases": [],
