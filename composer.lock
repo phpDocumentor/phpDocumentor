@@ -306,16 +306,16 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.2022.13",
+            "version": "v1.2022.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "81b7ab481083dab9ef57e7a2fa16e2251348f585"
+                "reference": "dc43871e626dcc6dbd0528d45e11bd11c8c1f247"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/81b7ab481083dab9ef57e7a2fa16e2251348f585",
-                "reference": "81b7ab481083dab9ef57e7a2fa16e2251348f585",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/dc43871e626dcc6dbd0528d45e11bd11c8c1f247",
+                "reference": "dc43871e626dcc6dbd0528d45e11bd11c8c1f247",
                 "shasum": ""
             },
             "bin": [
@@ -341,9 +341,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jawira/plantuml/issues",
-                "source": "https://github.com/jawira/plantuml/tree/v1.2022.13"
+                "source": "https://github.com/jawira/plantuml/tree/v1.2022.14"
             },
-            "time": "2022-11-25T14:00:52+00:00"
+            "time": "2022-12-09T14:00:51+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -1709,7 +1709,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides",
@@ -1753,7 +1753,7 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-markdown",
@@ -1786,7 +1786,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/guides-restructured-text",
@@ -1821,7 +1821,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
