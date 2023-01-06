@@ -7,7 +7,7 @@
         {% apply spaceless %}
         <tag
                 name="{{ tag.name }}"
-                description="{{ tag.description }}"
+                description="{{ tag.description|e|replace({"\n": "&#10;"})|raw }}"
                 {% if tag.link %} link="{{ tag.link }}"{% endif %}
                 {% if tag.version %} version="{{ tag.version }}"{% endif %}
                 {% if tag.reference %} link="{{ tag.reference }}"{% endif %}
