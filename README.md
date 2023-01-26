@@ -14,7 +14,7 @@ What is phpDocumentor?
 phpDocumentor is an application that is capable of analyzing your PHP source code and
 DocBlock comments to generate a complete set of API Documentation.
 
-Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date with the latest technologies and PHP language features.
+Inspired by phpDocumentor 1 and JavaDoc, it continues to innovate and is up to date with the latest technologies and PHP language features.
 
 phpDocumentor v3 (Stable)
 ------------------------------------
@@ -24,7 +24,7 @@ v3 is the latest stable release.
 Documentation
 -------------
 
-For more detailed information you can check our online documentation at https://docs.phpdoc.org/.
+For more detailed information, you can check our online documentation at https://docs.phpdoc.org/.
 
 Features
 --------
