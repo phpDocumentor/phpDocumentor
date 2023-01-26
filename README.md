@@ -34,7 +34,7 @@ phpDocumentor supports the following:
 * *PHP 7.0+ compatible*, full support for Namespaces, Closures and more are provided.
 * *Docblock over types*, docblocks can be more explicit about types not all formats are supported by native php.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
-* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
+* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB, and large frameworks 100MB.
 * *Incremental parsing*, if you kept the Structure file from a previous run, you get an additional performance boost of up
   to 80% on top of the mentioned processing speed increase above.
 * *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
