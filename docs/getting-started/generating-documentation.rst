@@ -1,17 +1,17 @@
 Generating documentation
 ========================
 
-After you have :doc:`installed<installing>` phpDocumentor you can use the ``phpdoc`` command to generate
+After you have :doc:`installed<installed>` phpDocumentor, you can use the ``phpdoc`` command to generate
 your documentation.
 
-Throughout this documentation we expect that the ``phpdoc`` command is available; thus whenever we ask you
+Throughout this documentation, we expect that the ``phpdoc`` command is available; so whenever we ask you
 to run a command, it will be in the following form
 
 .. code-block:: shell-session
 
     $ phpdoc
 
-When you have installed a version via composer or manually you should invoke the ``phpdoc`` script in
+When you have installed a version via composer or manually, you should invoke the ``phpdoc`` script in
 the ``bin`` folder of your phpDocumentor installation.
 
 Under Linux / MacOSX that would be
@@ -36,8 +36,8 @@ For example:
 
     $ phpdoc -d ./src -t ./docs/api
 
-What the above example does, is scan all files in the ``src`` directory and its subdirectories, perform
-an analysis and generate a website containing the documentation in the folder ``docs/api``. If you want,
+The above example scans all files in the ``src`` directory and its subdirectories, performs
+an analysis, and generates a website containing the documentation in the folder ``docs/api``. If you want,
 you can omit the ``-t`` option, in which case the output will be written to a subfolder called ``output``.
 
 Read more
