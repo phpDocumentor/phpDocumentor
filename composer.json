@@ -91,7 +91,7 @@
         "fzaninotto/faker": "^1.9",
         "mikey179/vfsstream": "^1.2",
         "mockery/mockery": "^1.0",
-        "psalm/phar": "^4.17"
+        "psalm/phar": "^5.6"
     },
     "config": {
         "bin-dir":"bin/",
