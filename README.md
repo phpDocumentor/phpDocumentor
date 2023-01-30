@@ -14,7 +14,7 @@ What is phpDocumentor?
 phpDocumentor is an application that is capable of analyzing your PHP source code and
 DocBlock comments to generate a complete set of API Documentation.
 
-Inspired by phpDocumentor 1 and JavaDoc it continues to innovate and is up to date with the latest technologies and PHP language features.
+Inspired by phpDocumentor 1 and JavaDoc, it continues to innovate and is up to date with the latest technologies and PHP language features.
 
 phpDocumentor v3 (Stable)
 ------------------------------------
@@ -24,7 +24,7 @@ v3 is the latest stable release.
 Documentation
 -------------
 
-For more detailed information you can check our online documentation at https://docs.phpdoc.org/.
+For more detailed information, you can check our online documentation at https://docs.phpdoc.org/.
 
 Features
 --------
@@ -34,7 +34,7 @@ phpDocumentor supports the following:
 * *PHP 7.0+ compatible*, full support for Namespaces, Closures and more are provided.
 * *Docblock over types*, docblocks can be more explicit about types not all formats are supported by native php.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
-* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB and large frameworks 100MB.
+* *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB, and large frameworks 100MB.
 * *Incremental parsing*, if you kept the Structure file from a previous run, you get an additional performance boost of up
   to 80% on top of the mentioned processing speed increase above.
 * *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
@@ -54,7 +54,7 @@ This will require the application [Graphviz] to be installed on the machine runn
 Rendering the class diagrams using [Graphviz] is optional, and warnings about missing [Graphviz] can be ignored.
 However, your documentation will contain some dead links in this case. Class diagram will be created with option `--setting=graphs.enabled=true`.
 
-There are 3 ways to install phpDocumentor:
+There are 4 ways to install phpDocumentor:
 
 1. Using phive (recommended)
 2. Using the PHAR (manual install)
