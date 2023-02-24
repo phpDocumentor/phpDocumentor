@@ -24,6 +24,8 @@ final class SymfonyConfigFactoryTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
+    private SymfonyConfigFactory $fixture;
+
     /**
      * @covers ::createDefault
      */

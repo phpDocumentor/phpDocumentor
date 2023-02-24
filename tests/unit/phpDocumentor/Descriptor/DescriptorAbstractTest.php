@@ -182,7 +182,7 @@ class DescriptorAbstractTest extends MockeryTestCase
             DescriptorAbstract::class,
             ChildInterface::class
         );
-        $mock->shouldDeferMissing();
+        $mock->makePartial();
 
         $author = new Collection(['author']);
 
@@ -203,7 +203,7 @@ class DescriptorAbstractTest extends MockeryTestCase
             DescriptorAbstract::class,
             ChildInterface::class
         );
-        $mock->shouldDeferMissing();
+        $mock->makePartial();
 
         $version = new Collection(['version']);
 
@@ -224,7 +224,7 @@ class DescriptorAbstractTest extends MockeryTestCase
             DescriptorAbstract::class,
             ChildInterface::class
         );
-        $mock->shouldDeferMissing();
+        $mock->makePartial();
 
         $copyright = new Collection(['copyright']);
 
