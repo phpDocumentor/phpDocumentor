@@ -16,8 +16,11 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Guides\Renderer;
+use phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer;
+use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\Twig\AssetsExtension;
+use phpDocumentor\Guides\Twig\EnvironmentBuilder;
+use phpDocumentor\Guides\Twig\TwigRenderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -53,9 +56,10 @@ final class EnvironmentFactoryTest extends TestCase
             $markDownConverter->reveal(),
             new AssetsExtension(
                 new TestLogger(),
-                $this->prophesize(Renderer::class)->reveal(),
+                new TwigRenderer([], $this->prophesize(EnvironmentBuilder::class)->reveal()),
                 new UrlGenerator()
-            )
+            ),
+            new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal())
         );
     }
 
@@ -72,7 +76,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(6, $environment->getExtensions());
+        $this->assertCount(7, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
@@ -120,7 +124,7 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(6, $environment->getExtensions());
+        $this->assertCount(7, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }

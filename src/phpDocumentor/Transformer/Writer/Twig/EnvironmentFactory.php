@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
@@ -34,15 +35,18 @@ class EnvironmentFactory
     /** @var ConverterInterface */
     private $markDownConverter;
     private AssetsExtension $assetsExtension;
+    private UmlExtension $umlExtension;
 
     public function __construct(
         LinkRenderer $renderer,
         ConverterInterface $markDownConverter,
-        AssetsExtension $assetsExtension
+        AssetsExtension $assetsExtension,
+        UmlExtension $umlExtension
     ) {
         $this->renderer = $renderer;
         $this->markDownConverter = $markDownConverter;
         $this->assetsExtension = $assetsExtension;
+        $this->umlExtension = $umlExtension;
     }
 
     public function withTemplateOverridesAt(Path $path): void
@@ -83,6 +87,7 @@ class EnvironmentFactory
         $extension = new Extension($project, $this->markDownConverter, $this->renderer);
         $twigEnvironment->addExtension($extension);
         $twigEnvironment->addExtension($this->assetsExtension);
+        $twigEnvironment->addExtension($this->umlExtension);
     }
 
     private function enableDebug(Environment $twigEnvironment): void

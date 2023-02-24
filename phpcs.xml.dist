@@ -3,13 +3,8 @@
     <description>The coding standard for phpDocumentor.</description>
 
     <file>src</file>
-    <file>incubator/guides/src</file>
-    <file>incubator/guides-restructured-text/src</file>
-    <file>incubator/guides-markdown/src</file>
     <file>incubator/json-path/src</file>
     <file>tests/unit</file>
-    <file>incubator/guides/tests/unit</file>
-    <file>incubator/guides-restructured-text/tests/unit</file>
     <file>incubator/json-path/tests/unit</file>
     <arg value="p"/>
     <arg name="extensions" value="php"/>
@@ -66,7 +61,6 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
-        <exclude-pattern>*/incubator/guides-restructured-text/tests/unit/**</exclude-pattern>
         <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
         <exclude-pattern>*/tests/unit/phpDocumentor/Compiler/Pass/TableOfContentsBuilderTest\.php$</exclude-pattern>
     </rule>
@@ -117,7 +111,7 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
          <exclude-pattern>*/tests/*</exclude-pattern>
     </rule>
-    
+
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
             <property name="linesCountBeforeDeclare" value="1"/>

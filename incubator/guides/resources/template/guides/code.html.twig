@@ -1,6 +1,0 @@
-{% if node.raw %}
-    {# see the RawDirective for where this is coming from; a refactor is desired to move this onto its own template / renderer #}
-    {{ node.value|raw }}
-{% else %}
-<pre><code class="language-{{ node.language }} {{ node.startingLineNumber ? 'line-numbers' }}" {{ node.startingLineNumber ? 'data-start=' ~ node.startingLineNumber }}>{{ node.value }}</code></pre>
-{% endif %}

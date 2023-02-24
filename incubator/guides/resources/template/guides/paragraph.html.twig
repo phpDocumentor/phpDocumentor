@@ -1,7 +1,0 @@
-{% apply spaceless %}
-    {% set text = renderNode(node.value) %}
-
-    {% if text %}
-        <p{% if node.classes %} class="{{ node.classesString }}"{% endif %}>{{ text|raw }}</p>
-    {% endif %}
-{% endapply %}

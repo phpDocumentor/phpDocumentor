@@ -25,9 +25,6 @@
         }
     },
     "repositories": [
-        { "type": "path", "url": "incubator/guides" },
-        { "type": "path", "url": "incubator/guides-restructured-text" },
-        { "type": "path", "url": "incubator/guides-markdown" },
         { "type": "path", "url": "incubator/json-path" }
     ],
     "require": {
@@ -46,14 +43,15 @@
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
         "league/tactician-bundle": "^1.2",
-        "league/uri": "~6.5.0",
+        "league/uri": "^6.7",
         "league/uri-interfaces": "^2.0",
         "nikic/php-parser": "^4.14",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
-        "phpdocumentor/guides": "*@dev",
-        "phpdocumentor/guides-markdown": "*@dev",
-        "phpdocumentor/guides-restructured-text": "*@dev",
+        "phpdocumentor/guides": "dev-main@dev",
+        "phpdocumentor/guides-graphs": "dev-main@dev",
+        "phpdocumentor/guides-markdown": "dev-main@dev",
+        "phpdocumentor/guides-restructured-text": "dev-main@dev",
         "phpdocumentor/json-path": "*@dev",
         "phpdocumentor/reflection": "^5.3",
         "phpdocumentor/reflection-common": "^2.0",

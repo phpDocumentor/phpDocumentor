@@ -16,43 +16,46 @@ services:
       tags: ['phpdoc.guides.reference.resolver']
     phpDocumentor\Guides\RestructuredText\Directives\Directive:
       tags: ['phpdoc.guides.directive']
+    phpDocumentor\Guides\Compiler\NodeTransformer:
+      tags: ['phpdoc.guides.compiler.nodeTransformers']
+    phpDocumentor\Guides\Compiler\CompilerPass:
+      tags: ['phpdoc.guides.compiler.passes']
 
   Doctrine\Common\EventManager: ~
-
-  phpdoc.app.guides:
-    namespace: phpDocumentor\Guides\
-    resource: '../src/phpDocumentor/Guides/*'
 
   phpdoc.guides:
     namespace: phpDocumentor\Guides\
     exclude:
-      - '../incubator/guides/src/Events/*'
-      - '../incubator/guides/src/Nodes/*'
-      - '../incubator/guides/src/Meta/Entry'
-      - '../incubator/guides/src/Span/*'
-    resource: '../incubator/guides/src/*'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Events/*'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Nodes/*'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Meta/Entry'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src'
 
   phpdoc.guides.markdown:
     namespace: phpDocumentor\Guides\
-    resource: '../incubator/guides-markdown/src/*'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-markdown/src/*'
+
+  phpdoc.guides.graphs:
+    namespace: phpDocumentor\Guides\
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-graphs/src'
 
   phpdoc.guides.restructuredtext:
     namespace: phpDocumentor\Guides\
     exclude:
       # Explicitly exclude the parser itself as the output $format dictates how it is used; as such, a parser should
       # always be explicitly passed through the use of the named services defined
-      - '../incubator/guides-restructured-text/src/RestructuredText/MarkupLanguageParser.php'
-      - '../incubator/guides-restructured-text/src/RestructuredText/Event/*'
-      - '../incubator/guides-restructured-text/src/RestructuredText/OutputFormat.php'
-      - '../incubator/guides-restructured-text/src/RestructuredText/Parser/{Buffer,Directive,DirectiveOption,LinesIterator,TableSeparatorLineConfig}.php'
-    resource: '../incubator/guides-restructured-text/src/*'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/MarkupLanguageParser.php'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/Event/*'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/OutputFormat.php'
+      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/Parser/{Buffer,Directive,DirectiveOption,LinesIterator,TableSeparatorLineConfig}.php'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/*'
 
   phpDocumentor\Guides\NodeRenderers\Html\:
-    resource: '../incubator/guides/src/NodeRenderers/Html/**'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
   phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\:
-    resource: '../incubator/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
     tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
 
   phpdoc.app.guides.handlers:
@@ -62,7 +65,7 @@ services:
 
   phpdoc.guides.handlers:
     namespace: phpDocumentor\Guides\Handlers\
-    resource: '../incubator/guides/src/Handlers/*Handler.php'
+    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Handlers/*Handler.php'
     tags: [{name: tactician.handler, typehints: true}]
 
   phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
@@ -103,10 +106,15 @@ services:
 
   phpDocumentor\Guides\RestructuredText\MarkupLanguageParser:
     arguments:
+      $startingRule: '@phpDocumentor\Guides\RestructuredText\Parser\Productions\DocumentRule'
       $directives: !tagged_iterator phpdoc.guides.directive
     tags: ['phpdoc.guides.parser.markupLanguageParser']
 
-  phpDocumentor\Guides\Renderer:
+  phpDocumentor\Guides\RestructuredText\Parser\Productions\DocumentRule:
+    arguments:
+      $directiveHandlers: !tagged_iterator phpdoc.guides.directive
+
+  phpDocumentor\Guides\Twig\TwigRenderer:
     arguments:
       $outputFormatRenderers: !tagged_iterator phpdoc.guides.renderer
 
@@ -207,3 +215,15 @@ services:
   phpDocumentor\Guides\References\ReferenceResolver:
     arguments:
       $resolvers: !tagged_iterator phpdoc.guides.reference.resolver
+
+  phpDocumentor\Guides\Compiler\DocumentNodeTraverser:
+    arguments:
+      $transformers: !tagged_iterator phpdoc.guides.compiler.nodeTransformers
+
+  phpDocumentor\Guides\Compiler\Compiler:
+    arguments:
+      $passes: !tagged_iterator phpdoc.guides.compiler.passes
+
+  phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer:
+    arguments:
+      $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'

@@ -16,7 +16,6 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 use phpDocumentor\Guides\Nodes\DocumentNode;
-use phpDocumentor\Guides\Nodes\TocNode;
 
 final class DocumentDescriptor implements Descriptor
 {
@@ -28,41 +27,26 @@ final class DocumentDescriptor implements Descriptor
     private string $file;
     private string $title;
 
-    /** @var string[][] */
-    private array $titles;
-
-    /** @var TocNode[] */
-    private array $tocs;
-
-    /** @var string[] */
-    private array $depends;
-
-    /**
-     * @param string[][] $titles
-     * @param TocNode[] $tocs
-     * @param string[] $depends
-     */
     public function __construct(
         DocumentNode $documentNode,
         string $hash,
         string $file,
-        string $title,
-        array $titles,
-        array $tocs,
-        array $depends
+        string $title
     ) {
         $this->documentNode = $documentNode;
         $this->hash = $hash;
         $this->file = $file;
         $this->title = $title;
-        $this->titles = $titles;
-        $this->tocs = $tocs;
-        $this->depends = $depends;
     }
 
     public function getDocumentNode(): DocumentNode
     {
         return $this->documentNode;
+    }
+
+    public function setDocumentNode(DocumentNode $documentNode): void
+    {
+        $this->documentNode = $documentNode;
     }
 
     public function getHash(): string
@@ -78,24 +62,6 @@ final class DocumentDescriptor implements Descriptor
     public function getTitle(): string
     {
         return $this->title;
-    }
-
-    /** @return string[][] */
-    public function getTitles(): array
-    {
-        return $this->titles;
-    }
-
-    /** @return TocNode[] */
-    public function getTocs(): array
-    {
-        return $this->tocs;
-    }
-
-    /** @return string[] */
-    public function getDepends(): array
-    {
-        return $this->depends;
     }
 
     public function getName(): string

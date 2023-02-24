@@ -15,28 +15,25 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
+use phpDocumentor\Guides\Meta\DocumentReferenceEntry;
+use phpDocumentor\Guides\Meta\SectionEntry;
 use phpDocumentor\Transformer\Router\Router;
-use Psr\Log\LoggerInterface;
 
 use function ltrim;
-use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
     private Router $router;
-    private LoggerInterface $logger;
 
-    public function __construct(Router $router, LoggerInterface $logger)
+    public function __construct(Router $router)
     {
         $this->router = $router;
-        $this->logger = $logger;
     }
 
     public function getDescription(): string
@@ -80,7 +77,12 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 }
 
                 $guideToc = new TocDescriptor($index->getTitle());
-                $this->createGuideEntries($index, $documents, $guideToc);
+                $this->createGuideEntries(
+                    $index,
+                    $documentationSet->getMetas()->findDocument($index->getFile()),
+                    $documentationSet,
+                    $guideToc
+                );
 
                 $documentationSet->addTableOfContents($guideToc);
             }
@@ -109,39 +111,64 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         }
     }
 
-    /** @param Collection<DocumentDescriptor> $documents */
     private function createGuideEntries(
         DocumentDescriptor $documentDescriptor,
-        Collection $documents,
+        \phpDocumentor\Guides\Meta\Entry $metaEntry,
+        GuideSetDescriptor $guideSetDescriptor,
         TocDescriptor $guideToc,
         ?Entry $parent = null
     ): void {
-        foreach ($documentDescriptor->getTocs() as $toc) {
-            foreach ($toc->getFiles() as $file) {
-                $subDocument = $documents->fetch(ltrim($file, '/'));
-                if ($subDocument === null) {
-                    $this->logger->error(sprintf('Toc contains a link to a missing document %s', $file));
-                    continue;
+        $metas = $guideSetDescriptor->getMetas();
+
+        foreach ($metaEntry->getChildren() as $metaChild) {
+            if ($metaChild instanceof DocumentReferenceEntry) {
+                $refMetaData = $metas->findDocument(ltrim($metaChild->getFile(), '/'));
+                if ($refMetaData !== null) {
+                    $refDocument = $guideSetDescriptor->getDocuments()->get($refMetaData->getFile());
+                    $entry = new Entry(
+                        'guide/' . ltrim($this->router->generate($refDocument), '/')
+                        . '#' . $refMetaData->getTitle()->getId(),
+                        $refMetaData->getTitle()->getId(),
+                        $parent !== null ? $parent->getUrl() : null
+                    );
+
+                    if ($parent !== null) {
+                        $parent->addChild($entry);
+                    }
+
+                    $guideToc->addEntry($entry);
+
+                    if ($refDocument->getFile() === $documentDescriptor->getFile()) {
+                        continue;
+                    }
+
+                    $this->createGuideEntries($refDocument, $refMetaData, $guideSetDescriptor, $guideToc, $entry);
                 }
-
-                $entry = new Entry(
-                    'guide/' . ltrim($this->router->generate($subDocument), '/'),
-                    $subDocument->getTitle(),
-                    $parent !== null ? $parent->getUrl() : null
-                );
-
-                if ($parent !== null) {
-                    $parent->addChild($entry);
-                }
-
-                $guideToc->addEntry($entry);
-
-                if ($subDocument->getFile() === $documentDescriptor->getFile()) {
-                    continue;
-                }
-
-                $this->createGuideEntries($subDocument, $documents, $guideToc, $entry);
             }
+
+            if (!($metaChild instanceof SectionEntry)) {
+                continue;
+            }
+
+            if ($metaChild->getTitle()->getId() === $documentDescriptor->getDocumentNode()->getTitle()->getId()) {
+                $this->createGuideEntries($documentDescriptor, $metaChild, $guideSetDescriptor, $guideToc, $parent);
+                continue;
+            }
+
+            $entry = new Entry(
+                'guide/' . ltrim($this->router->generate($documentDescriptor), '/')
+                . '#' . $metaChild->getTitle()->getId(),
+                $metaChild->getTitle()->getId(),
+                $parent !== null ? $parent->getUrl() : null
+            );
+
+            if ($parent !== null) {
+                $parent->addChild($entry);
+            }
+
+            $guideToc->addEntry($entry);
+
+            $this->createGuideEntries($documentDescriptor, $metaChild, $guideSetDescriptor, $guideToc, $entry);
         }
     }
 }

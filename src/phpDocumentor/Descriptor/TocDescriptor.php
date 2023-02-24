@@ -18,6 +18,8 @@ final class TocDescriptor implements Descriptor
     /** @var Collection<Entry> */
     private Collection $entries;
 
+    private int $count = 0;
+
     public function __construct(string $name)
     {
         $this->setName($name);
@@ -26,7 +28,7 @@ final class TocDescriptor implements Descriptor
 
     public function addEntry(TableOfContents\Entry $entry): void
     {
-        $this->entries->set($entry->getUrl(), $entry);
+        $this->entries->set($this->count++, $entry);
     }
 
     /** @return Collection<Entry> */
