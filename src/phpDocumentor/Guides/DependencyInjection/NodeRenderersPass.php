@@ -31,6 +31,7 @@ final class NodeRenderersPass implements CompilerPassInterface
                     )
                 )->setAutowired(true)->addTag('phpdoc.guides.noderenderer.html')
             );
+            $count++;
         }
 
         $container->setDefinition(
