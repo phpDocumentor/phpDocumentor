@@ -128,7 +128,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                     $entry = new Entry(
                         'guide/' . ltrim($this->router->generate($refDocument), '/')
                         . '#' . $refMetaData->getTitle()->getId(),
-                        $refMetaData->getTitle()->getId(),
+                        $refMetaData->getTitle()->toString(),
                         $parent !== null ? $parent->getUrl() : null
                     );
 
@@ -158,7 +158,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
             $entry = new Entry(
                 'guide/' . ltrim($this->router->generate($documentDescriptor), '/')
                 . '#' . $metaChild->getTitle()->getId(),
-                $metaChild->getTitle()->getId(),
+                $metaChild->getTitle()->toString(),
                 $parent !== null ? $parent->getUrl() : null
             );
 
