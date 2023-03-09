@@ -175,37 +175,35 @@
         },
         {
             "name": "doctrine/event-manager",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/event-manager.git",
-                "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f"
+                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/41370af6a30faa9dc0368c4a6814d596e81aba7f",
-                "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f",
+                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/95aa4cb529f1e96576f3fda9f5705ada4056a520",
+                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520",
                 "shasum": ""
             },
             "require": {
+                "doctrine/deprecations": "^0.5.3 || ^1",
                 "php": "^7.1 || ^8.0"
             },
             "conflict": {
-                "doctrine/common": "<2.9@dev"
+                "doctrine/common": "<2.9"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0",
-                "phpunit/phpunit": "^7.0"
+                "doctrine/coding-standard": "^9 || ^10",
+                "phpstan/phpstan": "~1.4.10 || ^1.8.8",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+                "vimeo/psalm": "^4.24"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\": "lib/Doctrine/Common"
+                    "Doctrine\\Common\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -249,7 +247,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/event-manager/issues",
-                "source": "https://github.com/doctrine/event-manager/tree/1.1.x"
+                "source": "https://github.com/doctrine/event-manager/tree/1.2.0"
             },
             "funding": [
                 {
@@ -265,7 +263,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-29T18:28:51+00:00"
+            "time": "2022-10-12T20:51:15+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1758,19 +1756,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "66fe56bbc8308b0382174cda8412552b06d630dc"
+                "reference": "8fea076210de4226032eb024e0d581771e46b04d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/66fe56bbc8308b0382174cda8412552b06d630dc",
-                "reference": "66fe56bbc8308b0382174cda8412552b06d630dc",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/8fea076210de4226032eb024e0d581771e46b04d",
+                "reference": "8fea076210de4226032eb024e0d581771e46b04d",
                 "shasum": ""
             },
             "require": {
                 "league/flysystem": "^1.0",
                 "league/tactician": "^1.1",
                 "league/uri": "^6.5",
-                "php": ">=7.2.5||^8.0",
+                "php": "^7.4||^8.0",
                 "phpdocumentor/flyfinder": "^1.1",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/string": "^5.4",
@@ -1797,7 +1795,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
                 "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-02-24T22:26:04+00:00"
+            "time": "2023-03-09T20:42:07+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1842,12 +1840,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "ed97f9c89fe334edadab021a473ea34a10c1f89d"
+                "reference": "502b7e210882cb21e516b4fb8afde66814f61fdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/ed97f9c89fe334edadab021a473ea34a10c1f89d",
-                "reference": "ed97f9c89fe334edadab021a473ea34a10c1f89d",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/502b7e210882cb21e516b4fb8afde66814f61fdc",
+                "reference": "502b7e210882cb21e516b4fb8afde66814f61fdc",
                 "shasum": ""
             },
             "require": {
@@ -1870,7 +1868,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
                 "source": "https://github.com/phpDocumentor/guides-markdown/tree/main"
             },
-            "time": "2023-02-24T16:46:48+00:00"
+            "time": "2023-02-28T22:42:58+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
@@ -1878,18 +1876,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "3264b07edbad4cf82a3fecb0eeac19069cb0042c"
+                "reference": "0bde3822dd4d702ae3f9ee07d046a5eafb2723c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/3264b07edbad4cf82a3fecb0eeac19069cb0042c",
-                "reference": "3264b07edbad4cf82a3fecb0eeac19069cb0042c",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/0bde3822dd4d702ae3f9ee07d046a5eafb2723c4",
+                "reference": "0bde3822dd4d702ae3f9ee07d046a5eafb2723c4",
                 "shasum": ""
             },
             "require": {
-                "doctrine/event-manager": "^1.1",
+                "doctrine/event-manager": "^1.2",
                 "doctrine/lexer": "^2.1",
-                "php": ">=7.2.5||^8.0",
+                "php": "^7.4||^8.0",
                 "webmozart/assert": "^1.11"
             },
             "default-branch": true,
@@ -1907,7 +1905,7 @@
             "support": {
                 "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-02-27T21:51:41+00:00"
+            "time": "2023-03-09T20:42:07+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
