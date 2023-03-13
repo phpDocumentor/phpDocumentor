@@ -80,6 +80,9 @@ services:
       phpDocumentor\Transformer\Writer\WriterAbstract:
         tags: ['phpdoc.transformer.writer']
 
+      phpDocumentor\Guides\References\Resolver\Resolver:
+        tags: ['phpdoc.guides.reference.resolver']
+
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
     ###################################################################################
@@ -90,7 +93,7 @@ services:
           - '../src/phpDocumentor/**/Messages'
           - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
-          - '../src/phpDocumentor/Guides'
+          - '../src/phpDocumentor/Guides/RenderCommand.php'
 
     phpDocumentor\Console\:
         resource: '../src/phpDocumentor/Console'
