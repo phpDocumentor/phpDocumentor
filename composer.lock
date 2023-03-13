@@ -1756,15 +1756,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "8fea076210de4226032eb024e0d581771e46b04d"
+                "reference": "592a31bf9dc9a5ed077f2452c81492bd48b560a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/8fea076210de4226032eb024e0d581771e46b04d",
-                "reference": "8fea076210de4226032eb024e0d581771e46b04d",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/592a31bf9dc9a5ed077f2452c81492bd48b560a5",
+                "reference": "592a31bf9dc9a5ed077f2452c81492bd48b560a5",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "league/flysystem": "^1.0",
                 "league/tactician": "^1.1",
                 "league/uri": "^6.5",
@@ -1795,7 +1796,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
                 "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-03-09T20:42:07+00:00"
+            "time": "2023-03-12T15:21:12+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1876,12 +1877,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "0bde3822dd4d702ae3f9ee07d046a5eafb2723c4"
+                "reference": "e64cfa800a3df6150be9d888dc3469f8295b7219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/0bde3822dd4d702ae3f9ee07d046a5eafb2723c4",
-                "reference": "0bde3822dd4d702ae3f9ee07d046a5eafb2723c4",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/e64cfa800a3df6150be9d888dc3469f8295b7219",
+                "reference": "e64cfa800a3df6150be9d888dc3469f8295b7219",
                 "shasum": ""
             },
             "require": {
@@ -1905,7 +1906,7 @@
             "support": {
                 "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-03-09T20:42:07+00:00"
+            "time": "2023-03-11T13:59:41+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
