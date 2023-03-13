@@ -94,6 +94,7 @@ services:
           - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
           - '../src/phpDocumentor/Guides/RenderCommand.php'
+          - '../src/phpDocumentor/Guides/Handlers/*Handler.php'
 
     phpDocumentor\Console\:
         resource: '../src/phpDocumentor/Console'
