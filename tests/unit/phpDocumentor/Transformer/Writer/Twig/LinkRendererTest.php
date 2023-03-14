@@ -63,17 +63,6 @@ final class LinkRendererTest extends TestCase
     }
 
     /**
-     * @covers ::getDestination
-     * @covers ::setDestination
-     */
-    public function testGetAndSetDestination(): void
-    {
-        $this->renderer->setDestination('destination');
-
-        $this->assertSame('destination', $this->renderer->getDestination());
-    }
-
-    /**
      * @param ClassDescriptor|Fqsen $input
      *
      * @dataProvider descriptorLinkProvider
@@ -186,9 +175,9 @@ final class LinkRendererTest extends TestCase
 
         $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
-        $this->renderer->setDestination('/root/of/project');
+        $renderer = $this->renderer->withDestination('/root/of/project');
         $collection = new Collection([$fqsen]);
-        $result = $this->renderer->render($collection, LinkRenderer::PRESENTATION_URL);
+        $result = $renderer->render($collection, LinkRenderer::PRESENTATION_URL);
 
         $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
     }
