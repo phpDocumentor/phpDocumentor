@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\LinkRenderer;
 
-use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\Null_;
-use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
+
+use function array_merge;
+use function is_array;
+use function is_iterable;
 
 final class IterableAdapter implements LinkRendererInterface
 {
@@ -18,11 +19,17 @@ final class IterableAdapter implements LinkRendererInterface
         $this->rendererChain = $rendererChain;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supports($value): bool
     {
         return is_iterable($value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function render($value, string $presentation)
     {
         return $this->renderASeriesOfLinks($value, $presentation);

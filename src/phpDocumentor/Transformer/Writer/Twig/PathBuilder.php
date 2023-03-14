@@ -10,6 +10,8 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Router\Router;
 use Webmozart\Assert\Assert;
 
+use function ltrim;
+
 final class PathBuilder
 {
     private Router $router;

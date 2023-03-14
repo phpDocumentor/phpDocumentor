@@ -8,6 +8,13 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Router\Router;
 
+use function array_fill;
+use function implode;
+use function ltrim;
+use function strpos;
+use function substr;
+use function substr_count;
+
 final class RelativePathToRootConverter
 {
     private Router $router;

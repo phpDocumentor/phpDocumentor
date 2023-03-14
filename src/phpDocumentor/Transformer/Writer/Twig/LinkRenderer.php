@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
+use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\IterableAdapter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\LinkAdapter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\NullableAdapter;
@@ -38,19 +39,28 @@ final class LinkRenderer implements LinkRendererInterface
     public const PRESENTATION_FILE_SHORT = 'file:short';
 
     private string $destination = '';
-    private ?ProjectDescriptor $project;
+    private ProjectDescriptor $project;
 
     /** @var LinkRendererInterface[] */
     private array $adapters;
+    private Router $router;
+    private HtmlFormatter $htmlFormatter;
 
-    public function __construct(Router $router)
+    public function __construct(Router $router, HtmlFormatter $htmlFormatter)
     {
-        $this->adapters = [
-            new TypeAdapter(),
-            new NullableAdapter($this),
-            new IterableAdapter($this),
-            new LinkAdapter($this, $router),
-        ];
+        $this->router = $router;
+        $this->htmlFormatter = $htmlFormatter;
+
+        // TODO: Because the renderer uses an immutable pattern to change itself; the $this references
+        // below get lost. For now we solved it in __clone(), but as soon as we move these dependencies
+        // to the container that won't work anymore..
+        $this->adapters = $this->createAdapters();
+    }
+
+    public function __clone()
+    {
+        // recreate adapters because they need the current instance
+        $this->adapters = $this->createAdapters();
     }
 
     public function withProject(ProjectDescriptor $projectDescriptor): self
@@ -92,6 +102,9 @@ final class LinkRenderer implements LinkRendererInterface
         return $this->destination;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supports($value): bool
     {
         return true;
@@ -115,5 +128,18 @@ final class LinkRenderer implements LinkRendererInterface
         throw new RuntimeException(
             'The last adapter should have been a cap that accepts anything, this should not happen'
         );
+    }
+
+    /**
+     * @return array<array-key, LinkRendererInterface>
+     */
+    private function createAdapters(): array
+    {
+        return [
+            new TypeAdapter(),
+            new NullableAdapter($this),
+            new IterableAdapter($this),
+            new LinkAdapter($this, $this->router, $this->htmlFormatter),
+        ];
     }
 }

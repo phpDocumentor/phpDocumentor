@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Path;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\AbstractList;
@@ -18,24 +19,35 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference;
+
+use function is_string;
+use function ltrim;
+use function sprintf;
 
 final class LinkAdapter implements LinkRendererInterface
 {
     private LinkRenderer $rendererChain;
     private Router $router;
+    private HtmlFormatter $formatter;
 
-    public function __construct(LinkRenderer $rendererChain, Router $router)
+    public function __construct(LinkRenderer $rendererChain, Router $router, HtmlFormatter $formatter)
     {
         $this->rendererChain = $rendererChain;
         $this->router = $router;
+        $this->formatter = $formatter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function supports($value): bool
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function render($value, string $presentation): string
     {
         $resolvedTarget = $this->resolveTarget($value);
@@ -62,47 +74,7 @@ final class LinkAdapter implements LinkRendererInterface
             $presentation = LinkRenderer::PRESENTATION_NONE;
         }
 
-        return $this->renderHtml($presentation, (string) $resolvedTarget, $url);
-    }
-
-    private function renderHtml(string $presentation, string $nodeAsString, ?string $url = null): string
-    {
-        switch ($presentation) {
-            case LinkRenderer::PRESENTATION_URL:
-                // return the first url
-                return $url ?? '';
-            case LinkRenderer::PRESENTATION_NORMAL:
-            case LinkRenderer::PRESENTATION_CLASS_SHORT:
-                $parts = explode('\\', $nodeAsString);
-                if (count($parts) <= 1) {
-                    $caption = $nodeAsString;
-                    break;
-                }
-
-                $caption = sprintf('<abbr title="%s">%s</abbr>', $nodeAsString, end($parts));
-                break;
-            case LinkRenderer::PRESENTATION_FILE_SHORT:
-                $parts = explode('/', $nodeAsString);
-                if (count($parts) <= 1) {
-                    $caption = $nodeAsString;
-                    break;
-                }
-
-                $caption = sprintf('<abbr title="%s">%s</abbr>', $nodeAsString, end($parts));
-                break;
-            case LinkRenderer::PRESENTATION_NONE:
-                $caption = $nodeAsString;
-                break;
-            default:
-                $caption = sprintf('<abbr title="%s">%s</abbr>', $nodeAsString, $presentation);
-                break;
-        }
-
-        if (!$url) {
-            return $caption;
-        }
-
-        return sprintf('<a href="%s">%s</a>', $url, $caption);
+        return $this->formatter->formatAs($presentation, (string) $resolvedTarget, $url);
     }
 
     private function renderIterable(AbstractList $node, string $presentation): string
@@ -156,6 +128,9 @@ final class LinkAdapter implements LinkRendererInterface
         return $target;
     }
 
+    /**
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target
+     */
     private function generateUrl($target, string $fallback): ?string
     {
         if (!$target instanceof Descriptor) {

@@ -23,6 +23,7 @@ use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Guides\Twig\TwigRenderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
+use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\Test\TestLogger;
@@ -51,15 +52,18 @@ final class EnvironmentFactoryTest extends TestCase
         $this->router = $this->prophesize(Router::class);
         $markDownConverter = $this->prophesize(ConverterInterface::class);
 
+        $relativePathToRootConverter = new RelativePathToRootConverter($this->router->reveal());
         $this->factory = new EnvironmentFactory(
-            new LinkRenderer($this->router->reveal()),
+            new LinkRenderer($this->router->reveal(), new HtmlFormatter()),
             $markDownConverter->reveal(),
             new AssetsExtension(
                 new TestLogger(),
                 new TwigRenderer([], $this->prophesize(EnvironmentBuilder::class)->reveal()),
                 new UrlGenerator()
             ),
-            new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal())
+            new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal()),
+            $relativePathToRootConverter,
+            new PathBuilder($this->router->reveal(), $relativePathToRootConverter)
         );
     }
 

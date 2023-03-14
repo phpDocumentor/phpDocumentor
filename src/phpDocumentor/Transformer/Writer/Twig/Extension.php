@@ -187,18 +187,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'path',
-                function (array $context, string $url): string {
+                function (string $url): string {
                     $path = $this->relativePathToRootConverter->convert('', $url);
 
                     Assert::notNull($path);
 
                     return $path;
-                },
-                ['needs_context' => true]
+                }
             ),
             new TwigFunction(
                 'link',
-                function (array $context, object $element): string {
+                function (object $element): string {
                     if (
                         !$element instanceof Fqsen
                         && !$element instanceof Uri
@@ -208,8 +207,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $this->pathBuilder->link($element);
-                },
-                ['needs_context' => true]
+                }
             ),
             new TwigFunction(
                 'breadcrumbs',
