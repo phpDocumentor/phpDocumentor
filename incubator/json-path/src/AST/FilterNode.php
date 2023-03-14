@@ -31,7 +31,7 @@ final class FilterNode implements PathNode
     public function visit(Executor $param, $currentObject, $root)
     {
         if (is_iterable($currentObject) === false) {
-            throw new InvalidArgumentException('Can only filter iteratable values %s given');
+            throw new InvalidArgumentException('Can only filter iterable values %s given');
         }
 
         foreach ($currentObject as $current) {

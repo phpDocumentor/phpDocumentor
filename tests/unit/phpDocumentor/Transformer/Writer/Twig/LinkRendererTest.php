@@ -292,13 +292,13 @@ final class LinkRendererTest extends TestCase
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array&lt;string|int, string&gt;',
             ],
-            'iteratable with scalar only' => [
+            'iterable with scalar only' => [
                 new Iterable_(
                     new String_(),
                     new Iterable_(new String_(), new Mixed_())
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
-                'iteratable&lt;iteratable&lt;mixed, string&gt;, string&gt;',
+                'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
             ],
         ];
     }
