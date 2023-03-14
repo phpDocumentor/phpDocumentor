@@ -44,7 +44,7 @@ final class PHPReference implements Resolver
     public function resolve(CrossReferenceNode $node, RenderContext $context): ?ResolvedReference
     {
         $fqsen = ltrim($node->getUrl(), '\\');
-        $url = $this->router->generate(new Fqsen('\\' . $fqsen));
+        $url = $this->withoutLeadingSlash($this->router->generate(new Fqsen('\\' . $fqsen)));
 
         return new ResolvedReference(
             $context->getCurrentFileName(),
@@ -52,5 +52,10 @@ final class PHPReference implements Resolver
             $url,
             [],
         );
+    }
+
+    private function withoutLeadingSlash(string $path): string
+    {
+        return ltrim($path, '/');
     }
 }
