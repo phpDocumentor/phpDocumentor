@@ -48,9 +48,10 @@ final class PHPReference implements Resolver
 
         return new ResolvedReference(
             $context->getCurrentFileName(),
-            new TitleNode(new SpanNode($fqsen), 0, ''),
+            $node->getText($fqsen),
             $url,
             [],
+
         );
     }
 

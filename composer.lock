@@ -1756,12 +1756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "592a31bf9dc9a5ed077f2452c81492bd48b560a5"
+                "reference": "a2f0f03b3cd1c5c0430a4df3698ffe9f7fc940be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/592a31bf9dc9a5ed077f2452c81492bd48b560a5",
-                "reference": "592a31bf9dc9a5ed077f2452c81492bd48b560a5",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/a2f0f03b3cd1c5c0430a4df3698ffe9f7fc940be",
+                "reference": "a2f0f03b3cd1c5c0430a4df3698ffe9f7fc940be",
                 "shasum": ""
             },
             "require": {
@@ -1796,7 +1796,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
                 "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-03-12T15:21:12+00:00"
+            "time": "2023-03-14T20:53:11+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1877,12 +1877,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "e64cfa800a3df6150be9d888dc3469f8295b7219"
+                "reference": "b75b01a286fbea34bbb1781c6592ecddbdc3a0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/e64cfa800a3df6150be9d888dc3469f8295b7219",
-                "reference": "e64cfa800a3df6150be9d888dc3469f8295b7219",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/b75b01a286fbea34bbb1781c6592ecddbdc3a0b8",
+                "reference": "b75b01a286fbea34bbb1781c6592ecddbdc3a0b8",
                 "shasum": ""
             },
             "require": {
@@ -1906,7 +1906,7 @@
             "support": {
                 "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-03-11T13:59:41+00:00"
+            "time": "2023-03-14T20:21:27+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
