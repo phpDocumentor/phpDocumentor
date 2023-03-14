@@ -53,36 +53,24 @@ use function substr_count;
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
  */
-final class LinkRenderer
+final class LinkRenderer implements LinkRendererInterface
 {
     public const PRESENTATION_NORMAL = 'normal';
     public const PRESENTATION_URL = 'url';
     public const PRESENTATION_CLASS_SHORT = 'class:short';
     public const PRESENTATION_FILE_SHORT = 'file:short';
 
-    /** @var string */
-    private $destination = '';
+    private string $destination = '';
+    private Router $router;
+    private ?ProjectDescriptor $project;
+    private RelativePathToRootConverter $relativePathToRootConverter;
 
-    /** @var Router */
-    private $router;
-
-    /** @var ProjectDescriptor|null */
-    private $project;
-
-    /** @var bool */
-    private $convertToRootPath = true;
-
-    public function __construct(Router $router)
-    {
+    public function __construct(
+        Router $router,
+        RelativePathToRootConverter $relativePathToRootConverter
+    ) {
         $this->router = $router;
-    }
-
-    /**
-     * @deprecated in favour of withDestination()
-     */
-    public function setDestination(string $destination): void
-    {
-        $this->destination = $destination;
+        $this->relativePathToRootConverter = $relativePathToRootConverter;
     }
 
     /**
@@ -111,39 +99,12 @@ final class LinkRenderer
         return $result;
     }
 
-    public function doNotConvertUrlsToRootPath(): self
-    {
-        $result = clone $this;
-        $result->convertToRootPath = false;
-
-        return $result;
-    }
-
     /**
      * Returns the target directory relative to the Project's Root.
      */
     public function getDestination(): string
     {
         return $this->destination;
-    }
-
-    /**
-     * @param Descriptor|Fqsen|Uri $value
-     */
-    public function link(object $value): string
-    {
-        Assert::isInstanceOfAny($value, [Descriptor::class, Fqsen::class, Uri::class]);
-
-        $uri = $this->router->generate($value);
-        if (!$uri) {
-            return $uri;
-        }
-
-        $path = $this->convertToRootPath($this->withoutLeadingSlash($uri));
-
-        Assert::notNull($path);
-
-        return $path;
     }
 
     /**
@@ -167,59 +128,6 @@ final class LinkRenderer
         }
 
         return $this->renderLink($value, $presentation);
-    }
-
-    /**
-     * Converts the given path to be relative to the root of the documentation
-     * target directory.
-     *
-     * It is not possible to use absolute paths in documentation templates since
-     * they may be used locally, or in a subfolder. As such we need to calculate
-     * the number of levels to go up from the current document's directory and
-     * then append the given path.
-     *
-     * For example:
-     *
-     *     Suppose you are in <root>/classes/my/class.html and you want open
-     *     <root>/my/index.html then you provide 'my/index.html' to this method
-     *     and it will convert it into ../../my/index.html (<root>/classes/my is
-     *     two nesting levels until the root).
-     *
-     * This method does not try to normalize or optimize the paths in order to
-     * save on development time and performance, and because it adds no real
-     * value.
-     *
-     * In addition, when a path starts with an @-sign, it is interpreted as a
-     * reference to a structural element and we use the router to try and find
-     * a path to which this refers.
-     *
-     * @todo References can only point to an element that is a class,
-     *       interface, trait, method, property or class constant at this
-     *       moment. This is because an FQSEN does not contain the necessary
-     *       data to distinguish whether the FQCN is actually a class or a
-     *       namespace reference. As such we assume a class as that is the
-     *       most common occurrence.
-     */
-    public function convertToRootPath(string $pathOrReference, bool $force = false): ?string
-    {
-        if ($this->isReferenceToFqsen($pathOrReference)) {
-            try {
-                $pathOrReference = $this->router->generate($this->createFqsenFromReference($pathOrReference));
-            } catch (InvalidArgumentException $e) {
-                return null;
-            }
-        }
-
-        if (!$pathOrReference) {
-            return null;
-        }
-
-        $withoutLeadingSlash = $this->withoutLeadingSlash($pathOrReference);
-        if ($this->convertToRootPath || $force) {
-            return $this->getPathPrefixBasedOnDepth() . $withoutLeadingSlash;
-        }
-
-        return $withoutLeadingSlash;
     }
 
     /**
@@ -301,13 +209,16 @@ final class LinkRenderer
 
         $url = $generatedUrl ? ltrim((string) $generatedUrl, '/') : false;
 
-        try {
-            if ($url !== false && UriInfo::isRelativePath(Uri::createFromString($url))) {
-                $url = $this->convertToRootPath($url);
-            }
-        } catch (SyntaxError $exception) {
-            // do nothing; the url apparently is not valid enough; let's just pass it on
-        }
+//        try {
+//            if ($url !== false && UriInfo::isRelativePath(Uri::createFromString($url))) {
+//                $url = $this->relativePathToRootConverter->convert(
+//                    $this->getDestination(),
+//                    $url
+//                );
+//            }
+//        } catch (SyntaxError $exception) {
+//            // do nothing; the url apparently is not valid enough; let's just pass it on
+//        }
 
         switch ($presentation) {
             case self::PRESENTATION_URL:
@@ -362,50 +273,6 @@ final class LinkRenderer
         }
 
         return $result;
-    }
-
-    /**
-     * Calculates how deep the given destination is and returns a prefix.
-     *
-     * The calculated prefix is used to get back to the root (i.e. three levels deep means `../../..`) or an empty
-     * string is returned when you are already at the same level as the root.
-     *
-     * This prefix will include a trailing forward slash (/) when it actually needs to direct the caller to go
-     * elsewhere.
-     */
-    private function getPathPrefixBasedOnDepth(): string
-    {
-        $directoryDepth = substr_count($this->getDestination(), '/') + 1;
-
-        return $directoryDepth > 1
-            ? implode('/', array_fill(0, $directoryDepth - 1, '..')) . '/'
-            : '';
-    }
-
-    private function isReferenceToFqsen(string $path): bool
-    {
-        return strpos($path, '@') === 0;
-    }
-
-    private function withoutLeadingSlash(string $path): string
-    {
-        return ltrim($path, '/');
-    }
-
-    private function createFqsenFromReference(string $path): Fqsen
-    {
-        if (!$this->isReferenceToFqsen($path)) {
-            throw new InvalidArgumentException('References to FQSENs are expected to begin with an @-sign');
-        }
-
-        $strippedAtSign = substr($path, 1);
-
-        // Ensure it is prefixed with a \; as without it it cannot be a valid FQSEN
-        if ($strippedAtSign[0] !== '\\') {
-            $strippedAtSign = '\\' . $strippedAtSign;
-        }
-
-        return new Fqsen($strippedAtSign);
     }
 
     private function renderAbstractListLinks(AbstractList $node, string $presentation): string

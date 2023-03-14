@@ -90,6 +90,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 {
     private LinkRenderer $routeRenderer;
     private ConverterInterface $markdownConverter;
+    private RelativePathToRootConverter $relativePathToRootConverter;
+    private PathBuilder $pathBuilder;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -99,11 +101,15 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function __construct(
         ProjectDescriptor $project,
         ConverterInterface $markdownConverter,
-        LinkRenderer $routeRenderer
+        LinkRenderer $routeRenderer,
+        RelativePathToRootConverter $relativePathToRootConverter,
+        PathBuilder $pathBuilder
     ) {
         $this->markdownConverter = $markdownConverter;
-        $this->routeRenderer     = $routeRenderer;
-        $this->routeRenderer     = $this->routeRenderer->withProject($project);
+        $this->routeRenderer = $routeRenderer;
+        $this->routeRenderer = $this->routeRenderer->withProject($project);
+        $this->relativePathToRootConverter = $relativePathToRootConverter;
+        $this->pathBuilder = $pathBuilder;
     }
 
     /**
@@ -166,12 +172,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'renderBaseUrlHeader',
                 function (array $context): string {
-                    /* TODO: This line has some odd side effects on the router state...
-                        I'm not sure if we should keep it this way
-                    */
-                    $this->routeRenderer = $this->contextRouteRenderer($context)->doNotConvertUrlsToRootPath();
-
-                    $absolutePath = $this->routeRenderer->convertToRootPath('/', true);
+                    $this->routeRenderer = $this->contextRouteRenderer($context);
+                    $absolutePath = $this->relativePathToRootConverter->convert(
+                        $this->routeRenderer->getDestination(),
+                        '/'
+                    );
                     if (!$absolutePath) {
                         return '';
                     }
@@ -183,7 +188,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'path',
                 function (array $context, string $url): string {
-                    $path = $this->contextRouteRenderer($context)->convertToRootPath($url);
+                    $path = $this->relativePathToRootConverter->convert('', $url);
 
                     Assert::notNull($path);
 
@@ -202,7 +207,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         return '';
                     }
 
-                    return $this->contextRouteRenderer($context)->link($element);
+                    return $this->pathBuilder->link($element);
                 },
                 ['needs_context' => true]
             ),
