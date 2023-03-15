@@ -51,9 +51,6 @@ final class LinkRenderer implements LinkRendererInterface
         $this->router = $router;
         $this->htmlFormatter = $htmlFormatter;
 
-        // TODO: Because the renderer uses an immutable pattern to change itself; the $this references
-        // below get lost. For now we solved it in __clone(), but as soon as we move these dependencies
-        // to the container that won't work anymore..
         $this->adapters = $this->createAdapters();
     }
 
@@ -135,6 +132,9 @@ final class LinkRenderer implements LinkRendererInterface
      */
     private function createAdapters(): array
     {
+        // TODO: Because the renderer uses an immutable pattern to change itself; the $this references
+        // below get lost. For now we solved it in __clone(), but as soon as we move these dependencies
+        // to the container that won't work anymore..
         return [
             new TypeAdapter(),
             new NullableAdapter($this),
