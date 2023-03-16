@@ -26,6 +26,7 @@ use phpDocumentor\Guides\Meta\SectionEntry;
 use phpDocumentor\Transformer\Router\Router;
 
 use function ltrim;
+use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {

@@ -18,7 +18,6 @@ use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use function count;
 use function end;
 use function explode;
-use function sprintf;
 
 /**
  * The target of a link and how it should be presented.
@@ -108,12 +107,14 @@ final class Target
                 if (count($parts) > 1) {
                     $this->abbreviation = end($parts);
                 }
+
                 break;
             case LinkRenderer::PRESENTATION_FILE_SHORT:
                 $parts = explode('/', $this->title);
                 if (count($parts) > 1) {
                     $this->abbreviation = end($parts);
                 }
+
                 break;
             default:
                 $this->abbreviation = $presentation;

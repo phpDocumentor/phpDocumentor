@@ -35,6 +35,9 @@ use Webmozart\Assert\Assert;
 use function is_string;
 use function ltrim;
 use function sprintf;
+use function strlen;
+use function strpos;
+use function substr;
 
 /**
  * Renders most of the links to elements, urls and urls with virtual schemes.
@@ -89,11 +92,11 @@ final class LinkAdapter implements LinkRendererInterface
     private function renderIterable(AbstractList $node, string $presentation): string
     {
         $typeLink = null;
-        $valueLink = $this->rendererChain->render($node->getValueType(), $presentation);
-        $keyLink = $this->rendererChain->render($node->getKeyType(), $presentation);
+        $valueLink = $this->render($node->getValueType(), $presentation);
+        $keyLink = $this->render($node->getKeyType(), $presentation);
 
         if ($node instanceof Collection) {
-            $typeLink = $this->rendererChain->render($node->getFqsen(), $presentation);
+            $typeLink = $this->render($node->getFqsen(), $presentation);
         }
 
         if ($node instanceof Array_) {
@@ -175,16 +178,23 @@ final class LinkAdapter implements LinkRendererInterface
         return ltrim($path, '/');
     }
 
+    /**
+     * @param string|Reference\Url $target
+     */
     private function generateGuideUrl($target): ?string
     {
-        Assert::isAnyOf($target, ['string', Reference\Url::class]);
+        if ((is_string($target) || $target instanceof Reference\Url) === false) {
+            throw new InvalidArgumentException(
+                'Guide references can only be derived from a string or Url reference'
+            );
+        }
 
         $guideReference = substr((string) $target, strlen('doc://'));
 
         // TODO: of course this is not correct, but phpDocumentor does not have a mechanism yet for determining the
         // current version and is prepared for multi-version support but doesn't actually have it yet
         $currentVersion = $this->rendererChain->getProject()->getVersions()->first();
-        if ($currentVersion === false) {
+        if ($currentVersion === null) {
             // unlinkable, thus no URL
             return null;
         }
@@ -193,7 +203,7 @@ final class LinkAdapter implements LinkRendererInterface
         // right guide set and it is prepared for multi-guide support but doesn't actually have it yet
         /** @var GuideSetDescriptor|false $guideSet */
         $guideSet = $currentVersion->getDocumentationSets()->filter(GuideSetDescriptor::class)->first();
-        if ($guideSet === false) {
+        if ($guideSet === null) {
             // unlinkable, thus no URL
             return null;
         }
@@ -221,15 +231,21 @@ final class LinkAdapter implements LinkRendererInterface
         );
     }
 
+    /**
+     * @param string|Reference\Url $target
+     */
     private function isGuideUrl($target): bool
     {
         if ($target instanceof Reference\Url) {
-            $target = (string)$target;
+            $target = (string) $target;
         }
 
         return is_string($target) && strpos($target, 'doc://') === 0;
     }
 
+    /**
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
+     */
     private function normalizePresentation($resolvedTarget, string $presentation): string
     {
         $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
@@ -242,9 +258,13 @@ final class LinkAdapter implements LinkRendererInterface
         ) {
             $presentation = LinkRenderer::PRESENTATION_NONE;
         }
+
         return $presentation;
     }
 
+    /**
+     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
+     */
     private function determineTitle($resolvedTarget): string
     {
         return (string) $resolvedTarget;

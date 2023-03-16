@@ -395,6 +395,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         ];
     }
 
+    /**
+     * @param mixed[] $context
+     */
     public function renderDescription(array $context, ?DescriptionDescriptor $description): string
     {
         if ($description === null || $description->getBodyTemplate() === '') {
@@ -423,6 +426,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 
         return vsprintf($description->getBodyTemplate(), $tagStrings);
     }
+
     /**
      * @param mixed[] $context
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
