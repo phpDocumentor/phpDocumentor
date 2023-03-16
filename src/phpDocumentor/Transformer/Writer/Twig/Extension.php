@@ -378,35 +378,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'description' => new TwigFilter(
                 'description',
-                function (array $context, ?DescriptionDescriptor $description) {
-                    if ($description === null || $description->getBodyTemplate() === '') {
-                        return '';
-                    }
-
-                    $tagStrings = [];
-                    foreach ($description->getTags() as $tag) {
-                        if ($tag instanceof SeeDescriptor) {
-                            $tagStrings[] = $this->renderRoute(
-                                $context,
-                                $tag->getReference(),
-                                LinkRenderer::PRESENTATION_CLASS_SHORT
-                            );
-                        } elseif ($tag instanceof LinkDescriptor) {
-                            $tagStrings[] = sprintf(
-                                '[%s](%s)',
-                                (string) $tag->getDescription(),
-                                $tag->getLink()
-                            );
-                        } elseif ($tag instanceof ExampleDescriptor) {
-                            $tagStrings[] = $tag->getDescription() . "\n"
-                                . '```php' . "\n" . $tag->getExample() . "\n" . '```';
-                        } else {
-                            $tagStrings[] = (string) $tag;
-                        }
-                    }
-
-                    return vsprintf($description->getBodyTemplate(), $tagStrings);
-                },
+                [$this, 'renderDescription'],
                 ['needs_context' => true]
             ),
             'shortFQSEN' => new TwigFilter(
@@ -423,6 +395,34 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         ];
     }
 
+    public function renderDescription(array $context, ?DescriptionDescriptor $description): string
+    {
+        if ($description === null || $description->getBodyTemplate() === '') {
+            return '';
+        }
+
+        $tagStrings = [];
+        foreach ($description->getTags() as $tag) {
+            if ($tag instanceof SeeDescriptor) {
+                $presentation = LinkRenderer::PRESENTATION_CLASS_SHORT;
+                if ($tag->getDescription()->isEmpty() === false) {
+                    $presentation = $this->renderDescription($context, $tag->getDescription());
+                }
+
+                $tagStrings[] = $this->renderRoute($context, $tag->getReference(), $presentation);
+            } elseif ($tag instanceof LinkDescriptor) {
+                $text = $this->renderDescription($context, $tag->getDescription());
+                $tagStrings[] = sprintf('[%s](%s)', $text, $tag->getLink());
+            } elseif ($tag instanceof ExampleDescriptor) {
+                $tagStrings[] = $tag->getDescription() . "\n"
+                    . '```php' . "\n" . $tag->getExample() . "\n" . '```';
+            } else {
+                $tagStrings[] = (string) $tag;
+            }
+        }
+
+        return vsprintf($description->getBodyTemplate(), $tagStrings);
+    }
     /**
      * @param mixed[] $context
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value

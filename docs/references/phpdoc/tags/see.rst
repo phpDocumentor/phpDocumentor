@@ -40,8 +40,12 @@ Effects in phpDocumentor
 *Structural Elements*, or inline text in a long description, tagged with
 the ``@see`` tag will show a link in their description.
 
-If a description is provided with the tag then this will be used as link text
-instead of the URL itself.
+If a description is provided with the inline version of tag then this will be
+used as link text instead of the URL itself.
+
+In addition, phpDocumentor provides the ``doc://`` virtual scheme. When you
+provide this scheme, phpDocumentor will interpret that as a reference to
+:doc:`hand-written documentation<../../../hand-written-docs/index>`.
 
 Examples
 --------
@@ -52,10 +56,11 @@ Normal tag:
    :linenos:
 
     /**
-     * @see number_of()                Alias.
-     * @see MyClass::$items            For the property whose items are counted.
-     * @see MyClass::setItems()        To set the items for this collection.
-     * @see https://example.com/my/bar Documentation of Foo.
+     * @see number_of()                 Alias.
+     * @see MyClass::$items             For the property whose items are counted.
+     * @see MyClass::setItems()         To set the items for this collection.
+     * @see https://example.com/my/bar  Documentation of Foo.
+     * @see doc://getting-started/index Getting started document.
      *
      * @return int Indicates the number of items.
      */
@@ -77,6 +82,5 @@ Inline tag:
     {
         <...>
     }
-
 
 .. _RFC 2396:      https://www.ietf.org/rfc/rfc2396.txt

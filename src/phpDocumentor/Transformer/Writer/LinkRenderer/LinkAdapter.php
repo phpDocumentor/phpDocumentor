@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Transformer\Writer\LinkRenderer;
 
 use InvalidArgumentException;
@@ -28,12 +37,12 @@ use function ltrim;
 use function sprintf;
 
 /**
- * Test if an inline reference to guides work too.
+ * Renders most of the links to elements, urls and urls with virtual schemes.
  *
- * This should be {@see doc://guides/running-phpdocumentor an inline reference}.
- * This should be {@see \phpDocumentor\Descriptor\Collection an inline reference}.
+ * For more high level information on how references, see {@see doc://internals/rendering/links the documentation}
+ * that accompanies this feature.
  *
- * @see doc://guides/running-phpdocumentor
+ * @see doc://hand-written-docs/references how to link back to API elements from hand-written documentation.
  */
 final class LinkAdapter implements LinkRendererInterface
 {
@@ -61,37 +70,30 @@ final class LinkAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation): string
     {
-        $resolvedTarget = $this->resolveTarget($value);
-
         // Iterables with a generic component (lists and collections) should recursively render each part
-        if ($resolvedTarget instanceof AbstractList) {
-            return $this->renderIterable($resolvedTarget, $presentation);
+        if ($value instanceof AbstractList) {
+            return $this->renderIterable($value, $presentation);
         }
 
-        $url = $this->generateUrl($resolvedTarget, (string) $value);
+        $resolvedValue = $this->tryToResolveFqsenToDescriptor($value);
 
-        $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
+        $target = new Target(
+            $this->determineTitle($resolvedValue),
+            $this->generateUrl($resolvedValue, (string) $value),
+            $this->normalizePresentation($resolvedValue, $presentation)
+        );
 
-        // With an unlinkable object, we can only use the NORMAL (alias: CLASS_SHORT) or NONE presentation style
-        if (
-            $unlinkable
-            && $presentation !== LinkRenderer::PRESENTATION_CLASS_SHORT
-            && $presentation !== LinkRenderer::PRESENTATION_NORMAL
-        ) {
-            $presentation = LinkRenderer::PRESENTATION_NONE;
-        }
-
-        return $this->formatter->formatAs($presentation, (string) $resolvedTarget, $url);
+        return $this->formatter->format($target);
     }
 
     private function renderIterable(AbstractList $node, string $presentation): string
     {
         $typeLink = null;
-        $valueLink = $this->render($node->getValueType(), $presentation);
-        $keyLink = $this->render($node->getKeyType(), $presentation);
+        $valueLink = $this->rendererChain->render($node->getValueType(), $presentation);
+        $keyLink = $this->rendererChain->render($node->getKeyType(), $presentation);
 
         if ($node instanceof Collection) {
-            $typeLink = $this->render($node->getFqsen(), $presentation);
+            $typeLink = $this->rendererChain->render($node->getFqsen(), $presentation);
         }
 
         if ($node instanceof Array_) {
@@ -106,11 +108,16 @@ final class LinkAdapter implements LinkRendererInterface
     }
 
     /**
+     * Some passed types of value are references to an element; let's try to resolve these to a Descriptor.
+     *
+     * Should we not be able to resolve this to a Descriptor, we return the passed object or an FQSEN
+     * that could not be resolved because the element is not in the API docs.
+     *
      * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target
      *
-     * @return string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen
+     * @return string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference
      */
-    private function resolveTarget($target)
+    private function tryToResolveFqsenToDescriptor($target)
     {
         if ($target instanceof Reference\Fqsen) {
             $target = (string) $target;
@@ -219,6 +226,27 @@ final class LinkAdapter implements LinkRendererInterface
         if ($target instanceof Reference\Url) {
             $target = (string)$target;
         }
+
         return is_string($target) && strpos($target, 'doc://') === 0;
+    }
+
+    private function normalizePresentation($resolvedTarget, string $presentation): string
+    {
+        $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
+
+        // With an unlinkable object, we can only use the NORMAL (alias: CLASS_SHORT) or NONE presentation style
+        if (
+            $unlinkable
+            && $presentation !== LinkRenderer::PRESENTATION_CLASS_SHORT
+            && $presentation !== LinkRenderer::PRESENTATION_NORMAL
+        ) {
+            $presentation = LinkRenderer::PRESENTATION_NONE;
+        }
+        return $presentation;
+    }
+
+    private function determineTitle($resolvedTarget): string
+    {
+        return (string) $resolvedTarget;
     }
 }
