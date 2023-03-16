@@ -22,10 +22,6 @@ use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\AbstractList;
-use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Collection;
-use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
@@ -73,11 +69,6 @@ final class LinkAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation): string
     {
-        // Iterables with a generic component (lists and collections) should recursively render each part
-        if ($value instanceof AbstractList) {
-            return $this->renderIterable($value, $presentation);
-        }
-
         $resolvedValue = $this->tryToResolveFqsenToDescriptor($value);
 
         $target = new Target(
@@ -87,27 +78,6 @@ final class LinkAdapter implements LinkRendererInterface
         );
 
         return $this->formatter->format($target);
-    }
-
-    private function renderIterable(AbstractList $node, string $presentation): string
-    {
-        $typeLink = null;
-        $valueLink = $this->render($node->getValueType(), $presentation);
-        $keyLink = $this->render($node->getKeyType(), $presentation);
-
-        if ($node instanceof Collection) {
-            $typeLink = $this->render($node->getFqsen(), $presentation);
-        }
-
-        if ($node instanceof Array_) {
-            $typeLink = 'array';
-        }
-
-        if ($node instanceof Iterable_) {
-            $typeLink = 'iterable';
-        }
-
-        return sprintf('%s&lt;%s, %s&gt;', $typeLink, $keyLink, $valueLink);
     }
 
     /**
@@ -201,7 +171,7 @@ final class LinkAdapter implements LinkRendererInterface
 
         // TODO: of course this is not correct, but phpDocumentor does not have a mechanism yet for determining the
         // right guide set and it is prepared for multi-guide support but doesn't actually have it yet
-        /** @var GuideSetDescriptor|false $guideSet */
+        /** @var ?GuideSetDescriptor $guideSet */
         $guideSet = $currentVersion->getDocumentationSets()->filter(GuideSetDescriptor::class)->first();
         if ($guideSet === null) {
             // unlinkable, thus no URL

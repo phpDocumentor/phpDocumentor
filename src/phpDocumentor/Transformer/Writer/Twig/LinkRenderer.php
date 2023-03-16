@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
+use phpDocumentor\Transformer\Writer\LinkRenderer\AbstractListAdapter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\IterableAdapter;
 use phpDocumentor\Transformer\Writer\LinkRenderer\LinkAdapter;
@@ -138,6 +139,7 @@ final class LinkRenderer implements LinkRendererInterface
         return [
             new TypeAdapter(),
             new NullableAdapter($this),
+            new AbstractListAdapter($this),
             new IterableAdapter($this),
             new LinkAdapter($this, $this->router, $this->htmlFormatter),
         ];
