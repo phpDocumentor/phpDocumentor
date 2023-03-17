@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
+use InvalidArgumentException;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
 use function array_merge;
@@ -41,6 +42,10 @@ final class IterableAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation)
     {
+        if ($this->supports($value) === false) {
+            throw new InvalidArgumentException('The given value is not supported by this adapter');
+        }
+
         return $this->renderASeriesOfLinks($value, $presentation);
     }
 
