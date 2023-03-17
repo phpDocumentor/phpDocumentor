@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
-use ArrayObject;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Null_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
@@ -26,17 +27,17 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter
  * @covers ::<private>
  * @covers ::__construct
  */
-final class IterableAdapterTest extends TestCase
+final class NullableAdapterTest extends TestCase
 {
     use ProphecyTrait;
 
     /** @var LinkRendererInterface|ObjectProphecy  */
     private ObjectProphecy $linkRenderer;
-    private IterableAdapter $adapter;
+    private NullableAdapter $adapter;
 
     protected function setUp(): void
     {
@@ -44,11 +45,12 @@ final class IterableAdapterTest extends TestCase
 
         // pre-loaded expectations for the data provider
         $this->linkRenderer->render(new String_(), Argument::any())->willReturn('string');
+        $this->linkRenderer->render(new Null_(), Argument::any())->willReturn('null');
         $this->linkRenderer
             ->render(new Compound([new Boolean(), new String_()]), Argument::any())
             ->willReturn(['bool', 'string']);
 
-        $this->adapter = new IterableAdapter(
+        $this->adapter = new NullableAdapter(
             $this->linkRenderer->reveal()
         );
     }
@@ -56,17 +58,16 @@ final class IterableAdapterTest extends TestCase
     /**
      * @covers ::supports
      */
-    public function testItSupportsIterableTypes(): void
+    public function testItSupportsNullableTypes(): void
     {
-        self::assertTrue($this->adapter->supports([]));
-        self::assertTrue($this->adapter->supports(new ArrayObject([])));
+        self::assertTrue($this->adapter->supports(new Nullable(new String_())));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
     /**
      * @covers ::render
      */
-    public function testRenderOnlyAcceptsIterableElements(): void
+    public function testRenderOnlyAcceptsNullableElements(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -77,9 +78,9 @@ final class IterableAdapterTest extends TestCase
      * @covers ::render
      * @dataProvider renderingVariations
      */
-    public function testRenderProducesExpectedOutputBasedOn(iterable $list, iterable $expected): void
+    public function testRenderProducesExpectedOutputBasedOn(Nullable $value, iterable $expected): void
     {
-        self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
+        self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));
     }
 
     /**
@@ -88,14 +89,13 @@ final class IterableAdapterTest extends TestCase
     public function renderingVariations(): array
     {
         return [
-            'can handle empty arrays' => [[], []],
-            'array with types' => [
-                [new String_(), new String_()],
-                ['string', 'string'],
+            'Converts nullable to array with type and null' => [
+                new Nullable(new String_()),
+                ['string', 'null'],
             ],
             'Flattens results that produce arrays themselves' => [
-                [new String_(), new Compound([new Boolean(), new String_()])],
-                ['string', 'bool', 'string'],
+                new Nullable(new Compound([new Boolean(), new String_()])),
+                ['bool', 'string', 'null'],
             ],
         ];
     }

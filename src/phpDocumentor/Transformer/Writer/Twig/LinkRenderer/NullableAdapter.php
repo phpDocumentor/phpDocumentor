@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
-use Webmozart\Assert\Assert;
 
 use function array_merge;
+use function assert;
 use function is_array;
 
 final class NullableAdapter implements LinkRendererInterface
@@ -43,7 +44,11 @@ final class NullableAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation)
     {
-        Assert::isInstanceOf($value, Nullable::class);
+        if ($this->supports($value) === false) {
+            throw new InvalidArgumentException('The given value is not supported by this adapter');
+        }
+
+        assert($value instanceof Nullable);
 
         return $this->renderASeriesOfLinks([$value->getActualType(), new Null_()], $presentation);
     }
