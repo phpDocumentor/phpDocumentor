@@ -13,13 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
 use function current;
 use function is_array;
 
-final class TypeAdapter implements LinkRendererInterface
+/**
+ * Converts an array with types into a string-based representation of these types.
+ *
+ * @todo How and why is this adapter used? The assumption in the supports method is weird
+ *       and that this adapter involves arrays is oddly specific. Is this a potential bug?
+ */
+final class ArrayOfTypeAdapter implements LinkRendererInterface
 {
     /**
      * {@inheritDoc}
@@ -34,6 +41,10 @@ final class TypeAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation)
     {
+        if ($this->supports($value) === false) {
+            throw new InvalidArgumentException('The given value is not supported by this adapter');
+        }
+
         /** @var array<Type> $value Assuming every element of iterable is similar */
         return $this->renderType($value);
     }

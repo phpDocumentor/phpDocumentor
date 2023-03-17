@@ -21,11 +21,11 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter;
-use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\TypeAdapter;
 use RuntimeException;
 
 /**
@@ -137,7 +137,7 @@ final class LinkRenderer implements LinkRendererInterface
         // below get lost. For now we solved it in __clone(), but as soon as we move these dependencies
         // to the container that won't work anymore..
         return [
-            new TypeAdapter(),
+            new ArrayOfTypeAdapter(),
             new NullableAdapter($this),
             new AbstractListAdapter($this),
             new IterableAdapter($this),
