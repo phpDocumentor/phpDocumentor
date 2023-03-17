@@ -26,6 +26,7 @@ use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\UrlGenerator;
 use RuntimeException;
 
 /**
@@ -141,7 +142,11 @@ final class LinkRenderer implements LinkRendererInterface
             new NullableAdapter($this),
             new AbstractListAdapter($this),
             new IterableAdapter($this),
-            new LinkAdapter($this, $this->router, $this->htmlFormatter),
+            new LinkAdapter(
+                $this,
+                new UrlGenerator($this, $this->router),
+                $this->htmlFormatter
+            ),
         ];
     }
 }

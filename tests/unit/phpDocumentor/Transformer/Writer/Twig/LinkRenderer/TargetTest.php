@@ -16,8 +16,16 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\Target
+ * @covers ::<private>
+ * @covers ::__construct
+ */
 final class TargetTest extends TestCase
 {
+    /**
+     * @covers ::getTitle()
+     */
     public function testTitleIsPersistedInObject(): void
     {
         $target = new Target('title');
@@ -25,6 +33,9 @@ final class TargetTest extends TestCase
         self::assertSame('title', $target->getTitle());
     }
 
+    /**
+     * @covers ::getUrl()
+     */
     public function testAUrlCanBeAssociatedWithATarget(): void
     {
         $target = new Target('title', 'url');
@@ -32,6 +43,9 @@ final class TargetTest extends TestCase
         self::assertSame('url', $target->getUrl());
     }
 
+    /**
+     * @covers ::getUrl()
+     */
     public function testUrlsMayBeOmittedFromTargets(): void
     {
         $target = new Target('title');
@@ -39,6 +53,9 @@ final class TargetTest extends TestCase
         self::assertNull($target->getUrl());
     }
 
+    /**
+     * @covers ::getPresentation()
+     */
     public function testAPresentationStyleCanBeAssociatedWithATarget(): void
     {
         $target = new Target('title', 'url', LinkRenderer::PRESENTATION_CLASS_SHORT);
@@ -46,6 +63,9 @@ final class TargetTest extends TestCase
         self::assertSame(LinkRenderer::PRESENTATION_CLASS_SHORT, $target->getPresentation());
     }
 
+    /**
+     * @covers ::getPresentation()
+     */
     public function testDefaultPresentationStyleIsNormal(): void
     {
         $target = new Target('title');
@@ -55,6 +75,7 @@ final class TargetTest extends TestCase
 
     /**
      * @dataProvider abbreviationPerTitleAndPresentationStyle
+     * @covers ::getAbbreviation()
      */
     public function testAbbreviationIsDerivedFromTitleAndPresentation(
         string $title,
