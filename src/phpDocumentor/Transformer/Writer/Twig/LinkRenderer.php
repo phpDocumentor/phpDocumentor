@@ -32,7 +32,7 @@ use RuntimeException;
 /**
  * Renders an HTML anchor pointing to the location of the provided element.
  */
-final class LinkRenderer implements LinkRendererInterface
+class LinkRenderer implements LinkRendererInterface
 {
     public const PRESENTATION_NONE = '';
     public const PRESENTATION_NORMAL = 'normal';

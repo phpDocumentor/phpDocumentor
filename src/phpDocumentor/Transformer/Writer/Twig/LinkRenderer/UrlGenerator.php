@@ -40,7 +40,7 @@ use function substr;
  *       concept? At the moment, I am not going into this because my PR is getting too big already and I keep existing
  *       behaviour, but discovering why this Url Generator even exists could improve the codebase.
  */
-final class UrlGenerator
+class UrlGenerator
 {
     private LinkRenderer $rendererChain;
     private Router $router;

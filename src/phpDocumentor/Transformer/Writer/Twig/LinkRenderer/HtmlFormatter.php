@@ -8,7 +8,7 @@ use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use function sprintf;
 
-final class HtmlFormatter
+class HtmlFormatter
 {
     public function format(Target $target): string
     {
