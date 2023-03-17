@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
+use OutOfRangeException;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
@@ -239,6 +240,12 @@ class ProjectDescriptorBuilder
 
     public function addVersion(VersionDescriptor $version): void
     {
+        if ($this->project->getVersions()->count() >= 1) {
+            throw new OutOfRangeException(
+                'phpDocumentor only supports 1 version at the moment, support for multiple versions is being worked on'
+            );
+        }
+
         $this->project->getVersions()->add($version);
     }
 }
