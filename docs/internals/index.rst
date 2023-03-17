@@ -15,6 +15,7 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    configuration
    flow
    caching
+   rendering/index
    guides/index
    file-access
    custom-settings

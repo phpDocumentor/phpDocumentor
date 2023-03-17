@@ -27,6 +27,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Router\Router;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -37,9 +38,7 @@ use function gettype;
 use function is_object;
 
 /**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
- * @covers ::__construct
- * @covers ::<private>
+ * @coversNothing
  */
 final class LinkRendererTest extends TestCase
 {
@@ -59,25 +58,14 @@ final class LinkRendererTest extends TestCase
         $this->router = $this->prophesize(Router::class);
         $this->projectDescriptor = new ProjectDescriptor('project');
         $this->projectDescriptor->getIndexes()->set('elements', new Collection());
-        $this->renderer = (new LinkRenderer($this->router->reveal()))->withProject($this->projectDescriptor);
-    }
-
-    /**
-     * @covers ::getDestination
-     * @covers ::setDestination
-     */
-    public function testGetAndSetDestination(): void
-    {
-        $this->renderer->setDestination('destination');
-
-        $this->assertSame('destination', $this->renderer->getDestination());
+        $this->renderer = (new LinkRenderer($this->router->reveal(), new HtmlFormatter()))
+            ->withProject($this->projectDescriptor);
     }
 
     /**
      * @param ClassDescriptor|Fqsen $input
      *
      * @dataProvider descriptorLinkProvider
-     * @covers ::render
      */
     public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
@@ -130,8 +118,7 @@ final class LinkRendererTest extends TestCase
             $name . ' with presentation file short' => [
                 $input,
                 LinkRenderer::PRESENTATION_FILE_SHORT,
-                '<a href="classes/My.Namespace.Class.html">' .
-                '<abbr title="\My\Namespace\Class">\My\Namespace\Class</abbr></a>',
+                '<a href="classes/My.Namespace.Class.html">\My\Namespace\Class</a>',
             ],
             $name . ' with presentation other' => [
                 $input,
@@ -154,10 +141,6 @@ final class LinkRendererTest extends TestCase
         return $descriptor;
     }
 
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
     public function testRenderWithNullableFqsen(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -173,10 +156,6 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(['classes/My.Namespace.Class.html', 'null'], $result);
     }
 
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -186,33 +165,13 @@ final class LinkRendererTest extends TestCase
 
         $this->router->generate(Argument::any())->willReturn('/classes/My.Namespace.Class.html');
 
-        $this->renderer->setDestination('/root/of/project');
+        $renderer = $this->renderer->withDestination('/root/of/project');
         $collection = new Collection([$fqsen]);
-        $result = $this->renderer->render($collection, LinkRenderer::PRESENTATION_URL);
+        $result = $renderer->render($collection, LinkRenderer::PRESENTATION_URL);
 
-        $this->assertSame(['../../../classes/My.Namespace.Class.html'], $result);
+        $this->assertSame(['classes/My.Namespace.Class.html'], $result);
     }
 
-    /**
-     * @covers ::convertToRootPath
-     */
-    public function testConvertToRootPathWithUrlAndAtSignInRelativePath(): void
-    {
-        $this->router->generate(Argument::that(function (Fqsen $fqsen) {
-            $this->assertSame((string) $fqsen, '\Class::$property');
-
-            return true;
-        }))->willReturn('@Class::$property');
-
-        $result = $this->renderer->convertToRootPath('@Class::$property');
-
-        $this->assertSame('@Class::$property', $result);
-    }
-
-    /**
-     * @covers ::render
-     * @covers ::convertToRootPath
-     */
     public function testRenderReferenceToType(): void
     {
         $this->router->generate(Argument::any())->shouldNotBeCalled();
@@ -222,9 +181,6 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(['int'], $result);
     }
 
-    /**
-     * @covers ::render
-     */
     public function testRenderWithFqsenAndRepresentationClassShort(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -303,19 +259,18 @@ final class LinkRendererTest extends TestCase
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array&lt;string|int, string&gt;',
             ],
-            'iteratable with scalar only' => [
+            'iterable with scalar only' => [
                 new Iterable_(
                     new String_(),
                     new Iterable_(new String_(), new Mixed_())
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
-                'iteratable&lt;iteratable&lt;mixed, string&gt;, string&gt;',
+                'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
             ],
         ];
     }
 
     /**
-     * @covers ::render
      * @dataProvider provideUrls
      */
     public function testRenderWithUrl(string $url): void

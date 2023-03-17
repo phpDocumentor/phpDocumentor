@@ -26,6 +26,7 @@ use phpDocumentor\Guides\Meta\SectionEntry;
 use phpDocumentor\Transformer\Router\Router;
 
 use function ltrim;
+use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
@@ -126,8 +127,12 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 if ($refMetaData !== null) {
                     $refDocument = $guideSetDescriptor->getDocuments()->get($refMetaData->getFile());
                     $entry = new Entry(
-                        'guide/' . ltrim($this->router->generate($refDocument), '/')
-                        . '#' . $refMetaData->getTitle()->getId(),
+                        sprintf(
+                            '%s/%s#%s',
+                            $guideSetDescriptor->getOutputLocation(),
+                            ltrim($this->router->generate($refDocument), '/'),
+                            $refMetaData->getTitle()->getId()
+                        ),
                         $refMetaData->getTitle()->toString(),
                         $parent !== null ? $parent->getUrl() : null
                     );

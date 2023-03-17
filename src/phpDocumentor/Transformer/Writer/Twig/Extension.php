@@ -90,6 +90,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 {
     private LinkRenderer $routeRenderer;
     private ConverterInterface $markdownConverter;
+    private RelativePathToRootConverter $relativePathToRootConverter;
+    private PathBuilder $pathBuilder;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -99,11 +101,15 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function __construct(
         ProjectDescriptor $project,
         ConverterInterface $markdownConverter,
-        LinkRenderer $routeRenderer
+        LinkRenderer $routeRenderer,
+        RelativePathToRootConverter $relativePathToRootConverter,
+        PathBuilder $pathBuilder
     ) {
         $this->markdownConverter = $markdownConverter;
-        $this->routeRenderer     = $routeRenderer;
-        $this->routeRenderer     = $this->routeRenderer->withProject($project);
+        $this->routeRenderer = $routeRenderer;
+        $this->routeRenderer = $this->routeRenderer->withProject($project);
+        $this->relativePathToRootConverter = $relativePathToRootConverter;
+        $this->pathBuilder = $pathBuilder;
     }
 
     /**
@@ -166,12 +172,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigFunction(
                 'renderBaseUrlHeader',
                 function (array $context): string {
-                    /* TODO: This line has some odd side effects on the router state...
-                        I'm not sure if we should keep it this way
-                    */
-                    $this->routeRenderer = $this->contextRouteRenderer($context)->doNotConvertUrlsToRootPath();
-
-                    $absolutePath = $this->routeRenderer->convertToRootPath('/', true);
+                    $this->routeRenderer = $this->contextRouteRenderer($context);
+                    $absolutePath = $this->relativePathToRootConverter->convert(
+                        $this->routeRenderer->getDestination(),
+                        '/'
+                    );
                     if (!$absolutePath) {
                         return '';
                     }
@@ -182,18 +187,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'path',
-                function (array $context, string $url): string {
-                    $path = $this->contextRouteRenderer($context)->convertToRootPath($url);
+                function (string $url): string {
+                    $path = $this->relativePathToRootConverter->convert('', $url);
 
                     Assert::notNull($path);
 
                     return $path;
-                },
-                ['needs_context' => true]
+                }
             ),
             new TwigFunction(
                 'link',
-                function (array $context, object $element): string {
+                function (object $element): string {
                     if (
                         !$element instanceof Fqsen
                         && !$element instanceof Uri
@@ -202,9 +206,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         return '';
                     }
 
-                    return $this->contextRouteRenderer($context)->link($element);
-                },
-                ['needs_context' => true]
+                    return $this->pathBuilder->link($element);
+                }
             ),
             new TwigFunction(
                 'breadcrumbs',
@@ -375,35 +378,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'description' => new TwigFilter(
                 'description',
-                function (array $context, ?DescriptionDescriptor $description) {
-                    if ($description === null || $description->getBodyTemplate() === '') {
-                        return '';
-                    }
-
-                    $tagStrings = [];
-                    foreach ($description->getTags() as $tag) {
-                        if ($tag instanceof SeeDescriptor) {
-                            $tagStrings[] = $this->renderRoute(
-                                $context,
-                                $tag->getReference(),
-                                LinkRenderer::PRESENTATION_CLASS_SHORT
-                            );
-                        } elseif ($tag instanceof LinkDescriptor) {
-                            $tagStrings[] = sprintf(
-                                '[%s](%s)',
-                                (string) $tag->getDescription(),
-                                $tag->getLink()
-                            );
-                        } elseif ($tag instanceof ExampleDescriptor) {
-                            $tagStrings[] = $tag->getDescription() . "\n"
-                                . '```php' . "\n" . $tag->getExample() . "\n" . '```';
-                        } else {
-                            $tagStrings[] = (string) $tag;
-                        }
-                    }
-
-                    return vsprintf($description->getBodyTemplate(), $tagStrings);
-                },
+                [$this, 'renderDescription'],
                 ['needs_context' => true]
             ),
             'shortFQSEN' => new TwigFilter(
@@ -418,6 +393,38 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 }
             ),
         ];
+    }
+
+    /**
+     * @param mixed[] $context
+     */
+    public function renderDescription(array $context, ?DescriptionDescriptor $description): string
+    {
+        if ($description === null || $description->getBodyTemplate() === '') {
+            return '';
+        }
+
+        $tagStrings = [];
+        foreach ($description->getTags() as $tag) {
+            if ($tag instanceof SeeDescriptor) {
+                $presentation = LinkRenderer::PRESENTATION_CLASS_SHORT;
+                if ($tag->getDescription()->isEmpty() === false) {
+                    $presentation = $this->renderDescription($context, $tag->getDescription());
+                }
+
+                $tagStrings[] = $this->renderRoute($context, $tag->getReference(), $presentation);
+            } elseif ($tag instanceof LinkDescriptor) {
+                $text = $this->renderDescription($context, $tag->getDescription());
+                $tagStrings[] = sprintf('[%s](%s)', $text, $tag->getLink());
+            } elseif ($tag instanceof ExampleDescriptor) {
+                $tagStrings[] = $tag->getDescription() . "\n"
+                    . '```php' . "\n" . $tag->getExample() . "\n" . '```';
+            } else {
+                $tagStrings[] = (string) $tag;
+            }
+        }
+
+        return vsprintf($description->getBodyTemplate(), $tagStrings);
     }
 
     /**
