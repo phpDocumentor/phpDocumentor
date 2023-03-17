@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
+use OutOfRangeException;
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
@@ -21,6 +22,7 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
+use function count;
 use function md5;
 
 final class InitializeBuilderFromConfig
@@ -56,6 +58,9 @@ final class InitializeBuilderFromConfig
     private function buildVersion(VersionSpecification $version): VersionDescriptor
     {
         $collection = Collection::fromClassString(DocumentationSetDescriptor::class);
+
+        $this->guardAgainstMultipleSetsOfTheSameType($version);
+
         foreach ($version->getGuides() as $guide) {
             $collection->add(
                 new GuideSetDescriptor(md5($guide['output']), $guide['source'], $guide['output'], $guide['format'])
@@ -77,5 +82,29 @@ final class InitializeBuilderFromConfig
             $version->getNumber(),
             $collection
         );
+    }
+
+    /**
+     * Until official support is added for versions, check whether there is 1 and fail when multiple is
+     * given.
+     *
+     * By adding this restriction, it should prevent confusion with users when they were to add multiple
+     * in the configuration.
+     */
+    private function guardAgainstMultipleSetsOfTheSameType(VersionSpecification $version): void
+    {
+        if (count($version->getGuides()) > 1) {
+            throw new OutOfRangeException(
+                'phpDocumentor supports 1 set of guides at the moment, '
+                . 'support for multiple sets is being worked on'
+            );
+        }
+
+        if (count($version->getApi()) > 1) {
+            throw new OutOfRangeException(
+                'phpDocumentor supports 1 set of API documentation at the moment, '
+                . 'support for multiple sets is being worked on'
+            );
+        }
     }
 }
