@@ -106,8 +106,9 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
             $property->setType($propertyTag->getType());
             try {
                 $property->setParent($this);
+                $properties->add($property);
             } catch (InvalidArgumentException $e) {
-                $property->getErrors()->add(
+                $this->errors->add(
                     new Error(
                         'ERROR',
                         sprintf(
@@ -118,8 +119,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
                     )
                 );
             }
-
-            $properties->add($property);
         }
 
         return $properties;

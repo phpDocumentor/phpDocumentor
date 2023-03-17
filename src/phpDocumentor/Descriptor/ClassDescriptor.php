@@ -141,8 +141,9 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $property->setReadOnly($propertyTag->getName() === 'property-read');
             try {
                 $property->setParent($this);
+                $properties->add($property);
             } catch (InvalidArgumentException $e) {
-                $property->getErrors()->add(
+                $this->errors->add(
                     new Error(
                         'ERROR',
                         sprintf(
@@ -153,8 +154,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                     )
                 );
             }
-
-            $properties->add($property);
         }
 
         $parent = $this->getParent();
