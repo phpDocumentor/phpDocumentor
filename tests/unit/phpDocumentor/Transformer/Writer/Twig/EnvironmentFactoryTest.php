@@ -23,7 +23,7 @@ use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Guides\Twig\TwigRenderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
-use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\Test\TestLogger;

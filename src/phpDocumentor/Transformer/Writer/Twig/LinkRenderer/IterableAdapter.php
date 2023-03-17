@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Writer\LinkRenderer;
+namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 

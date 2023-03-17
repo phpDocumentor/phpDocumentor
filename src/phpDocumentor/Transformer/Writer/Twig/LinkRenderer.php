@@ -20,12 +20,12 @@ use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
-use phpDocumentor\Transformer\Writer\LinkRenderer\AbstractListAdapter;
-use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
-use phpDocumentor\Transformer\Writer\LinkRenderer\IterableAdapter;
-use phpDocumentor\Transformer\Writer\LinkRenderer\LinkAdapter;
-use phpDocumentor\Transformer\Writer\LinkRenderer\NullableAdapter;
-use phpDocumentor\Transformer\Writer\LinkRenderer\TypeAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\TypeAdapter;
 use RuntimeException;
 
 /**

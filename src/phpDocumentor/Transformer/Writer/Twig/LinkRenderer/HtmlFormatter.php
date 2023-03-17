@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Transformer\Writer\LinkRenderer;
+namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 

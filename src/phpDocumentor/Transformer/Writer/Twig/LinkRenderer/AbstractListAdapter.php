@@ -11,15 +11,16 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Transformer\Writer\LinkRenderer;
+namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
-use Webmozart\Assert\Assert;
 
+use function assert;
 use function implode;
 use function is_array;
 use function sprintf;
@@ -46,7 +47,12 @@ final class AbstractListAdapter implements LinkRendererInterface
      */
     public function render($value, string $presentation): string
     {
-        Assert::isInstanceOf($value, AbstractList::class);
+        if ($this->supports($value) === false) {
+            throw new InvalidArgumentException('The given value is not supported by this adapter');
+        }
+
+        // the above would already assert this, but phpstan and phpstorm need this
+        assert($value instanceof AbstractList);
 
         $listType = $this->renderListType($value, $presentation);
         $keyType = $this->renderKeyType($value, $presentation);
@@ -59,7 +65,9 @@ final class AbstractListAdapter implements LinkRendererInterface
     {
         $listType = 'mixed';
         if ($node instanceof Collection) {
-            $listType = $this->rendererChain->render($node->getFqsen(), $presentation);
+            $listType = $node->getFqsen()
+                ? $this->rendererChain->render($node->getFqsen(), $presentation)
+                : 'object';
         }
 
         if ($node instanceof Array_) {

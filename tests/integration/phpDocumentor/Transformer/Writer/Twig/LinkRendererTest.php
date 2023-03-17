@@ -27,7 +27,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Router\Router;
-use phpDocumentor\Transformer\Writer\LinkRenderer\HtmlFormatter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -38,9 +38,7 @@ use function gettype;
 use function is_object;
 
 /**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
- * @covers ::__construct
- * @covers ::<private>
+ * @coversNothing
  */
 final class LinkRendererTest extends TestCase
 {
@@ -68,7 +66,6 @@ final class LinkRendererTest extends TestCase
      * @param ClassDescriptor|Fqsen $input
      *
      * @dataProvider descriptorLinkProvider
-     * @covers ::render
      */
     public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
@@ -144,9 +141,6 @@ final class LinkRendererTest extends TestCase
         return $descriptor;
     }
 
-    /**
-     * @covers ::render
-     */
     public function testRenderWithNullableFqsen(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -162,9 +156,6 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(['classes/My.Namespace.Class.html', 'null'], $result);
     }
 
-    /**
-     * @covers ::render
-     */
     public function testRenderWithCollectionOfFqsensAndRepresentationUrl(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -181,9 +172,6 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(['classes/My.Namespace.Class.html'], $result);
     }
 
-    /**
-     * @covers ::render
-     */
     public function testRenderReferenceToType(): void
     {
         $this->router->generate(Argument::any())->shouldNotBeCalled();
@@ -193,9 +181,6 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(['int'], $result);
     }
 
-    /**
-     * @covers ::render
-     */
     public function testRenderWithFqsenAndRepresentationClassShort(): void
     {
         $fqsen = new Fqsen('\My\Namespace\Class');
@@ -286,7 +271,6 @@ final class LinkRendererTest extends TestCase
     }
 
     /**
-     * @covers ::render
      * @dataProvider provideUrls
      */
     public function testRenderWithUrl(string $url): void
