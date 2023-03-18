@@ -130,14 +130,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     }
 
     /**
-     * @deprecated Please use {@see ApiSetDescriptor::findElement()}
-     */
-    public function findElement(Fqsen $fqsen): ?ElementInterface
-    {
-        return $this->getApiDocumentationSet()->findElement($fqsen);
-    }
-
-    /**
      * @return Collection<VersionDescriptor>
      */
     public function getVersions(): Collection

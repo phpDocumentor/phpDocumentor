@@ -99,7 +99,7 @@ final class LinkAdapter implements LinkRendererInterface
         }
 
         if ($target instanceof Fqsen) {
-            $target = $this->rendererChain->getProject()->findElement($target) ?? $target;
+            $target = $this->rendererChain->getDocumentationSet()->findElement($target) ?? $target;
         }
 
         return $target;

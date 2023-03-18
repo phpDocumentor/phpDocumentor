@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
@@ -92,6 +93,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     private ConverterInterface $markdownConverter;
     private RelativePathToRootConverter $relativePathToRootConverter;
     private PathBuilder $pathBuilder;
+    private DocumentationSetDescriptor $documentationSet;
+    private ProjectDescriptor $project;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -100,14 +103,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function __construct(
         ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
         ConverterInterface $markdownConverter,
         LinkRenderer $routeRenderer,
         RelativePathToRootConverter $relativePathToRootConverter,
         PathBuilder $pathBuilder
     ) {
+        $this->project = $project;
+        $this->documentationSet = $documentationSet;
         $this->markdownConverter = $markdownConverter;
         $this->routeRenderer = $routeRenderer;
-        $this->routeRenderer = $this->routeRenderer->withProject($project);
+        $this->routeRenderer = $this->routeRenderer->withProject($project)->forDocumentationSet($documentationSet);
         $this->relativePathToRootConverter = $relativePathToRootConverter;
         $this->pathBuilder = $pathBuilder;
     }
@@ -120,8 +126,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     public function getGlobals(): array
     {
         return [
-            'project' => null,
-            'documentationSet' => null,
+            'project' => $this->project,
+            'documentationSet' => $this->documentationSet,
             'node' => null,
             'usesNamespaces' => true,
             'usesPackages' => true,
@@ -447,7 +453,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     {
         return $this->routeRenderer
             ->withDestination(ltrim($context['destinationPath'] ?? $context['env']->getCurrentFileDestination(), '/\\'))
-            ->withProject($context['project']);
+            ->withProject($context['project'])
+            ->forDocumentationSet($context['documentationSet']);
     }
 
     /**
