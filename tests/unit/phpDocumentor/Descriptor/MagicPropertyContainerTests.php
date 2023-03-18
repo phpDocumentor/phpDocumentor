@@ -54,10 +54,8 @@ trait MagicPropertyContainerTests
 
         $magicProperties = $this->fixture->getMagicProperties();
 
-        self::assertCount(1, $magicProperties);
-        self::assertSame($description, $magicProperties->get(0)->getDescription());
-        self::assertEquals(new String_(), $magicProperties->get(0)->getType());
-        self::assertCount(1, $magicProperties->get(0)->getErrors());
+        self::assertCount(0, $magicProperties);
+        self::assertCount(1, $this->fixture->getErrors());
     }
 
     /**
