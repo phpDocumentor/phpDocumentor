@@ -17,6 +17,7 @@ use Generator;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
@@ -42,6 +43,7 @@ use function is_object;
  */
 final class LinkRendererTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var Router|ObjectProphecy */
@@ -56,8 +58,9 @@ final class LinkRendererTest extends TestCase
     protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
-        $this->projectDescriptor = new ProjectDescriptor('project');
-        $this->projectDescriptor->getIndexes()->set('elements', new Collection());
+        $this->projectDescriptor = $this->faker()->projectDescriptor([
+            $this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]),
+        ]);
         $this->renderer = (new LinkRenderer($this->router->reveal(), new HtmlFormatter()))
             ->withProject($this->projectDescriptor);
     }

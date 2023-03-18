@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 
 abstract class DocumentationSetDescriptor
@@ -28,10 +29,16 @@ abstract class DocumentationSetDescriptor
     /** @var Collection<FileInterface> $files */
     private Collection $files;
 
+    /** @var Collection<Collection<ElementInterface>> $indexes */
+    private Collection $indexes;
+
     public function __construct()
     {
-        $this->files = new Collection();
         $this->tocs = Collection::fromClassString(TocDescriptor::class);
+        $this->files = Collection::fromInterfaceString(FileInterface::class);
+
+        /** @phpstan-ignore-next-line */
+        $this->indexes = Collection::fromClassString(Collection::class);
     }
 
     public function getName(): string
@@ -85,5 +92,49 @@ abstract class DocumentationSetDescriptor
     public function getFiles(): Collection
     {
         return $this->files;
+    }
+
+    /**
+     * Sets all indexes for this documentation set.
+     *
+     * An index is a compilation of references to elements, usually constructed in a compiler step, that aids template
+     * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
+     * a list of TODOs and FIXMEs are located in a central location for reporting.
+     *
+     * @param Collection<Collection<ElementInterface>> $indexes
+     */
+    public function setIndexes(Collection $indexes): void
+    {
+        $this->indexes = $indexes;
+    }
+
+    /**
+     * Returns all indexes in this documentation set.
+     *
+     * @see setIndexes() for more information on what indexes are.
+     *
+     * @return Collection<Collection<ElementInterface>>
+     */
+    public function getIndexes(): Collection
+    {
+        return $this->indexes;
+    }
+
+    /**
+     * Returns an index with the given name.
+     *
+     * If the index does not exist yet, it will dynamically be added to the list of indexes.
+     *
+     * @return Collection<ElementInterface>
+     */
+    public function getIndex(string $name): Collection
+    {
+        $index = $this->indexes[$name];
+        if ($index === null) {
+            $index = Collection::fromInterfaceString(ElementInterface::class);
+            $this->indexes[$name] = $index;
+        }
+
+        return $index;
     }
 }

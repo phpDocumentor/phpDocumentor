@@ -81,6 +81,8 @@ final class ProjectDescriptorTest extends TestCase
      */
     public function testGetSetIndexes(): void
     {
+        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]));
+
         $this->assertInstanceOf(Collection::class, $this->fixture->getIndexes());
 
         $indexCollection = new Collection();
