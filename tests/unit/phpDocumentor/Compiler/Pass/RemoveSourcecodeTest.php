@@ -65,18 +65,17 @@ final class RemoveSourcecodeTest extends TestCase
 
     private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
     {
-        $projecDescriptor = $this->faker()->projectDescriptor();
-        $projecDescriptor->setFiles(
+        $projectDescriptor = $this->faker()->projectDescriptor();
+        $versionDesciptor = $this->faker()->versionDescriptor([$apiDescriptor]);
+        $projectDescriptor->getVersions()->add($versionDesciptor);
+        $projectDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
                 [$this->faker()->fileDescriptor()]
             )
         );
 
-        $versionDesciptor = $this->faker()->versionDescriptor([$apiDescriptor]);
-        $projecDescriptor->getVersions()->add($versionDesciptor);
-
-        return $projecDescriptor;
+        return $projectDescriptor;
     }
 
     /**

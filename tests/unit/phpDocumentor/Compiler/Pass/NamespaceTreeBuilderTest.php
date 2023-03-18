@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
@@ -34,6 +35,8 @@ use function sort;
  */
 class NamespaceTreeBuilderTest extends TestCase
 {
+    use Faker;
+
     /** @var NamespaceTreeBuilder $fixture */
     protected $fixture;
 
@@ -45,6 +48,10 @@ class NamespaceTreeBuilderTest extends TestCase
         $this->fixture = new NamespaceTreeBuilder();
 
         $this->project = new ProjectDescriptor('title');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $this->project->getVersions()->add($version);
+
         $this->project->getFiles()->add(new FileDescriptor('hash'));
     }
 

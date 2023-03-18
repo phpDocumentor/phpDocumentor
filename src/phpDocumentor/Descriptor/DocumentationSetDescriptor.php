@@ -14,23 +14,23 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Descriptor\Interfaces\FileInterface;
 
 abstract class DocumentationSetDescriptor
 {
-    /** @var string */
-    protected $name = '';
-
-    /** @var Source */
-    protected $source;
-
-    /** @var string */
-    protected $outputLocation = '.';
+    protected string $name = '';
+    protected Source $source;
+    protected string $outputLocation = '.';
 
     /** @var Collection<TocDescriptor> */
-    private $tocs;
+    private Collection $tocs;
+
+    /** @var Collection<FileInterface> $files */
+    private Collection $files;
 
     public function __construct()
     {
+        $this->files = new Collection();
         $this->tocs = Collection::fromClassString(TocDescriptor::class);
     }
 
@@ -65,5 +65,25 @@ abstract class DocumentationSetDescriptor
     public function getOutputLocation(): string
     {
         return $this->outputLocation;
+    }
+
+    /**
+     * Sets the list of files that is in this documentation set.
+     *
+     * @param Collection<FileInterface> $files
+     */
+    public function setFiles(Collection $files): void
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * Returns the list of files that is in this documentation set.
+     *
+     * @return Collection<FileInterface>
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
     }
 }

@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\Description;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
  */
 final class PackageTreeBuilderTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     private const DEFAULT_PACKAGE_NAME = 'Default';
@@ -68,6 +70,9 @@ final class PackageTreeBuilderTest extends TestCase
     public function testRootPackageIsSet(): void
     {
         $project = new ProjectDescriptor('title');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $project->getVersions()->add($version);
         $this->fixture->execute($project);
 
         $packages = $project->getIndexes()->get('packages');
@@ -417,6 +422,9 @@ final class PackageTreeBuilderTest extends TestCase
     private function givenProjectWithFile(FileDescriptor $file): ProjectDescriptor
     {
         $project = new ProjectDescriptor('title');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $project->getVersions()->add($version);
         $project->getFiles()->add($file);
 
         return $project;
@@ -425,6 +433,10 @@ final class PackageTreeBuilderTest extends TestCase
     private function givenProjectWithFiles(array $files): ProjectDescriptor
     {
         $project = new ProjectDescriptor('title');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $project->getVersions()->add($version);
+
         foreach ($files as $file) {
             $project->getFiles()->add($file);
         }

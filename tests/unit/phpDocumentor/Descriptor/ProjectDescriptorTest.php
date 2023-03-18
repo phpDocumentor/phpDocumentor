@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class ProjectDescriptorTest extends TestCase
 {
+    use Faker;
+
     public const EXAMPLE_NAME = 'Initial name';
 
     /** @var ProjectDescriptor */
@@ -58,12 +61,17 @@ final class ProjectDescriptorTest extends TestCase
      */
     public function testGetSetFiles(): void
     {
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $this->fixture->getVersions()->add($version);
+
         $this->assertInstanceOf(Collection::class, $this->fixture->getFiles());
 
         $filesCollection = new Collection();
         $this->fixture->setFiles($filesCollection);
 
         $this->assertSame($filesCollection, $this->fixture->getFiles());
+        $this->assertSame($set->getFiles(), $this->fixture->getFiles());
     }
 
     /**
