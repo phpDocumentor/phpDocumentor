@@ -67,18 +67,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     }
 
     /**
-     * Sets all files on this project.
-     *
-     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
-     *
-     * @param Collection<FileInterface> $files
-     */
-    public function setFiles(Collection $files): void
-    {
-        $this->getApiDocumentationSet()->setFiles($files);
-    }
-
-    /**
      * Returns all files with their sub-elements.
      *
      * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
@@ -88,18 +76,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getFiles(): Collection
     {
         return $this->getApiDocumentationSet()->getFiles();
-    }
-
-    /**
-     * Sets all indexes for this project.
-     *
-     * @deprecated Please use {@see DocumentationSetDescriptor::setIndexes()}
-     *
-     * @param Collection<Collection<ElementInterface>> $indexes
-     */
-    public function setIndexes(Collection $indexes): void
-    {
-        $this->getApiDocumentationSet()->setIndexes($indexes);
     }
 
     /**

@@ -72,17 +72,17 @@ final class SourcecodeTest extends MockeryTestCase
 
         $api = $this->faker()->apiSetDescriptor();
         $api->getSettings()['include-source'] = true;
-        $projecDescriptor = $this->giveProjectDescriptor($api);
+        $projectDescriptor = $this->giveProjectDescriptor($api);
 
-        $this->sourceCode->transform($projecDescriptor, $transformation->reveal());
+        $this->sourceCode->transform($projectDescriptor, $transformation->reveal());
     }
 
     private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
     {
         $projectDescriptor = $this->faker()->projectDescriptor();
-        $versionDesciptor = $this->faker()->versionDescriptor([$apiDescriptor]);
-        $projectDescriptor->getVersions()->add($versionDesciptor);
-        $projectDescriptor->setFiles(
+        $versionDescriptor = $this->faker()->versionDescriptor([$apiDescriptor]);
+        $projectDescriptor->getVersions()->add($versionDescriptor);
+        $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
                 [$this->faker()->fileDescriptor()]
