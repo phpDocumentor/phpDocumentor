@@ -22,6 +22,7 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
@@ -35,17 +36,20 @@ use function array_values;
  */
 class ElementsIndexBuilderTest extends TestCase
 {
-    /** @var ElementsIndexBuilder $fixture */
-    protected $fixture;
+    use Faker;
 
-    /** @var ProjectDescriptor */
-    protected $project;
+    protected ElementsIndexBuilder $fixture;
+    protected ProjectDescriptor $project;
 
     protected function setUp(): void
     {
         $this->fixture = new ElementsIndexBuilder();
 
         $this->project = new ProjectDescriptor('title');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $this->project->getVersions()->add($version);
+
         $file1 = new FileDescriptor('hash');
         $file2 = new FileDescriptor('hash2');
         $this->project->getFiles()->add($file1);

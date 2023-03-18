@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Traits\HasName;
 use phpDocumentor\Descriptor\Traits\HasNamespace;
 use phpDocumentor\Descriptor\Traits\HasPackage;
 use phpDocumentor\Reflection\Fqsen;
+use Webmozart\Assert\Assert;
 
 /**
  * Represents the entire project with its files, namespaces and indexes.
@@ -34,9 +35,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     use HasDescription;
     use HasPackage;
     use HasNamespace;
-
-    /** @var Collection<FileInterface> $files */
-    private Collection $files;
 
     /** @var Collection<Collection<ElementInterface>> $indexes */
     private Collection $indexes;
@@ -67,7 +65,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $package->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
         $this->setPackage($package);
 
-        $this->setFiles(new Collection());
         $this->setIndexes(new Collection());
 
         $this->setPartials(new Collection());
@@ -77,19 +74,25 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets all files on this project.
      *
+     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
+     *
      * @param Collection<FileInterface> $files
      */
     public function setFiles(Collection $files): void
     {
-        $this->files = $files;
+        $this->getApiDocumentationSet()->setFiles($files);
     }
 
     /**
      * Returns all files with their sub-elements.
+     *
+     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
+     *
+     * @return Collection<FileInterface>
      */
     public function getFiles(): Collection
     {
-        return $this->files;
+        return $this->getApiDocumentationSet()->getFiles();
     }
 
     /**
@@ -172,5 +175,22 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getVersions(): Collection
     {
         return $this->versions;
+    }
+
+    /**
+     * Retrieves the first API Documentation set from the first version.
+     *
+     * @deprecated As soon as we are done migrating to multiple API Documentation sets, this method becomes invalid
+     *     and should be removed.
+     */
+    private function getApiDocumentationSet(): ApiSetDescriptor
+    {
+        $firstVersion = $this->versions->first();
+        Assert::isInstanceOf($firstVersion, VersionDescriptor::class);
+
+        $firstApiSet = $firstVersion->getDocumentationSets()->filter(ApiSetDescriptor::class)->first();
+        Assert::isInstanceOf($firstApiSet, ApiSetDescriptor::class);
+
+        return $firstApiSet;
     }
 }

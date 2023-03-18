@@ -46,8 +46,8 @@ SOURCE
         $documentationsSets->add($apiDescriptor);
 
         $projectDescriptor = new ProjectDescriptor('test project');
-        $projectDescriptor->setFiles(new Collection([$fileDescriptor]));
         $projectDescriptor->getVersions()->add(new VersionDescriptor('latest', $documentationsSets));
+        $projectDescriptor->setFiles(new Collection([$fileDescriptor]));
 
         $fixture->execute($projectDescriptor);
 

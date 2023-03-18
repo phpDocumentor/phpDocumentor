@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Cache;
 
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
@@ -31,16 +32,15 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  */
 final class ProjectDescriptorMapperTest extends TestCase
 {
-    /** @var ProjectDescriptorMapper */
-    private $mapper;
+    use Faker;
 
-    /** @var FilesystemAdapter */
-    private $cachePool;
+    private ProjectDescriptorMapper $mapper;
+    private FilesystemAdapter $cachePool;
 
     protected function setUp(): void
     {
         $this->cachePool = new FilesystemAdapter();
-        $this->mapper    = new ProjectDescriptorMapper($this->cachePool);
+        $this->mapper = new ProjectDescriptorMapper($this->cachePool);
     }
 
     /**
@@ -53,6 +53,9 @@ final class ProjectDescriptorMapperTest extends TestCase
         $fileDescriptor->setPath('./src/MyClass.php');
 
         $projectDescriptor = new ProjectDescriptor('project');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $projectDescriptor->getVersions()->add($version);
         $projectDescriptor->getFiles()->set('./src/MyClass.php', $fileDescriptor);
 
         $this->assertFalse($projectDescriptor->getSettings()->shouldIncludeSource());
@@ -62,6 +65,9 @@ final class ProjectDescriptorMapperTest extends TestCase
         $this->mapper->save($projectDescriptor);
 
         $restoredProjectDescriptor = new ProjectDescriptor('project2');
+        $set = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$set]);
+        $restoredProjectDescriptor->getVersions()->add($version);
         $this->mapper->populate($restoredProjectDescriptor);
 
         $this->assertTrue($restoredProjectDescriptor->getSettings()->shouldIncludeSource());
