@@ -36,9 +36,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     use HasPackage;
     use HasNamespace;
 
-    /** @var Collection<Collection<ElementInterface>> $indexes */
-    private Collection $indexes;
-
     private Settings $settings;
 
     /** @var Collection<string> $partials */
@@ -64,8 +61,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $package->setName('\\');
         $package->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
         $this->setPackage($package);
-
-        $this->setIndexes(new Collection());
 
         $this->setPartials(new Collection());
         $this->versions = Collection::fromClassString(VersionDescriptor::class);
@@ -98,25 +93,23 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets all indexes for this project.
      *
-     * An index is a compilation of references to elements, usually constructed in a compiler step, that aids template
-     * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
-     * a list of TODOs and FIXMEs are located in a central location for reporting.
+     * @deprecated Please use {@see DocumentationSetDescriptor::setIndexes()}
      *
      * @param Collection<Collection<ElementInterface>> $indexes
      */
     public function setIndexes(Collection $indexes): void
     {
-        $this->indexes = $indexes;
+        $this->getApiDocumentationSet()->setIndexes($indexes);
     }
 
     /**
      * Returns all indexes in this project.
      *
-     * @see setIndexes() for more information on what indexes are.
+     * @deprecated Please use {@see DocumentationSetDescriptor::getIndexes()}
      */
     public function getIndexes(): Collection
     {
-        return $this->indexes;
+        return $this->getApiDocumentationSet()->getIndexes();
     }
 
     /**
@@ -160,13 +153,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
+    /**
+     * @deprecated Please use {@see ApiSetDescriptor::findElement()}
+     */
     public function findElement(Fqsen $fqsen): ?ElementInterface
     {
-        if (!isset($this->getIndexes()['elements'])) {
-            return null;
-        }
-
-        return $this->getIndexes()['elements']->fetch((string) $fqsen);
+        return $this->getApiDocumentationSet()->findElement($fqsen);
     }
 
     /**

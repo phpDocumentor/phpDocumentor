@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +12,13 @@ use PHPUnit\Framework\TestCase;
 final class UsedByBuilderTest extends TestCase
 {
     use Faker;
+
+    private UsedByBuilder $pass;
+
+    protected function setUp(): void
+    {
+        $this->pass = new UsedByBuilder();
+    }
 
     public function testCounterPartOfUsesWillGetTagUsedBy(): void
     {
@@ -24,15 +29,14 @@ final class UsedByBuilderTest extends TestCase
         $usesTag->setReference($counterClass);
         $class->getTags()->set('uses', Collection::fromClassString(UsesDescriptor::class, [$usesTag]));
 
-        $projectDescriptor = new ProjectDescriptor('test');
-        $projectDescriptor->setIndexes(
-            new Collection(
-                ['elements' => Collection::fromClassString(ClassDescriptor::class, [$class, $counterClass])]
-            )
-        );
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $projectDescriptor = $this->faker()->projectDescriptor([
+            $this->faker()->versionDescriptor([$apiSetDescriptor]),
+        ]);
+        $apiSetDescriptor->getIndex('elements')->add($class);
+        $apiSetDescriptor->getIndex('elements')->add($counterClass);
 
-        $pass = new UsedByBuilder();
-        $pass->execute($projectDescriptor);
+        $this->pass->execute($projectDescriptor);
 
         $usedBy = $counterClass->getTags()->fetch(
             'used-by',

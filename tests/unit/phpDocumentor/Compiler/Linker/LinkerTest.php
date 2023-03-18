@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Linker;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -34,13 +34,13 @@ use function get_class;
  */
 final class LinkerTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var ObjectProphecy|DescriptorRepository */
-    private $descriptorRepository;
+    private ObjectProphecy $descriptorRepository;
 
-    /** @var Linker */
-    private $linker;
+    private Linker $linker;
 
     protected function setUp(): void
     {
@@ -285,8 +285,11 @@ final class LinkerTest extends TestCase
         $object = $this->prophesize(ClassDescriptor::class);
         $fqsen = get_class($object);
 
-        $project = new ProjectDescriptor('project');
-        $project->setIndexes(new Collection(['elements' => new Collection([$fqsen => $result])]));
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $project = $this->faker()->projectDescriptor([
+            $this->faker()->versionDescriptor([$apiSetDescriptor]),
+        ]);
+        $apiSetDescriptor->getIndex('elements')->set($fqsen, $result);
 
         // prepare linker
         $repository = $this->prophesize(DescriptorRepository::class);

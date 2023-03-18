@@ -15,6 +15,8 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Reflection\Fqsen;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
@@ -26,15 +28,32 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
         string $outputLocation,
         ApiSpecification $apiSpecification
     ) {
-        parent::__construct();
         $this->name = $name;
         $this->source = $source;
         $this->outputLocation = $outputLocation;
         $this->apiSpecification = $apiSpecification;
+
+        parent::__construct();
+
+        // Pre-initialize elements index
+        $this->getIndexes()['elements'] = Collection::fromInterfaceString(ElementInterface::class);
     }
 
     public function getSettings(): ApiSpecification
     {
         return $this->apiSpecification;
+    }
+
+    /**
+     * Finds a structural element with the given FQSEN in this Documentation Set, or returns null when it
+     * could not be found.
+     */
+    public function findElement(Fqsen $fqsen): ?ElementInterface
+    {
+        if (!isset($this->getIndexes()['elements'])) {
+            return null;
+        }
+
+        return $this->getIndexes()['elements']->fetch((string) $fqsen);
     }
 }

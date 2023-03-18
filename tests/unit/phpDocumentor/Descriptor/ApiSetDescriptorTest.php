@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
@@ -34,12 +35,59 @@ final class ApiSetDescriptorTest extends TestCase
     {
         $source = $this->faker()->source();
         $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
-        $files = new Collection([new FileDescriptor('hash')]);
+        $files = new Collection([$this->faker()->fileDescriptor()]);
 
         self::assertEquals(new Collection(), $set->getFiles());
 
         $set->setFiles($files);
 
         self::assertSame($files, $set->getFiles());
+    }
+
+    /**
+     * @covers ::setIndexes
+     * @covers ::getIndexes
+     */
+    public function testCanHaveASeriesOfIndexes(): void
+    {
+        $source = $this->faker()->source();
+        $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
+        $indexes = new Collection(
+            [
+                'elements' => Collection::fromInterfaceString(
+                    ElementInterface::class,
+                    [$this->faker()->fileDescriptor()]
+                ),
+            ]
+        );
+
+        $expectedDefault = Collection::fromInterfaceString(
+            ElementInterface::class,
+            ['elements' => Collection::fromInterfaceString(ElementInterface::class)]
+        );
+
+        self::assertEquals($expectedDefault, $set->getIndexes());
+
+        $set->setIndexes($indexes);
+
+        self::assertSame($indexes, $set->getIndexes());
+    }
+
+    /**
+     * @covers ::findElement
+     */
+    public function testCanFetchAnElementBasedOnItsFqsen(): void
+    {
+        $source = $this->faker()->source();
+        $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
+
+        $fqsen = $this->faker()->fqsen();
+        $descriptor = $this->faker()->classDescriptor($fqsen);
+
+        self::assertEquals(new Collection(), $set->getIndexes()['elements']);
+
+        $set->getIndexes()['elements']->set((string) $fqsen, $descriptor);
+
+        self::assertSame($descriptor, $set->findElement($fqsen));
     }
 }

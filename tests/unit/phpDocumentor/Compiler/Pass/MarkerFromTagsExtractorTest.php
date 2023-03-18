@@ -20,17 +20,17 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\TestCase;
 
 final class MarkerFromTagsExtractorTest extends TestCase
 {
-    /** @var MarkerFromTagsExtractor */
-    private $fixture;
+    use Faker;
 
-    /** @var ProjectDescriptor */
-    private $project;
+    private ProjectDescriptor $project;
+    private MarkerFromTagsExtractor $fixture;
 
     /**
      * Initialize the fixture for this test.
@@ -38,7 +38,9 @@ final class MarkerFromTagsExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
-        $this->project = new ProjectDescriptor('MyProject');
+        $this->project = $this->faker()->projectDescriptor([
+            $this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]),
+        ]);
     }
 
     /**

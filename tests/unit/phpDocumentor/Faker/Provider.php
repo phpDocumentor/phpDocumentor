@@ -164,9 +164,14 @@ final class Provider extends Base
         );
     }
 
-    public function projectDescriptor(): ProjectDescriptor
+    public function projectDescriptor(array $versionDescriptors = []): ProjectDescriptor
     {
-        return new ProjectDescriptor('test');
+        $projectDescriptor = new ProjectDescriptor('test');
+        foreach ($versionDescriptors as $versionDescriptor) {
+            $projectDescriptor->getVersions()->add($versionDescriptor);
+        }
+
+        return $projectDescriptor;
     }
 
     public function namespaceDescriptor(Fqsen $fqsen, array $children = []): NamespaceDescriptor
