@@ -74,6 +74,8 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets all files on this project.
      *
+     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
+     *
      * @param Collection<FileInterface> $files
      */
     public function setFiles(Collection $files): void
@@ -83,6 +85,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 
     /**
      * Returns all files with their sub-elements.
+     *
+     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
+     *
+     * @return Collection<FileInterface>
      */
     public function getFiles(): Collection
     {
