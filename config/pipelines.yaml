@@ -13,13 +13,6 @@ services:
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 10000 }
 
-    phpdoc.cache.pipeline:
-      class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
-      arguments: [!tagged phpdoc.pipeline.application.cache]
-      tags:
-        - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 8000 }
-
     phpdoc.parse.pipeline:
       class: 'League\Pipeline\Pipeline'
       factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']

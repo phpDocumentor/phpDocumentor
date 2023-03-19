@@ -14,6 +14,7 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    documentation-website
    configuration
    flow
+   pipeline
    caching
    rendering/index
    guides/index
