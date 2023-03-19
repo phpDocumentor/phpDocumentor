@@ -135,7 +135,9 @@ As of writing, the main stages in this pipeline are:
 #. :php:class:`Compile indexes, and link Descriptors<phpDocumentor\Pipeline\Stage\Compile>`
 #. :php:class:`Render artefacts<phpDocumentor\Pipeline\Stage\Transform>`
 
-Learn more:
+**********
+Learn more
+**********
 
 * :doc:`flow`
 * :doc:`caching`
