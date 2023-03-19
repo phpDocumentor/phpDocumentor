@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
@@ -98,8 +99,9 @@ final class LinkAdapter implements LinkRendererInterface
             $target = $target->getFqsen() ?? $target;
         }
 
-        if ($target instanceof Fqsen) {
-            $target = $this->rendererChain->getDocumentationSet()->findElement($target) ?? $target;
+        $documentationSetDescriptor = $this->rendererChain->getDocumentationSet();
+        if ($target instanceof Fqsen && $documentationSetDescriptor instanceof ApiSetDescriptor) {
+            $target = $documentationSetDescriptor->findElement($target) ?? $target;
         }
 
         return $target;

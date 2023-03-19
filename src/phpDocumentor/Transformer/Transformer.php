@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;

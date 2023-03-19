@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;

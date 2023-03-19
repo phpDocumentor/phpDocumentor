@@ -87,7 +87,11 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 //TODO Extract this, as this code is duplicated
                 $this->environmentBuilder->setEnvironmentFactory(
                     function () use ($transformation, $project, $documentationSet) {
-                        $twig = $this->environmentFactory->create($project, $documentationSet, $transformation->template());
+                        $twig = $this->environmentFactory->create(
+                            $project,
+                            $documentationSet,
+                            $transformation->template()
+                        );
                         $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
                         $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
                         $twig->addGlobal('destinationPath', null);

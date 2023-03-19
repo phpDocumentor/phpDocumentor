@@ -121,7 +121,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Initialize series of globals used by the writers to set the context
      *
-     * @return array<string, (true|string[]|null)>
+     * @return array{
+     *     project: ProjectDescriptor,
+     *     documentationSet: DocumentationSetDescriptor,
+     *     node: ?Descriptor,
+     *     usesNamespaces: bool,
+     *     usesPackages: bool,
+     *     destinationPath: ?string,
+     *     parameter: array<string, mixed>,
+     *     env: mixed
+     * }
      */
     public function getGlobals(): array
     {

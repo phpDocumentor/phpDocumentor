@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\ConverterInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
@@ -77,7 +76,11 @@ final class EnvironmentFactoryTest extends TestCase
     {
         $template = $this->faker()->template();
 
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $projectDescriptor = $this->faker()->projectDescriptor(
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+        );
+        $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
         $this->assertCount(7, $environment->getExtensions());
@@ -95,7 +98,11 @@ final class EnvironmentFactoryTest extends TestCase
         $template = $this->faker()->template();
         $mountManager = $template->files();
 
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $projectDescriptor = $this->faker()->projectDescriptor(
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+        );
+        $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
         /** @var ChainLoader $loader */
         $loader = $environment->getLoader();
@@ -122,7 +129,11 @@ final class EnvironmentFactoryTest extends TestCase
     {
         $template = $this->faker()->template();
 
-        $environment = $this->factory->create(new ProjectDescriptor('name'), $template);
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $projectDescriptor = $this->faker()->projectDescriptor(
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+        );
+        $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
         $this->assertFalse($environment->getCache());
         $this->assertTrue($environment->isDebug());

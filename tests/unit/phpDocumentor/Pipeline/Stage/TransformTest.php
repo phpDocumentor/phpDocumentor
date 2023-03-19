@@ -60,6 +60,7 @@ final class TransformTest extends TestCase
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
+        $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
         $this->transformer = $this->prophesize(Transformer::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
         $this->transformer->execute($projectDescriptor, $documentationSet, [])->shouldBeCalled();
@@ -81,7 +82,6 @@ final class TransformTest extends TestCase
     public function test_if_target_location_for_output_is_set_with_a_relative_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
-
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
