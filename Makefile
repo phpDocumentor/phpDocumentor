@@ -124,7 +124,7 @@ composer-require-checker:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=./tools/composer-require-checker phpdoc  check --config-file /opt/phpdoc/composer-require-config.json composer.json
 
 .PHONY: pre-commit-test
-pre-commit-test: test phpcs phpstan psalm composer-require-checker
+pre-commit-test: test integration-test phpcs phpstan psalm composer-require-checker
 
 .PHONY: composer
 composer:
