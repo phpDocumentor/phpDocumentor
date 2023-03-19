@@ -80,6 +80,10 @@ As of writing, the main stages in this pipeline are:
 Parser pipeline
 ===============
 
+This pipeline takes the payload as prepared in the previous pipeline, collect a listing of files based on the
+configuration and parse these into an AST in the form of a series of Descriptors. This can be cached and used in the
+transformation pipeline to generate artefacts with.
+
 **Input**
     :php:class:`Payload<phpDocumentor\Pipeline\Stage\Payload>` with the loaded configuration and a
     :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>`.
@@ -88,18 +92,27 @@ Parser pipeline
     :php:class:`Payload<phpDocumentor\Pipeline\Stage\ParserPayload>` with the loaded configuration and a
     :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>`.
 
+Before phpDocumentor can render the documentation for a project, it needs to understand it first. This pipeline focuses
+on collecting a list of files, according to the configuration, and converting the contents of those files into
+Descriptors.
+
+For performance, files can be cached and retrieved during the parsing phase.
+
 As of writing, the main stages in this pipeline are:
 
-#. :php:class:`phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Parser\CollectFiles`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Parser\ParseFiles`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache`
+#. :php:class:`Converting the payload into a parser-specific variant<phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload>`
+#. :php:class:`Gathering which files to parse<phpDocumentor\Pipeline\Stage\Parser\CollectFiles>`
+#. :php:class:`Remove all files from cache that are not in this list<phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache>`
+#. :php:class:`Load unmodified parsed files from cache<phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache>`
+#. :php:class:`Parse any modified files and create/update FileDescriptors<phpDocumentor\Pipeline\Stage\Parser\ParseFiles>`
+#. :php:class:`Update cache<phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache>`
 
 Transformer pipeline
 ====================
 
+This pipeline takes the descriptors that have been produced in the parsing pipeline, and creates a series of artefacts
+from them according to the selected template.
+
 **Input**
     :php:class:`Payload<phpDocumentor\Pipeline\Stage\Payload>` with the loaded configuration and a
     :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>`.
@@ -108,8 +121,22 @@ Transformer pipeline
     :php:class:`Payload<phpDocumentor\Pipeline\Stage\ParserPayload>` with the loaded configuration and a
     :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>`.
 
+In the previous pipeline, the parsed files are written to cache and this same cache is re-used as the basis for
+transformation. Because each file is parsed independently, this pipeline compiles and links the documents together
+before rendering the artefacts.
+
+Only after all relations are made and indexes have been built can a transformation use the information from such an
+index or the project. This is passed to a *writer*, which ultimately is responsible for taking information from the
+whole and rendering an artefact from it.
+
 As of writing, the main stages in this pipeline are:
 
-#. :php:class:`phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Compile`
-#. :php:class:`phpDocumentor\Pipeline\Stage\Transform`
+#. :php:class:`Load Project Descriptor from cache<phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache>`
+#. :php:class:`Compile indexes, and link Descriptors<phpDocumentor\Pipeline\Stage\Compile>`
+#. :php:class:`Render artefacts<phpDocumentor\Pipeline\Stage\Transform>`
+
+Learn more:
+
+* :doc:`flow`
+* :doc:`caching`
+* :doc:`configuration`
