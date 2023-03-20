@@ -41,7 +41,7 @@ final class RemoveSourcecodeTest extends TestCase
 
         $fixture->execute($projectDescriptor);
 
-        foreach ($projectDescriptor->getFiles() as $file) {
+        foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNull($file->getSource());
         }
     }
@@ -58,7 +58,7 @@ final class RemoveSourcecodeTest extends TestCase
 
         $fixture->execute($projectDescriptor);
 
-        foreach ($projectDescriptor->getFiles() as $file) {
+        foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNotNull($file->getSource());
         }
     }
@@ -68,7 +68,7 @@ final class RemoveSourcecodeTest extends TestCase
         $projectDescriptor = $this->faker()->projectDescriptor();
         $versionDesciptor = $this->faker()->versionDescriptor([$apiDescriptor]);
         $projectDescriptor->getVersions()->add($versionDesciptor);
-        $projectDescriptor->setFiles(
+        $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
                 [$this->faker()->fileDescriptor()]

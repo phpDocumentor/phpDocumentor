@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
@@ -110,8 +109,8 @@ final class TransformerTest extends TestCase
      */
     public function testExecute(): void
     {
-        $myTestWriter = 'myTestWriter';
-        $project = $this->prophesize(ProjectDescriptor::class);
+        $apiSet = $this->faker()->apiSetDescriptor();
+        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
 
         $this->writer->transform(Argument::any(), Argument::any())->shouldBeCalled();
 
@@ -122,7 +121,7 @@ final class TransformerTest extends TestCase
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
 
-        $this->fixture->execute($project->reveal(), [$transformation->reveal()]);
+        $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
     }
 
     /**

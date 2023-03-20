@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
@@ -42,6 +43,7 @@ class LinkRenderer implements LinkRendererInterface
 
     private string $destination = '';
     private ProjectDescriptor $project;
+    private DocumentationSetDescriptor $documentationSet;
 
     /** @var LinkRendererInterface[] */
     private array $adapters;
@@ -62,6 +64,9 @@ class LinkRenderer implements LinkRendererInterface
         $this->adapters = $this->createAdapters();
     }
 
+    /**
+     * @deprecated will be removed once getProject is removed
+     */
     public function withProject(ProjectDescriptor $projectDescriptor): self
     {
         $result = clone $this;
@@ -70,9 +75,25 @@ class LinkRenderer implements LinkRendererInterface
         return $result;
     }
 
+    public function forDocumentationSet(DocumentationSetDescriptor $documentationSet): self
+    {
+        $result = clone $this;
+        $result->documentationSet = $documentationSet;
+
+        return $result;
+    }
+
+    /**
+     * @deprecated use {@see getDocumentationSet()}
+     */
     public function getProject(): ProjectDescriptor
     {
         return $this->project;
+    }
+
+    public function getDocumentationSet(): DocumentationSetDescriptor
+    {
+        return $this->documentationSet;
     }
 
     /**
