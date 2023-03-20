@@ -33,7 +33,7 @@ services:
   phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
-      - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
+      - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 6000 }
 
   phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache:
     tags:

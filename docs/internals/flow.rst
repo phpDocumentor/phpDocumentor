@@ -1,8 +1,10 @@
+################
 Application Flow
-================
+################
 
+************
 Introduction
-------------
+************
 
 Generating the documentation for a project involves a fair number of steps but can be best summarized with this
 Activity Diagram.
@@ -20,13 +22,11 @@ This three step process enables phpDocumentor to break down a project into its m
 Elements, and depending on which template was selected generate various types of output.
 
 An example of such output may be a website that documents the project's internal API. Another example could be a
-checkstyle XML document that describes which errors in the project's DocBlocks were found. Anything is possible.
+checkstyle XML document that describes which errors in the project's DocBlocks were found.
 
-In this document I provide an overview of all moving parts in the application but do not explain each technical
-term in-depth.
-
+***********************
 The flow in more detail
------------------------
+***********************
 
 The complete application flow is perhaps best described with the Activity Diagram below. It should cover most of the
 large activities that occur in the application, including when and which events are emitted. This Activity Diagram does
@@ -44,7 +44,7 @@ surrounded by an additional border)
 .. uml:: flow.puml
 
 Boot the Application
-~~~~~~~~~~~~~~~~~~~~
+====================
 
 .. uml::
 
@@ -54,7 +54,7 @@ Boot the Application
    :Register phpDocumentor's Service Providers;
 
 Parse files into an AST
-~~~~~~~~~~~~~~~~~~~~~~~
+=======================
 
 .. note::
 
@@ -110,7 +110,7 @@ and overwrite the previous one.
      be made.
 
 Add File Representation to Project
-__________________________________
+----------------------------------
 
 .. uml::
 
@@ -131,10 +131,10 @@ __________________________________
    stop
 
 Transform AST into artifacts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+============================
 
 Transform all files
-___________________
+-------------------
 
 .. uml::
 
@@ -154,4 +154,3 @@ ___________________
    #f9f9f9:Emit event "transformer.transform.post">
 
    stop
-
