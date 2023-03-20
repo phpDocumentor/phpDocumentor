@@ -14,12 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use League\Pipeline\Pipeline;
-use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Configuration\VersionSpecification;
 
-/**
- * @psalm-import-type ConfigurationMap from Configuration
- */
 final class ParseApiDocumentationSets
 {
     private Pipeline $parseApiDocumentationSetPipeline;
@@ -29,9 +25,6 @@ final class ParseApiDocumentationSets
         $this->parseApiDocumentationSetPipeline = $parseApiDocumentationSetPipeline;
     }
 
-    /**
-     * @param ConfigurationMap $configuration
-     */
     public function __invoke(Payload $payload): Payload
     {
         /** @var VersionSpecification[] $versions */

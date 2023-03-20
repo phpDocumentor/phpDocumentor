@@ -18,11 +18,14 @@ use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File;
 
+use function array_merge;
+
 /**
  * @psalm-import-type ConfigurationMap from Configuration
  */
 final class ApiSetPayload
 {
+    /** @var ConfigurationMap */
     private array $configuration;
     private ProjectDescriptorBuilder $builder;
     private ApiSpecification $specification;
@@ -31,7 +34,7 @@ final class ApiSetPayload
     private array $files;
 
     /**
-     * @param ConfigurationMap $config
+     * @param ConfigurationMap $configuration
      * @param File[] $files
      */
     public function __construct(

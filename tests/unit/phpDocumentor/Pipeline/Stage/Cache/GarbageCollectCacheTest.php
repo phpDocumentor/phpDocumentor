@@ -15,7 +15,8 @@ namespace phpDocumentor\Pipeline\Stage\Cache;
 
 use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Pipeline\Stage\Parser\Payload;
+use phpDocumentor\Faker\Faker;
+use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -26,6 +27,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
  */
 final class GarbageCollectCacheTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -40,6 +42,13 @@ final class GarbageCollectCacheTest extends TestCase
 
         $fixture = new GarbageCollectCache($descriptorMapper->reveal());
 
-        $fixture(new Payload([], $this->prophesize(ProjectDescriptorBuilder::class)->reveal(), $files));
+        $fixture(
+            new ApiSetPayload(
+                [],
+                $this->prophesize(ProjectDescriptorBuilder::class)->reveal(),
+                $this->faker()->apiSpecification(),
+                $files
+            )
+        );
     }
 }
