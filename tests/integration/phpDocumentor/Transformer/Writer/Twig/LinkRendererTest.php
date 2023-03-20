@@ -47,22 +47,20 @@ final class LinkRendererTest extends TestCase
     use ProphecyTrait;
 
     /** @var Router|ObjectProphecy */
-    private $router;
+    private ObjectProphecy $router;
 
-    /** @var LinkRenderer */
-    private $renderer;
-
-    /** @var ProjectDescriptor */
-    private $projectDescriptor;
+    private LinkRenderer $renderer;
+    private ProjectDescriptor $projectDescriptor;
 
     protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $this->projectDescriptor = $this->faker()->projectDescriptor([
-            $this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]),
+            $this->faker()->versionDescriptor([$apiSetDescriptor]),
         ]);
         $this->renderer = (new LinkRenderer($this->router->reveal(), new HtmlFormatter()))
-            ->withProject($this->projectDescriptor);
+            ->withProject($this->projectDescriptor)->forDocumentationSet($apiSetDescriptor);
     }
 
     /**

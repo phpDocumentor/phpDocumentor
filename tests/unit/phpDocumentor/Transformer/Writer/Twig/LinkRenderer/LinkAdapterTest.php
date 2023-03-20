@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use ArrayObject;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Faker\Faker;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -29,6 +30,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 final class LinkAdapterTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /** @var LinkRendererInterface|ObjectProphecy */
@@ -47,6 +49,8 @@ final class LinkAdapterTest extends TestCase
         $this->linkRenderer = $this->prophesize(LinkRenderer::class);
         $this->urlGenerator = $this->prophesize(UrlGenerator::class);
         $this->htmlFormatter = $this->prophesize(HtmlFormatter::class);
+
+        $this->linkRenderer->getDocumentationSet()->willReturn($this->faker()->apiSetDescriptor());
 
         // pre-loaded expectations for the data provider
         $this->urlGenerator

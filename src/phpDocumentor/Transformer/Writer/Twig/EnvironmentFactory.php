@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\ConverterInterface;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\Twig\AssetsExtension;
@@ -57,6 +58,7 @@ class EnvironmentFactory
 
     public function create(
         ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
         Template $template
     ): Environment {
         $mountManager = $template->files();
@@ -72,7 +74,7 @@ class EnvironmentFactory
 
         $env = new Environment(new ChainLoader($loaders));
 
-        $this->addPhpDocumentorExtension($project, $env);
+        $this->addPhpDocumentorExtension($project, $documentationSet, $env);
         $this->enableDebug($env);
 
         return $env;
@@ -83,10 +85,12 @@ class EnvironmentFactory
      */
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
         Environment $twigEnvironment
     ): void {
         $extension = new Extension(
             $project,
+            $documentationSet,
             $this->markDownConverter,
             $this->renderer,
             $this->relativePathToRootConverter,

@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Template;
@@ -114,9 +115,12 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         return 'twig';
     }
 
-    public function initialize(ProjectDescriptor $project, Template $template): void
-    {
-        $this->environment = $this->environmentFactory->create($project, $template);
+    public function initialize(
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        Template $template
+    ): void {
+        $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
     }
 
     /**
@@ -200,10 +204,8 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
         $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
-        $this->environment->addGlobal('project', $project);
         $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
         $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-        $this->environment->addGlobal('documentationSet', $project);
         $this->environment->addGlobal('node', $node);
         $this->environment->addGlobal('destinationPath', $path);
         $this->environment->addGlobal('parameter', $parameters);

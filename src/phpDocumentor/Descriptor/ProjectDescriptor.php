@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Traits\HasDescription;
@@ -67,18 +66,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     }
 
     /**
-     * Sets all files on this project.
-     *
-     * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
-     *
-     * @param Collection<FileInterface> $files
-     */
-    public function setFiles(Collection $files): void
-    {
-        $this->getApiDocumentationSet()->setFiles($files);
-    }
-
-    /**
      * Returns all files with their sub-elements.
      *
      * @deprecated Please use {@see DocumentationSetDescriptor::getFiles()}
@@ -88,18 +75,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getFiles(): Collection
     {
         return $this->getApiDocumentationSet()->getFiles();
-    }
-
-    /**
-     * Sets all indexes for this project.
-     *
-     * @deprecated Please use {@see DocumentationSetDescriptor::setIndexes()}
-     *
-     * @param Collection<Collection<ElementInterface>> $indexes
-     */
-    public function setIndexes(Collection $indexes): void
-    {
-        $this->getApiDocumentationSet()->setIndexes($indexes);
     }
 
     /**
@@ -151,14 +126,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getPartials(): Collection
     {
         return $this->partials;
-    }
-
-    /**
-     * @deprecated Please use {@see ApiSetDescriptor::findElement()}
-     */
-    public function findElement(Fqsen $fqsen): ?ElementInterface
-    {
-        return $this->getApiDocumentationSet()->findElement($fqsen);
     }
 
     /**

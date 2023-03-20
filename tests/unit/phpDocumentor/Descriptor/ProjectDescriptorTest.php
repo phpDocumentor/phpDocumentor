@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
  * Tests the functionality for the ProjectDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
+ * @covers ::__construct
+ * @covers ::<private>
  */
 final class ProjectDescriptorTest extends TestCase
 {
@@ -28,8 +30,7 @@ final class ProjectDescriptorTest extends TestCase
 
     public const EXAMPLE_NAME = 'Initial name';
 
-    /** @var ProjectDescriptor */
-    private $fixture;
+    private ProjectDescriptor $fixture;
 
     /**
      * Initializes the fixture object.
@@ -40,7 +41,6 @@ final class ProjectDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::setName
      * @covers ::getName
      */
@@ -55,40 +55,26 @@ final class ProjectDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setFiles
      * @covers ::getFiles
      */
-    public function testGetSetFiles(): void
+    public function testGetFilesFromApiSet(): void
     {
         $set = $this->faker()->apiSetDescriptor();
         $version = $this->faker()->versionDescriptor([$set]);
         $this->fixture->getVersions()->add($version);
 
-        $this->assertInstanceOf(Collection::class, $this->fixture->getFiles());
-
-        $filesCollection = new Collection();
-        $this->fixture->setFiles($filesCollection);
-
-        $this->assertSame($filesCollection, $this->fixture->getFiles());
         $this->assertSame($set->getFiles(), $this->fixture->getFiles());
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::setIndexes
      * @covers ::getIndexes
      */
-    public function testGetSetIndexes(): void
+    public function testGetIndexesFromApiSet(): void
     {
-        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]));
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$apiSetDescriptor]));
 
-        $this->assertInstanceOf(Collection::class, $this->fixture->getIndexes());
-
-        $indexCollection = new Collection();
-        $this->fixture->setIndexes($indexCollection);
-
-        $this->assertSame($indexCollection, $this->fixture->getIndexes());
+        $this->assertSame($apiSetDescriptor->getIndexes(), $this->fixture->getIndexes());
     }
 
     /**
@@ -131,7 +117,6 @@ final class ProjectDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
      * @covers ::setPartials
      * @covers ::getPartials
      */

@@ -53,14 +53,17 @@ final class TransformTest extends TestCase
 
     public function setUp(): void
     {
+        $documentationSet = $this->faker()->apiSetDescriptor();
         $projectDescriptor = new ProjectDescriptor('test');
-        $this->flySystemFactory         = $this->prophesize(FlySystemFactory::class);
+        $projectDescriptor->getVersions()->add($this->faker()->versionDescriptor([$documentationSet]));
+
+        $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
-        $this->transformer              = $this->prophesize(Transformer::class);
-        $this->logger                   = $this->prophesize(LoggerInterface::class);
-        $this->transformer->execute($projectDescriptor, [])->shouldBeCalled();
+        $this->transformer = $this->prophesize(Transformer::class);
+        $this->logger = $this->prophesize(LoggerInterface::class);
+        $this->transformer->execute($projectDescriptor, $documentationSet, [])->shouldBeCalled();
         $templateFactory = $this->prophesize(Factory::class);
         $templateFactory->getTemplates(Argument::any(), Argument::any())->willReturn(new Collection());
 
@@ -79,7 +82,6 @@ final class TransformTest extends TestCase
     public function test_if_target_location_for_output_is_set_with_a_relative_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
-
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
@@ -95,7 +97,6 @@ final class TransformTest extends TestCase
     public function test_if_target_location_for_output_is_set_with_an_absolute_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
-        $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn(new ProjectDescriptor('test'));
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget('/my/absolute/folder')->shouldBeCalled();
@@ -109,8 +110,8 @@ final class TransformTest extends TestCase
      */
     public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
     {
-        $config            = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
-        $payload           = new Payload($config, $this->projectDescriptorBuilder->reveal());
+        $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
+        $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
         $this->transformer->setTarget(Argument::any());
         $this->transformer->setDestination(Argument::type(FilesystemInterface::class));

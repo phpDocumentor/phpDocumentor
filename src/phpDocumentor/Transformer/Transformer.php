@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
@@ -127,9 +128,12 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    public function execute(ProjectDescriptor $project, array $transformations): void
-    {
-        $this->initializeWriters($project, $transformations);
+    public function execute(
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        array $transformations
+    ): void {
+        $this->initializeWriters($project, $documentationSet, $transformations);
         $this->transformProject($project, $transformations);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
@@ -140,8 +144,11 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function initializeWriters(ProjectDescriptor $project, array $transformations): void
-    {
+    private function initializeWriters(
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        array $transformations
+    ): void {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
             $writerName = $transformation->getWriter();
@@ -152,7 +159,7 @@ class Transformer
 
             $isInitialized[] = $writerName;
             $writer = $this->writers->get($writerName);
-            $this->initializeWriter($writer, $project, $transformation->template());
+            $this->initializeWriter($writer, $project, $documentationSet, $transformation->template());
         }
     }
 
@@ -172,15 +179,19 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template): void
-    {
+    private function initializeWriter(
+        WriterAbstract $writer,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        Template $template
+    ): void {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
         $event = $instance->setWriter($writer);
         $this->eventDispatcher->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
-            $writer->initialize($project, $template);
+            $writer->initialize($project, $documentationSet, $template);
         }
 
         $this->eventDispatcher->dispatch($event, self::EVENT_POST_INITIALIZATION);
