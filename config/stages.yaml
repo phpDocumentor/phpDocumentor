@@ -47,17 +47,23 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 5000 }
 
-  phpDocumentor\Pipeline\Stage\Parser\CollectFiles:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 4000 }
-
-  phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
+  phpDocumentor\Pipeline\Stage\ParseApiDocumentationSets:
+    arguments:
+      $parseApiDocumentationSetPipeline: '@phpdoc.parse_api_documentation_set.pipeline'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
 
+  phpDocumentor\Pipeline\Stage\Parser\CollectFiles:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.parse_api_documentation_set', priority: 4000 }
+
+  phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.parse_api_documentation_set', priority: 3000 }
+
   phpDocumentor\Pipeline\Stage\Parser\ParseFiles:
     tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
+      - { name: 'phpdoc.pipeline.api_documentation.parse_api_documentation_set', priority: 0 }
 
   ###################################################################################
   ## Autoloading definitions for transform stages   #################################
