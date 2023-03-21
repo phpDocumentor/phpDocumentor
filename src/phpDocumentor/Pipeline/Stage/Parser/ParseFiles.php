@@ -38,10 +38,11 @@ final class ParseFiles
         $apiConfig = $payload->getApiSet()->getSettings();
 
         $builder = $payload->getBuilder();
-        $builder->setApiSpecification($apiConfig);
+        $builder->usingApiSpecification($apiConfig);
         $builder->usingDefaultPackageName($apiConfig['default-package-name'] ?? '');
 
-        // TODO: The setVisibility call should purge the cache; but once we are here, cache has already been loaded..
+        // TODO: The setVisibility call should purge the cache if it differs; but once we are here, cache has already
+        //       been loaded..
         $payload->getBuilder()->setVisibility($apiConfig->calculateVisiblity());
 
         $encoding = $apiConfig['encoding'] ?? '';

@@ -47,6 +47,7 @@ class ProjectDescriptorBuilder
     private $servicesWithCustomSettings;
 
     private ApiSpecification $apiSpecification;
+
     private string $defaultPackageName;
 
     /**
@@ -130,20 +131,6 @@ class ProjectDescriptorBuilder
     }
 
     /**
-     * Analyzes a Descriptor and alters its state based on its state or even removes the descriptor.
-     *
-     * @param TDescriptor $descriptor
-     *
-     * @return TDescriptor|null
-     *
-     * @template TDescriptor as Filterable
-     */
-    public function filter(Filterable $descriptor): ?Filterable
-    {
-        return $this->filter->filter($descriptor, $this->apiSpecification);
-    }
-
-    /**
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      *
@@ -160,12 +147,12 @@ class ProjectDescriptorBuilder
         }
 
         // filter the descriptor; this may result in the descriptor being removed!
-        $descriptor = $this->filter($descriptor);
+        $descriptor = $this->filter->filter($descriptor, $this->apiSpecification);
 
         return $descriptor;
     }
 
-    public function setApiSpecification(ApiSpecification $apiSpecification): void
+    public function usingApiSpecification(ApiSpecification $apiSpecification): void
     {
         $this->apiSpecification = $apiSpecification;
     }
