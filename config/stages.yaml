@@ -43,10 +43,6 @@ services:
   ## Autoloading definitions for parser stages      #################################
   ###################################################################################
 
-  phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 5000 }
-
   phpDocumentor\Pipeline\Stage\ParseApiDocumentationSets:
     arguments:
       $parseApiDocumentationSetPipeline: '@phpdoc.parse_api_documentation_set.pipeline'

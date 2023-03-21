@@ -100,7 +100,6 @@ For performance, files can be cached and retrieved during the parsing phase.
 
 As of writing, the main stages in this pipeline are:
 
-#. :php:class:`Converting the payload into a parser-specific variant<phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload>`
 #. :php:class:`Load previously parsed files from cache<phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache>`
 #. :php:class:`Parse each API Documentation Set using the *PHP API Documentation Set Parser sub-pipeline*<phpDocumentor\Pipeline\Stage\ParseApiDocumentationSets>`
 #. :php:class:`Update cache<phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache>`

@@ -56,9 +56,4 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
 
         return $this->getIndexes()['elements']->fetch((string) $fqsen);
     }
-
-    public function getApiSpecification(): ApiSpecification
-    {
-        return $this->apiSpecification;
-    }
 }
