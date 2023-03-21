@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
-use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Configuration;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File;
 
@@ -28,7 +28,7 @@ final class ApiSetPayload
     /** @var ConfigurationMap */
     private array $configuration;
     private ProjectDescriptorBuilder $builder;
-    private ApiSpecification $specification;
+    private ApiSetDescriptor $apiSet;
 
     /** @var File[] */
     private array $files;
@@ -40,12 +40,12 @@ final class ApiSetPayload
     public function __construct(
         array $configuration,
         ProjectDescriptorBuilder $builder,
-        ApiSpecification $specification,
+        ApiSetDescriptor $apiSet,
         array $files = []
     ) {
         $this->configuration = $configuration;
         $this->builder = $builder;
-        $this->specification = $specification;
+        $this->apiSet = $apiSet;
 
         $this->files = $files;
     }
@@ -63,9 +63,9 @@ final class ApiSetPayload
         return $this->builder;
     }
 
-    public function getSpecification(): ApiSpecification
+    public function getApiSet(): ApiSetDescriptor
     {
-        return $this->specification;
+        return $this->apiSet;
     }
 
     /**
@@ -76,7 +76,7 @@ final class ApiSetPayload
         return new static(
             $this->getConfiguration(),
             $this->getBuilder(),
-            $this->getSpecification(),
+            $this->getApiSet(),
             array_merge($this->getFiles(), $files)
         );
     }

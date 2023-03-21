@@ -31,7 +31,7 @@ final class CollectFiles
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
     {
-        $apiConfig = $payload->getSpecification();
+        $apiConfig = $payload->getApiSet()->getSettings();
         $this->logger->info('Collecting files from ' . $apiConfig->source()->dsn());
 
         $files = $this->fileCollector->getFiles(

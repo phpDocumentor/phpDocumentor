@@ -35,7 +35,7 @@ final class ParseFiles
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
     {
-        $apiConfig = $payload->getSpecification();
+        $apiConfig = $payload->getApiSet()->getSettings();
 
         $builder = $payload->getBuilder();
         $builder->setApiSpecification($apiConfig);
