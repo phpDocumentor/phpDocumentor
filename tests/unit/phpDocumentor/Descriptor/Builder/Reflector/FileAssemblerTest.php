@@ -92,7 +92,7 @@ DOCBLOCK
         $settings->includeSource();
 
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn($this->defaultPackage);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->shouldBeCalled()->willReturn($this->defaultPackage);
 
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function () {
             $mock = $this->prophesize(DescriptorAbstract::class);

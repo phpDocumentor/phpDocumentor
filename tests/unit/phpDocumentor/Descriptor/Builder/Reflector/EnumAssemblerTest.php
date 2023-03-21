@@ -34,7 +34,7 @@ final class EnumAssemblerTest extends TestCase
     {
         $this->assembler = new EnumAssembler();
         $this->builder = $this->prophesize(ProjectDescriptorBuilder::class);
-        $this->builder->getDefaultPackage()->willReturn('test');
+        $this->builder->getDefaultPackageName()->willReturn('test');
         $this->assembler->setBuilder($this->builder->reveal());
     }
 

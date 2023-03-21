@@ -53,7 +53,7 @@ class FileAssembler extends AssemblerAbstract
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackage()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName()
         );
 
         $fileDescriptor->setName($data->getName());
@@ -245,7 +245,7 @@ class FileAssembler extends AssemblerAbstract
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
         if (!$package) {
-            $package = $this->getBuilder()->getDefaultPackage();
+            $package = $this->getBuilder()->getDefaultPackageName();
         }
 
         $tag = new TagDescriptor('package');

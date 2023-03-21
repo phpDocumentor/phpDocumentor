@@ -146,7 +146,7 @@ DOCBLOCK;
     protected function getProjectDescriptorBuilderMock(): ObjectProphecy
     {
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->getDefaultPackage()->shouldBeCalled()->willReturn('\\');
+        $projectDescriptorBuilderMock->getDefaultPackageName()->shouldBeCalled()->willReturn('\\');
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function ($param) {
             switch ($param) {
                 case 'Method':

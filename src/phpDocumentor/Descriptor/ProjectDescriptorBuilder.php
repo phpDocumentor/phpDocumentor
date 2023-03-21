@@ -46,8 +46,8 @@ class ProjectDescriptorBuilder
     /** @var iterable<WithCustomSettings> */
     private $servicesWithCustomSettings;
 
-    /** @var ApiSpecification */
-    private $apiSpecification;
+    private ApiSpecification $apiSpecification;
+    private string $defaultPackageName;
 
     /**
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
@@ -65,6 +65,10 @@ class ProjectDescriptorBuilder
     public function createProjectDescriptor(): void
     {
         $this->project = new ProjectDescriptor(self::DEFAULT_PROJECT_NAME);
+
+        // Ensure all custom settings from other services are loaded, even if no other custom settings will
+        // be set later on.
+        $this->setCustomSettings([]);
     }
 
     /**
@@ -163,36 +167,21 @@ class ProjectDescriptorBuilder
 
     public function setApiSpecification(ApiSpecification $apiSpecification): void
     {
-        // TODO: Any change in the API Specification compared to a previous (cached) run should invalidate that cache.
         $this->apiSpecification = $apiSpecification;
-
-        // TODO: The setVisibility call should purge the cache; but once we are here, cache has already been loaded..
-        $this->setVisibility($apiSpecification->calculateVisiblity());
     }
 
-    public function createApiDocumentationSet(Project $project): void
+    public function populateApiDocumentationSet(ApiSetDescriptor $apiSet, Project $project): void
     {
-        $customSettings = $this->getProjectDescriptor()->getSettings()->getCustom();
-        foreach ($this->servicesWithCustomSettings as $service) {
-            // We assume that the custom settings have the non-default settings and we should not override those;
-            // that is why we merge the custom settings on top of the default settings; this will cause the overrides
-            // to remain in place.
-            $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
-        }
-
-        // TODO: This call should purge the cache; but once we are here, cache has already been loaded..
-        $this->getProjectDescriptor()->getSettings()->setCustom($customSettings);
-
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);
             if ($descriptor === null) {
                 continue;
             }
 
-            $this->getProjectDescriptor()->getFiles()->set($descriptor->getPath(), $descriptor);
+            $apiSet->getFiles()->set($descriptor->getPath(), $descriptor);
         }
 
-        $namespaces = $this->getProjectDescriptor()->getIndexes()->fetch('namespaces', new Collection());
+        $namespaces = $apiSet->getIndexes()->fetch('namespaces', new Collection());
 
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set(
@@ -202,19 +191,19 @@ class ProjectDescriptorBuilder
         }
     }
 
-    public function getDefaultPackage(): string
+    public function usingDefaultPackageName(string $name): void
     {
-        return $this->apiSpecification['default-package-name'];
+        $this->defaultPackageName = $name;
+    }
+
+    public function getDefaultPackageName(): string
+    {
+        return $this->defaultPackageName;
     }
 
     public function setVisibility(int $visibility): void
     {
         $this->project->getSettings()->setVisibility($visibility);
-    }
-
-    public function shouldIncludeSource(): bool
-    {
-        return $this->apiSpecification['include-source'];
     }
 
     public function setName(string $title): void
@@ -235,6 +224,13 @@ class ProjectDescriptorBuilder
      */
     public function setCustomSettings(array $customSettings): void
     {
+        foreach ($this->servicesWithCustomSettings as $service) {
+            // We assume that the custom settings have the non-default settings and we should not override those;
+            // that is why we merge the custom settings on top of the default settings; this will cause the overrides
+            // to remain in place.
+            $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
+        }
+
         $this->project->getSettings()->setCustom($customSettings);
     }
 
