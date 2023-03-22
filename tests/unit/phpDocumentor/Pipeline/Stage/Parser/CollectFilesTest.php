@@ -56,13 +56,15 @@ final class CollectFilesTest extends TestCase
             null
         );
 
-        $payload = new ApiSetPayload(
-            ['phpdocumentor' => ['versions' => ['1.0.0' => $version]]],
-            $this->prophesize(ProjectDescriptorBuilder::class)->reveal(),
-            $this->faker()->apiSetDescriptor()
-        );
+        $config = ['phpdocumentor' => ['versions' => ['1.0.0' => $version]]];
+        $builder = $this->prophesize(ProjectDescriptorBuilder::class)->reveal();
+        $apiSet = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$apiSet]);
+
+        $payload = new ApiSetPayload($config, $builder, $version, $apiSet);
 
         $result = $fixture($payload);
-        self::assertEquals([], $result->getFiles());
+
+        self::assertSame([], $result->getFiles());
     }
 }

@@ -38,17 +38,15 @@ final class GarbageCollectCacheTest extends TestCase
         $files = ['file1'];
 
         $descriptorMapper = $this->prophesize(ProjectDescriptorMapper::class);
-        $descriptorMapper->garbageCollect($files)->shouldBeCalledOnce();
 
         $fixture = new GarbageCollectCache($descriptorMapper->reveal());
 
-        $fixture(
-            new ApiSetPayload(
-                [],
-                $this->prophesize(ProjectDescriptorBuilder::class)->reveal(),
-                $this->faker()->apiSetDescriptor(),
-                $files
-            )
-        );
+        $builder = $this->prophesize(ProjectDescriptorBuilder::class)->reveal();
+        $apiSet = $this->faker()->apiSetDescriptor();
+        $version = $this->faker()->versionDescriptor([$apiSet]);
+
+        $descriptorMapper->garbageCollect($version, $apiSet, $files)->shouldBeCalledOnce();
+
+        $fixture(new ApiSetPayload([], $builder, $version, $apiSet, $files));
     }
 }

@@ -136,18 +136,18 @@ final class Provider extends Base
     }
 
     /** @param DocumentationSetDescriptor[] $documentationSets */
-    public function versionDescriptor(array $documentationSets): VersionDescriptor
+    public function versionDescriptor(array $documentationSets, ?string $version = null): VersionDescriptor
     {
         return new VersionDescriptor(
-            $this->generator->numerify('v#.#.#'),
+            $version ?? $this->generator->numerify('v#.#.#'),
             DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets)
         );
     }
 
-    public function apiSetDescriptor(): ApiSetDescriptor
+    public function apiSetDescriptor(?string $name = null): ApiSetDescriptor
     {
         return new ApiSetDescriptor(
-            $this->generator->word(),
+            $name ?? $this->generator->word(),
             $this->source(),
             (string) $this->path(),
             $this->apiSpecification()

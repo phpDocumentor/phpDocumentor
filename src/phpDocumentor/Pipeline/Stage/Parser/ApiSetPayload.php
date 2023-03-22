@@ -16,6 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Reflection\File;
 
 use function array_merge;
@@ -25,10 +26,12 @@ use function array_merge;
  */
 final class ApiSetPayload
 {
+    private ProjectDescriptorBuilder $builder;
+    private VersionDescriptor $version;
+    private ApiSetDescriptor $apiSet;
+
     /** @var ConfigurationMap */
     private array $configuration;
-    private ProjectDescriptorBuilder $builder;
-    private ApiSetDescriptor $apiSet;
 
     /** @var File[] */
     private array $files;
@@ -40,13 +43,14 @@ final class ApiSetPayload
     public function __construct(
         array $configuration,
         ProjectDescriptorBuilder $builder,
+        VersionDescriptor $version,
         ApiSetDescriptor $apiSet,
         array $files = []
     ) {
         $this->configuration = $configuration;
         $this->builder = $builder;
+        $this->version = $version;
         $this->apiSet = $apiSet;
-
         $this->files = $files;
     }
 
@@ -63,6 +67,11 @@ final class ApiSetPayload
         return $this->builder;
     }
 
+    public function getVersion(): VersionDescriptor
+    {
+        return $this->version;
+    }
+
     public function getApiSet(): ApiSetDescriptor
     {
         return $this->apiSet;
@@ -76,6 +85,7 @@ final class ApiSetPayload
         return new static(
             $this->getConfiguration(),
             $this->getBuilder(),
+            $this->getVersion(),
             $this->getApiSet(),
             array_merge($this->getFiles(), $files)
         );
