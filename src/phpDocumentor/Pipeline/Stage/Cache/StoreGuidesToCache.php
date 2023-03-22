@@ -15,7 +15,7 @@ namespace phpDocumentor\Pipeline\Stage\Cache;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Guides\Handlers\PersistCacheCommand;
-use phpDocumentor\Pipeline\Stage\Parser\Payload;
+use phpDocumentor\Pipeline\Stage\Payload;
 use Psr\Log\LoggerInterface;
 
 final class StoreGuidesToCache

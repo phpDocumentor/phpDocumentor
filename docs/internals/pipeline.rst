@@ -100,12 +100,29 @@ For performance, files can be cached and retrieved during the parsing phase.
 
 As of writing, the main stages in this pipeline are:
 
-#. :php:class:`Converting the payload into a parser-specific variant<phpDocumentor\Pipeline\Stage\Parser\TransformToParserPayload>`
+#. :php:class:`Load previously parsed files from cache<phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache>`
+#. :php:class:`Parse each API Documentation Set using the *PHP API Documentation Set Parser sub-pipeline*<phpDocumentor\Pipeline\Stage\ParseApiDocumentationSets>`
+#. :php:class:`Update cache<phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache>`
+
+PHP API Documentation Set Parser sub-pipeline
+---------------------------------------------
+
+This sub-pipeline is responsible for parsing each API Documentation Set using the API Specification from the
+configuration and adding it to the Project Descriptor.
+
+**Input**
+    :php:class:`ApiSetPayload<phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload>` with the loaded configuration, a
+    :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>` and the
+    :php:class:`API Set's specification<phpDocumentor\Configuration\ApiSpecification>`.
+
+**Output**
+    :php:class:`ApiSetPayload<phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload>` with the loaded configuration, a
+    :php:class:`ProjectDescriptorBuilder<phpDocumentor\Descriptor\ProjectDescriptorBuilder>` and the
+    :php:class:`API Set's specification<phpDocumentor\Configuration\ApiSpecification>`.
+
 #. :php:class:`Gathering which files to parse<phpDocumentor\Pipeline\Stage\Parser\CollectFiles>`
 #. :php:class:`Remove all files from cache that are not in this list<phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache>`
-#. :php:class:`Load unmodified parsed files from cache<phpDocumentor\Pipeline\Stage\Cache\LoadProjectDescriptorFromCache>`
 #. :php:class:`Parse any modified files and create/update FileDescriptors<phpDocumentor\Pipeline\Stage\Parser\ParseFiles>`
-#. :php:class:`Update cache<phpDocumentor\Pipeline\Stage\Cache\StoreProjectDescriptorToCache>`
 
 Transformer pipeline
 ====================

@@ -16,20 +16,12 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Parser\Middleware\ReEncodingMiddleware;
 use phpDocumentor\Parser\Parser;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-
-use function current;
 
 final class ParseFiles
 {
-    /** @var Parser */
-    private $parser;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var ReEncodingMiddleware */
-    private $reEncodingMiddleware;
+    private Parser $parser;
+    private LoggerInterface $logger;
+    private ReEncodingMiddleware $reEncodingMiddleware;
 
     public function __construct(
         Parser $parser,
@@ -41,16 +33,9 @@ final class ParseFiles
         $this->reEncodingMiddleware = $reEncodingMiddleware;
     }
 
-    public function __invoke(Payload $payload): Payload
+    public function __invoke(ApiSetPayload $payload): ApiSetPayload
     {
-        /*
-         * For now settings of the first api are used.
-         * We need to change this later, when we accept more different things
-         */
-        $apiConfig = current($payload->getApiConfigs());
-        if ($apiConfig === false) {
-            return $payload;
-        }
+        $apiConfig = $payload->getSpecification();
 
         $builder = $payload->getBuilder();
         $builder->setApiSpecification($apiConfig);
@@ -64,22 +49,11 @@ final class ParseFiles
         $this->parser->setValidate(($apiConfig['validate'] ?? 'false') === 'true');
         $this->parser->setDefaultPackageName($apiConfig['default-package-name'] ?? '');
 
-        $this->log('Parsing files', LogLevel::NOTICE);
+        $this->logger->notice('Parsing files');
         $project = $this->parser->parse($payload->getFiles());
 
         $payload->getBuilder()->createApiDocumentationSet($project);
 
         return $payload;
-    }
-
-    /**
-     * Dispatches a logging request.
-     *
-     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
-     * @param string[] $parameters
-     */
-    private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void
-    {
-        $this->logger->log($priority, $message, $parameters);
     }
 }
