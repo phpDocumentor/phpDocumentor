@@ -59,7 +59,7 @@ final class CollectFilesTest extends TestCase
         $payload = new ApiSetPayload(
             ['phpdocumentor' => ['versions' => ['1.0.0' => $version]]],
             $this->prophesize(ProjectDescriptorBuilder::class)->reveal(),
-            $this->faker()->apiSpecification()
+            $this->faker()->apiSetDescriptor()
         );
 
         $result = $fixture($payload);

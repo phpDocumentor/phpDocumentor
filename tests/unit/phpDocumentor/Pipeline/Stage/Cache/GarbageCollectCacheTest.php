@@ -46,7 +46,7 @@ final class GarbageCollectCacheTest extends TestCase
             new ApiSetPayload(
                 [],
                 $this->prophesize(ProjectDescriptorBuilder::class)->reveal(),
-                $this->faker()->apiSpecification(),
+                $this->faker()->apiSetDescriptor(),
                 $files
             )
         );
