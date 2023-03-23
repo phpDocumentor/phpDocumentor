@@ -32,7 +32,7 @@ final class ParseApiDocumentationSets
         foreach ($versions as $version) {
             foreach ($version->getDocumentationSets()->filter(ApiSetDescriptor::class) as $apiSet) {
                 $this->parseApiDocumentationSetPipeline->process(
-                    new Parser\ApiSetPayload($payload->getConfig(), $payload->getBuilder(), $apiSet)
+                    new Parser\ApiSetPayload($payload->getConfig(), $payload->getBuilder(), $version, $apiSet)
                 );
             }
         }

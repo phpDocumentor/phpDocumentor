@@ -49,14 +49,17 @@ final class ProjectDescriptorMapperTest extends TestCase
      */
     public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache(): void
     {
+        $versionNumber = $this->faker()->numerify('v#.#.#');
+        $apiSetName = $this->faker()->word;
+
         $fileDescriptor = new FileDescriptor('fileHash');
         $fileDescriptor->setPath('./src/MyClass.php');
 
         $projectDescriptor = new ProjectDescriptor('project');
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $projectDescriptor->getVersions()->add($version);
-        $projectDescriptor->getFiles()->set('./src/MyClass.php', $fileDescriptor);
+        $restoredSet = $this->faker()->apiSetDescriptor($apiSetName);
+        $restoredVersion = $this->faker()->versionDescriptor([$restoredSet], $versionNumber);
+        $projectDescriptor->getVersions()->add($restoredVersion);
+        $restoredSet->getFiles()->set('./src/MyClass.php', $fileDescriptor);
 
         $this->assertFalse($projectDescriptor->getSettings()->shouldIncludeSource());
         $projectDescriptor->getSettings()->includeSource();
@@ -65,12 +68,12 @@ final class ProjectDescriptorMapperTest extends TestCase
         $this->mapper->save($projectDescriptor);
 
         $restoredProjectDescriptor = new ProjectDescriptor('project2');
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $restoredProjectDescriptor->getVersions()->add($version);
+        $restoredSet = $this->faker()->apiSetDescriptor($apiSetName);
+        $restoredVersion = $this->faker()->versionDescriptor([$restoredSet], $versionNumber);
+        $restoredProjectDescriptor->getVersions()->add($restoredVersion);
         $this->mapper->populate($restoredProjectDescriptor);
 
         $this->assertTrue($restoredProjectDescriptor->getSettings()->shouldIncludeSource());
-        $this->assertEquals($fileDescriptor, $restoredProjectDescriptor->getFiles()->get($fileDescriptor->getPath()));
+        $this->assertEquals($fileDescriptor, $restoredSet->getFiles()->get($fileDescriptor->getPath()));
     }
 }

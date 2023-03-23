@@ -27,7 +27,11 @@ final class GarbageCollectCache
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
     {
-        $this->descriptorMapper->garbageCollect($payload->getFiles());
+        $this->descriptorMapper->garbageCollect(
+            $payload->getVersion(),
+            $payload->getApiSet(),
+            $payload->getFiles()
+        );
 
         return $payload;
     }
