@@ -38,7 +38,13 @@ final class Compile
      */
     public function __invoke(Payload $payload): Payload
     {
-        $this->compilerPipeline->process($payload->getBuilder()->getProjectDescriptor());
+        $projectDescriptor = $payload->getBuilder()->getProjectDescriptor();
+
+        foreach ($projectDescriptor->getVersions() as $version) {
+            foreach ($version->getDocumentationSets() as $documentationSet) {
+                $this->compilerPipeline->process($documentationSet);
+            }
+        }
 
         return $payload;
     }

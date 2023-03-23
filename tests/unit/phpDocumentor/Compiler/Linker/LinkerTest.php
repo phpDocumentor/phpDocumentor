@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Linker;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
@@ -54,9 +54,9 @@ final class LinkerTest extends TestCase
     public function testSetFieldsToSubstitute(): void
     {
         $elementList = [
-            ProjectDescriptor::class => 'files',
-            FileDescriptor::class    => 'classes',
-            ClassDescriptor::class   => 'parent',
+            ApiSetDescriptor::class => 'files',
+            FileDescriptor::class => 'classes',
+            ClassDescriptor::class => 'parent',
         ];
         $linker = new Linker($elementList, new DescriptorRepository());
 
@@ -286,9 +286,6 @@ final class LinkerTest extends TestCase
         $fqsen = get_class($object);
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([
-            $this->faker()->versionDescriptor([$apiSetDescriptor]),
-        ]);
         $apiSetDescriptor->getIndex('elements')->set($fqsen, $result);
 
         // prepare linker
@@ -297,7 +294,7 @@ final class LinkerTest extends TestCase
         $linker = new Linker([$fqsen => ['field']], $repository->reveal());
 
         // execute test.
-        $linker->__invoke($project);
+        $linker->__invoke($apiSetDescriptor);
     }
 
     private function givenAnExampleClassDescriptor(string $fqsenString): ClassDescriptor

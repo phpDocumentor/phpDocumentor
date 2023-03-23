@@ -15,8 +15,8 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -28,9 +28,9 @@ final class UsedByBuilder implements CompilerPassInterface
         return 'Creates a link for uses tags on the counter side';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        foreach ($project->getIndexes()->get('elements') as $element) {
+        foreach ($documentationSet->getIndexes()->get('elements') as $element) {
             $uses = $element->getTags()->fetch('uses', Collection::fromClassString(TagDescriptor::class));
             foreach ($uses->filter(UsesDescriptor::class) as $usesTag) {
                 $counterSide = $usesTag->getReference();
@@ -47,6 +47,6 @@ final class UsedByBuilder implements CompilerPassInterface
             }
         }
 
-        return $project;
+        return $documentationSet;
     }
 }

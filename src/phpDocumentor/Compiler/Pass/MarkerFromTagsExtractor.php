@@ -16,8 +16,8 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use UnexpectedValueException;
 
@@ -33,10 +33,10 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
         return 'Collect all markers embedded in tags';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
         /** @var DescriptorAbstract $element */
-        foreach ($project->getIndexes()->fetch('elements', new Collection()) as $element) {
+        foreach ($documentationSet->getIndexes()->fetch('elements', new Collection()) as $element) {
             /** @var TagDescriptor[] $todos */
             $todos = $element->getTags()->fetch('todo');
 
@@ -50,7 +50,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
             }
         }
 
-        return $project;
+        return $documentationSet;
     }
 
     /**

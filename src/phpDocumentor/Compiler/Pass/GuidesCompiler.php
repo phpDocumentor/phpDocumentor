@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Metas;
 
@@ -29,29 +29,24 @@ final class GuidesCompiler implements CompilerPassInterface
         return 'Compiling guides';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!($documentationSet instanceof GuideSetDescriptor)) {
-                    continue;
-                }
-
-               // $this->metas->setMetaEntries([]);
-                $documents = $this->compiler->run(
-                    array_map(
-                        static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
-                        $documentationSet->getDocuments()->getAll()
-                    )
-                );
-                foreach ($documents as $document) {
-                    $documentationSet->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
-                }
-
-                $documentationSet->setMetas(new Metas($this->metas->getAll()));
-            }
+        if ($documentationSet instanceof GuideSetDescriptor === false) {
+            return $documentationSet;
         }
 
-        return $project;
+        $documents = $this->compiler->run(
+            array_map(
+                static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
+                $documentationSet->getDocuments()->getAll()
+            )
+        );
+        foreach ($documents as $document) {
+            $documentationSet->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
+        }
+
+        $documentationSet->setMetas(new Metas($this->metas->getAll()));
+
+        return $documentationSet;
     }
 }

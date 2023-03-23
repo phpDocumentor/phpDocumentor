@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 use function count;
 use function get_class;
@@ -44,19 +43,24 @@ class ProjectAnalyzer
     /**
      * Analyzes the given project descriptor and populates this object's properties.
      */
-    public function analyze(ProjectInterface $projectDescriptor): void
+    public function analyze(DocumentationSetDescriptor $documentationSet): void
     {
         $this->unresolvedParentClassesCount = 0;
 
         $elementCounter = [];
-        foreach ($this->findAllElements($projectDescriptor) as $element) {
+        foreach ($this->findAllElements($documentationSet) as $element) {
             $elementCounter = $this->addElementToCounter($elementCounter, $element);
             $this->incrementUnresolvedParentCounter($element);
         }
 
         $this->descriptorCountByType = $elementCounter;
-        $this->fileCount = count($projectDescriptor->getFiles());
-        $this->topLevelNamespaceCount = count($projectDescriptor->getNamespace()->getChildren());
+        $this->fileCount = count($documentationSet->getFiles());
+
+        if (!$documentationSet instanceof ApiSetDescriptor) {
+            return;
+        }
+
+        $this->topLevelNamespaceCount = count($documentationSet->getNamespace()->getChildren());
     }
 
     /**
@@ -65,7 +69,7 @@ class ProjectAnalyzer
     public function __toString(): string
     {
         $logString = <<<TEXT
-In the ProjectDescriptor are:
+In the Project are:
   %8d files
   %8d top-level namespaces
   %8d unresolvable parent classes
@@ -126,9 +130,9 @@ TEXT;
      *
      * @return Collection<ElementInterface>
      */
-    protected function findAllElements(ProjectInterface $projectDescriptor): Collection
+    protected function findAllElements(DocumentationSetDescriptor $documentationSet): Collection
     {
-        return $projectDescriptor->getIndexes()->fetch(
+        return $documentationSet->getIndexes()->fetch(
             'elements',
             Collection::fromInterfaceString(ElementInterface::class)
         );

@@ -16,7 +16,6 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -36,10 +35,10 @@ final class RemoveSourcecodeTest extends TestCase
     public function testRemovesSourceWhenDisabled(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->giveProjectDescriptor($apiSetDescriptor);
+        $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $fixture = new RemoveSourcecode();
 
-        $fixture->__invoke($projectDescriptor);
+        $fixture->__invoke($apiSetDescriptor);
 
         foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNull($file->getSource());
@@ -53,21 +52,18 @@ final class RemoveSourcecodeTest extends TestCase
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $apiSetDescriptor->getSettings()['include-source'] = true;
-        $projectDescriptor = $this->giveProjectDescriptor($apiSetDescriptor);
+        $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $fixture = new RemoveSourcecode();
 
-        $fixture->__invoke($projectDescriptor);
+        $fixture->__invoke($apiSetDescriptor);
 
         foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNotNull($file->getSource());
         }
     }
 
-    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
+    private function givenFiles(ApiSetDescriptor $apiDescriptor): ApiSetDescriptor
     {
-        $projectDescriptor = $this->faker()->projectDescriptor();
-        $versionDesciptor = $this->faker()->versionDescriptor([$apiDescriptor]);
-        $projectDescriptor->getVersions()->add($versionDesciptor);
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
@@ -75,7 +71,7 @@ final class RemoveSourcecodeTest extends TestCase
             )
         );
 
-        return $projectDescriptor;
+        return $apiDescriptor;
     }
 
     /**

@@ -15,11 +15,11 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
 use function array_merge;
@@ -40,19 +40,19 @@ class ElementsIndexBuilder implements CompilerPassInterface
         return 'Build "elements" index';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
         $elementCollection = new Collection();
-        $project->getIndexes()->set('elements', $elementCollection);
+        $documentationSet->getIndexes()->set('elements', $elementCollection);
 
-        $constantsIndex  = $project->getIndexes()->fetch('constants', new Collection());
-        $functionsIndex  = $project->getIndexes()->fetch('functions', new Collection());
-        $classesIndex    = $project->getIndexes()->fetch('classes', new Collection());
-        $interfacesIndex = $project->getIndexes()->fetch('interfaces', new Collection());
-        $traitsIndex     = $project->getIndexes()->fetch('traits', new Collection());
-        $enumsIndex     = $project->getIndexes()->fetch('enums', new Collection());
+        $constantsIndex  = $documentationSet->getIndexes()->fetch('constants', new Collection());
+        $functionsIndex  = $documentationSet->getIndexes()->fetch('functions', new Collection());
+        $classesIndex    = $documentationSet->getIndexes()->fetch('classes', new Collection());
+        $interfacesIndex = $documentationSet->getIndexes()->fetch('interfaces', new Collection());
+        $traitsIndex     = $documentationSet->getIndexes()->fetch('traits', new Collection());
+        $enumsIndex     = $documentationSet->getIndexes()->fetch('enums', new Collection());
 
-        foreach ($project->getFiles() as $file) {
+        foreach ($documentationSet->getFiles() as $file) {
             $this->addElementsToIndexes($file->getConstants()->getAll(), [$constantsIndex, $elementCollection]);
             $this->addElementsToIndexes($file->getFunctions()->getAll(), [$functionsIndex, $elementCollection]);
 
@@ -77,7 +77,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
             }
         }
 
-        return $project;
+        return $documentationSet;
     }
 
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Descriptor\ProjectAnalyzer;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -28,6 +28,7 @@ use Psr\Log\NullLogger;
  */
 final class DebugTest extends TestCase
 {
+    use Faker;
     use ProphecyTrait;
 
     /**
@@ -36,17 +37,17 @@ final class DebugTest extends TestCase
     public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
-        $projectDescriptorMock = $this->prophesize(ProjectDescriptor::class);
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
 
         $loggerMock = $this->prophesize(LoggerInterface::class);
         $loggerMock->debug(Argument::exact($testString))->shouldBeCalled();
 
         $analyzerMock = $this->prophesize(ProjectAnalyzer::class);
-        $analyzerMock->analyze(Argument::exact($projectDescriptorMock->reveal()))->shouldBeCalled();
+        $analyzerMock->analyze(Argument::exact($apiSetDescriptor))->shouldBeCalled();
         $analyzerMock->__toString()->shouldBeCalled()->willReturn($testString);
 
         $fixture = new Debug($loggerMock->reveal(), $analyzerMock->reveal());
-        $fixture->__invoke($projectDescriptorMock->reveal());
+        $fixture->__invoke($apiSetDescriptor);
 
         $this->assertTrue(true);
     }
