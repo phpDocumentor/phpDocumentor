@@ -7,7 +7,12 @@ documentation easier.
 phpDocumentor uses an XML-based configuration file with quite a few options; in this document we will go into a few
 common uses and how to set this up.
 
+The easiest solution is to place the configuration file in the root of your project with the name
+``phpdoc.dist.xml``. This file can be committed to a Revision Control System and thus will the settings always be
+available.
+
 .. code-block:: xml
+    :caption: phpdoc.dist.xml
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <phpdocumentor
@@ -21,6 +26,8 @@ common uses and how to set this up.
         </paths>
 
     </phpdocumentor>
+    
+Read more about configuation: :doc:`../references/configuration`.
 
 And next
 --------
