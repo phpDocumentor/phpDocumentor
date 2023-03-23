@@ -70,12 +70,6 @@
             </errorLevel>
         </InvalidThrow>
 
-        <TooManyTemplateParams>
-            <errorLevel type="suppress">
-                <file name="src/phpDocumentor/Compiler/Compiler.php"/>
-            </errorLevel>
-        </TooManyTemplateParams>
-
         <DeprecatedClass>
             <errorLevel type="suppress">
                 <!-- MountManager will be removed in Flysystem V2 -->

@@ -81,10 +81,12 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function execute(ProjectInterface $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->get('elements')->getAll());
         $this->substitute($project);
+
+        return $project;
     }
 
     /**
@@ -122,9 +124,9 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor $item
+     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor|ProjectInterface $item
      *
-     * @return string|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
+     * @return string|ProjectInterface|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {

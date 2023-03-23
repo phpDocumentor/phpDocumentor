@@ -65,7 +65,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testRootPackageIsSet(): void
     {
@@ -73,7 +73,7 @@ final class PackageTreeBuilderTest extends TestCase
         $set = $this->faker()->apiSetDescriptor();
         $version = $this->faker()->versionDescriptor([$set]);
         $project->getVersions()->add($version);
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -81,7 +81,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testFilesAreIncludedInTheIndex(): void
     {
@@ -92,7 +92,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -101,7 +101,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testPackagesAreSetOnTheDescriptors(): void
     {
@@ -114,7 +114,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -124,7 +124,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testMultipleElementsInTheSamePackageAreProperlyNestedUnderTheSamePackageDescriptor(): void
     {
@@ -137,7 +137,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFiles([$file1, $file2]);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -147,7 +147,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testNestedPackagesWillBeCorrectlyFormedIntoATree(): void
     {
@@ -161,7 +161,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFiles([$file1, $file2]);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $rootPackage = $project->getIndexes()->get('packages')['\\'];
         $this->assertNotNull($rootPackage->getChildren()['My']);
@@ -170,7 +170,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testPackagesMayHaveUnderscoresAsSeparators(): void
     {
@@ -181,7 +181,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -190,7 +190,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testPackagesMayHaveHyphensAsSeparators(): void
     {
@@ -201,7 +201,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -210,7 +210,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testPackagesMayHaveSquareBracketsAsSeparators(): void
     {
@@ -221,7 +221,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -230,7 +230,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testPackagesMayHaveDotsAsSeparators(): void
     {
@@ -241,7 +241,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -250,7 +250,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testSubpackagesAndPackagesAreMergedIntoOne(): void
     {
@@ -263,7 +263,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -272,7 +272,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testSubpackagesMayHaveSlashesAsPrefix(): void
     {
@@ -285,7 +285,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -294,7 +294,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testConstantsInAFileAreIncludedInTheIndex(): void
     {
@@ -307,7 +307,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -316,7 +316,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testFunctionsInAFileAreIncludedInTheIndex(): void
     {
@@ -329,7 +329,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -338,7 +338,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testInterfacesInAFileAreIncludedInTheIndex(): void
     {
@@ -351,7 +351,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -360,7 +360,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testTraitsInAFileAreIncludedInTheIndex(): void
     {
@@ -373,7 +373,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 
@@ -382,7 +382,7 @@ final class PackageTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testClassesInAFileAreIncludedInTheIndex(): void
     {
@@ -395,7 +395,7 @@ final class PackageTreeBuilderTest extends TestCase
 
         $project = $this->givenProjectWithFile($file);
 
-        $this->fixture->execute($project);
+        $this->fixture->__invoke($project);
 
         $packages = $project->getIndexes()->get('packages');
 

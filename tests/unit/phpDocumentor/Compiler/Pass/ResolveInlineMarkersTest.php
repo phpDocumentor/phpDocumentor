@@ -49,7 +49,7 @@ SOURCE
         $projectDescriptor->getVersions()->add(new VersionDescriptor('latest', $documentationsSets));
         $apiDescriptor->setFiles(new Collection([$fileDescriptor]));
 
-        $fixture->execute($projectDescriptor);
+        $fixture->__invoke($projectDescriptor);
 
         self::assertCount(1, $fileDescriptor->getMarkers());
     }

@@ -31,7 +31,7 @@ final class RemoveSourcecodeTest extends TestCase
     use ProphecyTrait;
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testRemovesSourceWhenDisabled(): void
     {
@@ -39,7 +39,7 @@ final class RemoveSourcecodeTest extends TestCase
         $projectDescriptor = $this->giveProjectDescriptor($apiSetDescriptor);
         $fixture = new RemoveSourcecode();
 
-        $fixture->execute($projectDescriptor);
+        $fixture->__invoke($projectDescriptor);
 
         foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNull($file->getSource());
@@ -47,7 +47,7 @@ final class RemoveSourcecodeTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
@@ -56,7 +56,7 @@ final class RemoveSourcecodeTest extends TestCase
         $projectDescriptor = $this->giveProjectDescriptor($apiSetDescriptor);
         $fixture = new RemoveSourcecode();
 
-        $fixture->execute($projectDescriptor);
+        $fixture->__invoke($projectDescriptor);
 
         foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNotNull($file->getSource());

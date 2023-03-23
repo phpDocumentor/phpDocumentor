@@ -20,7 +20,6 @@ use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\Fqsen;
@@ -59,7 +58,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
         return 'Build "packages" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         $package = $project->getPackage();
         Assert::isInstanceOf($package, PackageInterface::class);
@@ -82,6 +81,8 @@ final class PackageTreeBuilder implements CompilerPassInterface
             'packages',
             Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
         );
+
+        return $project;
     }
 
     /**

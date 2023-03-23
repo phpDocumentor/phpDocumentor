@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use phpDocumentor\Compiler\Compiler;
-use phpDocumentor\Compiler\CompilerPassInterface;
+use League\Pipeline\Pipeline;
 
 /**
  * Compiles and links the ast objects into the full ast
  */
 final class Compile
 {
-    /** @var Compiler $compiler Collection of pre-transformation actions (Compiler Passes) */
-    private $compiler;
+    private Pipeline $compilerPipeline;
 
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
-    public function __construct(Compiler $compiler)
+    public function __construct(Pipeline $compilerPipeline)
     {
-        $this->compiler = $compiler;
+        $this->compilerPipeline = $compilerPipeline;
     }
 
     /**
@@ -40,10 +38,7 @@ final class Compile
      */
     public function __invoke(Payload $payload): Payload
     {
-        /** @var CompilerPassInterface $pass */
-        foreach ($this->compiler as $pass) {
-            $pass->execute($payload->getBuilder()->getProjectDescriptor());
-        }
+        $this->compilerPipeline->process($payload->getBuilder()->getProjectDescriptor());
 
         return $payload;
     }

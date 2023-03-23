@@ -1,33 +1,40 @@
 services:
+    phpDocumentor\Pipeline\PipelineFactory: ~
+
     # Will call all pipeline and stages tagged with 'phpdoc.pipeline.api_documentation.generate',
     # this includes both the parse and transform pipeline
     phpdoc.complete.pipeline:
       class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
       arguments: [!tagged phpdoc.pipeline.api_documentation.generate]
 
     phpdoc.configuration.pipeline:
       class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
       arguments: [!tagged phpdoc.pipeline.application.configuration]
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 10000 }
 
     phpdoc.parse.pipeline:
       class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
       arguments: [!tagged phpdoc.pipeline.api_documentation.parse]
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 8000 }
 
     phpdoc.parse_api_documentation_set.pipeline:
       class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
       arguments: [!tagged phpdoc.pipeline.api_documentation.parse_api_documentation_set]
+
+    phpdoc.compile.pipeline:
+      class: 'League\Pipeline\Pipeline'
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
+      arguments: [!tagged phpdoc.pipeline.api_documentation.compile]
 
     phpdoc.transform.pipeline:
       class: 'League\Pipeline\Pipeline'
-      factory: ['phpDocumentor\Pipeline\PipelineFactory', 'create']
+      factory: ['@phpDocumentor\Pipeline\PipelineFactory', 'create']
       arguments: [!tagged phpdoc.pipeline.api_documentation.transform]
       tags:
         - { name: 'phpdoc.pipeline.api_documentation.generate', priority: 5000 }

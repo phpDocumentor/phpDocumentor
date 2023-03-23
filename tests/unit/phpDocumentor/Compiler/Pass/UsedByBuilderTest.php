@@ -36,7 +36,7 @@ final class UsedByBuilderTest extends TestCase
         $apiSetDescriptor->getIndex('elements')->add($class);
         $apiSetDescriptor->getIndex('elements')->add($counterClass);
 
-        $this->pass->execute($projectDescriptor);
+        $this->pass->__invoke($projectDescriptor);
 
         $usedBy = $counterClass->getTags()->fetch(
             'used-by',

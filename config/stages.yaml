@@ -1,7 +1,65 @@
+parameters:
+  linker.substitutions:
+    'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
+    'phpDocumentor\Descriptor\FileDescriptor':
+      - 'tags'
+      - 'classes'
+      - 'interfaces'
+      - 'traits'
+      - 'functions'
+      - 'constants'
+    'phpDocumentor\Descriptor\ClassDescriptor':
+      - 'tags'
+      - 'parent'
+      - 'interfaces'
+      - 'constants'
+      - 'properties'
+      - 'methods'
+      - 'usedTraits'
+    'phpDocumentor\Descriptor\InterfaceDescriptor':
+      - 'tags'
+      - 'parent'
+      - 'constants'
+      - 'methods'
+    'phpDocumentor\Descriptor\TraitDescriptor':
+      - 'tags'
+      - 'properties'
+      - 'methods'
+      - 'usedTraits'
+    'phpDocumentor\Descriptor\EnumDescriptor':
+      - 'tags'
+      - 'interfaces'
+      - 'cases'
+      - 'methods'
+      - 'usedTraits'
+    'phpDocumentor\Descriptor\FunctionDescriptor':
+      - 'tags'
+      - 'arguments'
+    'phpDocumentor\Descriptor\MethodDescriptor':
+      - 'tags'
+      - 'arguments'
+    'phpDocumentor\Descriptor\ArgumentDescriptor':
+      - 'type'
+    'phpDocumentor\Descriptor\PropertyDescriptor':
+      - 'tags'
+      - 'type'
+    'phpDocumentor\Descriptor\ConstantDescriptor':
+      - 'tags'
+      - 'type'
+    'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
+    'phpDocumentor\Descriptor\Tag\VarDescriptor': ['type']
+    'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
+    'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
+    'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
+    'phpDocumentor\Descriptor\Tag\UsedByDescriptor': ['reference']
+
 services:
   _defaults:
     autowire: true
     autoconfigure: true
+
+  phpDocumentor\Compiler\:
+    resource: '../src/phpDocumentor/Compiler'
 
   phpDocumentor\Pipeline\Stage\Configure:
     arguments:
@@ -62,10 +120,61 @@ services:
       - { name: 'phpdoc.pipeline.api_documentation.parse_api_documentation_set', priority: 0 }
 
   ###################################################################################
+  ## Autoloading definitions for compiler stages    #################################
+  ###################################################################################
+
+  phpDocumentor\Compiler\Pass\ElementsIndexBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 15000 }
+
+  phpDocumentor\Compiler\Linker\Linker:
+    arguments: ['%linker.substitutions%']
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 10000 }
+
+  phpDocumentor\Compiler\Pass\PackageTreeBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9001 }
+
+  phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
+
+  phpDocumentor\Compiler\Pass\NamespaceTreeBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
+
+  phpDocumentor\Compiler\Pass\ResolveInlineMarkers:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
+
+  phpDocumentor\Compiler\Pass\UsedByBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
+
+  phpDocumentor\Compiler\Pass\GuidesCompiler:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 3000 }
+
+  phpDocumentor\Compiler\Pass\RemoveSourcecode:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 2000 }
+
+  phpDocumentor\Compiler\Pass\TableOfContentsBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 2000 }
+
+  phpDocumentor\Compiler\Pass\Debug:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 1000 }
+
+  ###################################################################################
   ## Autoloading definitions for transform stages   #################################
   ###################################################################################
 
   phpDocumentor\Pipeline\Stage\Compile:
+    arguments:
+      $compilerPipeline: '@phpdoc.compile.pipeline'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 
