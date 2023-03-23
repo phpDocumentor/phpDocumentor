@@ -18,8 +18,8 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
@@ -46,7 +46,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         $project->getIndexes()->fetch('elements', new Collection())->set('~\\', $project->getNamespace());
         $project->getIndexes()->fetch('namespaces', new Collection())->set('\\', $project->getNamespace());
@@ -68,6 +68,8 @@ class NamespaceTreeBuilder implements CompilerPassInterface
 
             $this->addToParentNamespace($project, $namespace);
         }
+
+        return $project;
     }
 
     /**
@@ -81,7 +83,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      *     This name will be transformed to a getter which must exist. Out of performance considerations will no effort
      *     be done to verify whether the provided type is valid.
      */
-    protected function addElementsOfTypeToNamespace(ProjectDescriptor $project, array $elements, string $type): void
+    protected function addElementsOfTypeToNamespace(ProjectInterface $project, array $elements, string $type): void
     {
         foreach ($elements as $element) {
             $namespaceName = (string) $element->getNamespace();
@@ -119,7 +121,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         }
     }
 
-    private function addToParentNamespace(ProjectDescriptor $project, NamespaceInterface $namespace): void
+    private function addToParentNamespace(ProjectInterface $project, NamespaceInterface $namespace): void
     {
         /** @var NamespaceInterface|null $parent */
         $parent = $project->getIndexes()->fetch(

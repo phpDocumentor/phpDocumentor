@@ -15,17 +15,26 @@ namespace phpDocumentor\Pipeline;
 
 use League\Pipeline\PipelineBuilder;
 use League\Pipeline\PipelineInterface;
+use phpDocumentor\Pipeline\Stage\TimedStageDecorator;
+use Psr\Log\LoggerInterface;
 
 final class PipelineFactory
 {
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * @param iterable<callable> $stages
      */
-    public static function create(iterable $stages): PipelineInterface
+    public function create(iterable $stages): PipelineInterface
     {
         $builder = new PipelineBuilder();
         foreach ($stages as $stage) {
-            $builder->add($stage);
+            $builder->add(new TimedStageDecorator($this->logger, $stage));
         }
 
         return $builder->build();

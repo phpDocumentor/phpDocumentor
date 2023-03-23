@@ -67,7 +67,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testNamespaceStringIsConvertedToTreeAndAddedToElements(): void
@@ -83,7 +83,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $class2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Deeper2\Class2'));
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $elementNames = array_keys($elements);
@@ -104,7 +104,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddClassToNamespace(): void
@@ -120,7 +120,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $class2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2'));
         $this->project->getFiles()->get(0)->getClasses()->add($class2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertSame(
             [$class, $class2],
@@ -132,7 +132,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddInterfaceToNamespace(): void
@@ -148,7 +148,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $interface2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Interface2'));
         $this->project->getFiles()->get(0)->getInterfaces()->add($interface2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertSame(
             [$interface, $interface2],
@@ -160,7 +160,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddTraitToNamespace(): void
@@ -176,7 +176,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $trait2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Trait2'));
         $this->project->getFiles()->get(0)->getTraits()->add($trait2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertSame(
             [$trait, $trait2],
@@ -188,7 +188,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddConstantToNamespace(): void
@@ -204,7 +204,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $constant2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Constant2'));
         $this->project->getFiles()->get(0)->getConstants()->add($constant2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertSame(
             [$constant, $constant2],
@@ -216,7 +216,7 @@ class NamespaceTreeBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::addElementsOfTypeToNamespace
      */
     public function testAddFunctionToNamespace(): void
@@ -232,7 +232,7 @@ class NamespaceTreeBuilderTest extends TestCase
         $function2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Function2'));
         $this->project->getFiles()->get(0)->getFunctions()->add($function2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertSame(
             [$function, $function2],

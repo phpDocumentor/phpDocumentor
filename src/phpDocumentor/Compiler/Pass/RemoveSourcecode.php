@@ -15,7 +15,7 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 final class RemoveSourcecode implements CompilerPassInterface
 {
@@ -26,7 +26,7 @@ final class RemoveSourcecode implements CompilerPassInterface
         return 'Removing sourcecode from file descriptors';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
@@ -42,5 +42,7 @@ final class RemoveSourcecode implements CompilerPassInterface
                 }
             }
         }
+
+        return $project;
     }
 }

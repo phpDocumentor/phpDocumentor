@@ -7,7 +7,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Metas;
 
@@ -29,7 +29,7 @@ final class GuidesCompiler implements CompilerPassInterface
         return 'Compiling guides';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         foreach ($project->getVersions() as $version) {
             foreach ($version->getDocumentationSets() as $documentationSet) {
@@ -51,5 +51,7 @@ final class GuidesCompiler implements CompilerPassInterface
                 $documentationSet->setMetas(new Metas($this->metas->getAll()));
             }
         }
+
+        return $project;
     }
 }

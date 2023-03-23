@@ -4,61 +4,6 @@ imports:
   - { resource: 'stages.yaml' }
   - { resource: 'guides.yaml' }
 
-parameters:
-    linker.substitutions:
-      'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
-      'phpDocumentor\Descriptor\FileDescriptor':
-          - 'tags'
-          - 'classes'
-          - 'interfaces'
-          - 'traits'
-          - 'functions'
-          - 'constants'
-      'phpDocumentor\Descriptor\ClassDescriptor':
-          - 'tags'
-          - 'parent'
-          - 'interfaces'
-          - 'constants'
-          - 'properties'
-          - 'methods'
-          - 'usedTraits'
-      'phpDocumentor\Descriptor\InterfaceDescriptor':
-          - 'tags'
-          - 'parent'
-          - 'constants'
-          - 'methods'
-      'phpDocumentor\Descriptor\TraitDescriptor':
-          - 'tags'
-          - 'properties'
-          - 'methods'
-          - 'usedTraits'
-      'phpDocumentor\Descriptor\EnumDescriptor':
-        - 'tags'
-        - 'interfaces'
-        - 'cases'
-        - 'methods'
-        - 'usedTraits'
-      'phpDocumentor\Descriptor\FunctionDescriptor':
-          - 'tags'
-          - 'arguments'
-      'phpDocumentor\Descriptor\MethodDescriptor':
-          - 'tags'
-          - 'arguments'
-      'phpDocumentor\Descriptor\ArgumentDescriptor':
-          - 'type'
-      'phpDocumentor\Descriptor\PropertyDescriptor':
-          - 'tags'
-          - 'type'
-      'phpDocumentor\Descriptor\ConstantDescriptor':
-          - 'tags'
-          - 'type'
-      'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
-      'phpDocumentor\Descriptor\Tag\VarDescriptor': ['type']
-      'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']
-      'phpDocumentor\Descriptor\Tag\SeeDescriptor': ['reference']
-      'phpDocumentor\Descriptor\Tag\UsesDescriptor': ['reference']
-      'phpDocumentor\Descriptor\Tag\UsedByDescriptor': ['reference']
-
 services:
     _defaults:
         autowire: true
@@ -90,6 +35,8 @@ services:
     phpDocumentor\:
         resource: '../src/phpDocumentor/*'
         exclude:
+          - '../src/phpDocumentor/Linker/Linker'
+          - '../src/phpDocumentor/Compiler'
           - '../src/phpDocumentor/**/Messages'
           - '../src/phpDocumentor/Pipeline/Stage'
           - '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
@@ -110,9 +57,6 @@ services:
     phpDocumentor\Transformer\:
         resource: '../src/phpDocumentor/Transformer'
         exclude: '../src/phpDocumentor/Transformer/**/{Event, Exception}/{**}'
-
-    phpDocumentor\Compiler\:
-        resource: '../src/phpDocumentor/Compiler'
 
     ###################################################################################
     ## Autoloading definitions for individual classes #################################
@@ -159,23 +103,6 @@ services:
           $definitions:
             '2': '@phpDocumentor\Configuration\Definition\Version2'
             '3': '@phpDocumentor\Configuration\Definition\Version3'
-
-    phpDocumentor\Compiler\Linker\Linker:
-        arguments: ['%linker.substitutions%']
-
-    phpDocumentor\Compiler\Compiler:
-        calls:
-            - [insert, ['@phpDocumentor\Compiler\Pass\GuidesCompiler', 3000]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\TableOfContentsBuilder', 2000]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ElementsIndexBuilder', !php/const \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor', !php/const \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\PackageTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\PackageTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\NamespaceTreeBuilder', !php/const \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\ResolveInlineMarkers', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\UsedByBuilder', !php/const \phpDocumentor\Compiler\Pass\ResolveInlineMarkers::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\Debug', !php/const \phpDocumentor\Compiler\Pass\Debug::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Pass\RemoveSourcecode',!php/const \phpDocumentor\Compiler\Pass\RemoveSourcecode::COMPILER_PRIORITY]]
-            - [insert, ['@phpDocumentor\Compiler\Linker\Linker', !php/const \phpDocumentor\Compiler\Linker\Linker::COMPILER_PRIORITY]]
 
     phpDocumentor\Parser\Parser: ~
 

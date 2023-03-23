@@ -19,8 +19,8 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 
 use function array_merge;
 use function is_array;
@@ -40,7 +40,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
         return 'Build "elements" index';
     }
 
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         $elementCollection = new Collection();
         $project->getIndexes()->set('elements', $elementCollection);
@@ -76,6 +76,8 @@ class ElementsIndexBuilder implements CompilerPassInterface
                 $this->addElementsToIndexes($this->getSubElements($element), [$elementCollection]);
             }
         }
+
+        return $project;
     }
 
     /**

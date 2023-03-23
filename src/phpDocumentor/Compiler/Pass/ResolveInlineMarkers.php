@@ -16,7 +16,7 @@ namespace phpDocumentor\Compiler\Pass;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 use function implode;
 use function preg_match_all;
@@ -40,7 +40,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    public function execute(ProjectDescriptor $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         ///This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
         foreach ($project->getVersions() as $version) {
@@ -78,5 +78,7 @@ final class ResolveInlineMarkers implements CompilerPassInterface
                 }
             }
         }
+
+        return $project;
     }
 }

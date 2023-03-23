@@ -42,7 +42,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         return 'Builds table of contents for api documentation sets';
     }
 
-    public function execute(ProjectInterface $project): void
+    public function __invoke(ProjectInterface $project): ProjectInterface
     {
         //This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
         foreach ($project->getVersions() as $version) {
@@ -88,6 +88,8 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 $documentationSet->addTableOfContents($guideToc);
             }
         }
+
+        return $project;
     }
 
     private function createNamespaceEntries(

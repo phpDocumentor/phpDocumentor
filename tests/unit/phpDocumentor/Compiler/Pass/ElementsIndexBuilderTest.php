@@ -65,7 +65,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
@@ -81,7 +81,7 @@ class ElementsIndexBuilderTest extends TestCase
         $classDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2'));
         $file2->getClasses()->add($classDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
@@ -95,7 +95,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
@@ -111,7 +111,7 @@ class ElementsIndexBuilderTest extends TestCase
         $interfaceDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Interface2'));
         $file2->getInterfaces()->add($interfaceDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
@@ -125,7 +125,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
@@ -141,7 +141,7 @@ class ElementsIndexBuilderTest extends TestCase
         $traitDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Trait2'));
         $file2->getTraits()->add($traitDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
@@ -155,7 +155,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
@@ -171,7 +171,7 @@ class ElementsIndexBuilderTest extends TestCase
         $functionDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\function2'));
         $file2->getFunctions()->add($functionDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
@@ -185,7 +185,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      */
@@ -201,7 +201,7 @@ class ElementsIndexBuilderTest extends TestCase
         $constantDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\CONSTANT2'));
         $file2->getConstants()->add($constantDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(2, $elements);
@@ -215,7 +215,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
@@ -240,7 +240,7 @@ class ElementsIndexBuilderTest extends TestCase
         $classConstantDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2::CONSTANT'));
         $classDescriptor2->getConstants()->add($classConstantDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
@@ -259,7 +259,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
@@ -284,7 +284,7 @@ class ElementsIndexBuilderTest extends TestCase
         $classPropertyDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2::$property'));
         $classDescriptor2->getProperties()->add($classPropertyDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);
@@ -302,7 +302,7 @@ class ElementsIndexBuilderTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::execute
+     * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::__invoke
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::addElementsToIndexes
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getIndexKey
      * @covers \phpDocumentor\Compiler\Pass\ElementsIndexBuilder::getSubElements
@@ -327,7 +327,7 @@ class ElementsIndexBuilderTest extends TestCase
         $classMethodDescriptor2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Space\Class2::METHOD'));
         $classDescriptor2->getMethods()->add($classMethodDescriptor2);
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $elements = $this->project->getIndexes()->get('elements')->getAll();
         $this->assertCount(4, $elements);

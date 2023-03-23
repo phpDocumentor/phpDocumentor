@@ -41,7 +41,7 @@ final class TableOfContentsBuilderTest extends TestCase
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->execute($project);
+        $pass->__invoke($project);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */
@@ -68,7 +68,7 @@ final class TableOfContentsBuilderTest extends TestCase
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->execute($project);
+        $pass->__invoke($project);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */

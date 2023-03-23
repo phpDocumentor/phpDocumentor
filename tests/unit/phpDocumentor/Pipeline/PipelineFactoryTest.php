@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\Test\TestLogger;
 
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\PipelineFactory
+ * @covers ::__construct
  * @covers ::<private>
  */
 final class PipelineFactoryTest extends TestCase
@@ -26,7 +28,8 @@ final class PipelineFactoryTest extends TestCase
      */
     public function test_creates_a_pipeline_with_the_given_series_of_stages(): void
     {
-        $pipeline = PipelineFactory::create(
+        $pipelineFactory = new PipelineFactory(new TestLogger());
+        $pipeline = $pipelineFactory->create(
             [
                 static function ($value) {
                     return $value + 1;

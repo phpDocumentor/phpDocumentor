@@ -52,7 +52,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::__invoke
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::addTodoMarkerToFile
      */
@@ -66,7 +66,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $classDescriptor->setStartLocation(new Location(20));
         $this->givenDescriptorHasTodoTagWithDescription($classDescriptor, '789');
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
 
         $this->assertCount(2, $fileDescriptor->getTags()->get('todo'));
         $this->assertCount(1, $classDescriptor->getTags()->get('todo'));
@@ -86,7 +86,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     }
 
     /**
-     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::execute
+     * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::__invoke
      * @covers \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor::getFileDescriptor
      */
     public function testExceptionShouldBeThrownIfElementHasNoFileAssociated(): void
@@ -97,7 +97,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $this->expectException('UnexpectedValueException');
         $this->expectExceptionMessage('An element should always have a file associated with it');
 
-        $this->fixture->execute($this->project);
+        $this->fixture->__invoke($this->project);
     }
 
     protected function givenProjectHasFileDescriptor(): FileDescriptor

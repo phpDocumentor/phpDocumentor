@@ -31,7 +31,7 @@ final class DebugTest extends TestCase
     use ProphecyTrait;
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testLogDebugAnalysis(): void
     {
@@ -46,7 +46,7 @@ final class DebugTest extends TestCase
         $analyzerMock->__toString()->shouldBeCalled()->willReturn($testString);
 
         $fixture = new Debug($loggerMock->reveal(), $analyzerMock->reveal());
-        $fixture->execute($projectDescriptorMock->reveal());
+        $fixture->__invoke($projectDescriptorMock->reveal());
 
         $this->assertTrue(true);
     }

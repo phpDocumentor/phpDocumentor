@@ -277,7 +277,7 @@ final class LinkerTest extends TestCase
     }
 
     /**
-     * @covers ::execute
+     * @covers ::__invoke
      */
     public function testExecute(): void
     {
@@ -297,7 +297,7 @@ final class LinkerTest extends TestCase
         $linker = new Linker([$fqsen => ['field']], $repository->reveal());
 
         // execute test.
-        $linker->execute($project);
+        $linker->__invoke($project);
     }
 
     private function givenAnExampleClassDescriptor(string $fqsenString): ClassDescriptor
