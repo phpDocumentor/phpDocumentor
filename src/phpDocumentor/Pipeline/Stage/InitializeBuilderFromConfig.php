@@ -95,15 +95,35 @@ final class InitializeBuilderFromConfig
     {
         if (count($version->getGuides()) > 1) {
             throw new OutOfRangeException(
-                'phpDocumentor supports 1 set of guides at the moment, '
-                . 'support for multiple sets is being worked on'
+                <<<'EOF'
+phpDocumentor supports 1 set of guides at the moment, support for multiple 
+sets is being worked on.
+
+If you see this message, it may be that you have defined multiple "<guide>"
+elements in your configuration file.
+
+To fix this, make sure you only have one "<guide>" element in your
+documentation.
+EOF
             );
         }
 
         if (count($version->getApi()) > 1) {
             throw new OutOfRangeException(
-                'phpDocumentor supports 1 set of API documentation at the moment, '
-                . 'support for multiple sets is being worked on'
+                <<<'EOF'
+phpDocumentor supports 1 set of API documentation at the moment, support for 
+multiple sets is being worked on.
+
+If you see this message, it may be that you have defined multiple "<api>" 
+elements in your configuration file, or because you have used absolute paths
+as value for the "-d" or "--directory" argument. phpDocumentor interprets 
+absolute paths as separate components, each with their own set of 
+documentation.
+
+To fix this, make sure you only have one "<api>" element in your documentation
+and/or use relative paths when using the "-d" or "--directory" command line
+argument.
+EOF
             );
         }
     }
