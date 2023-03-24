@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
@@ -42,6 +43,10 @@ class ElementsIndexBuilder implements CompilerPassInterface
 
     public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return $documentationSet;
+        }
+
         $elementCollection = new Collection();
         $documentationSet->getIndexes()->set('elements', $elementCollection);
 
