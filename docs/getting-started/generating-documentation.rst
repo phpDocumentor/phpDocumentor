@@ -18,13 +18,13 @@ Under Linux / MacOSX that would be
 
 .. code-block:: shell-session
 
-	$ [PHPDOC_FOLDER]/bin/phpdoc
+    $ [PHPDOC_FOLDER]/bin/phpdoc
 
 And under Windows that would be
 
 .. code-block:: shell-session
 
-	$ [PHPDOC_FOLDER]\bin\phpdoc.bat
+    $ [PHPDOC_FOLDER]\bin\phpdoc.bat
 
 The basic usage of phpDocumentor is to provide an input location using the command line options
 (``-d`` for a directory, ``-f`` for a file) and tell it to output your documentation to a folder of your
