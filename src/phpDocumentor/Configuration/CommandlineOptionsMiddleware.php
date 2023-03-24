@@ -75,6 +75,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             $version = $this->setFilesInPath($version);
             $version = $this->registerExtensions($version);
             $version = $this->overwriteIgnoredPaths($version);
+            $version = $this->overwriteIgnoredSymlinks($version);
             $version = $this->overwriteIgnoredTags($version);
             $version = $this->overwriteMarkers($version);
             $version = $this->overwriteIncludeSource($version);
@@ -417,6 +418,24 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         }
 
         $version->api[0]['encoding'] = $encoding;
+
+        return $version;
+    }
+
+    private function overwriteIgnoredSymlinks(VersionSpecification $version): VersionSpecification
+    {
+        if (isset($this->options['ignore-symlinks']) === false) {
+            return $version;
+        }
+
+        $version->api[0]->setIgnore(
+            array_merge(
+                $version->api[0]['ignore'],
+                [
+                    'symlinks' => $this->options['ignore-symlinks'],
+                ]
+            )
+        );
 
         return $version;
     }
