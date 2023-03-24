@@ -43,12 +43,12 @@ class ElementsIndexBuilder implements CompilerPassInterface
 
     public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
+        $elementCollection = new Collection();
+        $documentationSet->getIndexes()->set('elements', $elementCollection);
+
         if ($documentationSet instanceof ApiSetDescriptor === false) {
             return $documentationSet;
         }
-
-        $elementCollection = new Collection();
-        $documentationSet->getIndexes()->set('elements', $elementCollection);
 
         $constantsIndex  = $documentationSet->getIndexes()->fetch('constants', new Collection());
         $functionsIndex  = $documentationSet->getIndexes()->fetch('functions', new Collection());
