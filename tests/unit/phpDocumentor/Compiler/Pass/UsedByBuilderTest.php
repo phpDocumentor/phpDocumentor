@@ -30,13 +30,10 @@ final class UsedByBuilderTest extends TestCase
         $class->getTags()->set('uses', Collection::fromClassString(UsesDescriptor::class, [$usesTag]));
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor([
-            $this->faker()->versionDescriptor([$apiSetDescriptor]),
-        ]);
         $apiSetDescriptor->getIndex('elements')->add($class);
         $apiSetDescriptor->getIndex('elements')->add($counterClass);
 
-        $this->pass->__invoke($projectDescriptor);
+        $this->pass->__invoke($apiSetDescriptor);
 
         $usedBy = $counterClass->getTags()->fetch(
             'used-by',

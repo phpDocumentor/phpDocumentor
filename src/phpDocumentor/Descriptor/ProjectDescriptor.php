@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
-use phpDocumentor\Descriptor\Traits\HasNamespace;
-use phpDocumentor\Descriptor\Traits\HasPackage;
-use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
 /**
@@ -32,8 +31,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
 {
     use HasName;
     use HasDescription;
-    use HasPackage;
-    use HasNamespace;
 
     private Settings $settings;
 
@@ -50,17 +47,6 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     {
         $this->setName($name);
         $this->setSettings(new Settings());
-
-        $namespace = new NamespaceDescriptor();
-        $namespace->setName('\\');
-        $namespace->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
-        $this->setNamespace($namespace);
-
-        $package = new PackageDescriptor();
-        $package->setName('\\');
-        $package->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
-        $this->setPackage($package);
-
         $this->setPartials(new Collection());
         $this->versions = Collection::fromClassString(VersionDescriptor::class);
     }
@@ -134,6 +120,54 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function getVersions(): Collection
     {
         return $this->versions;
+    }
+
+    /**
+     * Sets the namespace (name) for this element.
+     *
+     * @internal should not be called by any other class than the assemblers
+     * @deprecated
+     *
+     * @param NamespaceInterface|string $namespace
+     */
+    public function setNamespace($namespace): void
+    {
+        $this->getApiDocumentationSet()->setNamespace($namespace);
+    }
+
+    /**
+     * Returns the namespace for this element (defaults to global "\")
+     *
+     * @deprecated
+     *
+     * @return NamespaceInterface|string
+     */
+    public function getNamespace()
+    {
+        return $this->getApiDocumentationSet()->getNamespace();
+    }
+
+    /**
+     * Sets the package (name) for this element.
+     *
+     * @internal should not be called by any other class than the assemblers
+     * @deprecated
+     *
+     * @param PackageInterface|string $package
+     */
+    public function setPackage($package): void
+    {
+        $this->getApiDocumentationSet()->setPackage($package);
+    }
+
+    /**
+     * Returns the package for this element (defaults to global "\")
+     *
+     * @deprecated
+     */
+    public function getPackage(): ?PackageInterface
+    {
+        return $this->getApiDocumentationSet()->getPackage();
     }
 
     /**

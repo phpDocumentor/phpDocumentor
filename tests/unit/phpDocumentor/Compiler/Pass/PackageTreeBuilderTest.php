@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Pass;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -21,7 +22,6 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
@@ -69,13 +69,10 @@ final class PackageTreeBuilderTest extends TestCase
      */
     public function testRootPackageIsSet(): void
     {
-        $project = new ProjectDescriptor('title');
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $project->getVersions()->add($version);
-        $this->fixture->__invoke($project);
+        $apiSet = $this->faker()->apiSetDescriptor();
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages['\\']));
     }
@@ -90,11 +87,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file = new FileDescriptor('hash');
         $this->withPackage($packageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages[$packageName]));
         $this->assertContains($file, $packages[$packageName]->getFiles()->getAll());
@@ -112,11 +109,11 @@ final class PackageTreeBuilderTest extends TestCase
 
         $this->assertNull($file->getPackage());
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages[$packageName]));
         $this->assertContains($file, $packages[$packageName]->getFiles()->getAll());
@@ -135,11 +132,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file2 = new FileDescriptor('hash');
         $this->withPackage($packageName, $file2);
 
-        $project = $this->givenProjectWithFiles([$file1, $file2]);
+        $apiSet = $this->givenApiSetWithFiles([$file1, $file2]);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages[$packageName]));
         $this->assertContains($file1, $packages[$packageName]->getFiles()->getAll());
@@ -159,11 +156,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file2 = new FileDescriptor('hash');
         $this->withPackage($subPackageName, $file2);
 
-        $project = $this->givenProjectWithFiles([$file1, $file2]);
+        $apiSet = $this->givenApiSetWithFiles([$file1, $file2]);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $rootPackage = $project->getIndexes()->get('packages')['\\'];
+        $rootPackage = $apiSet->getIndexes()->get('packages')['\\'];
         $this->assertNotNull($rootPackage->getChildren()['My']);
         $this->assertNotNull($rootPackage->getChildren()['My']->getChildren()['Package']);
         $this->assertNotNull($rootPackage->getChildren()['My']->getChildren()['Package']->getChildren()['ButDeeper']);
@@ -179,11 +176,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file = new FileDescriptor('hash');
         $this->withPackage($packageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages['\\My\\Package']));
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
@@ -199,11 +196,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file = new FileDescriptor('hash');
         $this->withPackage($packageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages['\\My\\Package']));
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
@@ -219,11 +216,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file = new FileDescriptor('hash');
         $this->withPackage($packageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages['\\My\\Package']));
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
@@ -239,11 +236,11 @@ final class PackageTreeBuilderTest extends TestCase
         $file = new FileDescriptor('hash');
         $this->withPackage($packageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages['\\My\\Package']));
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
@@ -261,11 +258,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $this->withSubpackage($subPackageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages[$packageName . '\\' . $subPackageName]));
         $this->assertContains($file, $packages[$packageName . '\\' . $subPackageName]->getFiles()->getAll());
@@ -283,11 +280,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $this->withSubpackage($subPackageName, $file);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         $this->assertTrue(isset($packages[$packageName . '\\' . $subPackageName]));
         $this->assertContains($file, $packages[$packageName . '\\' . $subPackageName]->getFiles()->getAll());
@@ -305,11 +302,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $file->getConstants()->add($constant);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         // @todo: shouldn't this constant have inherited his file's Package?
         $this->assertContains($constant, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getConstants()->getAll());
@@ -327,11 +324,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $file->getFunctions()->add($function);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         // @todo: shouldn't this function have inherited his file's Package?
         $this->assertContains($function, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getFunctions()->getAll());
@@ -349,11 +346,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $file->getInterfaces()->add($interface);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         // @todo: shouldn't this interface have inherited his file's Package?
         $this->assertContains($interface, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getInterfaces()->getAll());
@@ -371,11 +368,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $file->getTraits()->add($trait);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         // @todo: shouldn't this trait have inherited his file's Package?
         $this->assertContains($trait, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getTraits()->getAll());
@@ -393,11 +390,11 @@ final class PackageTreeBuilderTest extends TestCase
         $this->withPackage($packageName, $file);
         $file->getClasses()->add($class);
 
-        $project = $this->givenProjectWithFile($file);
+        $apiSet = $this->givenApiSetWithFile($file);
 
-        $this->fixture->__invoke($project);
+        $this->fixture->__invoke($apiSet);
 
-        $packages = $project->getIndexes()->get('packages');
+        $packages = $apiSet->getIndexes()->get('packages');
 
         // @todo: shouldn't this class have inherited his file's Package?
         $this->assertContains($class, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getClasses()->getAll());
@@ -419,28 +416,22 @@ final class PackageTreeBuilderTest extends TestCase
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }
 
-    private function givenProjectWithFile(FileDescriptor $file): ProjectDescriptor
+    private function givenApiSetWithFile(FileDescriptor $file): ApiSetDescriptor
     {
-        $project = new ProjectDescriptor('title');
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $project->getVersions()->add($version);
-        $project->getFiles()->add($file);
+        $apiSet = $this->faker()->apiSetDescriptor();
+        $apiSet->getFiles()->add($file);
 
-        return $project;
+        return $apiSet;
     }
 
-    private function givenProjectWithFiles(array $files): ProjectDescriptor
+    private function givenApiSetWithFiles(array $files): ApiSetDescriptor
     {
-        $project = new ProjectDescriptor('title');
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $project->getVersions()->add($version);
+        $apiSet = $this->faker()->apiSetDescriptor();
 
         foreach ($files as $file) {
-            $project->getFiles()->add($file);
+            $apiSet->getFiles()->add($file);
         }
 
-        return $project;
+        return $apiSet;
     }
 }

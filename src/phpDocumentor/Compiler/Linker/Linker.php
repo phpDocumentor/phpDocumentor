@@ -18,10 +18,10 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
@@ -81,12 +81,12 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        $this->descriptorRepository->setObjectAliasesList($project->getIndexes()->get('elements')->getAll());
-        $this->substitute($project);
+        $this->descriptorRepository->setObjectAliasesList($documentationSet->getIndexes()->get('elements')->getAll());
+        $this->substitute($documentationSet);
 
-        return $project;
+        return $documentationSet;
     }
 
     /**
@@ -124,9 +124,9 @@ class Linker implements CompilerPassInterface
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor|ProjectInterface $item
+     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor|DocumentationSetDescriptor $item
      *
-     * @return string|ProjectInterface|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
+     * @return string|DocumentationSetDescriptor|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
      */
     public function substitute($item, ?DescriptorAbstract $container = null)
     {

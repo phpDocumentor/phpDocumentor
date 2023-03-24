@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use Psr\Log\LoggerInterface;
 
@@ -48,11 +48,11 @@ class Debug implements CompilerPassInterface
         return 'Analyze results and write report to log';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        $this->analyzer->analyze($project);
+        $this->analyzer->analyze($documentationSet);
         $this->log->debug((string) $this->analyzer);
 
-        return $project;
+        return $documentationSet;
     }
 }

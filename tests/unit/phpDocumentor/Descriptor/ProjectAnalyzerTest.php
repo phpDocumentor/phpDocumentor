@@ -6,7 +6,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Faker\Faker;
 
 use function str_replace;
 
@@ -17,8 +17,9 @@ use const PHP_EOL;
  */
 final class ProjectAnalyzerTest extends MockeryTestCase
 {
-    /** @var ProjectAnalyzer */
-    private $fixture;
+    use Faker;
+
+    private ProjectAnalyzer $fixture;
 
     protected function setUp(): void
     {
@@ -32,22 +33,28 @@ final class ProjectAnalyzerTest extends MockeryTestCase
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent(ClassDescriptor::class);
-        $projectDescriptor = $this->givenAProjectMock();
-        $this->whenProjectDescriptorHasTheFollowingFiles($projectDescriptor, [1, 2, 3, 4]);
-        $this->whenProjectDescriptorHasTheFollowingElements(
-            $projectDescriptor,
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $this->whenDescriptorHasTheFollowingFiles(
+            $apiSetDescriptor,
+            [
+                $this->faker()->fileDescriptor(),
+                $this->faker()->fileDescriptor(),
+            ]
+        );
+        $this->whenDescriptorHasTheFollowingElements(
+            $apiSetDescriptor,
             [
                 'ds1' => $classDescriptor1,
                 'ds2' => $this->givenAClassWithParent($classDescriptor1),
                 'ds3' => $this->givenAnInterfaceWithParent('123'),
             ]
         );
-        $this->whenProjectHasTheFollowingChildrenOfRootNamespace($projectDescriptor, [1, 2, 3]);
-        $this->fixture->analyze($projectDescriptor);
+        $this->whenDocumentationHasTheFollowingChildrenOfRootNamespace($apiSetDescriptor, [1, 2, 3]);
+        $this->fixture->analyze($apiSetDescriptor);
 
         $expected = <<<TEXT
-In the ProjectDescriptor are:
-         4 files
+In the Project are:
+         2 files
          3 top-level namespaces
          1 unresolvable parent classes
          2 phpDocumentor\Descriptor\ClassDescriptor elements
@@ -95,34 +102,28 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      */
-    private function whenProjectDescriptorHasTheFollowingFiles(
-        m\MockInterface $projectDescriptor,
-        array $files
-    ): void {
-        $projectDescriptor->shouldReceive('getFiles')->andReturn(new DescriptorCollection($files));
+    private function whenDescriptorHasTheFollowingFiles(ApiSetDescriptor $apiSet, array $files): void
+    {
+        $apiSet->setFiles(new Collection($files));
     }
 
     /**
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      */
-    private function whenProjectDescriptorHasTheFollowingElements(
-        m\MockInterface $projectDescriptor,
+    private function whenDescriptorHasTheFollowingElements(
+        ApiSetDescriptor $apiSet,
         array $elements
     ): void {
-        $projectDescriptor->shouldReceive('getIndexes->fetch')
-            ->with('elements', m::type(DescriptorCollection::class))
-            ->andReturn(new Collection($elements));
+        $apiSet->getIndexes()->set('elements', new Collection($elements));
     }
 
     /**
      * Ensures that the ProjectDescriptor has a root namespace with the provided array as children of that namespace.
      */
-    private function whenProjectHasTheFollowingChildrenOfRootNamespace(
-        m\MockInterface $projectDescriptor,
+    private function whenDocumentationHasTheFollowingChildrenOfRootNamespace(
+        ApiSetDescriptor $apiSet,
         array $rootNamespaceChildren
     ): void {
-        $projectDescriptor->shouldReceive('getNamespace->getChildren')->andReturn(
-            new Collection($rootNamespaceChildren)
-        );
+        $apiSet->getNamespace()->setChildren(new Collection($rootNamespaceChildren));
     }
 }

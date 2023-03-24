@@ -32,16 +32,14 @@ final class TableOfContentsBuilderTest extends TestCase
     public function testApiDocumentationSetNamespacesAreAddedAsTOC(): void
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
-        $project             = $this->faker()->projectDescriptor();
-        $project->getVersions()->add($this->faker()->versionDescriptor([$apiDocumentationSet]));
-        $project->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
+        $apiDocumentationSet->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
         $router->generate(Argument::any())->will(function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->__invoke($project);
+        $pass->__invoke($apiDocumentationSet);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */
@@ -59,16 +57,14 @@ final class TableOfContentsBuilderTest extends TestCase
     public function testApiDocumentationSetPackagesAreAddedAsTOC(): void
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
-        $project             = $this->faker()->projectDescriptor();
-        $project->getVersions()->add($this->faker()->versionDescriptor([$apiDocumentationSet]));
-        $project->getPackage()->addChild($this->faker()->namespaceDescriptorTree());
+        $apiDocumentationSet->getPackage()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
         $router->generate(Argument::any())->will(function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->__invoke($project);
+        $pass->__invoke($apiDocumentationSet);
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */

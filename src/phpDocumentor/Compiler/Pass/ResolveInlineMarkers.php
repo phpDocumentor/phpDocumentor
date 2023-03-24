@@ -15,8 +15,8 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 
 use function implode;
 use function preg_match_all;
@@ -40,45 +40,40 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        ///This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if ($documentationSet instanceof ApiSetDescriptor === false) {
-                    continue;
-                }
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return $documentationSet;
+        }
 
-                $markerTerms = $documentationSet->getSettings()['markers'];
+        $markerTerms = $documentationSet->getSettings()['markers'];
 
-                /** @var FileDescriptor $file */
-                foreach ($project->getFiles() as $file) {
-                    $matches = [];
-                    $source  = $file->getSource() ?? '';
+        /** @var FileDescriptor $file */
+        foreach ($documentationSet->getFiles() as $file) {
+            $matches = [];
+            $source  = $file->getSource() ?? '';
 
-                    preg_match_all(
-                        '~//[\s]*(' . implode('|', $markerTerms) . ')\:?[\s]*(.*)~',
-                        $source,
-                        $matches,
-                        PREG_SET_ORDER | PREG_OFFSET_CAPTURE
-                    );
+            preg_match_all(
+                '~//[\s]*(' . implode('|', $markerTerms) . ')\:?[\s]*(.*)~',
+                $source,
+                $matches,
+                PREG_SET_ORDER | PREG_OFFSET_CAPTURE
+            );
 
-                    foreach ($matches as $match) {
-                        [$before] = str_split($source, $match[1][1]); // fetches all the text before the match
+            foreach ($matches as $match) {
+                [$before] = str_split($source, $match[1][1]); // fetches all the text before the match
 
-                        $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
-                        $file->getMarkers()->add(
-                            [
-                                'type' => trim($match[1][0], '@'),
-                                'line' => $lineNumber,
-                                'message' => $match[2][0],
-                            ]
-                        );
-                    }
-                }
+                $lineNumber = strlen($before) - strlen(str_replace("\n", '', $before)) + 1;
+                $file->getMarkers()->add(
+                    [
+                        'type' => trim($match[1][0], '@'),
+                        'line' => $lineNumber,
+                        'message' => $match[2][0],
+                    ]
+                );
             }
         }
 
-        return $project;
+        return $documentationSet;
     }
 }

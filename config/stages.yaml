@@ -1,6 +1,7 @@
 parameters:
   linker.substitutions:
     'phpDocumentor\Descriptor\ProjectDescriptor': ['files']
+    'phpDocumentor\Descriptor\ApiSetDescriptor': ['files']
     'phpDocumentor\Descriptor\FileDescriptor':
       - 'tags'
       - 'classes'

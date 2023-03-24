@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
@@ -58,16 +59,20 @@ final class PackageTreeBuilder implements CompilerPassInterface
         return 'Build "packages" index';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        $package = $project->getPackage();
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return $documentationSet;
+        }
+
+        $package = $documentationSet->getPackage();
         Assert::isInstanceOf($package, PackageInterface::class);
 
         $packages = Collection::fromInterfaceString(PackageInterface::class);
         $packages['\\'] = $package;
 
         /** @var FileInterface $file */
-        foreach ($project->getFiles() as $file) {
+        foreach ($documentationSet->getFiles() as $file) {
             $this->addElementsOfTypeToPackage($packages, [$file], 'files');
             $this->addElementsOfTypeToPackage($packages, $file->getConstants()->getAll(), 'constants');
             $this->addElementsOfTypeToPackage($packages, $file->getFunctions()->getAll(), 'functions');
@@ -77,12 +82,12 @@ final class PackageTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToPackage($packages, $file->getEnums()->getAll(), 'enums');
         }
 
-        $project->getIndexes()->set(
+        $documentationSet->getIndexes()->set(
             'packages',
             Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
         );
 
-        return $project;
+        return $documentationSet;
     }
 
     /**
@@ -155,7 +160,7 @@ final class PackageTreeBuilder implements CompilerPassInterface
      * other FQSEN's, such as classes or interfaces.
      *
      * @see PackageInterface::getChildren() for the child packages of a given package.
-     * @see ProjectInterface::getPackage() for the root package.
+     * @see DocumentationSetDescriptor::getPackage() for the root package.
      *
      * @param Collection<PackageInterface> $packages
      * @param string $packageName A FQNN of the package (and parents) to create.

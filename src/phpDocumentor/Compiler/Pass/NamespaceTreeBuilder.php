@@ -15,10 +15,11 @@ namespace phpDocumentor\Compiler\Pass;
 
 use InvalidArgumentException;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
@@ -46,30 +47,38 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        $project->getIndexes()->fetch('elements', new Collection())->set('~\\', $project->getNamespace());
-        $project->getIndexes()->fetch('namespaces', new Collection())->set('\\', $project->getNamespace());
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return $documentationSet;
+        }
 
-        foreach ($project->getFiles() as $file) {
-            $this->addElementsOfTypeToNamespace($project, $file->getConstants()->getAll(), 'constants');
-            $this->addElementsOfTypeToNamespace($project, $file->getFunctions()->getAll(), 'functions');
-            $this->addElementsOfTypeToNamespace($project, $file->getClasses()->getAll(), 'classes');
-            $this->addElementsOfTypeToNamespace($project, $file->getInterfaces()->getAll(), 'interfaces');
-            $this->addElementsOfTypeToNamespace($project, $file->getTraits()->getAll(), 'traits');
-            $this->addElementsOfTypeToNamespace($project, $file->getEnums()->getAll(), 'enums');
+        $documentationSet->getIndexes()
+            ->fetch('elements', new Collection())
+            ->set('~\\', $documentationSet->getNamespace());
+        $documentationSet->getIndexes()
+            ->fetch('namespaces', new Collection())
+            ->set('\\', $documentationSet->getNamespace());
+
+        foreach ($documentationSet->getFiles() as $file) {
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getConstants()->getAll(), 'constants');
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getFunctions()->getAll(), 'functions');
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getClasses()->getAll(), 'classes');
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getInterfaces()->getAll(), 'interfaces');
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getTraits()->getAll(), 'traits');
+            $this->addElementsOfTypeToNamespace($documentationSet, $file->getEnums()->getAll(), 'enums');
         }
 
         /** @var NamespaceInterface $namespace */
-        foreach ($project->getIndexes()->get('namespaces')->getAll() as $namespace) {
+        foreach ($documentationSet->getIndexes()->get('namespaces')->getAll() as $namespace) {
             if ($namespace->getNamespace() === '') {
                 continue;
             }
 
-            $this->addToParentNamespace($project, $namespace);
+            $this->addToParentNamespace($documentationSet, $namespace);
         }
 
-        return $project;
+        return $documentationSet;
     }
 
     /**
@@ -83,8 +92,11 @@ class NamespaceTreeBuilder implements CompilerPassInterface
      *     This name will be transformed to a getter which must exist. Out of performance considerations will no effort
      *     be done to verify whether the provided type is valid.
      */
-    protected function addElementsOfTypeToNamespace(ProjectInterface $project, array $elements, string $type): void
-    {
+    protected function addElementsOfTypeToNamespace(
+        DocumentationSetDescriptor $documentationSet,
+        array $elements,
+        string $type
+    ): void {
         foreach ($elements as $element) {
             $namespaceName = (string) $element->getNamespace();
             //TODO: find out why this can happen. Some bug in the assembler?
@@ -92,7 +104,7 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $namespaceName = '\\';
             }
 
-            $namespace = $project->getIndexes()->fetch('namespaces', new Collection())->fetch($namespaceName);
+            $namespace = $documentationSet->getIndexes()->fetch('namespaces', new Collection())->fetch($namespaceName);
 
             if ($namespace === null) {
                 $namespace = new NamespaceDescriptor();
@@ -101,10 +113,10 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $namespace->setFullyQualifiedStructuralElementName($fqsen);
                 $namespaceName = substr((string) $fqsen, 0, -strlen($fqsen->getName()) - 1);
                 $namespace->setNamespace($namespaceName);
-                $project->getIndexes()
+                $documentationSet->getIndexes()
                     ->fetch('namespaces', new Collection())
                     ->set((string) $namespace->getFullyQualifiedStructuralElementName(), $namespace);
-                $this->addToParentNamespace($project, $namespace);
+                $this->addToParentNamespace($documentationSet, $namespace);
             }
 
             Assert::isInstanceOf($namespace, NamespaceInterface::class);
@@ -121,14 +133,16 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         }
     }
 
-    private function addToParentNamespace(ProjectInterface $project, NamespaceInterface $namespace): void
-    {
+    private function addToParentNamespace(
+        DocumentationSetDescriptor $documentationSet,
+        NamespaceInterface $namespace
+    ): void {
         /** @var NamespaceInterface|null $parent */
-        $parent = $project->getIndexes()->fetch(
+        $parent = $documentationSet->getIndexes()->fetch(
             'namespaces',
             new Collection()
         )->fetch((string) $namespace->getNamespace());
-        $project->getIndexes()->fetch('elements', new Collection())->set(
+        $documentationSet->getIndexes()->fetch('elements', new Collection())->set(
             '~' . (string) $namespace->getFullyQualifiedStructuralElementName(),
             $namespace
         );
@@ -141,10 +155,10 @@ class NamespaceTreeBuilder implements CompilerPassInterface
                 $parent->setName($fqsen->getName());
                 $namespaceName = substr((string) $fqsen, 0, -strlen($parent->getName()) - 1);
                 $parent->setNamespace($namespaceName === '' ? '\\' : $namespaceName);
-                $project->getIndexes()
+                $documentationSet->getIndexes()
                     ->fetch('namespaces', new Collection())
                     ->set((string) $parent->getFullyQualifiedStructuralElementName(), $parent);
-                $this->addToParentNamespace($project, $parent);
+                $this->addToParentNamespace($documentationSet, $parent);
             }
 
             $namespace->setParent($parent);

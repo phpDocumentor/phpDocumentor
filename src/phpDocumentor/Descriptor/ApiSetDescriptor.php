@@ -16,10 +16,15 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Traits\HasNamespace;
+use phpDocumentor\Descriptor\Traits\HasPackage;
 use phpDocumentor\Reflection\Fqsen;
 
 final class ApiSetDescriptor extends DocumentationSetDescriptor
 {
+    use HasPackage;
+    use HasNamespace;
+
     private ApiSpecification $apiSpecification;
 
     public function __construct(
@@ -34,6 +39,16 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
         $this->apiSpecification = $apiSpecification;
 
         parent::__construct();
+
+        $namespace = new NamespaceDescriptor();
+        $namespace->setName('\\');
+        $namespace->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
+        $this->setNamespace($namespace);
+
+        $package = new PackageDescriptor();
+        $package->setName('\\');
+        $package->setFullyQualifiedStructuralElementName(new Fqsen('\\'));
+        $this->setPackage($package);
 
         // Pre-initialize elements index
         $this->getIndexes()['elements'] = Collection::fromInterfaceString(ElementInterface::class);

@@ -15,10 +15,10 @@ namespace phpDocumentor\Compiler\Pass;
 
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
-use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Guides\Meta\DocumentReferenceEntry;
@@ -42,54 +42,49 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         return 'Builds table of contents for api documentation sets';
     }
 
-    public function __invoke(ProjectInterface $project): ProjectInterface
+    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
     {
-        //This looks ugly, when versions are introduced we get rid of these 2 foreach loops.
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if ($documentationSet instanceof ApiSetDescriptor) {
-                    if ($project->getNamespace()->getChildren()->count() > 0) {
-                        $namespacesToc = new TocDescriptor('Namespaces');
-                        foreach ($project->getNamespace()->getChildren() as $child) {
-                            $this->createNamespaceEntries($child, $namespacesToc);
-                        }
-
-                        $documentationSet->addTableOfContents($namespacesToc);
-                    }
-
-                    if ($project->getPackage()->getChildren()->count() > 0) {
-                        $packagesToc = new TocDescriptor('Packages');
-                        foreach ($project->getPackage()->getChildren() as $child) {
-                            $this->createNamespaceEntries($child, $packagesToc);
-                        }
-
-                        $documentationSet->addTableOfContents($packagesToc);
-                    }
+        if ($documentationSet instanceof ApiSetDescriptor) {
+            if ($documentationSet->getNamespace()->getChildren()->count() > 0) {
+                $namespacesToc = new TocDescriptor('Namespaces');
+                foreach ($documentationSet->getNamespace()->getChildren() as $child) {
+                    $this->createNamespaceEntries($child, $namespacesToc);
                 }
 
-                if (!($documentationSet instanceof GuideSetDescriptor)) {
-                    continue;
+                $documentationSet->addTableOfContents($namespacesToc);
+            }
+
+            if ($documentationSet->getPackage()->getChildren()->count() > 0) {
+                $packagesToc = new TocDescriptor('Packages');
+                foreach ($documentationSet->getPackage()->getChildren() as $child) {
+                    $this->createNamespaceEntries($child, $packagesToc);
                 }
 
-                $documents = $documentationSet->getDocuments();
-                $index     = $documents->fetch('index');
-                if ($index === null) {
-                    continue;
-                }
-
-                $guideToc = new TocDescriptor($index->getTitle());
-                $this->createGuideEntries(
-                    $index,
-                    $documentationSet->getMetas()->findDocument($index->getFile()),
-                    $documentationSet,
-                    $guideToc
-                );
-
-                $documentationSet->addTableOfContents($guideToc);
+                $documentationSet->addTableOfContents($packagesToc);
             }
         }
 
-        return $project;
+        if (!($documentationSet instanceof GuideSetDescriptor)) {
+            return $documentationSet;
+        }
+
+        $documents = $documentationSet->getDocuments();
+        $index     = $documents->fetch('index');
+        if ($index === null) {
+            return $documentationSet;
+        }
+
+        $guideToc = new TocDescriptor($index->getTitle());
+        $this->createGuideEntries(
+            $index,
+            $documentationSet->getMetas()->findDocument($index->getFile()),
+            $documentationSet,
+            $guideToc
+        );
+
+        $documentationSet->addTableOfContents($guideToc);
+
+        return $documentationSet;
     }
 
     private function createNamespaceEntries(
