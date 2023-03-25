@@ -58,7 +58,7 @@ class Sourcecode extends WriterAbstract
         }
 
         /** @var FileDescriptor $file */
-        foreach ($project->getFiles() as $file) {
+        foreach ($documentationSet->getFiles() as $file) {
             $source = $file->getSource();
             if ($source === null) {
                 continue;
