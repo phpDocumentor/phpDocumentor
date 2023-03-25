@@ -21,6 +21,8 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\View\DefaultViewSet;
+use phpDocumentor\Transformer\View\ViewSet;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -28,12 +30,9 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
 
-use function array_merge;
-use function count;
 use function ltrim;
 use function preg_split;
 use function strlen;
-use function strpos;
 use function substr;
 
 /**
@@ -154,31 +153,18 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
             $nodes = $this->queryEngine->perform($documentationSet, $transformation->getQuery());
         }
 
-        $extraParameters = [];
-        foreach ($project->getSettings()->getCustom() as $key => $value) {
-            if (strpos($key, 'template.') !== 0) {
-                continue;
-            }
-
-            $extraParameters[substr($key, strlen('template.'))] = $value;
-        }
+        $viewSet = DefaultViewSet::create($project, $documentationSet, $transformation);
 
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection(
-                    $node,
-                    $transformation,
-                    $documentationSet,
-                    $templatePath,
-                    $extraParameters
-                );
+                $this->transformNodeCollection($node, $transformation, $viewSet, $templatePath);
             }
 
             if (!($node instanceof Descriptor)) {
                 continue;
             }
 
-            $this->transformNode($node, $transformation, $documentationSet, $templatePath, $extraParameters);
+            $this->transformNode($node, $transformation, $viewSet, $templatePath);
         }
     }
 
@@ -189,62 +175,43 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
     /**
      * @param DescriptorCollection<Descriptor> $nodes
-     * @param array<mixed> $extraParameters
      */
     private function transformNodeCollection(
         DescriptorCollection $nodes,
         Transformation $transformation,
-        DocumentationSetDescriptor $documentationSet,
-        string $templatePath,
-        array $extraParameters
+        ViewSet $viewSet,
+        string $templatePath
     ): void {
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection(
-                    $node,
-                    $transformation,
-                    $documentationSet,
-                    $templatePath,
-                    $extraParameters
-                );
+                $this->transformNodeCollection($node, $transformation, $viewSet, $templatePath);
             }
 
             if (!($node instanceof Descriptor)) {
                 continue;
             }
 
-            $this->transformNode($node, $transformation, $documentationSet, $templatePath, $extraParameters);
+            $this->transformNode($node, $transformation, $viewSet, $templatePath);
         }
     }
 
-    /**
-     * @param array<mixed> $extraParameters
-     */
     private function transformNode(
         Descriptor $node,
         Transformation $transformation,
-        DocumentationSetDescriptor $documentationSet,
-        string $templatePath,
-        array $extraParameters
+        ViewSet $viewSet,
+        string $templatePath
     ): void {
         $path = $this->pathGenerator->generate($node, $transformation);
         if ($path === '') {
             return;
         }
 
-        $parameters = array_merge($transformation->getParameters(), $extraParameters);
+        foreach ($viewSet->getViews() as $key => $view) {
+            $this->environment->addGlobal($key, $view);
+        }
 
-        $usesNamespaces = $documentationSet instanceof ApiSetDescriptor
-            && count($documentationSet->getNamespace()->getChildren()) > 0;
-        $usesPackages = $documentationSet instanceof ApiSetDescriptor
-            && $documentationSet->getPackage() !== null
-            && count($documentationSet->getPackage()->getChildren()) > 0;
-
-        $this->environment->addGlobal('usesNamespaces', $usesNamespaces);
-        $this->environment->addGlobal('usesPackages', $usesPackages);
         $this->environment->addGlobal('node', $node);
         $this->environment->addGlobal('destinationPath', $path);
-        $this->environment->addGlobal('parameter', $parameters);
 
         // pre-set the global variable so that we can update it later
         // TODO: replace env with origin filesystem, as this will help us to copy assets.
