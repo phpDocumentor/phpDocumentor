@@ -70,7 +70,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             return;
         }
 
-        if (!$documentationSet instanceof GuideSetDescriptor) {
+        if ($documentationSet instanceof GuideSetDescriptor === false) {
             return;
         }
 

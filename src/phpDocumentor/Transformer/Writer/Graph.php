@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
@@ -33,11 +34,8 @@ use const DIRECTORY_SEPARATOR;
  */
 final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
-    /** @var GraphVizClassDiagram */
-    private $classDiagramGenerator;
-
-    /** @var PlantumlClassDiagram */
-    private $plantumlClassDiagram;
+    private GraphVizClassDiagram $classDiagramGenerator;
+    private PlantumlClassDiagram $plantumlClassDiagram;
 
     public function __construct(GraphVizClassDiagram $classDiagramGenerator, PlantumlClassDiagram $plantumlClassDiagram)
     {
@@ -70,6 +68,10 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         DocumentationSetDescriptor $documentationSet
     ): void {
         if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
+            return;
+        }
+
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
             return;
         }
 

@@ -140,6 +140,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet
     ): void {
+        // TODO: At a later stage we want to support more types of Documentation Sets using the Twig writer
+        //       but at the moment this causes headaches in the migration process towards multiple sets of
+        //       documentation. As such, this limitation has been added
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $templatePath = substr($transformation->getSource(), strlen($this->getTemplatePath($transformation)));
 
         $nodes = [$documentationSet];
