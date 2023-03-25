@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
@@ -70,7 +71,7 @@ use function substr;
  * index.twig template file in the twig template folder into index.html at
  * the destination location.
  * Since no Query is provided the 'node' global variable will contain
- * the Project Descriptor of the Object Graph.
+ * the Documentation Set Descriptor of the Object Graph.
  *
  * A complex example transformation line could be:
  *
@@ -127,70 +128,23 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      * This method combines the ProjectDescriptor and the given target template
      * and creates a static html page at the artifact location.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
      *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
-    {
+    public function transform(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void {
         $templatePath = substr($transformation->getSource(), strlen($this->getTemplatePath($transformation)));
 
+        $nodes = [$documentationSet];
         if ($transformation->getQuery()) {
-            $nodes = $this->queryEngine->perform($project, $transformation->getQuery());
-        } else {
-            $nodes = [$project];
-        }
-
-        foreach ($nodes as $node) {
-            if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection($node, $transformation, $project, $templatePath);
-            }
-
-            if (!($node instanceof Descriptor)) {
-                continue;
-            }
-
-            $this->transformNode($node, $transformation, $project, $templatePath);
-        }
-    }
-
-    public function getDefaultSettings(): array
-    {
-        return [];
-    }
-
-    /** @param DescriptorCollection<Descriptor> $nodes */
-    private function transformNodeCollection(
-        DescriptorCollection $nodes,
-        Transformation $transformation,
-        ProjectDescriptor $project,
-        string $templatePath
-    ): void {
-        foreach ($nodes as $node) {
-            if ($node instanceof DescriptorCollection) {
-                $this->transformNodeCollection($node, $transformation, $project, $templatePath);
-            }
-
-            if (!($node instanceof Descriptor)) {
-                continue;
-            }
-
-            $this->transformNode($node, $transformation, $project, $templatePath);
-        }
-    }
-
-    private function transformNode(
-        Descriptor $node,
-        Transformation $transformation,
-        ProjectDescriptor $project,
-        string $templatePath
-    ): void {
-        $path = $this->pathGenerator->generate($node, $transformation);
-        if ($path === '') {
-            return;
+            $nodes = $this->queryEngine->perform($documentationSet, $transformation->getQuery());
         }
 
         $extraParameters = [];
@@ -202,10 +156,85 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
             $extraParameters[substr($key, strlen('template.'))] = $value;
         }
 
+        foreach ($nodes as $node) {
+            if ($node instanceof DescriptorCollection) {
+                $this->transformNodeCollection(
+                    $node,
+                    $transformation,
+                    $documentationSet,
+                    $templatePath,
+                    $extraParameters
+                );
+            }
+
+            if (!($node instanceof Descriptor)) {
+                continue;
+            }
+
+            $this->transformNode($node, $transformation, $documentationSet, $templatePath, $extraParameters);
+        }
+    }
+
+    public function getDefaultSettings(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param DescriptorCollection<Descriptor> $nodes
+     * @param array<mixed> $extraParameters
+     */
+    private function transformNodeCollection(
+        DescriptorCollection $nodes,
+        Transformation $transformation,
+        DocumentationSetDescriptor $documentationSet,
+        string $templatePath,
+        array $extraParameters
+    ): void {
+        foreach ($nodes as $node) {
+            if ($node instanceof DescriptorCollection) {
+                $this->transformNodeCollection(
+                    $node,
+                    $transformation,
+                    $documentationSet,
+                    $templatePath,
+                    $extraParameters
+                );
+            }
+
+            if (!($node instanceof Descriptor)) {
+                continue;
+            }
+
+            $this->transformNode($node, $transformation, $documentationSet, $templatePath, $extraParameters);
+        }
+    }
+
+    /**
+     * @param array<mixed> $extraParameters
+     */
+    private function transformNode(
+        Descriptor $node,
+        Transformation $transformation,
+        DocumentationSetDescriptor $documentationSet,
+        string $templatePath,
+        array $extraParameters
+    ): void {
+        $path = $this->pathGenerator->generate($node, $transformation);
+        if ($path === '') {
+            return;
+        }
+
         $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
-        $this->environment->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-        $this->environment->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
+        $usesNamespaces = $documentationSet instanceof ApiSetDescriptor
+            && count($documentationSet->getNamespace()->getChildren()) > 0;
+        $usesPackages = $documentationSet instanceof ApiSetDescriptor
+            && $documentationSet->getPackage() !== null
+            && count($documentationSet->getPackage()->getChildren()) > 0;
+
+        $this->environment->addGlobal('usesNamespaces', $usesNamespaces);
+        $this->environment->addGlobal('usesPackages', $usesPackages);
         $this->environment->addGlobal('node', $node);
         $this->environment->addGlobal('destinationPath', $path);
         $this->environment->addGlobal('parameter', $parameters);

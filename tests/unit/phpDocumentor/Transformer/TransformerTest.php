@@ -112,14 +112,14 @@ final class TransformerTest extends TestCase
         $apiSet = $this->faker()->apiSetDescriptor();
         $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
 
-        $this->writer->transform(Argument::any(), Argument::any())->shouldBeCalled();
-
         $transformation = $this->prophesize(Transformation::class);
         $transformation->getQuery()->shouldBeCalled()->willReturn('');
         $transformation->template()->willReturn($this->faker()->template());
         $transformation->getWriter()->shouldBeCalled()->willReturn($this->writer);
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();
+
+        $this->writer->transform($transformation, $project, $apiSet)->shouldBeCalled();
 
         $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
     }

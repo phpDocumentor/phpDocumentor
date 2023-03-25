@@ -2,11 +2,19 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
 use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\FlySystemFactory;
@@ -89,8 +97,8 @@ class Transform
         $transformations = $templates->getTransformations();
 
         foreach ($project->getVersions() as $version) {
-            $apiSets = $version->getDocumentationSets()->filter(ApiSetDescriptor::class);
-            foreach ($apiSets as $apiSet) {
+            $documentationSets = $version->getDocumentationSets();
+            foreach ($documentationSets as $documentationSet) {
                 /** @var PreTransformEvent $preTransformEvent */
                 $preTransformEvent = PreTransformEvent::createInstance($this);
                 $preTransformEvent->setProject($project);
@@ -102,7 +110,7 @@ class Transform
 
                 $this->transformer->execute(
                     $project,
-                    $apiSet,
+                    $documentationSet,
                     $transformations
                 );
 

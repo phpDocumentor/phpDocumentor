@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
@@ -26,7 +26,6 @@ use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function count;
 use function sprintf;
 
 /**
@@ -36,14 +35,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 {
     public const FEATURE_FLAG = 'guides.enabled';
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CommandBus */
-    private $commandBus;
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
+    private LoggerInterface $logger;
+    private CommandBus $commandBus;
+    private FlySystemFactory $flySystemFactory;
     private EnvironmentFactory $environmentFactory;
     private EnvironmentBuilder $environmentBuilder;
 
@@ -66,10 +60,17 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         return 'RenderGuide';
     }
 
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
-    {
+    public function transform(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void {
         // Feature flag: Guides are disabled by default since this is an experimental feature
         if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
+            return;
+        }
+
+        if (!$documentationSet instanceof GuideSetDescriptor) {
             return;
         }
 
@@ -77,32 +78,17 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             'Generating guides is experimental, no BC guarantees are given, use at your own risk'
         );
 
-        /** @var VersionDescriptor $version */
-        foreach ($project->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                if (!$documentationSet instanceof GuideSetDescriptor) {
-                    continue;
-                }
+        //TODO Extract this, as this code is duplicated
+        $this->environmentBuilder->setEnvironmentFactory(
+            function () use ($transformation, $project, $documentationSet) {
+                $twig = $this->environmentFactory->create($project, $documentationSet, $transformation->template());
+                $twig->addGlobal('destinationPath', null);
 
-                //TODO Extract this, as this code is duplicated
-                $this->environmentBuilder->setEnvironmentFactory(
-                    function () use ($transformation, $project, $documentationSet) {
-                        $twig = $this->environmentFactory->create(
-                            $project,
-                            $documentationSet,
-                            $transformation->template()
-                        );
-                        $twig->addGlobal('usesNamespaces', count($project->getNamespace()->getChildren()) > 0);
-                        $twig->addGlobal('usesPackages', count($project->getPackage()->getChildren()) > 0);
-                        $twig->addGlobal('destinationPath', null);
-
-                        return $twig;
-                    }
-                );
-
-                $this->renderDocumentationSet($documentationSet, $transformation);
+                return $twig;
             }
-        }
+        );
+
+        $this->renderDocumentationSet($documentationSet, $transformation);
     }
 
     public function getDefaultSettings(): array
@@ -117,13 +103,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
 
-        $this->commandBus->handle(
-            new RenderCommand(
-                $documentationSet,
-                $this->flySystemFactory->create($dsn),
-                $transformation->getTransformer()->destination()
-            )
-        );
+        $filesystem = $this->flySystemFactory->create($dsn);
+        $destination = $transformation->getTransformer()->destination();
+        $this->commandBus->handle(new RenderCommand($documentationSet, $filesystem, $destination));
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }

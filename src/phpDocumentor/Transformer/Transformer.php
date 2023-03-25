@@ -134,7 +134,7 @@ class Transformer
         array $transformations
     ): void {
         $this->initializeWriters($project, $documentationSet, $transformations);
-        $this->transformProject($project, $transformations);
+        $this->transform($project, $documentationSet, $transformations);
 
         $this->logger->log(LogLevel::NOTICE, 'Finished transformation process');
     }
@@ -202,11 +202,14 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function transformProject(ProjectDescriptor $project, array $transformations): void
-    {
+    private function transform(
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        array $transformations
+    ): void {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
-            $this->applyTransformationToProject($transformation, $project);
+            $this->applyTransformation($transformation, $project, $documentationSet);
         }
     }
 
@@ -223,8 +226,11 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding a transformation.
      */
-    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
-    {
+    private function applyTransformation(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void {
         $this->logger->log(
             LogLevel::NOTICE,
             sprintf(
@@ -239,7 +245,7 @@ class Transformer
         $this->eventDispatcher->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 
         $writer = $this->writers->get($transformation->getWriter());
-        $writer->transform($project, $transformation);
+        $writer->transform($transformation, $project, $documentationSet);
 
         $postTransformationEvent = PostTransformationEvent::createInstance($this);
         $this->eventDispatcher->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);

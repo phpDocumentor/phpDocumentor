@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
@@ -60,11 +61,14 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
     /**
      * Generates a UML class diagram using PlantUML or our native GraphViz integration.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
-    {
+    public function transform(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void {
         if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
             return;
         }

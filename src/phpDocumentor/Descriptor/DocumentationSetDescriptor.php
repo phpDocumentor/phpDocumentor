@@ -16,10 +16,14 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
 
-abstract class DocumentationSetDescriptor
+abstract class DocumentationSetDescriptor implements Descriptor
 {
-    protected string $name = '';
+    use HasName;
+    use HasDescription;
+
     protected Source $source;
     protected string $outputLocation = '.';
 
@@ -39,11 +43,6 @@ abstract class DocumentationSetDescriptor
 
         /** @phpstan-ignore-next-line */
         $this->indexes = Collection::fromClassString(Collection::class);
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     public function addTableOfContents(TocDescriptor $descriptor): void
