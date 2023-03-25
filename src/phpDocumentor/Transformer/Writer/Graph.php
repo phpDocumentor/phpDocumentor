@@ -80,8 +80,8 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         switch ($transformation->getSource() ?: 'class') {
             case 'class':
             default:
-                $this->classDiagramGenerator->create($project, $filename);
-                $this->plantumlClassDiagram->create($project, $filename);
+                $this->classDiagramGenerator->create($documentationSet, $filename);
+                $this->plantumlClassDiagram->create($documentationSet, $filename);
         }
     }
 

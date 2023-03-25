@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Graph;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -34,16 +36,20 @@ use function explode;
 final class GraphVizClassDiagram implements Generator
 {
     /** @var array<string, ?Node> a cache where nodes for classes, interfaces and traits are stored for reference */
-    private $nodeCache = [];
+    private array $nodeCache = [];
 
     /** @var GraphVizGraph[] */
-    private $namespaceCache = [];
+    private array $namespaceCache = [];
 
     /**
      * Creates a class inheritance diagram.
      */
-    public function create(ProjectDescriptor $project, string $filename): void
+    public function create(DocumentationSetDescriptor $documentationSet, string $filename): void
     {
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         try {
             $this->checkIfGraphVizIsInstalled();
         } catch (Throwable $e) {
@@ -60,11 +66,11 @@ final class GraphVizClassDiagram implements Generator
             ->setSplines('true')
             ->setConcentrate('true');
 
-        $this->buildNamespaceTree($graph, $project->getNamespace());
+        $this->buildNamespaceTree($graph, $documentationSet->getNamespace());
 
-        $classes = $project->getIndexes()->fetch('classes', new Collection())->getAll();
-        $interfaces = $project->getIndexes()->fetch('interfaces', new Collection())->getAll();
-        $traits = $project->getIndexes()->fetch('traits', new Collection())->getAll();
+        $classes = $documentationSet->getIndexes()->fetch('classes', new Collection())->getAll();
+        $interfaces = $documentationSet->getIndexes()->fetch('interfaces', new Collection())->getAll();
+        $traits = $documentationSet->getIndexes()->fetch('traits', new Collection())->getAll();
 
         /** @var ClassDescriptor[]|InterfaceDescriptor[]|TraitDescriptor[] $containers */
         $containers = array_merge($classes, $interfaces, $traits);
