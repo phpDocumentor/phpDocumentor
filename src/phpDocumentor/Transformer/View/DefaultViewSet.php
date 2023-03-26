@@ -61,14 +61,27 @@ final class DefaultViewSet implements ViewSet
 
         $parameters = array_merge($this->transformation->getParameters(), $extraParameters);
 
-        $usesNamespaces = $this->documentationSet instanceof ApiSetDescriptor
-            && count($this->documentationSet->getNamespace()->getChildren()) > 0;
-        $usesPackages = $this->documentationSet instanceof ApiSetDescriptor
-            && $this->documentationSet->getPackage() !== null
-            && count($this->documentationSet->getPackage()->getChildren()) > 0;
+        $rootNamespace = $this->documentationSet instanceof ApiSetDescriptor
+            ? $this->documentationSet->getNamespace()
+            : null;
+        $usesNamespaces = $rootNamespace !== null && count($rootNamespace->getChildren()) > 0;
+
+        $rootPackage = $this->documentationSet instanceof ApiSetDescriptor
+            ? $this->documentationSet->getPackage()
+            : null;
+        $usesPackages = $rootPackage !== null && count($rootPackage->getChildren()) > 0;
 
         return [
-            'project' => $this->project,
+            'project' => [
+                'name' => $this->project->getName(),
+                'title' => $this->project->getName(),
+                'settings' => $this->project->getSettings(),
+                'versions' => $this->project->getVersions(),
+                'files' => $this->documentationSet->getFiles(),
+                'indexes' => $this->documentationSet->getIndexes(),
+                'package' => $rootPackage,
+                'namespace' => $rootNamespace,
+            ],
             'documentationSet' => $this->documentationSet,
             'usesNamespaces' => $usesNamespaces,
             'usesPackages' => $usesPackages,

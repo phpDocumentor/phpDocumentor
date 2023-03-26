@@ -22,6 +22,7 @@ use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\View\DefaultViewSet;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -83,6 +84,11 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             function () use ($transformation, $project, $documentationSet) {
                 $twig = $this->environmentFactory->create($project, $documentationSet, $transformation->template());
                 $twig->addGlobal('destinationPath', null);
+
+                $viewSet = DefaultViewSet::create($project, $documentationSet, $transformation);
+                foreach ($viewSet->getViews() as $name => $view) {
+                    $twig->addGlobal($name, $view);
+                }
 
                 return $twig;
             }

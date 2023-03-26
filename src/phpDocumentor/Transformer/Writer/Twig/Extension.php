@@ -93,8 +93,6 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     private ConverterInterface $markdownConverter;
     private RelativePathToRootConverter $relativePathToRootConverter;
     private PathBuilder $pathBuilder;
-    private DocumentationSetDescriptor $documentationSet;
-    private ProjectDescriptor $project;
 
     /**
      * Registers the structure and transformation with this extension.
@@ -109,8 +107,6 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         RelativePathToRootConverter $relativePathToRootConverter,
         PathBuilder $pathBuilder
     ) {
-        $this->project = $project;
-        $this->documentationSet = $documentationSet;
         $this->markdownConverter = $markdownConverter;
         $this->routeRenderer = $routeRenderer;
         $this->routeRenderer = $this->routeRenderer->withProject($project)->forDocumentationSet($documentationSet);
@@ -122,26 +118,14 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      * Initialize series of globals used by the writers to set the context
      *
      * @return array{
-     *     project: ProjectDescriptor,
-     *     documentationSet: DocumentationSetDescriptor,
-     *     node: ?Descriptor,
-     *     usesNamespaces: bool,
-     *     usesPackages: bool,
      *     destinationPath: ?string,
-     *     parameter: array<string, mixed>,
      *     env: mixed
      * }
      */
     public function getGlobals(): array
     {
         return [
-            'project' => $this->project,
-            'documentationSet' => $this->documentationSet,
-            'node' => null,
-            'usesNamespaces' => true,
-            'usesPackages' => true,
             'destinationPath' => null,
-            'parameter' => [],
             'env' => null,
         ];
     }
@@ -460,10 +444,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     private function contextRouteRenderer(array $context): LinkRenderer
     {
-        return $this->routeRenderer
-            ->withDestination(ltrim($context['destinationPath'] ?? $context['env']->getCurrentFileDestination(), '/\\'))
-            ->withProject($context['project'])
-            ->forDocumentationSet($context['documentationSet']);
+        $destination = ltrim($context['destinationPath'] ?? $context['env']->getCurrentFileDestination(), '/\\');
+
+        return $this->routeRenderer->withDestination($destination);
     }
 
     /**
