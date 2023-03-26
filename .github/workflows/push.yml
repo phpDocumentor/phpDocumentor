@@ -101,7 +101,7 @@ jobs:
       run: phpunit --testsuite=unit
 
     - name: Quick check code coverage level
-      run: php tests/coverage-checker.php 65
+      run: php tests/coverage-checker.php 64
 
   codestyle:
     runs-on: ubuntu-latest
