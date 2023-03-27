@@ -1910,7 +1910,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-upgrade/type-resolver",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -2124,16 +2124,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "1534aea9bde19a5c85c5d1e1f834ab63f4c5dcf5"
+                "reference": "dfc078e8af9c99210337325ff5aa152872c98714"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/1534aea9bde19a5c85c5d1e1f834ab63f4c5dcf5",
-                "reference": "1534aea9bde19a5c85c5d1e1f834ab63f4c5dcf5",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/dfc078e8af9c99210337325ff5aa152872c98714",
+                "reference": "dfc078e8af9c99210337325ff5aa152872c98714",
                 "shasum": ""
             },
             "require": {
@@ -2176,9 +2176,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.0"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.1"
             },
-            "time": "2023-03-12T10:13:29+00:00"
+            "time": "2023-03-27T19:02:04+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
