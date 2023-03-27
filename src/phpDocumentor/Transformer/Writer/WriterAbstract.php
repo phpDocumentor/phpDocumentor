@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 
@@ -47,10 +48,14 @@ abstract class WriterAbstract
     /**
      * Abstract definition of the transformation method.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
      */
-    abstract public function transform(ProjectDescriptor $project, Transformation $transformation): void;
+    abstract public function transform(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void;
 
     public function __toString(): string
     {

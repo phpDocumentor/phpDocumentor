@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Graph;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use Psr\Log\LoggerInterface;
 
@@ -28,11 +29,8 @@ use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var PlantumlRenderer */
-    private $plantumlRenderer;
+    private LoggerInterface $logger;
+    private PlantumlRenderer $plantumlRenderer;
 
     public function __construct(LoggerInterface $logger, PlantumlRenderer $plantumlRenderer)
     {
@@ -40,8 +38,12 @@ final class PlantumlClassDiagram implements Generator
         $this->plantumlRenderer = $plantumlRenderer;
     }
 
-    public function create(ProjectDescriptor $project, string $filename): void
+    public function create(DocumentationSetDescriptor $documentationSet, string $filename): void
     {
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
+            return;
+        }
+
         $output = $this->plantumlRenderer->render(
             <<<PUML
 skinparam shadowing false
@@ -50,7 +52,7 @@ hide empty members
 left to right direction
 set namespaceSeparator \\\\
 
-{$this->renderNamespace($project->getNamespace())}
+{$this->renderNamespace($documentationSet->getNamespace())}
 PUML
         );
 

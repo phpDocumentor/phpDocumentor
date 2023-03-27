@@ -68,7 +68,7 @@ final class LinkAdapterTest extends TestCase
     }
 
     /**
-     * @covers ::supports
+     * @covers ::supports()
      */
     public function testItSupportsAnyType(): void
     {
@@ -85,7 +85,7 @@ final class LinkAdapterTest extends TestCase
     /**
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
-     * @covers ::render
+     * @covers ::render()
      * @dataProvider renderingVariations
      */
     public function testRenderProducesExpectedOutputBasedOn($value, Target $expectedTarget): void

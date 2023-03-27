@@ -26,7 +26,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
 
 /**
- * @uses \phpDocumentor\Transformer\Writer\Pathfinder
  * @uses \phpDocumentor\Transformer\Template
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\PathGenerator

@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass IsApplicable
- * @covers ::__construct
  * @covers ::<private>
  */
 final class IsApplicableTest extends TestCase

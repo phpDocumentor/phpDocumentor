@@ -27,7 +27,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor
- * @covers ::__construct
  * @covers ::<private>
  */
 final class MarkerFromTagsExtractorTest extends TestCase

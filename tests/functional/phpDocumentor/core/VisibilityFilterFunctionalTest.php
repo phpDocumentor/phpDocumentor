@@ -4,18 +4,28 @@ declare(strict_types=1);
 
 namespace functional\phpDocumentor\core;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\FunctionalTestCase;
 
-final class VisiblityFilterFuncionalTest extends FunctionalTestCase
+final class VisibilityFilterFunctionalTest extends FunctionalTestCase
 {
-    public function testDefaultVisiblityFilter() : void
+    public function testDefaultVisibilityFilter() : void
     {
         $this->runPHPDocWithFile(__DIR__ .'/../../assets/core/visibility.php');
         $project = $this->loadAst();
 
+        $versions = $project->getVersions();
+        $this->assertCount(1, $versions);
+
+        $apiSets = $versions->first()->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $this->assertCount(1, $apiSets);
+
+        /** @var ApiSetDescriptor $apiSet */
+        $apiSet = $apiSets->first();
+
         /** @var ClassDescriptor $classDescriptor */
-        $classDescriptor = $project->getIndexes()->get('classes')->get('\Visibility');
+        $classDescriptor = $apiSet->getIndexes()->get('classes')->get('\Visibility');
 
         $this->assertCount(3, $classDescriptor->getMethods());
         $this->assertCount(3, $classDescriptor->getProperties());
@@ -25,13 +35,22 @@ final class VisiblityFilterFuncionalTest extends FunctionalTestCase
     /**
      * @dataProvider visibilityProvider
      */
-    public function testVisiblityFilterByCli(string $visability, int $expectedCount) : void
+    public function testVisibilityFilterByCli(string $visability, int $expectedCount) : void
     {
         $this->runPHPDocWithFile(__DIR__ .'/../../assets/core/visibility.php', ['--visibility='.$visability]);
         $project = $this->loadAst();
 
+        $versions = $project->getVersions();
+        $this->assertCount(1, $versions);
+
+        $apiSets = $versions->first()->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $this->assertCount(1, $apiSets);
+
+        /** @var ApiSetDescriptor $apiSet */
+        $apiSet = $apiSets->first();
+
         /** @var ClassDescriptor $classDescriptor */
-        $classDescriptor = $project->getIndexes()->get('classes')->get('\Visibility');
+        $classDescriptor = $apiSet->getIndexes()->get('classes')->get('\Visibility');
 
         $this->assertCount($expectedCount, $classDescriptor->getMethods());
         $this->assertCount($expectedCount, $classDescriptor->getProperties());

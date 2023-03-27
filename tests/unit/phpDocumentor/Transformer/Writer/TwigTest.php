@@ -18,7 +18,6 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
@@ -110,7 +109,6 @@ final class TwigTest extends TestCase
     {
         $targetDir = $this->destinationFolder->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
-        $this->pathGenerator->generate(Argument::any(), Argument::any())->willReturn('index.html');
 
         $this->givenATwigEnvironmentFactoryWithTemplates(
             ['/index.html.twig' => 'This is a twig file']
@@ -125,12 +123,13 @@ final class TwigTest extends TestCase
         );
         $transformation->setTransformer($transformer->reveal());
 
-        $project = new ProjectDescriptor('project');
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $project->getVersions()->add($this->faker()->versionDescriptor([$apiSetDescriptor]));
+        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSetDescriptor])]);
         $project->getSettings()->setCustom($this->writer->getDefaultSettings());
+        $this->pathGenerator->generate($apiSetDescriptor, $transformation)->willReturn('index.html');
+
         $this->writer->initialize($project, $apiSetDescriptor, $this->faker()->template());
-        $this->writer->transform($project, $transformation);
+        $this->writer->transform($transformation, $project, $apiSetDescriptor);
 
         $this->assertFileExists($targetDir . '/index.html');
         $this->assertStringEqualsFile($targetDir . '/index.html', 'This is a twig file');

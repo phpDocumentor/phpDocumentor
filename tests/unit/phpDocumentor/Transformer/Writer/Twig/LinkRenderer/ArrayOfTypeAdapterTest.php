@@ -23,7 +23,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter
  * @covers ::<private>
- * @covers ::__construct
  */
 final class ArrayOfTypeAdapterTest extends TestCase
 {

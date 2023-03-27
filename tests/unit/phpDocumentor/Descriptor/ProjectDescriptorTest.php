@@ -55,29 +55,6 @@ final class ProjectDescriptorTest extends TestCase
     }
 
     /**
-     * @covers ::getFiles
-     */
-    public function testGetFilesFromApiSet(): void
-    {
-        $set = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$set]);
-        $this->fixture->getVersions()->add($version);
-
-        $this->assertSame($set->getFiles(), $this->fixture->getFiles());
-    }
-
-    /**
-     * @covers ::getIndexes
-     */
-    public function testGetIndexesFromApiSet(): void
-    {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$apiSetDescriptor]));
-
-        $this->assertSame($apiSetDescriptor->getIndexes(), $this->fixture->getIndexes());
-    }
-
-    /**
      * @covers ::setNamespace
      * @covers ::getNamespace
      */

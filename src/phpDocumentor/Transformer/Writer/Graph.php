@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
@@ -32,11 +34,8 @@ use const DIRECTORY_SEPARATOR;
  */
 final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
-    /** @var GraphVizClassDiagram */
-    private $classDiagramGenerator;
-
-    /** @var PlantumlClassDiagram */
-    private $plantumlClassDiagram;
+    private GraphVizClassDiagram $classDiagramGenerator;
+    private PlantumlClassDiagram $plantumlClassDiagram;
 
     public function __construct(GraphVizClassDiagram $classDiagramGenerator, PlantumlClassDiagram $plantumlClassDiagram)
     {
@@ -60,12 +59,19 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
     /**
      * Generates a UML class diagram using PlantUML or our native GraphViz integration.
      *
-     * @param ProjectDescriptor $project Document containing the structure.
      * @param Transformation $transformation Transformation to execute.
+     * @param ProjectDescriptor $project Document containing the structure.
      */
-    public function transform(ProjectDescriptor $project, Transformation $transformation): void
-    {
+    public function transform(
+        Transformation $transformation,
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet
+    ): void {
         if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
+            return;
+        }
+
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
             return;
         }
 
@@ -74,8 +80,8 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         switch ($transformation->getSource() ?: 'class') {
             case 'class':
             default:
-                $this->classDiagramGenerator->create($project, $filename);
-                $this->plantumlClassDiagram->create($project, $filename);
+                $this->classDiagramGenerator->create($documentationSet, $filename);
+                $this->plantumlClassDiagram->create($documentationSet, $filename);
         }
     }
 
