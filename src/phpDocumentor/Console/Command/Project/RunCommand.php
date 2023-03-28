@@ -187,7 +187,7 @@ HELP
             ->addOption(
                 'ignore-symlinks',
                 null,
-                InputOption::VALUE_NONE,
+                InputOption::VALUE_NEGATABLE,
                 'Ignore symlinks to other files or directories, default is on'
             )
             ->addOption(

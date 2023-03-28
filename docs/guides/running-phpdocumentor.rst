@@ -100,7 +100,7 @@ Influencing the List of Project Files
 **``--hidden`` and ``--ignore-symlinks``**
     By default phpDocumentor will ignore hidden files and will not follow symlinks. This will prevent unwanted
     documentables and loops in paths. Should you want to document hidden files you can do so by supplying the option
-    ``--hidden=off``, for traversing symlinks you can provide the option ``--ignore-symlinks=off``. Easy!
+    ``--hidden=off``, for traversing symlinks you can provide the option ``--no-ignore-symlinks``.
 
 Customizing the Look and Feel
 -----------------------------
