@@ -95,7 +95,7 @@
         "psalm/phar": "^4.17"
     },
     "config": {
-        "bin-dir":"bin/",
+        "bin-dir": "bin/",
         "preferred-install": {
             "*": "dist"
         },
@@ -104,7 +104,8 @@
             "php": "8.1.0"
         },
         "allow-plugins": {
-            "symfony/flex": true
+            "symfony/flex": true,
+            "phpstan/extension-installer": true
         }
     },
     "replace": {
