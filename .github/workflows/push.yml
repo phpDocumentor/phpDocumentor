@@ -215,6 +215,8 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@v3
+        with:
+          set-safe-directory: '/github/workspace'
 
       - name: Setup cache environment
         id: cache-env

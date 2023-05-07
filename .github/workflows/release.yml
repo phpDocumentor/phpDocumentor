@@ -7,7 +7,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v3
+      with:
+        set-safe-directory: '/github/workspace'
     - name: composer
       uses: docker://composer
       env:
@@ -15,6 +17,7 @@ jobs:
         COMPOSER_MIRROR_PATH_REPOS: 1
       with:
         args: install --no-interaction --prefer-dist --optimize-autoloader
+
     - name: warm cache
       uses: phpDocumentor/phar-ga@latest
       with:
