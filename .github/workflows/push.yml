@@ -163,12 +163,8 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM-DD.
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-      - name: PHPStan
-        uses: phpDocumentor/phpstan-ga@1.8
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: analyse src tests --configuration phpstan.neon
+      - name: phpstan
+        run: ./bin/phpstan analyse src tests --configuration phpstan.neon
 
   psalm:
     runs-on: ubuntu-latest
