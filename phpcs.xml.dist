@@ -13,7 +13,7 @@
 
     <!-- Set the minimum PHP version for PHPCompatibility.
          This should be kept in sync with the requirements in the composer.json file. -->
-    <config name="testVersion" value="7.4-"/>
+    <config name="testVersion" value="8.1-"/>
 
     <!-- Prevent false positives for PHP features polyfilled via dependencies. -->
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP73"/>
