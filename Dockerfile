@@ -4,7 +4,7 @@ COPY . /opt/phpdoc
 WORKDIR /opt/phpdoc
 RUN /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev
 
-FROM php:8.0
+FROM php:8.1 as base
 
 # /usr/share/man/man1 needs to be created before installing openjdk-11-jre lest it will fail
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
@@ -24,3 +24,12 @@ COPY --from=build /opt/phpdoc /opt/phpdoc
 RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini && phpdoc cache:warm
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
+
+FROM base as dev
+
+RUN apt-get update \
+    && apt-get install -yq git
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+FROM base as prod

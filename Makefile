@@ -52,7 +52,7 @@ help:
 .PHONY: phar
 phar: composer-mirror
 	php ./bin/console --env=prod cache:warmup; \
-	php -d phar.readonly=false tools/box.phar compile --config=box.json
+	php -d phar.readonly=false tools/box compile --config=box.json
 
 tools/phive.phar:
 	wget -O tools/phive.phar https://phar.io/releases/phive.phar; \
@@ -132,7 +132,7 @@ composer:
 
 .PHONY: composer-mirror
 composer-mirror:
-	rm -rf vendor/phpdocumentor/guides*
+	rm -rf vendor/phpdocumentor/*
 	COMPOSER_MIRROR_PATH_REPOS=1 composer install --optimize-autoloader
 
 .PHONY: shell
