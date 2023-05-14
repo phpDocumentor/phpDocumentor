@@ -1,7 +1,10 @@
-version: '3'
+version: '3.8'
 services:
   phpdoc:
-    build: .
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
     user: ${CURRENT_UID}
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"

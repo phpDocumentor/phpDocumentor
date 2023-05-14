@@ -10,7 +10,7 @@ name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '7.4'
+  defaultPHPVersion: '8.1'
 
 jobs:
 
@@ -163,12 +163,8 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM-DD.
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-      - name: PHPStan
-        uses: phpDocumentor/phpstan-ga@1.8
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: analyse src tests --configuration phpstan.neon
+      - name: phpstan
+        run: ./bin/phpstan analyse src tests --configuration phpstan.neon
 
   psalm:
     runs-on: ubuntu-latest
@@ -219,6 +215,8 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@v3
+        with:
+          set-safe-directory: '/github/workspace'
 
       - name: Setup cache environment
         id: cache-env
@@ -254,14 +252,28 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM-DD.
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
+      - name: remove phpstan/extension-installer
+        env:
+          COMPOSER_MIRROR_PATH_REPOS: 1
+        run: composer remove --dev phpstan/extension-installer
+
+      - name: Install Composer dependencies & cache dependencies
+        env:
+          COMPOSER_MIRROR_PATH_REPOS: 1
+        uses: "ramsey/composer-install@v2"
+        with:
+          composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
         with:
           args: php bin/console cache:warmup --env=prod
+
       - name: build phar
-        uses: phpDocumentor/phar-ga@latest
-        with:
-          args: box compile
+        run: ./tools/box compile
+
       - name: list keys
         uses: phpDocumentor/phar-ga@latest
         env:
@@ -279,6 +291,7 @@ jobs:
         with:
           args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
             --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
+
       - name: Upload PHAR file
         uses: actions/upload-artifact@v3.1.2
         with:
@@ -295,13 +308,11 @@ jobs:
           - windows-latest
           - macOS-latest
         php-versions:
-          - '7.4'
-          - '8.0'
           - '8.1'
           - '8.2'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
-            php-versions: '7.4'
+            php-versions: '8.1'
     name: Unit tests
     needs:
     - phpunit-with-coverage
@@ -412,8 +423,6 @@ jobs:
     strategy:
       matrix:
         php-versions:
-          - '7.4'
-          - '8.0'
           - '8.1'
           - '8.2'
         operating-system:
@@ -472,8 +481,6 @@ jobs:
           - 'clean'
           - 'default'
         php-versions:
-          - '7.4'
-          - '8.0'
           - '8.1'
           - '8.2'
         operating-system:

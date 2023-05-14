@@ -11,9 +11,6 @@
     "doctrine/lexer": {
         "version": "1.2.1"
     },
-    "fzaninotto/faker": {
-        "version": "v1.9.1"
-    },
     "hamcrest/hamcrest-php": {
         "version": "v2.0.0"
     },

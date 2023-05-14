@@ -2,6 +2,7 @@ ARGS ?=
 
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
 .DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
+.PHP = docker run -it --rm -v${CURDIR}:/data -w /data php:8.1
 
 .PHONY: help
 help:
@@ -51,7 +52,7 @@ help:
 .PHONY: phar
 phar: composer-mirror
 	php ./bin/console --env=prod cache:warmup; \
-	php -d phar.readonly=false tools/box.phar compile --config=box.json
+	php -d phar.readonly=false tools/box compile --config=box.json
 
 tools/phive.phar:
 	wget -O tools/phive.phar https://phar.io/releases/phive.phar; \
@@ -70,8 +71,7 @@ setup: install-phive
 .PHONY: pull-containers
 pull-containers:
 	docker pull phpdoc/phpcs-ga
-	docker pull phpdoc/phpstan-ga
-	docker pull php:7.4
+	docker pull php:8.1
 	docker pull node
 
 .PHONY: phpcs
@@ -84,18 +84,18 @@ phpcbf:
 
 .PHONY: phpstan
 phpstan:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpstan-ga:1.8 analyse src tests incubator/*/src incubator/*/tests --configuration phpstan.neon ${ARGS}
+	${.PHP} ./bin/phpstan analyse src tests --memory-limit=1G incubator/*/src incubator/*/tests --configuration phpstan.neon ${ARGS}
 
 .PHONY: psalm
 psalm:
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 ./bin/psalm.phar
+	${.PHP} ./bin/psalm.phar
 
 .PHONY: lint
 lint: phpcs
 
 .PHONY: test
 test: unit-test
-	docker run -it --rm -v${CURDIR}:/data -w /data php:7.4 -f ./tests/coverage-checker.php 65
+	${.PHP} -f ./tests/coverage-checker.php 65
 
 .PHONY: unit-test
 unit-test: SUITE=--testsuite=unit
@@ -107,7 +107,7 @@ integration-test: SUITE=--testsuite=integration --no-coverage
 functional-test: SUITE=--testsuite=functional --no-coverage
 
 unit-test integration-test functional-test:
-	docker run -it --rm -v${CURDIR}:/project -w=/project php:7.4 tools/phpunit $(SUITE) $(ARGS)
+	${.PHP} tools/phpunit $(SUITE) $(ARGS)
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
@@ -132,7 +132,7 @@ composer:
 
 .PHONY: composer-mirror
 composer-mirror:
-	rm -rf vendor/phpdocumentor/guides*
+	rm -rf vendor/phpdocumentor/*
 	COMPOSER_MIRROR_PATH_REPOS=1 composer install --optimize-autoloader
 
 .PHONY: shell
