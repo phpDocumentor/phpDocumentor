@@ -253,6 +253,8 @@ jobs:
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
       - name: remove phpstan/extension-installer
+        env:
+          COMPOSER_MIRROR_PATH_REPOS: 1
         run: composer remove --dev phpstan/extension-installer
 
       - name: Install Composer dependencies & cache dependencies
