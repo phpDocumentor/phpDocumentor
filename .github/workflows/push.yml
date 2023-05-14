@@ -241,7 +241,7 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: pecl, phive
+          tools: pecl
 
       - name: Install Composer dependencies & cache dependencies
         env:
@@ -264,9 +264,6 @@ jobs:
           # Bust the cache at least once a month - output format: YYYY-MM-DD.
           custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-      - name: install phive
-        run: phive install box --trust-gpg-keys 2DF45277AEF09A2F
-
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
         with:
@@ -274,23 +271,25 @@ jobs:
 
       - name: build phar
         run: ./tools/box compile
-#      - name: list keys
-#        uses: phpDocumentor/phar-ga@latest
-#        env:
-#          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-#        with:
-#          args: gpg --list-secret-keys
-#
-#      - name: sign phar
-#        uses: phpDocumentor/phar-ga@latest
-#        if: github.ref == 'refs/heads/master'
-#        env:
-#          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-#          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-#        with:
-#          args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
-#            --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
+
+      - name: list keys
+        uses: phpDocumentor/phar-ga@latest
+        env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          args: gpg --list-secret-keys
+
+      - name: sign phar
+        uses: phpDocumentor/phar-ga@latest
+        if: github.ref == 'refs/heads/master'
+        env:
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
+            --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
+
       - name: Upload PHAR file
         uses: actions/upload-artifact@v3.1.2
         with:
