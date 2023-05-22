@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Type;
 
@@ -85,7 +84,7 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
             $method->setReturnType($methodTag->getResponse()->getType());
             $method->setHasReturnByReference($methodTag->getHasReturnByReference());
 
-            $returnTags = $method->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
+            $returnTags = $method->getTags()->fetch('return', new Collection());
             $returnTags->add($methodTag->getResponse());
 
             foreach ($methodTag->getArguments() as $name => $argument) {

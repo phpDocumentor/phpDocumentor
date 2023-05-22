@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
-use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -100,7 +99,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
             $method->setReturnType($methodTag->getResponse()->getType());
             $method->setHasReturnByReference($methodTag->getHasReturnByReference());
 
-            $returnTags = $method->getTags()->fetch('return', new Collection())->filter(ReturnDescriptor::class);
+            $returnTags = $method->getTags()->fetch('return', new Collection());
             $returnTags->add($methodTag->getResponse());
 
             foreach ($methodTag->getArguments() as $name => $argument) {
