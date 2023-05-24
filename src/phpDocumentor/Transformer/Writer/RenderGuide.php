@@ -15,10 +15,11 @@ namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
-use phpDocumentor\Guides\RenderCommand;
+use phpDocumentor\Guides\Handlers\RenderCommand;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Transformation;
@@ -105,7 +106,15 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
         $filesystem = $this->flySystemFactory->create($dsn);
         $destination = $transformation->getTransformer()->destination();
-        $this->commandBus->handle(new RenderCommand($documentationSet, $filesystem, $destination));
+        $this->commandBus->handle(new RenderCommand(
+                $documentationSet->getOutputFormat(),
+                array_map(fn(DocumentDescriptor $dd) => $dd->getDocumentNode(), $documentationSet->getDocuments()->getAll()),
+                $documentationSet->getMetas(),
+                $filesystem,
+                $destination,
+                $documentationSet->getOutputLocation()
+            )
+        );
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }

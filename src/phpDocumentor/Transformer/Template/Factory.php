@@ -164,7 +164,6 @@ class Factory
             [
                 'templates' => $this->getTemplatesDirectory(),
                 'template' => $this->resolve($nameOrPath),
-                'guides' => Templates::create(),
                 'destination' => $filesystem,
             ]
         );

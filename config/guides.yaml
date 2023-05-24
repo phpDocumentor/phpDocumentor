@@ -7,219 +7,9 @@ services:
     autowire: true
     autoconfigure: true
     public: false
-  _instanceof:
-    phpDocumentor\Guides\MarkupLanguageParser:
-      tags: ['phpdoc.guides.parser.markupLanguageParser']
-    phpDocumentor\Guides\Formats\OutputFormat:
-      tags: ['phpdoc.guides.format']
-    phpDocumentor\Guides\References\Resolver\Resolver:
-      tags: ['phpdoc.guides.reference.resolver']
-    phpDocumentor\Guides\RestructuredText\Directives\Directive:
-      tags: ['phpdoc.guides.directive']
-    phpDocumentor\Guides\Compiler\NodeTransformer:
-      tags: ['phpdoc.guides.compiler.nodeTransformers']
-    phpDocumentor\Guides\Compiler\CompilerPass:
-      tags: ['phpdoc.guides.compiler.passes']
 
-  Doctrine\Common\EventManager: ~
-
-  phpdoc.guides:
-    namespace: phpDocumentor\Guides\
-    exclude:
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Events/*'
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Nodes/*'
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Meta/Entry'
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src'
-
-  phpdoc.guides.markdown:
-    namespace: phpDocumentor\Guides\
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-markdown/src/*'
-
-  phpdoc.guides.graphs:
-    namespace: phpDocumentor\Guides\
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-graphs/src'
-
-  phpdoc.guides.restructuredtext:
-    namespace: phpDocumentor\Guides\
-    exclude:
-      # Explicitly exclude the parser itself as the output $format dictates how it is used; as such, a parser should
-      # always be explicitly passed through the use of the named services defined
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/MarkupLanguageParser.php'
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/Event/*'
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/OutputFormat.php'
-      - '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/Parser/{Buffer,Directive,DirectiveOption,LinesIterator,TableSeparatorLineConfig}.php'
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/*'
-
-  phpDocumentor\Guides\NodeRenderers\Html\:
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src/NodeRenderers/Html/**'
-    tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
-
-  phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\:
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides-restructured-text/src/RestructuredText/NodeRenderers/Html/**'
-    tags: [ { name: 'phpdoc.guides.noderenderer.html' } ]
-
-  phpdoc.app.guides.handlers:
-    namespace: phpDocumentor\Guides\Handlers\
-    resource: '../src/phpDocumentor/Guides/Handlers/*Handler.php'
-    tags: [{name: tactician.handler, typehints: true}]
-
-  phpdoc.guides.handlers:
-    namespace: phpDocumentor\Guides\Handlers\
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/guides/src/Handlers/*Handler.php'
-    tags: [{name: tactician.handler, typehints: true}]
-
-  phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
-
-  phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
-      - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
-
-  phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
-
-  phpDocumentor\Guides\Parser:
-    arguments:
-      $parserStrategies: !tagged_iterator phpdoc.guides.parser.markupLanguageParser
-
-  phpDocumentor\Guides\Handlers\RenderHandler:
-    tags: [{name: tactician.handler, typehints: true}]
-
-  phpDocumentor\Guides\Formats\OutputFormats:
-    arguments:
-      $outputFormats: !tagged_iterator phpdoc.guides.format
-
-  guides.renderer.outputformat.rst.html:
-    class: phpDocumentor\Guides\RestructuredText\OutputFormat
-    arguments:
-      $fileExtension: 'html'
-    tags: ['phpdoc.guides.format']
-
-  guides.renderer.outputformat.rst.latex:
-    class: phpDocumentor\Guides\RestructuredText\OutputFormat
-    arguments:
-      $fileExtension: 'tex'
-    tags: ['phpdoc.guides.format']
-
-  phpDocumentor\Guides\RestructuredText\MarkupLanguageParser:
-    arguments:
-      $startingRule: '@phpDocumentor\Guides\RestructuredText\Parser\Productions\DocumentRule'
-      $directives: !tagged_iterator phpdoc.guides.directive
-    tags: ['phpdoc.guides.parser.markupLanguageParser']
-
-  phpDocumentor\Guides\RestructuredText\Parser\Productions\DocumentRule:
-    arguments:
-      $directiveHandlers: !tagged_iterator phpdoc.guides.directive
-
-  phpDocumentor\Guides\Twig\TwigRenderer:
-    arguments:
-      $outputFormatRenderers: !tagged_iterator phpdoc.guides.renderer
-
-  guides.renderer.html:
-    class: phpDocumentor\Guides\Renderer\OutputFormatRenderer
-    arguments:
-      $nodeRendererFactory: '@guides.renderer.noderenderers.html'
-      $format: 'html'
-    tags: ['phpdoc.guides.renderer']
-
-  guides.renderer.latex:
-    class: phpDocumentor\Guides\Renderer\OutputFormatRenderer
-    arguments:
-      $nodeRendererFactory: '@guides.renderer.noderenderers.latex'
-      $format: 'tex'
-    tags: ['phpdoc.guides.renderer']
-
-  guides.renderer.noderenderers.html:
-    class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
-    arguments:
-      $nodeRenderers: !tagged_iterator phpdoc.guides.noderenderer.html
-      $defaultNodeRenderer: '@phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer'
-
-  guides.renderer.noderenderers.latex:
-    class: phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory
-    arguments:
-      $nodeRenderers: !tagged_iterator phpdoc.guides.noderenderer.latex
-      $defaultNodeRenderer: '@phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer'
-
-  guides.renderer.noderenderer.latex.anchor:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'anchor.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\AnchorNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.code:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'code.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\CodeNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.image:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'image.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\ImageNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.meta:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'meta.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\MetaNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.paragraph:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'paragraph.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\ParagraphNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.quote:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'quote.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\QuoteNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.separator:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'separator.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\SeparatorNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  guides.renderer.noderenderer.latex.list:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $template: 'list.tex.twig'
-      $nodeClass: '\phpDocumentor\Guides\Nodes\ListNode'
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  phpDocumentor\Guides\NodeRenderers\LaTeX\DocumentNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  phpDocumentor\Guides\NodeRenderers\LaTeX\SpanNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  phpDocumentor\Guides\NodeRenderers\LaTeX\TableNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  phpDocumentor\Guides\NodeRenderers\LaTeX\TocNodeRenderer:
-    tags: ['phpdoc.guides.noderenderer.latex']
-
-  phpDocumentor\Guides\References\ReferenceResolver:
-    arguments:
-      $resolvers: !tagged_iterator phpdoc.guides.reference.resolver
-
-  phpDocumentor\Guides\Compiler\DocumentNodeTraverser:
-    arguments:
-      $transformers: !tagged_iterator phpdoc.guides.compiler.nodeTransformers
-
+  phpDocumentor\Guides\Graphs\Twig\UmlExtension: ~
+  phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer: '@phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer'
   phpDocumentor\Guides\Compiler\Compiler:
     arguments:
       $passes: !tagged_iterator phpdoc.guides.compiler.passes
@@ -227,3 +17,17 @@ services:
   phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer:
     arguments:
       $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
+  phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
+
+#  phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
+#    tags:
+#      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }
+#      - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
+#
+#  phpDocumentor\Pipeline\Stage\Cache\StoreGuidesToCache:
+#    tags:
+#      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: -1000 }
+#

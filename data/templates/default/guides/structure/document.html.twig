@@ -1,12 +1,14 @@
 {% extends "layout.html.twig" %}
 
 {% block head %}
-    {% for headerNode in node.headerNodes %}
+    {%- for headerNode in node.headerNodes -%}
         {{ renderNode(headerNode) }}
-    {% endfor %}
+    {%- endfor -%}
     {{ parent() }}
 {% endblock %}
 
 {% block content %}
-    {{ renderNode(node) }}
+    {% for child in node.children -%}
+        {{ renderNode(child) }}
+    {%~ endfor -%}
 {% endblock %}

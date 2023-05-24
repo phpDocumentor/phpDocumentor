@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Phar;
+use phpDocumentor\DependencyInjection\GuidesCommandsPass;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
-use phpDocumentor\Guides\DependencyInjection\NodeRenderersPass;
+use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
+use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -112,8 +115,19 @@ class Kernel extends BaseKernel
 
     public function build(ContainerBuilder $container): void
     {
+        $container->setParameter('vendor_dir', AutoloaderLocator::findVendorPath());
         $container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
-        $container->addCompilerPass(new NodeRenderersPass());
+        $container->addCompilerPass(new GuidesCommandsPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 20);
+
+
+        $guides = new GuidesExtension();
+        $rst = new ReStructuredTextExtension();
+        $container->registerExtension($guides);
+        $container->registerExtension($rst);
+        $container->addCompilerPass($guides, PassConfig::TYPE_BEFORE_OPTIMIZATION, 20);
+
+        $container->loadFromExtension($guides->getAlias());
+        $container->loadFromExtension($rst->getAlias());
     }
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader): void

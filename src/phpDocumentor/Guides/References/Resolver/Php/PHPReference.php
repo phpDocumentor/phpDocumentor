@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\References\Resolver\Php;
 
+use phpDocumentor\Guides\Nodes\InlineToken\CrossReferenceNode;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\References\Resolver\Resolver;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\Span\CrossReferenceNode;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Transformer\Router\Router;
 
