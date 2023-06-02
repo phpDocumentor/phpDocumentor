@@ -132,16 +132,16 @@
         },
         {
             "name": "doctrine/deprecations",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de"
+                "reference": "8cffffb2218e01f3b370bf763e00e81697725259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de",
-                "reference": "0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/8cffffb2218e01f3b370bf763e00e81697725259",
+                "reference": "8cffffb2218e01f3b370bf763e00e81697725259",
                 "shasum": ""
             },
             "require": {
@@ -169,9 +169,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/v1.0.0"
+                "source": "https://github.com/doctrine/deprecations/tree/v1.1.0"
             },
-            "time": "2022-05-02T15:47:09+00:00"
+            "time": "2023-05-29T18:55:17+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1666,12 +1666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "cefdc830d5a19915fafab9adbd45e9fcf73cbb72"
+                "reference": "e6cc3d2437fdef9e9891c844a6eab7b909f0b740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/cefdc830d5a19915fafab9adbd45e9fcf73cbb72",
-                "reference": "cefdc830d5a19915fafab9adbd45e9fcf73cbb72",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/e6cc3d2437fdef9e9891c844a6eab7b909f0b740",
+                "reference": "e6cc3d2437fdef9e9891c844a6eab7b909f0b740",
                 "shasum": ""
             },
             "require": {
@@ -1707,7 +1707,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
                 "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-05-27T13:47:00+00:00"
+            "time": "2023-05-28T13:06:59+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1793,12 +1793,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "d82778a1525b5d66a5494c5ad0fa2c003f514a96"
+                "reference": "cee5a1997b0c483e76fee5725694960183ce3ad7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/d82778a1525b5d66a5494c5ad0fa2c003f514a96",
-                "reference": "d82778a1525b5d66a5494c5ad0fa2c003f514a96",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/cee5a1997b0c483e76fee5725694960183ce3ad7",
+                "reference": "cee5a1997b0c483e76fee5725694960183ce3ad7",
                 "shasum": ""
             },
             "require": {
@@ -1823,7 +1823,7 @@
             "support": {
                 "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-05-27T13:13:33+00:00"
+            "time": "2023-05-31T12:18:34+00:00"
         },
         {
             "name": "phpdocumentor/json-path",

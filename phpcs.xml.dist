@@ -62,7 +62,7 @@
 
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
         <exclude-pattern>*/tests/unit/phpDocumentor/Console/ApplicationTest\.php$</exclude-pattern>
-        <exclude-pattern>*/tests/unit/phpDocumentor/Compiler/Pass/TableOfContentsBuilderTest\.php$</exclude-pattern>
+        <exclude-pattern>*/tests/unit/phpDocumentor/Compiler/ApiDocumentation/Pass/TableOfContentsBuilderTest\.php$</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.MismatchingCaseSensitivity">

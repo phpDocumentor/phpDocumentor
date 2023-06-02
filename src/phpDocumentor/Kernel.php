@@ -119,12 +119,12 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
         $container->addCompilerPass(new GuidesCommandsPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 20);
 
-
         $guides = new GuidesExtension();
         $rst = new ReStructuredTextExtension();
         $container->registerExtension($guides);
         $container->registerExtension($rst);
         $container->addCompilerPass($guides, PassConfig::TYPE_BEFORE_OPTIMIZATION, 20);
+        $container->addCompilerPass($rst);
 
         $container->loadFromExtension($guides->getAlias());
         $container->loadFromExtension($rst->getAlias());

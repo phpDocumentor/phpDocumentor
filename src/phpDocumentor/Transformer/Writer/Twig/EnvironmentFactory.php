@@ -35,6 +35,7 @@ class EnvironmentFactory
     private RelativePathToRootConverter $relativePathToRootConverter;
     private PathBuilder $pathBuilder;
 
+    /** @param string[] $guidesTemplateBasePath */
     public function __construct(
         LinkRenderer $renderer,
         ConverterInterface $markDownConverter,

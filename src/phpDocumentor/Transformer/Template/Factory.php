@@ -20,7 +20,6 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use phpDocumentor\Dsn;
-use phpDocumentor\Guides\Twig\Templates;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;

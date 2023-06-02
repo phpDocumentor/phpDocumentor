@@ -167,3 +167,17 @@ services:
     phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
+    ###################################################################################
+    ## Guides  ########################################################################
+    ###################################################################################
+
+
+    phpDocumentor\Guides\RestructuredText\TextRoles\PHPReference:
+      tags:
+        - { name: 'phpdoc.guides.parser.rst.text_role', 'domain': 'php'}
+
+
+    phpDocumentor\Guides\Compiler\NodeTransformer\PHPReferenceNodeTransformer:
+      tags:
+        - { name: 'phpdoc.guides.compiler.nodeTransformers'}

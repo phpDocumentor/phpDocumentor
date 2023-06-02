@@ -27,6 +27,7 @@ use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
+use function array_map;
 use function sprintf;
 
 /**
@@ -107,14 +108,16 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         $filesystem = $this->flySystemFactory->create($dsn);
         $destination = $transformation->getTransformer()->destination();
         $this->commandBus->handle(new RenderCommand(
-                $documentationSet->getOutputFormat(),
-                array_map(fn(DocumentDescriptor $dd) => $dd->getDocumentNode(), $documentationSet->getDocuments()->getAll()),
-                $documentationSet->getMetas(),
-                $filesystem,
-                $destination,
-                $documentationSet->getOutputLocation()
-            )
-        );
+            $documentationSet->getOutputFormat(),
+            array_map(
+                static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
+                $documentationSet->getDocuments()->getAll()
+            ),
+            $documentationSet->getMetas(),
+            $filesystem,
+            $destination,
+            $documentationSet->getOutputLocation()
+        ));
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }

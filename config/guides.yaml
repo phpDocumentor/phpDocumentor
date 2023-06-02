@@ -10,9 +10,6 @@ services:
 
   phpDocumentor\Guides\Graphs\Twig\UmlExtension: ~
   phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer: '@phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer'
-  phpDocumentor\Guides\Compiler\Compiler:
-    arguments:
-      $passes: !tagged_iterator phpdoc.guides.compiler.passes
 
   phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer:
     arguments:

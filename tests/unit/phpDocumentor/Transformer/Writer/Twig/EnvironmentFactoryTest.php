@@ -17,9 +17,8 @@ use League\CommonMark\ConverterInterface;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
-use phpDocumentor\Guides\Twig\EnvironmentBuilder;
-use phpDocumentor\Guides\Twig\TwigRenderer;
 use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
@@ -29,6 +28,7 @@ use Psr\Log\Test\TestLogger;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory
@@ -57,12 +57,13 @@ final class EnvironmentFactoryTest extends TestCase
             $markDownConverter->reveal(),
             new AssetsExtension(
                 new TestLogger(),
-                new TwigRenderer([], $this->prophesize(EnvironmentBuilder::class)->reveal()),
+                $this->prophesize(NodeRenderer::class)->reveal(),
                 new UrlGenerator()
             ),
             new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal()),
             $relativePathToRootConverter,
-            new PathBuilder($this->router->reveal(), $relativePathToRootConverter)
+            new PathBuilder($this->router->reveal(), $relativePathToRootConverter),
+            ['./data/templates']
         );
     }
 
@@ -111,8 +112,9 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertEquals(
             [
                 new FlySystemLoader($mountManager->getFilesystem('templates'), '', 'base'),
+                new FlySystemLoader($mountManager->getFilesystem('template'), 'guides', 'base'),
                 new FlySystemLoader($mountManager->getFilesystem('template')),
-                new FlySystemLoader($mountManager->getFilesystem('guides'), '', 'guides'),
+                new FilesystemLoader('./data/templates'),
             ],
             $loader->getLoaders()
         );

@@ -11,8 +11,7 @@ final class GuidesCommandsPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        dump('hier');
-        foreach ($container->findTaggedServiceIds('phpdoc.guides.command') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('phpdoc.guides.command') as $id => $_tags) {
             $container->getDefinition($id)->addTag('tactician.handler', ['typehints' => true]);
         }
     }

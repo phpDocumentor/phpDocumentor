@@ -125,6 +125,10 @@ services:
   ## Autoloading definitions for compiler version stages    #########################
   ###################################################################################
 
+  phpDocumentor\Compiler\Version\Pass\SetVersionPass:
+    tags:
+      - { name: 'phpdoc.pipeline.compile', priority: 10000 }
+
   phpdoc.pipeline.compile.stage.api_documentation:
     class: phpDocumentor\Pipeline\Stage\Compiler\DocumentationSetCompiler
     arguments:
