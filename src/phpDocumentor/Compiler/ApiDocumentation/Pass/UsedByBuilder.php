@@ -11,26 +11,26 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 
-final class UsedByBuilder implements CompilerPassInterface
+final class UsedByBuilder extends ApiDocumentationPass
 {
     public function getDescription(): string
     {
         return 'Creates a link for uses tags on the counter side';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        foreach ($documentationSet->getIndexes()->get('elements') as $element) {
+        foreach ($subject->getIndexes()->get('elements') as $element) {
             $uses = $element->getTags()->fetch('uses', Collection::fromClassString(TagDescriptor::class));
             foreach ($uses->filter(UsesDescriptor::class) as $usesTag) {
                 $counterSide = $usesTag->getReference();
@@ -47,6 +47,6 @@ final class UsedByBuilder implements CompilerPassInterface
             }
         }
 
-        return $documentationSet;
+        return $subject;
     }
 }

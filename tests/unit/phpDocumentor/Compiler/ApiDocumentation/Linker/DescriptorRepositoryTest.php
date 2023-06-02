@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Linker;
+namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Compiler\Linker\DescriptorRepository
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\DescriptorRepository
  * @covers ::<private>
  */
 final class DescriptorRepositoryTest extends TestCase

@@ -11,12 +11,11 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
@@ -32,7 +31,7 @@ use function is_array;
  * Please note that due to a conflict between namespace FQSEN's and that of classes, interfaces, traits and functions
  * will the namespace FQSEN be prefixed with a tilde (~).
  */
-class ElementsIndexBuilder implements CompilerPassInterface
+class ElementsIndexBuilder extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 15000;
 
@@ -41,23 +40,19 @@ class ElementsIndexBuilder implements CompilerPassInterface
         return 'Build "elements" index';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         $elementCollection = new Collection();
-        $documentationSet->getIndexes()->set('elements', $elementCollection);
+        $subject->getIndexes()->set('elements', $elementCollection);
 
-        if ($documentationSet instanceof ApiSetDescriptor === false) {
-            return $documentationSet;
-        }
+        $constantsIndex  = $subject->getIndexes()->fetch('constants', new Collection());
+        $functionsIndex  = $subject->getIndexes()->fetch('functions', new Collection());
+        $classesIndex    = $subject->getIndexes()->fetch('classes', new Collection());
+        $interfacesIndex = $subject->getIndexes()->fetch('interfaces', new Collection());
+        $traitsIndex     = $subject->getIndexes()->fetch('traits', new Collection());
+        $enumsIndex     = $subject->getIndexes()->fetch('enums', new Collection());
 
-        $constantsIndex  = $documentationSet->getIndexes()->fetch('constants', new Collection());
-        $functionsIndex  = $documentationSet->getIndexes()->fetch('functions', new Collection());
-        $classesIndex    = $documentationSet->getIndexes()->fetch('classes', new Collection());
-        $interfacesIndex = $documentationSet->getIndexes()->fetch('interfaces', new Collection());
-        $traitsIndex     = $documentationSet->getIndexes()->fetch('traits', new Collection());
-        $enumsIndex     = $documentationSet->getIndexes()->fetch('enums', new Collection());
-
-        foreach ($documentationSet->getFiles() as $file) {
+        foreach ($subject->getFiles() as $file) {
             $this->addElementsToIndexes($file->getConstants()->getAll(), [$constantsIndex, $elementCollection]);
             $this->addElementsToIndexes($file->getFunctions()->getAll(), [$functionsIndex, $elementCollection]);
 
@@ -82,7 +77,7 @@ class ElementsIndexBuilder implements CompilerPassInterface
             }
         }
 
-        return $documentationSet;
+        return $subject;
     }
 
     /**

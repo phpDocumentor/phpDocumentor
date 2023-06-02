@@ -41,9 +41,7 @@ final class Compile
         $projectDescriptor = $payload->getBuilder()->getProjectDescriptor();
 
         foreach ($projectDescriptor->getVersions() as $version) {
-            foreach ($version->getDocumentationSets() as $documentationSet) {
-                $this->compilerPipeline->process($documentationSet);
-            }
+            $this->compilerPipeline->process($version);
         }
 
         return $payload;

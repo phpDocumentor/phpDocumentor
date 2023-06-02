@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -29,7 +29,7 @@ use function array_keys;
 use function sort;
 
 /**
- * @coversDefaultClass \phpDocumentor\Compiler\Pass\NamespaceTreeBuilder
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder
  * @covers ::<private>
  * @covers ::<protected>
  */

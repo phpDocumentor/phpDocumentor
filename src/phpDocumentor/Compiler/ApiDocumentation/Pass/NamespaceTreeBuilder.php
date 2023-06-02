@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use InvalidArgumentException;
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
@@ -38,7 +38,7 @@ use function ucfirst;
  * If the namespace tree were to be persisted then both locations needed to be
  * invalidated if a file were to change.
  */
-class NamespaceTreeBuilder implements CompilerPassInterface
+class NamespaceTreeBuilder extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 9000;
 
@@ -47,38 +47,34 @@ class NamespaceTreeBuilder implements CompilerPassInterface
         return 'Build "namespaces" index and add namespaces to "elements"';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        if ($documentationSet instanceof ApiSetDescriptor === false) {
-            return $documentationSet;
-        }
-
-        $documentationSet->getIndexes()
+        $subject->getIndexes()
             ->fetch('elements', new Collection())
-            ->set('~\\', $documentationSet->getNamespace());
-        $documentationSet->getIndexes()
+            ->set('~\\', $subject->getNamespace());
+        $subject->getIndexes()
             ->fetch('namespaces', new Collection())
-            ->set('\\', $documentationSet->getNamespace());
+            ->set('\\', $subject->getNamespace());
 
-        foreach ($documentationSet->getFiles() as $file) {
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getConstants()->getAll(), 'constants');
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getFunctions()->getAll(), 'functions');
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getClasses()->getAll(), 'classes');
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getInterfaces()->getAll(), 'interfaces');
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getTraits()->getAll(), 'traits');
-            $this->addElementsOfTypeToNamespace($documentationSet, $file->getEnums()->getAll(), 'enums');
+        foreach ($subject->getFiles() as $file) {
+            $this->addElementsOfTypeToNamespace($subject, $file->getConstants()->getAll(), 'constants');
+            $this->addElementsOfTypeToNamespace($subject, $file->getFunctions()->getAll(), 'functions');
+            $this->addElementsOfTypeToNamespace($subject, $file->getClasses()->getAll(), 'classes');
+            $this->addElementsOfTypeToNamespace($subject, $file->getInterfaces()->getAll(), 'interfaces');
+            $this->addElementsOfTypeToNamespace($subject, $file->getTraits()->getAll(), 'traits');
+            $this->addElementsOfTypeToNamespace($subject, $file->getEnums()->getAll(), 'enums');
         }
 
         /** @var NamespaceInterface $namespace */
-        foreach ($documentationSet->getIndexes()->get('namespaces')->getAll() as $namespace) {
+        foreach ($subject->getIndexes()->get('namespaces')->getAll() as $namespace) {
             if ($namespace->getNamespace() === '') {
                 continue;
             }
 
-            $this->addToParentNamespace($documentationSet, $namespace);
+            $this->addToParentNamespace($subject, $namespace);
         }
 
-        return $documentationSet;
+        return $subject;
     }
 
     /**

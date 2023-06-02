@@ -11,10 +11,13 @@ declare(strict_types=1);
  * @link      https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
+use phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -35,11 +38,11 @@ final class TableOfContentsBuilderTest extends TestCase
         $apiDocumentationSet->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
-        $router->generate(Argument::any())->will(function ($args) {
+        $router->generate(Argument::any())->will(static function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->__invoke($apiDocumentationSet);
+        $pass->__invoke(new VersionDescriptor('1', new Collection([$apiDocumentationSet])));
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */
@@ -60,11 +63,11 @@ final class TableOfContentsBuilderTest extends TestCase
         $apiDocumentationSet->getPackage()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
-        $router->generate(Argument::any())->will(function ($args) {
+        $router->generate(Argument::any())->will(static function ($args) {
             return (string) $args[0]->getFullyQualifiedStructuralElementName();
         });
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
-        $pass->__invoke($apiDocumentationSet);
+        $pass->__invoke(new VersionDescriptor('1', new Collection([$apiDocumentationSet])));
 
         self::assertCount(1, $apiDocumentationSet->getTableOfContents());
         /** @var TocDescriptor $namespacesToc */

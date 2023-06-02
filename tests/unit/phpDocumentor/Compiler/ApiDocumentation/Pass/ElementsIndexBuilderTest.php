@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -32,7 +32,7 @@ use function array_values;
 /**
  * Tests the functionality for the ElementsIndexBuilder
  *
- * @coversDefaultClass \phpDocumentor\Compiler\Pass\ElementsIndexBuilder
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\ElementsIndexBuilder
  */
 class ElementsIndexBuilderTest extends TestCase
 {

@@ -11,16 +11,17 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\Version\Pass;
 
+use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Guides\Meta\DocumentReferenceEntry;
 use phpDocumentor\Guides\Meta\SectionEntry;
 use phpDocumentor\Transformer\Router\Router;
@@ -42,49 +43,55 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         return 'Builds table of contents for api documentation sets';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    public function __invoke(CompilableSubject $subject): CompilableSubject
     {
-        if ($documentationSet instanceof ApiSetDescriptor) {
-            if ($documentationSet->getNamespace()->getChildren()->count() > 0) {
-                $namespacesToc = new TocDescriptor('Namespaces');
-                foreach ($documentationSet->getNamespace()->getChildren() as $child) {
-                    $this->createNamespaceEntries($child, $namespacesToc);
+        if ($subject instanceof VersionDescriptor === false) {
+            return $subject;
+        }
+
+        foreach ($subject->getDocumentationSets() as $documentationSet) {
+            if ($documentationSet instanceof ApiSetDescriptor) {
+                if ($documentationSet->getNamespace()->getChildren()->count() > 0) {
+                    $namespacesToc = new TocDescriptor('Namespaces');
+                    foreach ($documentationSet->getNamespace()->getChildren() as $child) {
+                        $this->createNamespaceEntries($child, $namespacesToc);
+                    }
+
+                    $documentationSet->addTableOfContents($namespacesToc);
                 }
 
-                $documentationSet->addTableOfContents($namespacesToc);
-            }
+                if ($documentationSet->getPackage()->getChildren()->count() > 0) {
+                    $packagesToc = new TocDescriptor('Packages');
+                    foreach ($documentationSet->getPackage()->getChildren() as $child) {
+                        $this->createNamespaceEntries($child, $packagesToc);
+                    }
 
-            if ($documentationSet->getPackage()->getChildren()->count() > 0) {
-                $packagesToc = new TocDescriptor('Packages');
-                foreach ($documentationSet->getPackage()->getChildren() as $child) {
-                    $this->createNamespaceEntries($child, $packagesToc);
+                    $documentationSet->addTableOfContents($packagesToc);
                 }
-
-                $documentationSet->addTableOfContents($packagesToc);
             }
+
+            if (!($documentationSet instanceof GuideSetDescriptor)) {
+                continue;
+            }
+
+            $documents = $documentationSet->getDocuments();
+            $index = $documents->fetch('index');
+            if ($index === null) {
+                continue;
+            }
+
+            $guideToc = new TocDescriptor($index->getTitle());
+            $this->createGuideEntries(
+                $index,
+                $documentationSet->getMetas()->findDocument($index->getFile()),
+                $documentationSet,
+                $guideToc
+            );
+
+            $documentationSet->addTableOfContents($guideToc);
         }
 
-        if (!($documentationSet instanceof GuideSetDescriptor)) {
-            return $documentationSet;
-        }
-
-        $documents = $documentationSet->getDocuments();
-        $index     = $documents->fetch('index');
-        if ($index === null) {
-            return $documentationSet;
-        }
-
-        $guideToc = new TocDescriptor($index->getTitle());
-        $this->createGuideEntries(
-            $index,
-            $documentationSet->getMetas()->findDocument($index->getFile()),
-            $documentationSet,
-            $guideToc
-        );
-
-        $documentationSet->addTableOfContents($guideToc);
-
-        return $documentationSet;
+        return $subject;
     }
 
     private function createNamespaceEntries(
@@ -95,12 +102,10 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         $entry = new Entry(
             ltrim($this->router->generate($namespace), '/'),
             (string) $namespace->getFullyQualifiedStructuralElementName(),
-            $parent !== null ? $parent->getUrl() : null
+            $parent?->getUrl()
         );
 
-        if ($parent !== null) {
-            $parent->addChild($entry);
-        }
+        $parent?->addChild($entry);
 
         $namespacesToc->addEntry($entry);
 
@@ -131,12 +136,10 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                             $refMetaData->getTitle()->getId()
                         ),
                         $refMetaData->getTitle()->toString(),
-                        $parent !== null ? $parent->getUrl() : null
+                        $parent?->getUrl()
                     );
 
-                    if ($parent !== null) {
-                        $parent->addChild($entry);
-                    }
+                    $parent?->addChild($entry);
 
                     $guideToc->addEntry($entry);
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Linker;
+namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;

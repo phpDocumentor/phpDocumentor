@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -31,7 +31,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * @coversDefaultClass \phpDocumentor\Compiler\Pass\PackageTreeBuilder
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\PackageTreeBuilder
  * @covers ::<private>
  * @covers ::<protected>
  */

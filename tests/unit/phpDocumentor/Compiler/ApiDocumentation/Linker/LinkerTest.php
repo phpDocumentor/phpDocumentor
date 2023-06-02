@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Linker;
+namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -28,7 +28,7 @@ use function get_class;
 /**
  * Tests the functionality for the Linker class.
  *
- * @coversDefaultClass \phpDocumentor\Compiler\Linker\Linker
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\Linker
  * @covers ::__construct
  * @covers ::<private>
  */

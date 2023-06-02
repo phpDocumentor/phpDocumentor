@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use Psr\Log\LoggerInterface;
 
@@ -24,7 +24,7 @@ use Psr\Log\LoggerInterface;
  * For debugging purposes it can be convenient to send statistical information about the
  * ProjectDescriptor to the log of phpDocumentor.
  */
-class Debug implements CompilerPassInterface
+class Debug extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 1000;
 
@@ -48,11 +48,11 @@ class Debug implements CompilerPassInterface
         return 'Analyze results and write report to log';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        $this->analyzer->analyze($documentationSet);
+        $this->analyzer->analyze($subject);
         $this->log->debug((string) $this->analyzer);
 
-        return $documentationSet;
+        return $subject;
     }
 }

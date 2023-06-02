@@ -11,12 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use UnexpectedValueException;
@@ -24,7 +24,7 @@ use UnexpectedValueException;
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
  */
-final class MarkerFromTagsExtractor implements CompilerPassInterface
+final class MarkerFromTagsExtractor extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 9000;
 
@@ -33,10 +33,10 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
         return 'Collect all markers embedded in tags';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         /** @var DescriptorAbstract $element */
-        foreach ($documentationSet->getIndexes()->fetch('elements', new Collection()) as $element) {
+        foreach ($subject->getIndexes()->fetch('elements', new Collection()) as $element) {
             /** @var TagDescriptor[] $todos */
             $todos = $element->getTags()->fetch('todo');
 
@@ -50,7 +50,7 @@ final class MarkerFromTagsExtractor implements CompilerPassInterface
             }
         }
 
-        return $documentationSet;
+        return $subject;
     }
 
     /**
