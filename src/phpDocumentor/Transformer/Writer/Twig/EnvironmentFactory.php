@@ -35,13 +35,15 @@ class EnvironmentFactory
     private RelativePathToRootConverter $relativePathToRootConverter;
     private PathBuilder $pathBuilder;
 
+    /** @param string[] $guidesTemplateBasePath */
     public function __construct(
         LinkRenderer $renderer,
         ConverterInterface $markDownConverter,
         AssetsExtension $assetsExtension,
         UmlExtension $umlExtension,
         RelativePathToRootConverter $relativePathToRootConverter,
-        PathBuilder $pathBuilder
+        PathBuilder $pathBuilder,
+        private readonly array $guidesTemplateBasePath
     ) {
         $this->renderer = $renderer;
         $this->markDownConverter = $markDownConverter;
@@ -69,8 +71,9 @@ class EnvironmentFactory
         }
 
         $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'), '', 'base');
+        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'), 'guides', 'base');
         $loaders[] = new FlySystemLoader($mountManager->getFilesystem('templates'));
-        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('guides'), '', 'guides');
+        $loaders[] = new FilesystemLoader($this->guidesTemplateBasePath);
 
         $env = new Environment(new ChainLoader($loaders));
 

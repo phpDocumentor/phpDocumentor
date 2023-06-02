@@ -25,9 +25,6 @@ services:
       phpDocumentor\Transformer\Writer\WriterAbstract:
         tags: ['phpdoc.transformer.writer']
 
-      phpDocumentor\Guides\References\Resolver\Resolver:
-        tags: ['phpdoc.guides.reference.resolver']
-
     ###################################################################################
     ## Autoloading definitions for whole namespaces ###################################
     ###################################################################################
@@ -160,7 +157,9 @@ services:
     ## Writers ########################################################################
     ###################################################################################
 
-    phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory: ~
+    phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory:
+      arguments:
+        $guidesTemplateBasePath: '%phpdoc.guides.base_template_paths%'
 
     phpDocumentor\Transformer\Writer\Collection:
         arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
@@ -168,3 +167,17 @@ services:
     phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
       arguments:
         $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
+
+    ###################################################################################
+    ## Guides  ########################################################################
+    ###################################################################################
+
+
+    phpDocumentor\Guides\RestructuredText\TextRoles\PHPReference:
+      tags:
+        - { name: 'phpdoc.guides.parser.rst.text_role', 'domain': 'php'}
+
+
+    phpDocumentor\Guides\Compiler\NodeTransformer\PHPReferenceNodeTransformer:
+      tags:
+        - { name: 'phpdoc.guides.compiler.nodeTransformers'}
