@@ -66,11 +66,19 @@ class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
+        if (isset($_SERVER['APP_CACHE_DIR'])) {
+            return $_SERVER['APP_CACHE_DIR'] . '/' . $this->environment;
+        }
+
         return $this->getProjectDir() . '/var/cache/' . $this->environment;
     }
 
     public function getLogDir(): string
     {
+        if (isset($_SERVER['APP_LOG_DIR'])) {
+            return $_SERVER['APP_LOG_DIR'];
+        }
+
         if (self::isPhar()) {
             return '/tmp/php-doc/log';
         }
