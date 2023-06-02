@@ -10,7 +10,8 @@ augments that with the information provided by the user when they started phpDoc
 In doing this it populates an entity of class :php:class:`phpDocumentor\Configuration\Configuration` and adjusts this
 when newer configuration options become available.
 
-.. note:: this is a mutable object that may change during the life cycle of the application by design.
+.. note::
+    this is a mutable object that may change during the life cycle of the application by design.
 
 The configuration object is not meant to replace parameters in the dependency injection container or internal variables,
 for this phpDocumentor has an Dependency Injection Container. The configuration object is meant for all options and
