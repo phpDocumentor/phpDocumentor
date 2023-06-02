@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
@@ -42,7 +42,7 @@ use function ucfirst;
  * If the package tree were to be persisted then both locations needed to be
  * invalidated if a file were to change.
  */
-final class PackageTreeBuilder implements CompilerPassInterface
+final class PackageTreeBuilder extends ApiDocumentationPass
 {
     /** @var Parser */
     private $parser;
@@ -59,20 +59,16 @@ final class PackageTreeBuilder implements CompilerPassInterface
         return 'Build "packages" index';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        if ($documentationSet instanceof ApiSetDescriptor === false) {
-            return $documentationSet;
-        }
-
-        $package = $documentationSet->getPackage();
+        $package = $subject->getPackage();
         Assert::isInstanceOf($package, PackageInterface::class);
 
         $packages = Collection::fromInterfaceString(PackageInterface::class);
         $packages['\\'] = $package;
 
         /** @var FileInterface $file */
-        foreach ($documentationSet->getFiles() as $file) {
+        foreach ($subject->getFiles() as $file) {
             $this->addElementsOfTypeToPackage($packages, [$file], 'files');
             $this->addElementsOfTypeToPackage($packages, $file->getConstants()->getAll(), 'constants');
             $this->addElementsOfTypeToPackage($packages, $file->getFunctions()->getAll(), 'functions');
@@ -82,12 +78,12 @@ final class PackageTreeBuilder implements CompilerPassInterface
             $this->addElementsOfTypeToPackage($packages, $file->getEnums()->getAll(), 'enums');
         }
 
-        $documentationSet->getIndexes()->set(
+        $subject->getIndexes()->set(
             'packages',
             Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
         );
 
-        return $documentationSet;
+        return $subject;
     }
 
     /**

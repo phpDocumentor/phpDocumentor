@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;

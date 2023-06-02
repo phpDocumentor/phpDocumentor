@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\Guides\Pass;
 
+use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Compiler\Compiler;
@@ -29,24 +29,24 @@ final class GuidesCompiler implements CompilerPassInterface
         return 'Compiling guides';
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    public function __invoke(CompilableSubject $subject): CompilableSubject
     {
-        if ($documentationSet instanceof GuideSetDescriptor === false) {
-            return $documentationSet;
+        if ($subject instanceof GuideSetDescriptor === false) {
+            return $subject;
         }
 
         $documents = $this->compiler->run(
             array_map(
                 static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
-                $documentationSet->getDocuments()->getAll()
+                $subject->getDocuments()->getAll()
             )
         );
         foreach ($documents as $document) {
-            $documentationSet->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
+            $subject->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
         }
 
-        $documentationSet->setMetas(new Metas($this->metas->getAll()));
+        $subject->setMetas(new Metas($this->metas->getAll()));
 
-        return $documentationSet;
+        return $subject;
     }
 }

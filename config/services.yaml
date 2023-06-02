@@ -72,7 +72,7 @@ services:
     phpDocumentor\Console\Command\Project\RunCommand:
         arguments:
           - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
-          - '@phpdoc.complete.pipeline'
+          - '@phpdoc.pipeline.complete'
 
     phpDocumentor\Console\Command\Project\ListSettingsCommand: ~
 

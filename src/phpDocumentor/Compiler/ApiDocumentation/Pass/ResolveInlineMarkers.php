@@ -11,11 +11,10 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 
 use function implode;
@@ -28,7 +27,7 @@ use function trim;
 use const PREG_OFFSET_CAPTURE;
 use const PREG_SET_ORDER;
 
-final class ResolveInlineMarkers implements CompilerPassInterface
+final class ResolveInlineMarkers extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 9000;
 
@@ -40,16 +39,12 @@ final class ResolveInlineMarkers implements CompilerPassInterface
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        if ($documentationSet instanceof ApiSetDescriptor === false) {
-            return $documentationSet;
-        }
-
-        $markerTerms = $documentationSet->getSettings()['markers'];
+        $markerTerms = $subject->getSettings()['markers'];
 
         /** @var FileDescriptor $file */
-        foreach ($documentationSet->getFiles() as $file) {
+        foreach ($subject->getFiles() as $file) {
             $matches = [];
             $source  = $file->getSource() ?? '';
 
@@ -74,6 +69,6 @@ final class ResolveInlineMarkers implements CompilerPassInterface
             }
         }
 
-        return $documentationSet;
+        return $subject;
     }
 }

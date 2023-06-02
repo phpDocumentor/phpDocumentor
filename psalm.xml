@@ -88,7 +88,7 @@
                 <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
                 <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
                 <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
-                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+                <file name="src/phpDocumentor/Compiler/ApiDocumentation/Linker/Linker.php"/>
             </errorLevel>
         </InvalidReturnStatement>
 
@@ -98,7 +98,7 @@
                 <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
                 <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
                 <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
-                <file name="src/phpDocumentor/Compiler/Linker/Linker.php"/>
+                <file name="src/phpDocumentor/Compiler/ApiDocumentation/Linker/Linker.php"/>
             </errorLevel>
         </InvalidReturnType>
 

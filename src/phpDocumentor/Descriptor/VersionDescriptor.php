@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-final class VersionDescriptor
+use phpDocumentor\Compiler\CompilableSubject;
+
+final class VersionDescriptor implements CompilableSubject
 {
     /** @var string */
     private $number;

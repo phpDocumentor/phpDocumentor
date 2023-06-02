@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 
-abstract class DocumentationSetDescriptor implements Descriptor
+abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubject
 {
     use HasName;
     use HasDescription;

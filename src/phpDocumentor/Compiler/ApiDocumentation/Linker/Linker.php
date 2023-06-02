@@ -11,9 +11,10 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Linker;
+namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 
-use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
@@ -52,7 +53,7 @@ use function ucfirst;
  * As can be seen in the above example is it possible to analyse a tree structure and substitute FQSENs where
  * encountered.
  */
-class Linker implements CompilerPassInterface
+class Linker extends ApiDocumentationPass
 {
     public const COMPILER_PRIORITY = 10000;
 
@@ -81,12 +82,12 @@ class Linker implements CompilerPassInterface
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function __invoke(DocumentationSetDescriptor $documentationSet): DocumentationSetDescriptor
+    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
-        $this->descriptorRepository->setObjectAliasesList($documentationSet->getIndexes()->get('elements')->getAll());
-        $this->substitute($documentationSet);
+        $this->descriptorRepository->setObjectAliasesList($subject->getIndexes()->get('elements')->getAll());
+        $this->substitute($subject);
 
-        return $documentationSet;
+        return $subject;
     }
 
     /**

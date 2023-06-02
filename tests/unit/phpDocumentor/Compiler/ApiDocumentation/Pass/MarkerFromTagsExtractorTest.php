@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\MarkerFromTagsExtractor
  * @covers ::<private>
  */
 final class MarkerFromTagsExtractorTest extends TestCase

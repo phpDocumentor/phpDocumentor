@@ -104,7 +104,7 @@ services:
 
   phpDocumentor\Pipeline\Stage\ParseApiDocumentationSets:
     arguments:
-      $parseApiDocumentationSetPipeline: '@phpdoc.parse_api_documentation_set.pipeline'
+      $parseApiDocumentationSetPipeline: '@phpdoc.pipeline.parse_api_documentation_set'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 3000 }
 
@@ -120,54 +120,79 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse_api_documentation_set', priority: 0 }
 
+
+  ###################################################################################
+  ## Autoloading definitions for compiler version stages    #########################
+  ###################################################################################
+
+  phpdoc.pipeline.compile.stage.api_documentation:
+    class: phpDocumentor\Pipeline\Stage\Compiler\DocumentationSetCompiler
+    arguments:
+      $compilerPipeline: '@phpdoc.pipeline.compile.api_documentation'
+      $type: '\phpDocumentor\Descriptor\ApiSetDescriptor'
+    tags:
+      - { name: 'phpdoc.pipeline.compile', priority: 3000 }
+
+  phpdoc.pipeline.compile.stage.guides:
+    class: phpDocumentor\Pipeline\Stage\Compiler\DocumentationSetCompiler
+    arguments:
+      $compilerPipeline: '@phpdoc.pipeline.compile.guides'
+      $type: '\phpDocumentor\Descriptor\GuideSetDescriptor'
+    tags:
+      - { name: 'phpdoc.pipeline.compile', priority: 2000 }
+
+  phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder:
+    tags:
+      - { name: 'phpdoc.pipeline.compile', priority: 1000 }
+
   ###################################################################################
   ## Autoloading definitions for compiler stages    #################################
   ###################################################################################
 
-  phpDocumentor\Compiler\Pass\ElementsIndexBuilder:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\ElementsIndexBuilder:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 15000 }
 
-  phpDocumentor\Compiler\Linker\Linker:
+  phpDocumentor\Compiler\ApiDocumentation\Linker\Linker:
     arguments: ['%linker.substitutions%']
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 10000 }
 
-  phpDocumentor\Compiler\Pass\PackageTreeBuilder:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\PackageTreeBuilder:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9001 }
 
-  phpDocumentor\Compiler\Pass\MarkerFromTagsExtractor:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\MarkerFromTagsExtractor:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
 
-  phpDocumentor\Compiler\Pass\NamespaceTreeBuilder:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
 
-  phpDocumentor\Compiler\Pass\ResolveInlineMarkers:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\ResolveInlineMarkers:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
 
-  phpDocumentor\Compiler\Pass\UsedByBuilder:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\UsedByBuilder:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
 
-  phpDocumentor\Compiler\Pass\GuidesCompiler:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 3000 }
-
-  phpDocumentor\Compiler\Pass\RemoveSourcecode:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 2000 }
 
-  phpDocumentor\Compiler\Pass\TableOfContentsBuilder:
-    tags:
-      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 2000 }
-
-  phpDocumentor\Compiler\Pass\Debug:
+  phpDocumentor\Compiler\ApiDocumentation\Pass\Debug:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 1000 }
+
+  ###################################################################################
+  ## Autoloading definitions for compiler guides stages     #########################
+  ###################################################################################
+
+  phpDocumentor\Compiler\Guides\Pass\GuidesCompiler:
+    tags:
+      - { name: 'phpdoc.pipeline.guides.compile', priority: 3000 }
 
   ###################################################################################
   ## Autoloading definitions for transform stages   #################################
@@ -175,7 +200,7 @@ services:
 
   phpDocumentor\Pipeline\Stage\Compile:
     arguments:
-      $compilerPipeline: '@phpdoc.compile.pipeline'
+      $compilerPipeline: '@phpdoc.pipeline.compile'
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.transform', priority: 5000 }
 

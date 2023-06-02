@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Compiler\Pass;
+namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Faker\Faker;
@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @coversDefaultClass \phpDocumentor\Compiler\Pass\Debug
+ * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\Debug
  * @covers ::__construct
  * @covers ::<private>
  */
