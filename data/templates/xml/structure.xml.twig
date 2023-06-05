@@ -85,7 +85,7 @@
                         {{ include('method.xml.twig', {method: method, inherited_from: method.parent}) }}
                     {% endfor %}
                     {% for method in class.magicMethods %}
-                        {{ include('method.xml.twig', {method: method}) }}
+                        {{ include('method.xml.twig', {method: method, magic: true}) }}
                     {% endfor %}
                 </class>
             {% endfor %}
