@@ -9,19 +9,17 @@ use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Compiler\Compiler;
-use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Compiler\CompilerContext;
 
 use function array_map;
 
 final class GuidesCompiler implements CompilerPassInterface
 {
     private Compiler $compiler;
-    private Metas $metas;
 
-    public function __construct(Compiler $compiler, Metas $metas)
+    public function __construct(Compiler $compiler)
     {
         $this->compiler = $compiler;
-        $this->metas = $metas;
     }
 
     public function getDescription(): string
@@ -39,13 +37,12 @@ final class GuidesCompiler implements CompilerPassInterface
             array_map(
                 static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
                 $subject->getDocuments()->getAll()
-            )
+            ),
+            new CompilerContext($subject->getGuidesProjectNode())
         );
         foreach ($documents as $document) {
             $subject->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
         }
-
-        $subject->setMetas(new Metas($this->metas->getAll()));
 
         return $subject;
     }

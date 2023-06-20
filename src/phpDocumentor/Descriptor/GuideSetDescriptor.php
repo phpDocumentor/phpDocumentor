@@ -14,30 +14,26 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
-use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Nodes\ProjectNode;
 
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
     /** @var string */
     private $inputFormat;
-
     /** @var string */
-    private $outputFormat;
-
     /** @var Collection<DocumentDescriptor> */
     private $documents;
 
-    /** @var int */
-    private $initialHeaderLevel;
-    private Metas $metas;
+    private ProjectNode $projectNode;
 
     public function __construct(
         string $name,
         Source $source,
         string $outputLocation,
         string $inputFormat,
-        string $outputFormat = 'html',
-        int $initialHeaderLevel = 1
+        ProjectNode $projectNode,
+        private readonly string $outputFormat = 'html',
+        private readonly int $initialHeaderLevel = 1,
     ) {
         parent::__construct();
 
@@ -46,8 +42,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         $this->outputLocation = $outputLocation;
         $this->inputFormat = $inputFormat;
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
-        $this->outputFormat = $outputFormat;
-        $this->initialHeaderLevel = $initialHeaderLevel;
+        $this->projectNode = $projectNode;
     }
 
     public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void
@@ -55,14 +50,9 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         $this->documents->set($file, $documentDescriptor);
     }
 
-    public function setMetas(Metas $metas): void
+    public function getGuidesProjectNode(): ProjectNode
     {
-        $this->metas = $metas;
-    }
-
-    public function getMetas(): Metas
-    {
-        return $this->metas;
+        return $this->projectNode;
     }
 
     public function getInputFormat(): string

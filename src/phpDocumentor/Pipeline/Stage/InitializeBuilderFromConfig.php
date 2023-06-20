@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Guides\Nodes\ProjectNode;
 
 use function count;
 use function md5;
@@ -63,7 +64,13 @@ final class InitializeBuilderFromConfig
 
         foreach ($version->getGuides() as $guide) {
             $collection->add(
-                new GuideSetDescriptor(md5($guide['output']), $guide['source'], $guide['output'], $guide['format'])
+                new GuideSetDescriptor(
+                    md5($guide['output']),
+                    $guide['source'],
+                    $guide['output'],
+                    $guide['format'],
+                    projectNode: new ProjectNode(null, $version->getNumber())
+                )
             );
         }
 

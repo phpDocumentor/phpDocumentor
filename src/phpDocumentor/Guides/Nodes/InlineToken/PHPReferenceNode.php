@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Nodes\InlineToken;
 
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Guides\Nodes\Inline\InlineNode;
 use phpDocumentor\Reflection\Fqsen;
 
-final class PHPReferenceNode extends GenericTextRoleToken
+final class PHPReferenceNode extends InlineNode
 {
     private Descriptor|null $descriptor = null;
 
     public function __construct(
-        string $id,
         private readonly string $nodeType,
         private readonly Fqsen $fqsen,
         private readonly string|null $text = null,
     ) {
-        parent::__construct($id, 'phpref', $text ?? (string) $fqsen);
+        parent::__construct('phpref', $text ?? (string) $fqsen);
     }
 
     public function getText(): string

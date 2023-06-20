@@ -116,7 +116,7 @@
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php56": "*"
     },
-    "bin": ["bin/phpdoc.php", "bin/phpdoc"],
+    "bin": ["bin/phpdoc", "bin/phpdoc.php"],
     "conflict": {
         "symfony/symfony": "*"
     },

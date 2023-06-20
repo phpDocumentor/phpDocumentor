@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\RestructuredText\TextRoles;
 
-use phpDocumentor\Guides\Nodes\InlineToken\InlineMarkupToken;
+use phpDocumentor\Guides\Nodes\Inline\InlineNode;
 use phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode;
 use phpDocumentor\Guides\ParserContext;
-use phpDocumentor\Guides\RestructuredText\Span\SpanLexer;
+use phpDocumentor\Guides\RestructuredText\Parser\InlineLexer;
 use phpDocumentor\Reflection\Fqsen;
 use Psr\Log\LoggerInterface;
 
@@ -18,14 +18,14 @@ use function trim;
 
 final class PHPReference implements TextRole
 {
-    private SpanLexer $lexer;
+    private InlineLexer $lexer;
     private LoggerInterface $logger;
 
     public function __construct(
         LoggerInterface $logger,
     ) {
         // Do not inject the $lexer. It contains a state.
-        $this->lexer = new SpanLexer();
+        $this->lexer = new InlineLexer();
         $this->logger = $logger;
     }
 
@@ -49,23 +49,23 @@ final class PHPReference implements TextRole
 
     public function processNode(
         ParserContext $parserContext,
-        string $id,
         string $role,
         string $content,
-    ): InlineMarkupToken {
+        string $rawContent,
+    ): InlineNode {
         $text = null;
         $part = '';
-        $this->lexer->setInput($content);
+        $this->lexer->setInput($rawContent);
         $this->lexer->moveNext();
         $this->lexer->moveNext();
         while ($this->lexer->token !== null) {
             $token = $this->lexer->token;
             switch ($token->type) {
-                case SpanLexer::EMBEDED_URL_START:
+                case InlineLexer::EMBEDED_URL_START:
                     $text = trim($part);
                     $part = '';
                     break;
-                case SpanLexer::EMBEDED_URL_END:
+                case InlineLexer::EMBEDED_URL_END:
                     if ($this->lexer->peek() !== null) {
                         $this->logger->warning(
                             sprintf(
@@ -85,7 +85,6 @@ final class PHPReference implements TextRole
         }
 
         return new PHPReferenceNode(
-            id: $id,
             nodeType: substr($role, strrpos($role, ':') + 1),
             fqsen: new Fqsen('\\' . trim($part, '\\')),
             text: $text,

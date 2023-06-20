@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\Compiler\NodeTransformer;
 
 use phpDocumentor\Compiler\DescriptorRepository;
+use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Compiler\NodeTransformer;
-use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\SpanNode;
 
-/** @implements NodeTransformer<SpanNode> */
+/** @implements NodeTransformer<PHPReferenceNode> */
 final class PHPReferenceNodeTransformer implements NodeTransformer
 {
     private DescriptorRepository $descriptorRepository;
@@ -21,35 +20,30 @@ final class PHPReferenceNodeTransformer implements NodeTransformer
         $this->descriptorRepository = $descriptorRepository;
     }
 
-    public function enterNode(Node $node, DocumentNode $documentNode): Node
+    public function enterNode(Node $node, CompilerContext $compilerContext): Node
     {
         return $node;
     }
 
-    public function leaveNode(Node $node, DocumentNode $documentNode): Node|null
+    public function leaveNode(Node $node, CompilerContext $compilerContext): Node|null
     {
-        if ($node instanceof SpanNode === false) {
+        if ($node instanceof PHPReferenceNode === false) {
             return $node;
         }
 
-        foreach ($node->getTokens() as $token) {
-            if (!($token instanceof PHPReferenceNode)) {
-                continue;
-            }
+        $descriptor = $this->descriptorRepository->findDescriptorByTypeAndFqsen(
+            $node->getNodeType(),
+            $node->getFqsen()
+        );
 
-            $descriptor = $this->descriptorRepository->findDescriptorByTypeAndFqsen(
-                $token->getNodeType(),
-                $token->getFqsen()
-            );
-            $token->setDescriptor($descriptor);
-        }
+        $node->setDescriptor($descriptor);
 
         return $node;
     }
 
     public function supports(Node $node): bool
     {
-        return $node instanceof SpanNode;
+        return $node instanceof PHPReferenceNode;
     }
 
     public function getPriority(): int
