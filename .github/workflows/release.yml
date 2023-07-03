@@ -2,6 +2,11 @@ on:
   release:
     types: [published]
 
+env:
+  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+  key: cache-v1 # can be any string, change to clear the extension cache.
+  defaultPHPVersion: '8.1'
+
 name: Release
 jobs:
   release:
@@ -10,30 +15,15 @@ jobs:
     - uses: actions/checkout@v3
       with:
         set-safe-directory: '/github/workspace'
-    - name: composer
-      uses: docker://composer
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMPOSER_MIRROR_PATH_REPOS: 1
+    - uses: ./.github/workflows/phar
       with:
-        args: install --no-interaction --prefer-dist --optimize-autoloader
+        php-version: ${{ env.defaultPHPVersion }}
+        extensions: ${{ env.extensions }}
+        key: ${{ env.key }}
+        secret-key: ${{ secrets.SECRET_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: warm cache
-      uses: phpDocumentor/phar-ga@latest
-      with:
-        args: php bin/console cache:warmup --env=prod
-    - name: build phar
-      uses: phpDocumentor/phar-ga@latest
-      with:
-        args: box compile
-    - name: sign phar
-      uses: phpDocumentor/phar-ga@latest
-      env:
-        PASSPHRASE: ${{ secrets.PASSPHRASE }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      with:
-        args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
-          --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
     - name: release phar
       uses: softprops/action-gh-release@v1
       with:

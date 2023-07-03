@@ -1,0 +1,100 @@
+name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  php-version:
+    description: "The PHP version to use when running the job"
+    required: true
+  php-extensions:
+    description: "The php extensions to install, allowing composer to pass"
+    required: true
+  key:
+    description: "The key to use for caching"
+    required: true
+  passphrase:
+    description: "The passphrase to use for signing"
+    required: true
+  secret-key:
+    description: "The secret key to use for signing"
+    required: true
+  token:
+    description: "Github token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup cache environment
+      id: cache-env
+      uses: shivammathur/cache-extensions@v1
+      with:
+        php-version: ${{ inputs.php-version }}
+        extensions: ${{ inputs.extensions }}
+        key: ${{ inputs.key }}
+
+    - name: Cache extensions
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.cache-env.outputs.dir }}
+        key: ${{ steps.cache-env.outputs.key }}
+        restore-keys: ${{ steps.cache-env.outputs.key }}
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      with:
+        php-version: ${{ inputs.php-version }}
+        extensions: ${{ inputs.extensions }}
+        ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+        tools: pecl
+
+    - name: Install Composer dependencies & cache dependencies
+      env:
+        COMPOSER_MIRROR_PATH_REPOS: 1
+      uses: "ramsey/composer-install@v2"
+      with:
+        composer-options: --optimize-autoloader
+        # Bust the cache at least once a month - output format: YYYY-MM-DD.
+        custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+
+    - name: remove phpstan/extension-installer
+      env:
+        COMPOSER_MIRROR_PATH_REPOS: 1
+      run: composer remove --dev phpstan/extension-installer
+      shell: bash
+
+    - name: Install Composer dependencies & cache dependencies
+      env:
+        COMPOSER_MIRROR_PATH_REPOS: 1
+      uses: "ramsey/composer-install@v2"
+      with:
+        composer-options: --optimize-autoloader
+        # Bust the cache at least once a month - output format: YYYY-MM-DD.
+        custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+
+    - name: warm cache
+      uses: phpDocumentor/phar-ga@latest
+      with:
+        args: php bin/console cache:warmup --env=prod
+
+    - name: build phar
+      run: ./tools/box compile
+      shell: bash
+
+    - name: list keys
+      uses: phpDocumentor/phar-ga@latest
+      env:
+        PASSPHRASE: ${{ inputs.passphrase }}
+        SECRET_KEY: ${{ inputs.secret-key }}
+      with:
+        args: gpg --list-secret-keys
+
+    - name: sign phar
+      uses: phpDocumentor/phar-ga@latest
+      if: contains(github.ref, 'release') || github.ref == 'refs/heads/master'
+      env:
+        PASSPHRASE: ${{ inputs.passphrase }}
+        SECRET_KEY: ${{ inputs.secret-key }}
+      with:
+        args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
+          --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
