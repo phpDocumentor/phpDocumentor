@@ -83,7 +83,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
             $guideToc = new TocDescriptor($index->getTitle());
             $this->createGuideEntries(
                 $index,
-                $documentationSet->getMetas()->findDocument($index->getFile()),
+                $documentationSet->getGuidesProjectNode()->findDocumentEntry($index->getFile()),
                 $documentationSet,
                 $guideToc
             );
@@ -121,11 +121,11 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         TocDescriptor $guideToc,
         ?Entry $parent = null
     ): void {
-        $metas = $guideSetDescriptor->getMetas();
+        $metas = $guideSetDescriptor->getGuidesProjectNode();
 
         foreach ($metaEntry->getChildren() as $metaChild) {
             if ($metaChild instanceof DocumentReferenceEntry) {
-                $refMetaData = $metas->findDocument(ltrim($metaChild->getFile(), '/'));
+                $refMetaData = $metas->findDocumentEntry(ltrim($metaChild->getFile(), '/'));
                 if ($refMetaData !== null) {
                     $refDocument = $guideSetDescriptor->getDocuments()->get($refMetaData->getFile());
                     $entry = new Entry(
@@ -161,15 +161,13 @@ final class TableOfContentsBuilder implements CompilerPassInterface
             }
 
             $entry = new Entry(
-                'guide/' . ltrim($this->router->generate($documentDescriptor), '/')
+                ltrim($this->router->generate($documentDescriptor), '/')
                 . '#' . $metaChild->getTitle()->getId(),
                 $metaChild->getTitle()->toString(),
-                $parent !== null ? $parent->getUrl() : null
+                $parent?->getUrl()
             );
 
-            if ($parent !== null) {
-                $parent->addChild($entry);
-            }
+            $parent?->addChild($entry);
 
             $guideToc->addEntry($entry);
 

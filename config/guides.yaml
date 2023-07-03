@@ -19,6 +19,15 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
 
+  phpdoc.guides.noderenderer.html.phpreference:
+    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
+    arguments:
+        $renderer: '@phpDocumentor\Guides\TemplateRenderer'
+        $template: 'inline/phpreference.html.twig'
+        $nodeClass: 'phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode'
+    tags:
+      - 'phpdoc.guides.noderenderer.html'
+
 #  phpDocumentor\Pipeline\Stage\Cache\LoadGuidesFromCache:
 #    tags:
 #      - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 2000 }

@@ -113,7 +113,7 @@ class UrlGenerator
 
         // TODO: This is copied from the TableOfContentsBuilder; once we get proper support for Versions,
         // we need to revisit this.
-        $documentEntry = $guideSet->getMetas()->findDocument($guideReference);
+        $documentEntry = $guideSet->getGuidesProjectNode()->findDocumentEntry($guideReference);
         if ($documentEntry === null) {
             return null;
         }

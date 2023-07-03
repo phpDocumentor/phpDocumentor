@@ -113,9 +113,9 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
                 $documentationSet->getDocuments()->getAll()
             ),
-            $documentationSet->getMetas(),
             $filesystem,
             $destination,
+            $documentationSet->getGuidesProjectNode(),
             $documentationSet->getOutputLocation()
         ));
 

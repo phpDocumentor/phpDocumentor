@@ -84,7 +84,12 @@ final class ParseGuides
 
         $this->eventDispatcher->addListener(PostParseDocument::class, $listener);
         $this->commandBus->handle(
-            new ParseDirectoryCommand($origin, $sourcePath, $guideDocumentationSet->getInputFormat())
+            new ParseDirectoryCommand(
+                $origin,
+                $sourcePath,
+                $guideDocumentationSet->getInputFormat(),
+                $guideDocumentationSet->getGuidesProjectNode()
+            )
         );
         $this->eventDispatcher->removeListener(PostParseDocument::class, $listener);
 

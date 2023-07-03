@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Composer\Autoload\ClassLoader;
+use Phar;
 use RuntimeException;
 
 use function file_exists;
@@ -25,6 +26,10 @@ final class AutoloaderLocator
 {
     public static function autoload(): ClassLoader
     {
+        if (Phar::running(false)) {
+            return require 'phar://' . Phar::running(false) . '/vendor/autoload.php';
+        }
+
         return require self::findVendorPath() . '/autoload.php';
     }
 
