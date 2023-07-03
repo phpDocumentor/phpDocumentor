@@ -1,5 +1,5 @@
 {# @var method phpDocumentor\Descriptor\MethodDescriptor #}
-<method final="{{ method.final | export }}" abstract="{{ method.abstract | export }}" static="{{ method.static | export }}" namespace="{{ method.namespace }}" line="{{ method.line }}" visibility="{{ method.visibility }}" returnByReference="{{ method.hasReturnByReference | export }}">
+<method final="{{ method.final | export }}" abstract="{{ method.abstract | export }}" static="{{ method.static | export }}" namespace="{{ method.namespace }}" line="{{ method.line }}" visibility="{{ method.visibility }}" returnByReference="{{ method.hasReturnByReference | export }}"{% if magic %} magic="true"{% endif %}>
     <name>{{ method.name }}</name>
     <full_name>{{ method.fullyQualifiedStructuralElementName }}</full_name>
     <value>{{ method.value }}</value>
