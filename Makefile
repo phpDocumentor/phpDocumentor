@@ -51,6 +51,7 @@ help:
 
 .PHONY: phar
 phar: composer-mirror
+	composer remove --dev phpstan/extension-installer; \
 	php ./bin/console --env=prod cache:warmup; \
 	php -d phar.readonly=false tools/box compile --config=box.json
 

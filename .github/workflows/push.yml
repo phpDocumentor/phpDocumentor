@@ -427,7 +427,7 @@ jobs:
           - '8.2'
         operating-system:
           - ubuntu-latest
-          #- windows-latest
+          - windows-latest
           - macOS-latest
     name: Smoke tests
     needs:
