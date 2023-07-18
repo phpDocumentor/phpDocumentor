@@ -107,6 +107,18 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "phpstan/phpstan": {
+        "version": "1.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "d74d4d719d5f53856c9c13544aa22d44144b1819"
+        },
+        "files": [
+            "phpstan.neon"
+        ]
+    },
     "psalm/phar": {
         "version": "4.17.0"
     },

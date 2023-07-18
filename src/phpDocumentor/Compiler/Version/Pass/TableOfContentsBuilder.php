@@ -22,8 +22,8 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Guides\Meta\DocumentReferenceEntry;
-use phpDocumentor\Guides\Meta\SectionEntry;
+use phpDocumentor\Guides\Nodes\DocumentTree\DocumentEntryNode;
+use phpDocumentor\Guides\Nodes\DocumentTree\SectionEntryNode;
 use phpDocumentor\Transformer\Router\Router;
 
 use function ltrim;
@@ -116,16 +116,16 @@ final class TableOfContentsBuilder implements CompilerPassInterface
 
     private function createGuideEntries(
         DocumentDescriptor $documentDescriptor,
-        \phpDocumentor\Guides\Meta\Entry $metaEntry,
+        DocumentEntryNode|SectionEntryNode $metaEntry,
         GuideSetDescriptor $guideSetDescriptor,
         TocDescriptor $guideToc,
         ?Entry $parent = null
     ): void {
-        $metas = $guideSetDescriptor->getGuidesProjectNode();
+        $projectNode = $guideSetDescriptor->getGuidesProjectNode();
 
         foreach ($metaEntry->getChildren() as $metaChild) {
-            if ($metaChild instanceof DocumentReferenceEntry) {
-                $refMetaData = $metas->findDocumentEntry(ltrim($metaChild->getFile(), '/'));
+            if ($metaChild instanceof DocumentEntryNode) {
+                $refMetaData = $projectNode->findDocumentEntry(ltrim($metaChild->getFile(), '/'));
                 if ($refMetaData !== null) {
                     $refDocument = $guideSetDescriptor->getDocuments()->get($refMetaData->getFile());
                     $entry = new Entry(
@@ -151,7 +151,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 }
             }
 
-            if (!($metaChild instanceof SectionEntry)) {
+            if (!($metaChild instanceof SectionEntryNode)) {
                 continue;
             }
 
