@@ -1714,12 +1714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
-                "reference": "0045b1b5de289f707a812489f63df84f8d16659d"
+                "reference": "c3cf34680849674fa555ca63c12f06efc92d8beb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/0045b1b5de289f707a812489f63df84f8d16659d",
-                "reference": "0045b1b5de289f707a812489f63df84f8d16659d",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/c3cf34680849674fa555ca63c12f06efc92d8beb",
+                "reference": "c3cf34680849674fa555ca63c12f06efc92d8beb",
                 "shasum": ""
             },
             "require": {
@@ -1746,7 +1746,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
                 "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
             },
-            "time": "2023-07-07T07:22:08+00:00"
+            "time": "2023-07-19T20:05:13+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
