@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter;
+use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\CallableAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter;
@@ -163,6 +164,7 @@ class LinkRenderer implements LinkRendererInterface
             new NullableAdapter($this),
             new AbstractListAdapter($this),
             new IterableAdapter($this),
+            new CallableAdapter($this),
             new LinkAdapter(
                 $this,
                 new UrlGenerator($this, $this->router),
