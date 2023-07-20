@@ -75,7 +75,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
             Uri::createFromString($configPath)
         );
 
-        self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
+        self::assertSame($output, $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
     /**
@@ -111,7 +111,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
             Uri::createFromString('/data/phpDocumentor/config.xml')
         );
 
-        self::assertEquals(
+        self::assertSame(
             '/data/phpDocumentor/',
             (string) $outputConfig['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn']
         );
@@ -144,9 +144,19 @@ final class PathNormalizingMiddlewareTest extends TestCase
                 '/opt/myProject',
                 '/data/phpdocumentor/config.xml',
             ],
-            'Absolute windows paths are not normalized' => [
+            'Absolute windows paths are normalized' => [
                 'D:\opt\myProject',
-                'D:\opt\myProject',
+                'D:/opt/myProject',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Absolute paths could contain special characters' => [
+                '/opt/#myProject/with a space',
+                '/opt/#myProject/with a space',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Absolute windows paths could contain hashes' => [
+                'D:\opt\#myProject',
+                'D:/opt/#myProject',
                 '/data/phpdocumentor/config.xml',
             ],
             'Relative unix paths are changed to an absolute path with the config folder as prefix' => [
@@ -154,10 +164,20 @@ final class PathNormalizingMiddlewareTest extends TestCase
                 '/data/phpdocumentor/.phpdoc/cache',
                 '/data/phpdocumentor/config.xml',
             ],
+            'Relative paths may contain spaces' => [
+                '.phpdoc/my cache',
+                '/data/phpdocumentor/.phpdoc/my cache',
+                '/data/phpdocumentor/config.xml',
+            ],
+            'Relative paths may contain hashes' => [
+                '.phpdoc/#cache',
+                '/data/phpdocumentor/.phpdoc/#cache',
+                '/data/phpdocumentor/config.xml',
+            ],
             'Relative paths on Windows are changed to an absolute path with the config folder as prefix' => [
                 '.phpdoc\cache',
                 'd:/data/phpdocumentor/.phpdoc/cache',
-                'D:/data/phpdocumentor/config.xml',
+                'D:\data\phpdocumentor\config.xml',
             ],
         ];
     }

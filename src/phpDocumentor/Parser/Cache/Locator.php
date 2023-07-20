@@ -66,15 +66,15 @@ class Locator
     {
         $this->path = $path;
 
-        $this->fileCache->init('files', (string) $path);
-        $this->descriptorCache->init('descriptors', (string) $path);
+        $this->fileCache->init('files', $path->decoded());
+        $this->descriptorCache->init('descriptors', $path->decoded());
     }
 
     public function locate(string $namespace = ''): Path
     {
-        $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
+        $namespacePath = rtrim(sprintf('%s/%s', $this->root()->decoded(), $namespace), '/');
 
-        if (!is_dir($namespacePath) && !@mkdir($namespacePath, 0777, true)) {
+        if (!@mkdir($namespacePath, 0777, true) && !is_dir($namespacePath)) {
             $error = error_get_last();
             if ($error) {
                 throw new RuntimeException(

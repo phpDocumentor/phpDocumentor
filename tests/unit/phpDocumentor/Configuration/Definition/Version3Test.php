@@ -55,7 +55,6 @@ final class Version3Test extends TestCase
         $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
-        unset($expected['versions']['1.0.0']['apis']);
         $expected['versions']['1.0.0']['api'][0]['ignore-tags']
             = $expected['versions']['1.0.0']['api'][0]['ignore-tags']['ignore_tags'];
         $expected['versions']['1.0.0']['api'][0]['extensions']
@@ -66,6 +65,18 @@ final class Version3Test extends TestCase
             = $expected['versions']['1.0.0']['api'][0]['visibilities'];
         unset($expected['versions']['1.0.0']['api'][0]['visibilities']);
         $expected['templates'][0]['location'] = null;
+        $expected['versions']['1.0.0']['api'][0]['source']['dsn']
+            = Dsn::createFromString($expected['versions']['1.0.0']['api'][0]['source']['dsn']);
+        $expected['versions']['1.0.0']['api'][0]['source']['paths'] = array_map(
+            static fn (string $path) => new Path($path),
+            $expected['versions']['1.0.0']['api'][0]['source']['paths']
+        );
+
+        // Pluralities are converted into a singular version and a such these keys no longer exist
+        unset(
+            $expected['versions']['1.0.0']['apis'],
+            $expected['versions']['1.0.0']['api'][0]['visibilities']
+        );
 
         $configuration = $definition->normalize($configuration);
 
