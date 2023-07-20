@@ -231,7 +231,7 @@ HELP
             ->addOption(
                 'sourcecode',
                 null,
-                InputOption::VALUE_NONE,
+                InputOption::VALUE_NONE | InputOption::VALUE_NEGATABLE,
                 'Whether to include syntax highlighted source code'
             )
             ->addOption(

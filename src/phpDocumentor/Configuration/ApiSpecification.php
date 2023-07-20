@@ -54,7 +54,7 @@ final class ApiSpecification implements ArrayAccess
     /** @var string */
     private $defaultPackageName;
 
-    /** @var bool */
+    /** @var bool|null */
     private $includeSource;
 
     /** @var array<string> */
@@ -86,7 +86,7 @@ final class ApiSpecification implements ArrayAccess
         array $extensions,
         array $visibility,
         string $defaultPackageName,
-        bool $includeSource,
+        bool|null $includeSource,
         array $markers,
         array $ignoreTags,
         ?Source $examples,
@@ -155,7 +155,7 @@ final class ApiSpecification implements ArrayAccess
             ['php'],
             [],
             '',
-            false,
+            null,
             [],
             [],
             null,

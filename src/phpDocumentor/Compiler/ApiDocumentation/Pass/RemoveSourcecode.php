@@ -32,6 +32,10 @@ final class RemoveSourcecode extends ApiDocumentationPass
         }
 
         foreach ($subject->getFiles() as $file) {
+            if ($subject->getSettings()['include-source'] !== false && $file->getTags()->fetch('filesource') !== null) {
+                continue;
+            }
+
             $file->setSource(null);
         }
 

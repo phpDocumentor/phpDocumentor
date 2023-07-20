@@ -78,7 +78,7 @@ folder
 **Default**
 
 .. code-block:: xml
-  
+
 apis
 ~~~~
 
@@ -103,7 +103,7 @@ visibilities
 Visibilities are setting the deepest level of elements that will be rendered in your documentation. The values can be
 combined to fine tune the output. By default phpDocumentor includes all elements unless they are marked as ``@internal``
 
-Api will render only the elements marked as part of your api using the ``@api`` tag. 
+Api will render only the elements marked as part of your api using the ``@api`` tag.
 Public will filter all public elements from your project and render them in to the documentation.
 Protected will filter all public elements from your project and render them in to the documentation.
 Private will filter all public elements from your project and render them in to the documentation.
@@ -141,20 +141,20 @@ source
 ``````
 
 Where should phpDocumentor start looking for your code? In this configration section you can configure the DSN to your
-code base. 
+code base.
 
 The source can be configured using 2 parts. DSN which points to the root of your code base and paths which specify which
 folders should be read. Paths can be used to be more specific which folders should be included. All other paths in the root
-will be ignored. 
+will be ignored.
 
 .. note::
    Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only
    `file://` is supported
 
-Paths do support glob patterns to be able to include only particular sub directories. 
+Paths do support glob patterns to be able to include only particular sub directories.
 The example below will only include files in your DSN root directory `src` and it's sub directories, when the file name matches
 `*Interface.php`
- 
+
 .. code-block:: xml
    <path>/src/**/*Interface.php</path>
 
@@ -213,17 +213,22 @@ include-source
 
 Should phpDocumentor include your source code in the rendered documentation? By including your source code people reading
 your docs can jump directly from the docs to a rendered version of the source code. Which allows them to get more details about
-a method or function implementation. 
+a method or function implementation.
+
+By default source code is not included in the rendered documentation.
+Unless the file contains a :doc:`@filesource <./phpdoc/tags/filesource>` tag.
+
+This setting can be overridden by using the ``--sourcecode`` or ``--no-sourcecode`` command line option.
 
 **Default**
 
 .. code-block:: xml
-   true
+   null
 
 examples
 ````````
 
-Examples are code snippets that can be included in your docblocks. This setting will configure where phpDocumentor 
+Examples are code snippets that can be included in your docblocks. This setting will configure where phpDocumentor
 can find them. The paths used in your docblock ``@example`` tags are relative to this dsn.
 For more information about ``@example`` please consult the tag reference.
 
@@ -264,20 +269,20 @@ source
 ``````
 
 Where should phpDocumentor start looking for your code? In this configuration section you can configure the DSN to your
-code base. 
+code base.
 
 The source can be configured using 2 parts. DSN which points to the root of your code base and paths which specify which
 folders should be read. Paths can be used to be more specific which folders should be included. All other paths in the root
-will be ignored. 
+will be ignored.
 
 .. note::
    Future versions of phpDocumentor will support other DSN formats rather then just local paths. Right now only
    `file://` is supported
 
-Paths do support glob patterns to be able to include only particular sub directories. 
+Paths do support glob patterns to be able to include only particular sub directories.
 The example below will only include files in your DSN root directory ``src`` and it's sub directories, when the file
 name matches ``*Interface.php``
- 
+
 .. code-block:: xml
    <path>/src/**/*Interface.php</path>
 
@@ -306,8 +311,8 @@ output
 settings
 --------
 
-Some settings are not part of the normal configuration parts of phpDocumentor. Because there have impact 
-on the full application behavior, or enable experimental parts in phpDocumentor. 
+Some settings are not part of the normal configuration parts of phpDocumentor. Because there have impact
+on the full application behavior, or enable experimental parts in phpDocumentor.
 
 Settings are key-value configuration options, which are listed with the following command:
 

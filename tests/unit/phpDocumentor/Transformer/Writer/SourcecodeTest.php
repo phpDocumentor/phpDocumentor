@@ -52,27 +52,12 @@ final class SourcecodeTest extends MockeryTestCase
     /**
      * @covers ::transform
      */
-    public function testNoInteractionWithTransformationWhenSourceShouldNotIncluded(): void
-    {
-        $transformation = $this->prophesize(Transformation::class);
-        $transformation->template()->shouldNotBeCalled();
-
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->giveProjectDescriptor($apiSet);
-
-        $this->sourceCode->transform($transformation->reveal(), $projectDescriptor, $apiSet);
-    }
-
-    /**
-     * @covers ::transform
-     */
     public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);
         $transformation->template()->shouldBeCalled()->willReturn($this->faker()->template());
 
         $api = $this->faker()->apiSetDescriptor();
-        $api->getSettings()['include-source'] = true;
         $projectDescriptor = $this->giveProjectDescriptor($api);
 
         $this->sourceCode->transform($transformation->reveal(), $projectDescriptor, $api);

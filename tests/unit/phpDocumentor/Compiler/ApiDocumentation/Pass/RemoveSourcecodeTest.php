@@ -36,6 +36,21 @@ final class RemoveSourcecodeTest extends TestCase
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
+        $apiSetDescriptor->getSettings()['include-source'] = false;
+        $fixture = new RemoveSourcecode();
+
+        $fixture->__invoke($apiSetDescriptor);
+
+        foreach ($apiSetDescriptor->getFiles() as $file) {
+            self::assertNull($file->getSource());
+        }
+    }
+
+    public function testRemovesSourceWhenNotSet(): void
+    {
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
+        $apiSetDescriptor->getSettings()['include-source'] = null;
         $fixture = new RemoveSourcecode();
 
         $fixture->__invoke($apiSetDescriptor);
@@ -59,6 +74,41 @@ final class RemoveSourcecodeTest extends TestCase
 
         foreach ($apiSetDescriptor->getFiles() as $file) {
             self::assertNotNull($file->getSource());
+        }
+    }
+
+    public function testSourceIsIncludedWhenFilesourceTagIsPresent(): void
+    {
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
+        $apiSetDescriptor->getFiles()->first()->getTags()->set(
+            'filesource',
+            $this->faker()->fileDescriptor()
+        );
+        $fixture = new RemoveSourcecode();
+
+        $fixture->__invoke($apiSetDescriptor);
+
+        foreach ($apiSetDescriptor->getFiles() as $file) {
+            self::assertNotNull($file->getSource());
+        }
+    }
+
+    public function testSourceIsRemovedWhenSettingDisabledExplicitly(): void
+    {
+        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
+        $apiSetDescriptor->getSettings()['include-source'] = false;
+        $apiSetDescriptor->getFiles()->first()->getTags()->set(
+            'filesource',
+            $this->faker()->fileDescriptor()
+        );
+        $fixture = new RemoveSourcecode();
+
+        $fixture->__invoke($apiSetDescriptor);
+
+        foreach ($apiSetDescriptor->getFiles() as $file) {
+            self::assertNull($file->getSource());
         }
     }
 
