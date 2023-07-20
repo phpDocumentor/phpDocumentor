@@ -50,10 +50,7 @@ class Sourcecode extends WriterAbstract
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet
     ): void {
-        if (
-            $documentationSet instanceof ApiSetDescriptor === false ||
-            $documentationSet->getSettings()['include-source'] === false
-        ) {
+        if ($documentationSet instanceof ApiSetDescriptor === false) {
             return;
         }
 

@@ -184,7 +184,7 @@ final class Version3Test extends TestCase
                             'extensions' => [
                                 'extensions' => ['php', 'php3', 'phtml'],
                             ],
-                            'include-source' => true,
+                            'include-source' => false,
                             'validate' => false,
                             'markers' => ['markers' => ['TODO', 'FIXME']],
                             'ignore-tags' => ['ignore_tags' => []],

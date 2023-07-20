@@ -302,7 +302,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->end()
                     ->end()
                     ->booleanNode('include-source')
-                        ->defaultTrue()
+                        ->defaultNull()
                     ->end()
                     ->arrayNode('examples')
                         ->fixXmlConfig('path')
