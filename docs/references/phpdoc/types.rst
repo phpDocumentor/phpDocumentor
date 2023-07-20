@@ -67,32 +67,40 @@ understanding the code covered by the PHPDoc.
 
 The following keywords are recognized:
 
-1.  **string**, the element to which this type applies is a string of
+**string**
+    the element to which this type applies is a string of
     binary characters.
 
-2.  **integer** or **int**, the element to which this type applies is a whole
+**integer** or **int**
+    the element to which this type applies is a whole
     number or integer.
 
-3.  **boolean** or **bool**, the element to which this type applies only has
+**boolean** or **bool**
+    the element to which this type applies only has
     state true or false.
 
-4.  **float** or **double**, the element to which this type applies is a
-    continuous, or real, number.
+**float** or **double**
+    the element to which this type applies is a continuous, or real, number.
 
-5.  **object**, the element to which this type applies is the instance of an
+**object**
+    the element to which this type applies is the instance of an
     undetermined class.
 
-6.  **mixed**, the element to which this type applies can be of any type as
+**mixed**
+    the element to which this type applies can be of any type as
     specified here. It is not known on compile time which type will be used.
 
-7.  **array**, the element to which this type applies is an array of values,
-    see the section on `Arrays`_ for more details.
+**array**
+    the element to which this type applies is an array of values,
+    see the section on :ref:`arrays` for more details.
 
-8.  **resource**, the element to which this type applies is a resource per
+**resource**
+    the element to which this type applies is a resource per
     the definition of PHP at
     https://www.php.net/language.types.resource.
 
-9.  **void**, this type is commonly only used when defining the return type of a
+**void**
+    this type is commonly only used when defining the return type of a
     method or function.
     The basic definition is that the element indicated with this type does not
     contain a value and the user should not rely on any retrieved value.
@@ -135,7 +143,8 @@ The following keywords are recognized:
     value. Because there is no actual value specified does this also constitute
     as type 'void'.
 
-10. **null**, the element to which this type applies is a NULL value or, in
+**null**
+    the element to which this type applies is a NULL value or, in
     technical terms, does not exist.
 
     A big difference compared to void is that this type is used in any situation
@@ -178,11 +187,35 @@ The following keywords are recognized:
             return null;
         }
 
-11. **callable**, the element to which this type applies is a pointer to a
+**callable**
+    the element to which this type applies is a pointer to a
     function call. This may be any type of callback as defined in the PHP manual
     at https://www.php.net/language.types.callable.
 
-12. **false** or **true**, the element to which this type applies will have
+    Unlike the php language construct is this type is a bit more extended following the static analysis tools
+    definition of a callable. This means that phpdoc will allow you to add more information about a callable using
+    the following syntax:
+
+    .. code-block:: php
+
+        callable(int $a, string $b): bool
+
+    Parameters and return types are optional and MAY be omitted and do follow the same rules as the type expressions.
+    For parameters the name of the parameter is optional and MAY be omitted.
+
+    Variadic parameters are supported and MAY be used in the following way:
+
+    .. code-block:: php
+
+        callable(int ...$a): bool
+        callable(int...): bool
+
+    .. note::
+
+        This type is not fully supported in PHPDoc 3.3.0 and earlier.
+
+**false** or **true**
+    the element to which this type applies will have
     the value true or false. No other value will be returned from this
     element.
 
@@ -190,7 +223,8 @@ The following keywords are recognized:
         that it is possible that true or false may be returned instead of an
         instance of the other type.
 
-13. **self**, the element to which this type applies is of the same Class,
+**self**
+    the element to which this type applies is of the same Class,
     or any of its children, as which the documented element is originally
     contained.
 
@@ -218,8 +252,9 @@ The following keywords are recognized:
     If method C() was to be redefined in class B, including the type
     definition in the DocBlock, then `self` would refer to class B or any
     of its children.
-    
-14. **scalar**, the element to which this type applies is of any scalar type
+
+**scalar**
+    the element to which this type applies is of any scalar type
     specifically: *string*, *float*, *int*, *bool*
 
 Multiple types
@@ -257,7 +292,3 @@ following the format of one of the following options:
    of the type of each array element. Each element can be of any of the given
    types.
    Example: ``@return (int|string)[]``
-
-   .. NOTE::
-
-       many IDEs probably do not support this notation yet.
