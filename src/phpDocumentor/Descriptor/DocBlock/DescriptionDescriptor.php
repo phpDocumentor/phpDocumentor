@@ -6,11 +6,12 @@ namespace phpDocumentor\Descriptor\DocBlock;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use Stringable;
 
 use function trim;
 use function vsprintf;
 
-final class DescriptionDescriptor
+final class DescriptionDescriptor implements Stringable
 {
     /** @var Description */
     private $description;
@@ -64,10 +65,8 @@ final class DescriptionDescriptor
      * which requires more advanced handling of descriptions and just not some string jugling.
      *
      * @deprecated will be removed in v4
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $tags = [];
         foreach ($this->getTags() as $tag) {

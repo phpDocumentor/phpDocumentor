@@ -17,16 +17,16 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Validation\Error;
+use Stringable;
 use Webmozart\Assert\Assert;
 
 use function lcfirst;
-use function strpos;
 use function substr;
 
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Filterable, ElementInterface, InheritsFromElement
+abstract class DescriptorAbstract implements Filterable, ElementInterface, InheritsFromElement, Stringable
 {
     use Traits\HasFqsen;
     use Traits\HasName;
@@ -91,7 +91,7 @@ abstract class DescriptorAbstract implements Filterable, ElementInterface, Inher
      */
     public function __call(string $name, array $arguments)
     {
-        if (strpos($name, 'get') !== 0) {
+        if (!str_starts_with($name, 'get')) {
             return null;
         }
 

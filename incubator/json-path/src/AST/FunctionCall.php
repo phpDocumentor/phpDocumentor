@@ -17,14 +17,11 @@ use phpDocumentor\JsonPath\Executor;
 
 final class FunctionCall implements QueryNode
 {
-    private string $name;
-
     /** @var QueryNode[] */
-    private array $arguments;
+    private readonly array $arguments;
 
-    public function __construct(string $name, QueryNode ...$arguments)
+    public function __construct(private readonly string $name, QueryNode ...$arguments)
     {
-        $this->name = $name;
         $this->arguments = $arguments;
     }
 

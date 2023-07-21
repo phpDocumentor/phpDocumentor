@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\TagDescriptor;
+use Stringable;
 
 /**
  * Descriptor representing the link tag with a descriptor.
@@ -21,7 +22,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
  * @api
  * @package phpDocumentor\AST\Tags
  */
-class LinkDescriptor extends TagDescriptor
+class LinkDescriptor extends TagDescriptor implements Stringable
 {
     /** @var string $link the url where the link points to. */
     protected $link = '';

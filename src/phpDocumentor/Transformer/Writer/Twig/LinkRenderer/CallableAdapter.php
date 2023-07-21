@@ -15,11 +15,8 @@ use function trim;
 
 final class CallableAdapter implements LinkRendererInterface
 {
-    private LinkRendererInterface $rendererChain;
-
-    public function __construct(LinkRendererInterface $rendererChain)
+    public function __construct(private readonly LinkRendererInterface $rendererChain)
     {
-        $this->rendererChain = $rendererChain;
     }
 
     /** @param mixed $value */
@@ -70,7 +67,7 @@ final class CallableAdapter implements LinkRendererInterface
                 $parameter->getName() !== null ? ' ' : '',
                 implode('', $extraInfo),
                 $name,
-                $parameter->isOptional() ? '=' : ''
+                $parameter->isOptional() ? '=' : '',
             );
         }
 
@@ -79,8 +76,8 @@ final class CallableAdapter implements LinkRendererInterface
             implode(', ', $parameters),
             $value->getReturnType() !== null ? ': ' . $this->rendererChain->render(
                 $value->getReturnType(),
-                $presentation
-            ) : ''
+                $presentation,
+            ) : '',
         ));
     }
 }

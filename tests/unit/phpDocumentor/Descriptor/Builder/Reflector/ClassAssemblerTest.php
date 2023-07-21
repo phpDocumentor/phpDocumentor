@@ -69,7 +69,7 @@ DOCBLOCK;
 
         $this->assertSame(
             '\\' . $namespace . '\\' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame($docBlockDescriptionContent, (string) $descriptor->getDescription());
@@ -97,7 +97,7 @@ DOCBLOCK;
 
         $this->assertSame(
             '\\' . $namespace . '\\' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         $this->assertSame($name, $descriptor->getName());
         $this->assertSame($docBlockDescriptionContent, (string) $descriptor->getDescription());
@@ -117,7 +117,7 @@ DOCBLOCK;
         $docBlockMock = new DocBlock(
             'This is a example description',
             new DocBlock\Description($docBlockDescriptionContent),
-            []
+            [],
         );
 
         if ($classFqsen === null) {
@@ -129,7 +129,7 @@ DOCBLOCK;
         $classReflectorMock = new Class_(
             $classFqsen,
             $docBlockMock,
-            $parent
+            $parent,
         );
 
         $classReflectorMock->addConstant(new Constant(new Fqsen($classFqsen . '::Constant')));

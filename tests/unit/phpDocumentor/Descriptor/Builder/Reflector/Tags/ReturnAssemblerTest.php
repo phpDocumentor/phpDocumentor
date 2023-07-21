@@ -16,8 +16,7 @@ class ReturnAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ReturnAssembler */
-    private $fixture;
+    private ReturnAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;

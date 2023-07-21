@@ -49,7 +49,7 @@ final class IterableAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new IterableAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 

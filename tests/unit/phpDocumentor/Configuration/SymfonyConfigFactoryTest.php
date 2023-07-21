@@ -34,7 +34,7 @@ final class SymfonyConfigFactoryTest extends TestCase
         $fixture = $this->createConfigFactoryWithTestDefinition();
         $this->assertArrayHasKey(
             SymfonyConfigFactory::FIELD_CONFIG_VERSION,
-            $fixture->createDefault()['phpdocumentor']
+            $fixture->createDefault()['phpdocumentor'],
         );
     }
 
@@ -55,7 +55,7 @@ final class SymfonyConfigFactoryTest extends TestCase
         $this->fixture = new SymfonyConfigFactory(['test' => $configMock->reveal()]);
         $this->assertArrayHasKey(
             SymfonyConfigFactory::FIELD_CONFIG_VERSION,
-            $this->fixture->createDefault()['phpdocumentor']
+            $this->fixture->createDefault()['phpdocumentor'],
         );
     }
 
@@ -75,7 +75,7 @@ final class SymfonyConfigFactoryTest extends TestCase
 <phpdocumentor>
     <configVersion>foo</configVersion>
 </phpdocumentor>
-XML
+XML,
         )->at($root);
 
         $fixture = $this->createConfigFactoryWithTestDefinition();

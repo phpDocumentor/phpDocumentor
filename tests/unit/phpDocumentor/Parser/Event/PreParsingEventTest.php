@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Event;
 
+use phpDocumentor\Event\EventAbstract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -14,8 +15,7 @@ use stdClass;
  */
 final class PreParsingEventTest extends TestCase
 {
-    /** @var PreParsingEvent */
-    private $fixture;
+    private ?EventAbstract $fixture = null;
 
     /**
      * @covers ::createInstance

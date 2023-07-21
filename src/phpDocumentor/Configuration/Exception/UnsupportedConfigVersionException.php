@@ -33,8 +33,8 @@ final class UnsupportedConfigVersionException extends RuntimeException
                 'Configuration version "%s" is not supported by this version of phpDocumentor, '
                 . 'supported versions are: %s',
                 $configurationVersion,
-                implode(', ', $supportedVersions)
-            )
+                implode(', ', $supportedVersions),
+            ),
         );
     }
 }

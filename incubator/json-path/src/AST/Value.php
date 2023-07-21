@@ -17,13 +17,8 @@ use phpDocumentor\JsonPath\Executor;
 
 class Value implements QueryNode
 {
-    /** @var mixed */
-    private $value;
-
-    /** @param mixed $value */
-    public function __construct($value)
+    public function __construct(private readonly mixed $value)
     {
-        $this->value = $value;
     }
 
     /**

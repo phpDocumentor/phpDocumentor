@@ -51,7 +51,7 @@ final class ArrayOfTypeAdapterTest extends TestCase
 
         $this->adapter->render(
             new Fqsen('\MyAwesome\Object'),
-            LinkRenderer::PRESENTATION_NORMAL
+            LinkRenderer::PRESENTATION_NORMAL,
         );
     }
 

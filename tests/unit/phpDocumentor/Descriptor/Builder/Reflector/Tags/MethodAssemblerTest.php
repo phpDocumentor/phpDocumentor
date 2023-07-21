@@ -36,8 +36,7 @@ final class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var MethodAssembler */
-    private $fixture;
+    private MethodAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builder;

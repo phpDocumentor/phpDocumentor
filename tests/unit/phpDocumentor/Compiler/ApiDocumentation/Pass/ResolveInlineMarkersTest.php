@@ -35,7 +35,7 @@ final class ResolveInlineMarkersTest extends TestCase
                 {
                    //TODO: implement this
                 }      
-SOURCE
+SOURCE,
         );
 
         $apiDescriptor = $this->faker()->apiSetDescriptor();

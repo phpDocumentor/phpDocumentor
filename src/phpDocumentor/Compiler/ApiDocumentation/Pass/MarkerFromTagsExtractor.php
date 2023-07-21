@@ -81,7 +81,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
                 'type' => 'TODO',
                 'message' => (string) $todo->getDescription(),
                 'line' => $lineNumber,
-            ]
+            ],
         );
     }
 }

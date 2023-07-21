@@ -19,18 +19,11 @@ use Psr\Log\LoggerInterface;
 
 final class ParseFiles
 {
-    private Parser $parser;
-    private LoggerInterface $logger;
-    private ReEncodingMiddleware $reEncodingMiddleware;
-
     public function __construct(
-        Parser $parser,
-        LoggerInterface $logger,
-        ReEncodingMiddleware $reEncodingMiddleware
+        private readonly Parser $parser,
+        private readonly LoggerInterface $logger,
+        private readonly ReEncodingMiddleware $reEncodingMiddleware,
     ) {
-        $this->parser = $parser;
-        $this->logger = $logger;
-        $this->reEncodingMiddleware = $reEncodingMiddleware;
     }
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
@@ -57,7 +50,7 @@ final class ParseFiles
         $this->logger->notice('Parsing files');
         $payload->getBuilder()->populateApiDocumentationSet(
             $payload->getApiSet(),
-            $this->parser->parse($payload->getFiles())
+            $this->parser->parse($payload->getFiles()),
         );
 
         return $payload;

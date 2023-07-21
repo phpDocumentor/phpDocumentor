@@ -26,7 +26,7 @@ use Psr\Log\LoggerInterface;
  */
 class Debug extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 1000;
+    final public const COMPILER_PRIORITY = 1000;
 
     /** @var LoggerInterface $log the logger to write the debug results to */
     protected $log;

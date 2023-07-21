@@ -85,7 +85,7 @@ class MethodAssemblerTest extends TestCase
             $this->givenADocBlockObject(true),
             false,
             $startLocation,
-            $endLocation
+            $endLocation,
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -135,7 +135,7 @@ class MethodAssemblerTest extends TestCase
         $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
             $methodName,
-            $argumentDescriptorMock
+            $argumentDescriptorMock,
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -174,7 +174,7 @@ class MethodAssemblerTest extends TestCase
             $namespace,
             $methodName,
             $argumentDescriptorMock,
-            $this->givenADocBlockObject(false)
+            $this->givenADocBlockObject(false),
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -214,7 +214,7 @@ class MethodAssemblerTest extends TestCase
             $methodName,
             $argument,
             $this->givenADocBlockObject(true),
-            true
+            true,
         );
 
         $argumentDescriptor = new ArgumentDescriptor();
@@ -254,7 +254,7 @@ class MethodAssemblerTest extends TestCase
             $location,
             $endLocation,
             null,
-            $hasReturnByReference
+            $hasReturnByReference,
         );
 
         $method->addArgument($argumentMock);
@@ -276,7 +276,7 @@ class MethodAssemblerTest extends TestCase
                 'variableName',
                 new String_(),
                 true,
-                new DocBlock\Description('foo')
+                new DocBlock\Description('foo'),
             );
         }
 

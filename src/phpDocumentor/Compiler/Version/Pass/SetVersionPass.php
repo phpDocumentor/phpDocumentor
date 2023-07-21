@@ -11,11 +11,8 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class SetVersionPass implements CompilerPassInterface
 {
-    private DescriptorRepository $descriptorRepository;
-
-    public function __construct(DescriptorRepository $descriptorRepository)
+    public function __construct(private readonly DescriptorRepository $descriptorRepository)
     {
-        $this->descriptorRepository = $descriptorRepository;
     }
 
     public function getDescription(): string

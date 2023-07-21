@@ -6,22 +6,18 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Transformer\Router\Router;
 
+use phpDocumentor\Transformer\Router\Router;
 use function array_fill;
 use function implode;
 use function ltrim;
-use function strpos;
 use function substr;
 use function substr_count;
 
 final class RelativePathToRootConverter
 {
-    private Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(private readonly Router $router)
     {
-        $this->router = $router;
     }
 
     /**
@@ -60,7 +56,7 @@ final class RelativePathToRootConverter
         if ($this->isReferenceToFqsen($pathOrReference)) {
             try {
                 $pathOrReference = $this->router->generate($this->createFqsenFromReference($pathOrReference));
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException) {
                 return null;
             }
         }
@@ -92,7 +88,7 @@ final class RelativePathToRootConverter
 
     private function isReferenceToFqsen(string $path): bool
     {
-        return strpos($path, '@') === 0;
+        return str_starts_with($path, '@');
     }
 
     private function withoutLeadingSlash(string $path): string

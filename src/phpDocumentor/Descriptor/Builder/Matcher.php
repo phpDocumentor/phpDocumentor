@@ -11,9 +11,6 @@ use function is_a;
  */
 final class Matcher
 {
-    /** @var class-string<T> */
-    private $type;
-
     /**
      * @param class-string<SelfT> $type
      *
@@ -39,8 +36,7 @@ final class Matcher
     /**
      * @param class-string<T> $type
      */
-    private function __construct(string $type)
+    private function __construct(private readonly string $type)
     {
-        $this->type = $type;
     }
 }

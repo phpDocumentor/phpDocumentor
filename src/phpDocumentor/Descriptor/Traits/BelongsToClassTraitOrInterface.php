@@ -37,11 +37,11 @@ trait BelongsToClassTraitOrInterface
     {
         Assert::isInstanceOfAny(
             $parent,
-            [ClassInterface::class, InterfaceInterface::class, TraitInterface::class]
+            [ClassInterface::class, InterfaceInterface::class, TraitInterface::class],
         );
 
         $this->setFullyQualifiedStructuralElementName(
-            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName())
+            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()),
         );
 
         $this->parent = $parent;

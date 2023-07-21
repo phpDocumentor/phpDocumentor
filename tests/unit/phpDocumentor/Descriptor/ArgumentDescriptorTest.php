@@ -217,7 +217,7 @@ final class ArgumentDescriptorTest extends TestCase
 
         self::assertNull(
             $argument->getInheritedElement(),
-            'By default, an argument does not have an inherited element'
+            'By default, an argument does not have an inherited element',
         );
 
         $this->givenAnArgumentFromWhichItCanInherit($argument);

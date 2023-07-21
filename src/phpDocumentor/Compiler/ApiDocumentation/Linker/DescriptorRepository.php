@@ -23,7 +23,6 @@ use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use function sprintf;
 use function str_replace;
 use function strlen;
-use function strpos;
 use function substr;
 
 class DescriptorRepository
@@ -110,14 +109,14 @@ class DescriptorRepository
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
-            if (strpos($fqsen, $pseudoType . '::') !== 0 && $fqsen !== $pseudoType) {
+            if (!str_starts_with($fqsen, $pseudoType . '::') && $fqsen !== $pseudoType) {
                 continue;
             }
 
             return sprintf(
                 '%s%s',
                 (string) $container->getFullyQualifiedStructuralElementName(),
-                substr($fqsen, strlen($pseudoType))
+                substr($fqsen, strlen($pseudoType)),
             );
         }
 
@@ -129,7 +128,7 @@ class DescriptorRepository
      */
     private function isContextMarkerInFqsen(string $fqsen): bool
     {
-        return strpos($fqsen, self::CONTEXT_MARKER) !== false;
+        return str_contains($fqsen, self::CONTEXT_MARKER);
     }
 
     /**

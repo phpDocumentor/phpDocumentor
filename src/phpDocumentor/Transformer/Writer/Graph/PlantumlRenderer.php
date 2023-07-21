@@ -14,16 +14,8 @@ use function tempnam;
 
 class PlantumlRenderer
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $plantUmlBinaryPath;
-
-    public function __construct(LoggerInterface $logger, string $plantUmlBinaryPath)
+    public function __construct(private readonly LoggerInterface $logger, private string $plantUmlBinaryPath)
     {
-        $this->logger = $logger;
-        $this->plantUmlBinaryPath = $plantUmlBinaryPath;
     }
 
     public function render(string $diagram): ?string

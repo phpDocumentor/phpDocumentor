@@ -25,8 +25,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
  */
 final class InterfaceDescriptorTest extends MockeryTestCase
 {
-    /** @var InterfaceDescriptor $fixture */
-    private $fixture;
+    private InterfaceDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.

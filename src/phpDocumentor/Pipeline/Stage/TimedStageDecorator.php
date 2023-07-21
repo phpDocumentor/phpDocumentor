@@ -7,7 +7,6 @@ namespace phpDocumentor\Pipeline\Stage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use function get_class;
 use function is_object;
 use function sprintf;
 
@@ -16,11 +15,8 @@ final class TimedStageDecorator
     /** @var callable */
     private $decoratedStage;
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger, callable $decoratedStage)
+    public function __construct(private readonly LoggerInterface $logger, callable $decoratedStage)
     {
-        $this->logger = $logger;
         $this->decoratedStage = $decoratedStage;
     }
 
@@ -29,15 +25,13 @@ final class TimedStageDecorator
      *
      * Since we support any stage, we do not know what payload is received or returned; so both are mixed.
      *
-     * @param mixed $payload
-     *
      * @return mixed
      */
-    public function __invoke($payload)
+    public function __invoke(mixed $payload)
     {
         $stopwatch = new Stopwatch();
         $decoratedStage = $this->decoratedStage;
-        $name = is_object($decoratedStage) ? get_class($decoratedStage) : 'DYNAMIC';
+        $name = is_object($decoratedStage) ? $decoratedStage::class : 'DYNAMIC';
 
         $stopwatch->start($name);
         $this->logger->notice(sprintf('Starting stage: %s', $name));

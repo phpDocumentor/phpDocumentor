@@ -33,8 +33,7 @@ final class ApplicationTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var Application */
-    private $feature;
+    private Application $feature;
 
     public function setUp(): void
     {
@@ -61,12 +60,8 @@ final class ApplicationTest extends TestCase
     public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
-        $this->feature->add((new Command('my:command'))->setCode(function () {
-            return 1;
-        }));
-        $this->feature->add((new Command('project:run'))->setCode(function () {
-            return 2;
-        }));
+        $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
+        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(1, $this->feature->run(new StringInput('my:command -q')));
     }
@@ -80,12 +75,8 @@ final class ApplicationTest extends TestCase
     {
         $commandName = str_repeat('a', 101);
         $_SERVER['argv'] = ['binary', $commandName];
-        $this->feature->add((new Command('my:command'))->setCode(function () {
-            return 1;
-        }));
-        $this->feature->add((new Command('project:run'))->setCode(function () {
-            return 2;
-        }));
+        $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
+        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(2, $this->feature->run(new StringInput($commandName . ' -q')));
     }
@@ -98,12 +89,8 @@ final class ApplicationTest extends TestCase
     public function testUnknownCommandNamesAreIgnored(): void
     {
         $_SERVER['argv'] = ['binary', 'unknown'];
-        $this->feature->add((new Command('my:command'))->setCode(function () {
-            return 1;
-        }));
-        $this->feature->add((new Command('project:run'))->setCode(function () {
-            return 2;
-        }));
+        $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
+        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
     }
@@ -114,12 +101,8 @@ final class ApplicationTest extends TestCase
     public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
     {
         $_SERVER['argv'] = ['binary', 'something else'];
-        $this->feature->add((new Command('MyCommand'))->setCode(function () {
-            return 1;
-        }));
-        $this->feature->add((new Command('project:run'))->setCode(function () {
-            return 2;
-        }));
+        $this->feature->add((new Command('MyCommand'))->setCode(fn () => 1));
+        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(2, $this->feature->run(new StringInput('-q')));
     }
@@ -143,7 +126,7 @@ final class ApplicationTest extends TestCase
     {
         self::assertMatchesRegularExpression(
             '~phpDocumentor <info>v(.*)</info>~',
-            $this->feature->getLongVersion()
+            $this->feature->getLongVersion(),
         );
     }
 
@@ -155,7 +138,7 @@ final class ApplicationTest extends TestCase
     {
         self::assertRegExp(
             '~phpDocumentor <info>v(.*)</info>~',
-            $this->feature->getLongVersion()
+            $this->feature->getLongVersion(),
         );
     }
 }

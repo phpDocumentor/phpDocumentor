@@ -29,10 +29,10 @@ final class InvalidTagAssembler extends AssemblerAbstract
                     'Tag "%s" with body "%s" has error %s',
                     $data->getName(),
                     $data->render(),
-                    $data->getException() === null ? '' : $data->getException()->getMessage()
+                    $data->getException() === null ? '' : $data->getException()->getMessage(),
                 ),
-                null
-            )
+                null,
+            ),
         );
 
         return $descriptor;

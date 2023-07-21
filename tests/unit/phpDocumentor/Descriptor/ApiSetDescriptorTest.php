@@ -56,14 +56,14 @@ final class ApiSetDescriptorTest extends TestCase
             [
                 'elements' => Collection::fromInterfaceString(
                     ElementInterface::class,
-                    [$this->faker()->fileDescriptor()]
+                    [$this->faker()->fileDescriptor()],
                 ),
-            ]
+            ],
         );
 
         $expectedDefault = Collection::fromInterfaceString(
             ElementInterface::class,
-            ['elements' => Collection::fromInterfaceString(ElementInterface::class)]
+            ['elements' => Collection::fromInterfaceString(ElementInterface::class)],
         );
 
         self::assertEquals($expectedDefault, $set->getIndexes());

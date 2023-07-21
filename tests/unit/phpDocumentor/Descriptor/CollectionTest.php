@@ -23,8 +23,7 @@ use stdClass;
  */
 final class CollectionTest extends TestCase
 {
-    /** @var Collection $fixture */
-    private $fixture;
+    private Collection|array $fixture;
 
     /**
      * Creates a new (empty) fixture object.

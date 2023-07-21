@@ -17,11 +17,8 @@ use phpDocumentor\JsonPath\AST\QueryNode;
 
 final class Query implements QueryNode
 {
-    private QueryNode $node;
-
-    public function __construct(QueryNode $node)
+    public function __construct(private readonly QueryNode $node)
     {
-        $this->node = $node;
     }
 
     /** @inheritDoc */

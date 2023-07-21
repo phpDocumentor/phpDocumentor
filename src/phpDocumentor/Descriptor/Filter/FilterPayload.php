@@ -8,16 +8,8 @@ use phpDocumentor\Configuration\ApiSpecification;
 
 final class FilterPayload
 {
-    /** @var Filterable|null */
-    private $filterable;
-
-    /** @var ApiSpecification */
-    private $apiSpecification;
-
-    public function __construct(?Filterable $filterable, ApiSpecification $apiSpecification)
+    public function __construct(private readonly ?Filterable $filterable, private readonly ApiSpecification $apiSpecification)
     {
-        $this->filterable = $filterable;
-        $this->apiSpecification = $apiSpecification;
     }
 
     public function getFilterable(): ?Filterable

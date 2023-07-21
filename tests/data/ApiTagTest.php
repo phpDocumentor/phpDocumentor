@@ -66,12 +66,12 @@ class phpDocumentor_Tests_Data_ApiFixture
      * @api
      * @var int
      */
-    const BLA7 = 1;
+    final public const BLA7 = 1;
 
     /**
      * #var int
      */
-    const BLA8 = 1;
+    final public const BLA8 = 1;
 
     /**
      * Property description

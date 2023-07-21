@@ -57,7 +57,7 @@ class FunctionAssemblerTest extends TestCase
                         throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
                 }
             }),
-            ProphecyArgument::any()
+            ProphecyArgument::any(),
         )->shouldBeCalled();
         $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
         $this->argumentAssemblerMock->getBuilder()->shouldBeCalled()->willReturn(null);
@@ -87,7 +87,7 @@ class FunctionAssemblerTest extends TestCase
             $functionName,
             $argument,
             $this->givenADocBlockObject(),
-            true
+            true,
         );
         $argumentDescriptor = new ArgumentDescriptor();
         $argumentDescriptor->setName($argumentName);
@@ -127,7 +127,7 @@ class FunctionAssemblerTest extends TestCase
             null,
             null,
             null,
-            $hasReturnByReference
+            $hasReturnByReference,
         );
 
         $functionReflectorMock->addArgument($argumentMock);
@@ -147,7 +147,7 @@ class FunctionAssemblerTest extends TestCase
             $docBlockDescription,
             [
                 new DocBlock\Tags\Generic('package', new DocBlock\Description('PackageName')),
-            ]
+            ],
         );
     }
 

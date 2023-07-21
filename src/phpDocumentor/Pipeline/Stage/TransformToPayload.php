@@ -21,11 +21,8 @@ use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
  */
 final class TransformToPayload
 {
-    private ProjectDescriptorBuilder $descriptorBuilder;
-
-    public function __construct(ProjectDescriptorBuilder $descriptorBuilder)
+    public function __construct(private readonly ProjectDescriptorBuilder $descriptorBuilder)
     {
-        $this->descriptorBuilder = $descriptorBuilder;
     }
 
     /**

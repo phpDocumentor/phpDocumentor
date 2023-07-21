@@ -36,11 +36,11 @@ use RuntimeException;
  */
 class LinkRenderer implements LinkRendererInterface
 {
-    public const PRESENTATION_NONE = '';
-    public const PRESENTATION_NORMAL = 'normal';
-    public const PRESENTATION_URL = 'url';
-    public const PRESENTATION_CLASS_SHORT = 'class:short';
-    public const PRESENTATION_FILE_SHORT = 'file:short';
+    final public const PRESENTATION_NONE = '';
+    final public const PRESENTATION_NORMAL = 'normal';
+    final public const PRESENTATION_URL = 'url';
+    final public const PRESENTATION_CLASS_SHORT = 'class:short';
+    final public const PRESENTATION_FILE_SHORT = 'file:short';
 
     private string $destination = '';
     private ProjectDescriptor $project;
@@ -48,14 +48,9 @@ class LinkRenderer implements LinkRendererInterface
 
     /** @var LinkRendererInterface[] */
     private array $adapters;
-    private Router $router;
-    private HtmlFormatter $htmlFormatter;
 
-    public function __construct(Router $router, HtmlFormatter $htmlFormatter)
+    public function __construct(private Router $router, private HtmlFormatter $htmlFormatter)
     {
-        $this->router = $router;
-        $this->htmlFormatter = $htmlFormatter;
-
         $this->adapters = $this->createAdapters();
     }
 
@@ -147,7 +142,7 @@ class LinkRenderer implements LinkRendererInterface
         }
 
         throw new RuntimeException(
-            'The last adapter should have been a cap that accepts anything, this should not happen'
+            'The last adapter should have been a cap that accepts anything, this should not happen',
         );
     }
 
@@ -168,7 +163,7 @@ class LinkRenderer implements LinkRendererInterface
             new LinkAdapter(
                 $this,
                 new UrlGenerator($this, $this->router),
-                $this->htmlFormatter
+                $this->htmlFormatter,
             ),
         ];
     }

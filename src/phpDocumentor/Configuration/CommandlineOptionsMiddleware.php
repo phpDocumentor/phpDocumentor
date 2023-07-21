@@ -27,27 +27,19 @@ use function current;
 use function end;
 use function explode;
 use function implode;
+use function is_countable;
 
 use const DIRECTORY_SEPARATOR;
 
 final class CommandlineOptionsMiddleware implements MiddlewareInterface
 {
-    /** @var array<string|string[]> */
-    private $options;
-
-    /** @var ConfigurationFactory */
-    private $configFactory;
-
-    /** @var Dsn */
-    private $currentWorkingDir;
+    private readonly \phpDocumentor\Dsn $currentWorkingDir;
 
     /**
      * @param array<string|string[]> $options
      */
-    public function __construct(array $options, ConfigurationFactory $configFactory, string $currentWorkingDir)
+    public function __construct(private array $options, private readonly ConfigurationFactory $configFactory, string $currentWorkingDir)
     {
-        $this->options = $options;
-        $this->configFactory = $configFactory;
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
@@ -134,10 +126,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         if (isset($this->options['template']) && $this->options['template']) {
             $configuration['phpdocumentor']['templates'] = array_map(
-                static function ($templateName) {
-                    return ['name' => $templateName];
-                },
-                (array) $this->options['template']
+                static fn ($templateName) => ['name' => $templateName],
+                (array) $this->options['template'],
             );
         }
 
@@ -160,12 +150,10 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $version->api[0] = $version->api[0]->withSource(
             $version->api[0]->source()->withPaths(
                 array_map(
-                    static function ($path): Path {
-                        return new Path($path);
-                    },
-                    $filename
-                )
-            )
+                    static fn ($path): Path => new Path($path),
+                    $filename,
+                ),
+            ),
         );
 
         return $version;
@@ -197,13 +185,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             // A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
                 $version->addApi(
-                    $currentApiConfig->withSource(new Source(Dsn::createFromString($path), [new Path('./')]))
+                    $currentApiConfig->withSource(new Source(Dsn::createFromString($path), [new Path('./')])),
                 );
             } else {
                 $currentApiConfig = $currentApiConfig->withSource(
                     $currentApiConfig->source()->withPaths(
-                        array_merge($currentApiConfig->source()->paths(), [new Path($path)])
-                    )
+                        array_merge($currentApiConfig->source()->paths(), [new Path($path)]),
+                    ),
                 );
             }
         }
@@ -247,13 +235,11 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $version->api[0]['ignore'],
                 [
                     'paths' => array_map(
-                        static function ($path): Path {
-                            return new Path($path);
-                        },
-                        $this->options['ignore']
+                        static fn ($path): Path => new Path($path),
+                        $this->options['ignore'],
                     ),
-                ]
-            )
+                ],
+            ),
         );
 
         return $version;
@@ -375,7 +361,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private function shouldReduceNumberOfVersionsToOne(Configuration $configuration): bool
     {
         return (($this->options['filename'] ?? '') !== '' || ($this->options['directory'] ?? '') !== '')
-            && count($configuration['phpdocumentor']['versions']) > 1;
+            && (is_countable($configuration['phpdocumentor']['versions']) ? count($configuration['phpdocumentor']['versions']) : 0) > 1;
     }
 
     private function overwriteSettings(Configuration $configuration): Configuration
@@ -433,8 +419,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $version->api[0]['ignore'],
                 [
                     'symlinks' => $this->options['ignore-symlinks'],
-                ]
-            )
+                ],
+            ),
         );
 
         return $version;

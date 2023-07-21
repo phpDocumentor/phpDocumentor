@@ -30,20 +30,19 @@ class ExampleAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const EXAMPLE_FILE_PATH = 'examples/example.txt';
+    final public const EXAMPLE_FILE_PATH = 'examples/example.txt';
 
-    public const EXAMPLE_STARTING_LINE = 10;
+    final public const EXAMPLE_STARTING_LINE = 10;
 
-    public const EXAMPLE_LINE_COUNT = 5;
+    final public const EXAMPLE_LINE_COUNT = 5;
 
-    public const EXAMPLE_DESCRIPTION = 'This is a description';
+    final public const EXAMPLE_DESCRIPTION = 'This is a description';
 
-    public const EXAMPLE_TEXT = 'This is an example';
+    final public const EXAMPLE_TEXT = 'This is an example';
 
-    public const TAG_NAME = 'example';
+    final public const TAG_NAME = 'example';
 
-    /** @var ExampleAssembler */
-    private $fixture;
+    private ExampleAssembler $fixture;
 
     /** @var Finder|ObjectProphecy */
     private $finderMock;
@@ -96,7 +95,7 @@ class ExampleAssemblerTest extends TestCase
             false,
             self::EXAMPLE_STARTING_LINE,
             self::EXAMPLE_LINE_COUNT,
-            self::EXAMPLE_DESCRIPTION
+            self::EXAMPLE_DESCRIPTION,
         );
     }
 

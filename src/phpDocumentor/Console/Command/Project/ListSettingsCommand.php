@@ -23,16 +23,12 @@ use function var_export;
 
 final class ListSettingsCommand extends Command
 {
-    /** @var iterable<WithCustomSettings> */
-    private $servicesWithCustomSettings;
-
     /**
      * @param iterable<WithCustomSettings> $servicesWithCustomSettings
      */
-    public function __construct(iterable $servicesWithCustomSettings)
+    public function __construct(private readonly iterable $servicesWithCustomSettings)
     {
         parent::__construct('settings:list');
-        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,7 +40,7 @@ final class ListSettingsCommand extends Command
         foreach ($this->servicesWithCustomSettings as $servicesWithCustomSetting) {
             foreach ($servicesWithCustomSetting->getDefaultSettings() as $setting => $default) {
                 $output->writeln(
-                    sprintf('  <info>%s</info> <comment>[default: %s]</comment>', $setting, var_export($default, true))
+                    sprintf('  <info>%s</info> <comment>[default: %s]</comment>', $setting, var_export($default, true)),
                 );
             }
         }

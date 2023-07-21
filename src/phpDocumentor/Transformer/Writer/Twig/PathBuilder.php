@@ -14,15 +14,10 @@ use function ltrim;
 
 final class PathBuilder
 {
-    private Router $router;
-    private RelativePathToRootConverter $relativePathToRootConverter;
-
     public function __construct(
-        Router $router,
-        RelativePathToRootConverter $relativePathToRootConverter
+        private readonly Router $router,
+        private readonly RelativePathToRootConverter $relativePathToRootConverter
     ) {
-        $this->router = $router;
-        $this->relativePathToRootConverter = $relativePathToRootConverter;
     }
 
     /**

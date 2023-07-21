@@ -50,10 +50,9 @@ trait LegacyArrayAccess
 
     /**
      * @param string $offset
-     * @param mixed $value
      */
     #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         $property = $this->normalizePropertyName($offset);
         if (!property_exists($this, $property)) {

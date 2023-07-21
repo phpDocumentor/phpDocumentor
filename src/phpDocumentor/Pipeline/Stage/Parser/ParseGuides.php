@@ -27,28 +27,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ParseGuides
 {
-    /** @var CommandBus */
-    private $commandBus;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
-    /** @var EventDispatcherInterface&EventDispatcher */
-    private EventDispatcherInterface $eventDispatcher;
-
     /** @param EventDispatcherInterface&EventDispatcher $eventDispatcher */
     public function __construct(
-        CommandBus $commandBus,
-        LoggerInterface $logger,
-        FlySystemFactory $flySystemFactory,
-        EventDispatcherInterface $eventDispatcher
+        private readonly CommandBus $commandBus,
+        private readonly LoggerInterface $logger,
+        private readonly FlySystemFactory $flySystemFactory,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
-        $this->commandBus = $commandBus;
-        $this->logger = $logger;
-        $this->flySystemFactory = $flySystemFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -88,8 +73,8 @@ final class ParseGuides
                 $origin,
                 $sourcePath,
                 $guideDocumentationSet->getInputFormat(),
-                $guideDocumentationSet->getGuidesProjectNode()
-            )
+                $guideDocumentationSet->getGuidesProjectNode(),
+            ),
         );
         $this->eventDispatcher->removeListener(PostParseDocument::class, $listener);
 

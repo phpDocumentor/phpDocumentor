@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Event\EventAbstract;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
@@ -26,8 +27,7 @@ final class PreTransformEventTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var PreTransformEvent $fixture */
-    private $fixture;
+    private PreTransformEvent|EventAbstract $fixture;
 
     /**
      * Creates a new (empty) fixture object.

@@ -28,15 +28,11 @@ use function md5;
 
 final class InitializeBuilderFromConfig
 {
-    /** @var PartialsCollection<string> */
-    private $partials;
-
     /**
      * @param PartialsCollection<string> $partials
      */
-    public function __construct(PartialsCollection $partials)
+    public function __construct(private readonly PartialsCollection $partials)
     {
-        $this->partials = $partials;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -65,29 +61,29 @@ final class InitializeBuilderFromConfig
         foreach ($version->getGuides() as $guide) {
             $collection->add(
                 new GuideSetDescriptor(
-                    md5($guide['output']),
+                    md5((string) $guide['output']),
                     $guide['source'],
                     $guide['output'],
                     $guide['format'],
-                    projectNode: new ProjectNode(null, $version->getNumber())
-                )
+                    projectNode: new ProjectNode(null, $version->getNumber()),
+                ),
             );
         }
 
         foreach ($version->getApi() as $apiSpecification) {
             $collection->add(
                 new ApiSetDescriptor(
-                    md5($apiSpecification['output']),
+                    md5((string) $apiSpecification['output']),
                     $apiSpecification['source'],
                     $apiSpecification['output'],
-                    $apiSpecification
-                )
+                    $apiSpecification,
+                ),
             );
         }
 
         return new VersionDescriptor(
             $version->getNumber(),
-            $collection
+            $collection,
         );
     }
 
@@ -100,7 +96,7 @@ final class InitializeBuilderFromConfig
      */
     private function guardAgainstMultipleSetsOfTheSameType(VersionSpecification $version): void
     {
-        if (count($version->getGuides()) > 1) {
+        if (count((array) $version->getGuides()) > 1) {
             throw new OutOfRangeException(
                 <<<'EOF'
 phpDocumentor supports 1 set of guides at the moment, support for multiple 
@@ -111,7 +107,7 @@ elements in your configuration file.
 
 To fix this, make sure you only have one "<guide>" element in your
 documentation.
-EOF
+EOF,
             );
         }
 
@@ -130,7 +126,7 @@ documentation.
 To fix this, make sure you only have one "<api>" element in your documentation
 and/or use relative paths when using the "-d" or "--directory" command line
 argument.
-EOF
+EOF,
             );
         }
     }

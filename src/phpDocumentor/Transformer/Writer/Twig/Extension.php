@@ -89,33 +89,20 @@ use function vsprintf;
  */
 final class Extension extends AbstractExtension implements ExtensionInterface, GlobalsInterface
 {
-    private LinkRenderer $routeRenderer;
-    private ConverterInterface $markdownConverter;
-    private RelativePathToRootConverter $relativePathToRootConverter;
-    private PathBuilder $pathBuilder;
-    private DocumentationSetDescriptor $documentationSet;
-    private ProjectDescriptor $project;
-
     /**
      * Registers the structure and transformation with this extension.
      *
      * @param ProjectDescriptor $project Represents the complete Abstract Syntax Tree.
      */
     public function __construct(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
-        ConverterInterface $markdownConverter,
-        LinkRenderer $routeRenderer,
-        RelativePathToRootConverter $relativePathToRootConverter,
-        PathBuilder $pathBuilder
+        private readonly ProjectDescriptor $project,
+        private readonly DocumentationSetDescriptor $documentationSet,
+        private readonly ConverterInterface $markdownConverter,
+        private LinkRenderer $routeRenderer,
+        private readonly RelativePathToRootConverter $relativePathToRootConverter,
+        private readonly PathBuilder $pathBuilder
     ) {
-        $this->project = $project;
-        $this->documentationSet = $documentationSet;
-        $this->markdownConverter = $markdownConverter;
-        $this->routeRenderer = $routeRenderer;
         $this->routeRenderer = $this->routeRenderer->withProject($project)->forDocumentationSet($documentationSet);
-        $this->relativePathToRootConverter = $relativePathToRootConverter;
-        $this->pathBuilder = $pathBuilder;
     }
 
     /**
@@ -190,7 +177,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     $this->routeRenderer = $this->contextRouteRenderer($context);
                     $absolutePath = $this->relativePathToRootConverter->convert(
                         $this->routeRenderer->getDestination(),
-                        '/'
+                        '/',
                     );
                     if (!$absolutePath) {
                         return '';
@@ -198,7 +185,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 
                     return '<base href="' . $absolutePath . '">';
                 },
-                ['is_safe' => ['all'], 'needs_context' => true]
+                ['is_safe' => ['all'], 'needs_context' => true],
             ),
             new TwigFunction(
                 'path',
@@ -208,7 +195,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     Assert::notNull($path);
 
                     return $path;
-                }
+                },
             ),
             new TwigFunction(
                 'link',
@@ -222,7 +209,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $this->pathBuilder->link($element);
-                }
+                },
             ),
             new TwigFunction(
                 'breadcrumbs',
@@ -237,7 +224,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $results;
-                }
+                },
             ),
             new TwigFunction(
                 'packages',
@@ -252,7 +239,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $results;
-                }
+                },
             ),
             new TwigFunction(
                 'methods',
@@ -271,7 +258,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $methods;
-                }
+                },
             ),
             new TwigFunction(
                 'properties',
@@ -290,7 +277,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $properties;
-                }
+                },
             ),
             new TwigFunction(
                 'constants',
@@ -309,7 +296,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $constants;
-                }
+                },
             ),
             new TwigFunction(
                 'cases',
@@ -319,7 +306,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return new Collection();
-                }
+                },
             ),
             new TwigFunction(
                 'toc',
@@ -340,13 +327,13 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                             'entry' => $entry,
                             'depth' => ++$depth,
                             'maxDepth' => $maxDepth,
-                        ]
+                        ],
                     );
                 },
                 [
                     'needs_environment' => true,
                     'is_safe' => ['html'],
-                ]
+                ],
             ),
         ];
     }
@@ -361,51 +348,43 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                function (?string $value): string {
-                    return str_replace(
-                        ['<pre>', '<code>'],
-                        ['<pre class="prettyprint">', '<code class="prettyprint">'],
-                        $this->markdownConverter->convert($value ?? '')->getContent()
-                    );
-                },
-                ['is_safe' => ['all']]
+                fn (?string $value): string => str_replace(
+                    ['<pre>', '<code>'],
+                    ['<pre class="prettyprint">', '<code class="prettyprint">'],
+                    $this->markdownConverter->convert($value ?? '')->getContent(),
+                ),
+                ['is_safe' => ['all']],
             ),
             'trans' => new TwigFilter(
                 'trans',
-                static function ($value) {
-                    return $value;
-                }
+                static fn ($value) => $value,
             ),
             'route' => new TwigFilter(
                 'route',
-                function ($value, string $presentation = LinkRenderer::PRESENTATION_NORMAL) {
-                    return $this->routeRenderer->render($value, $presentation);
-                },
-                ['is_safe' => ['all']]
+                fn ($value, string $presentation = LinkRenderer::PRESENTATION_NORMAL) => $this->routeRenderer->render($value, $presentation),
+                ['is_safe' => ['all']],
             ),
-            'sort' => new TwigFilter('sort_*', [$this, 'sort']),
-            'sortByVisibility' => new TwigFilter('sortByVisibility', [$this, 'sortByVisibility']),
+            'sort' => new TwigFilter('sort_*', $this->sort(...)),
+            'sortByVisibility' => new TwigFilter('sortByVisibility', $this->sortByVisibility(...)),
             'export' => new TwigFilter(
                 'export',
-                static function ($var) {
-                    return var_export($var, true);
-                }
+                static fn ($var) => var_export($var, true)
             ),
             'description' => new TwigFilter(
                 'description',
-                [$this, 'renderDescription'],
-                ['needs_context' => true]
+                $this->renderDescription(...),
+                ['needs_context' => true],
             ),
             'shortFQSEN' => new TwigFilter(
                 'shortFQSEN',
                 static function (string $fqsenOrTitle) {
                     try {
                         return (new Fqsen($fqsenOrTitle))->getName();
-                    } catch (InvalidArgumentException $e) {
+                    } catch (InvalidArgumentException) {
                     }
 
                     return $fqsenOrTitle;
-                }
+                },
             ),
         ];
     }
@@ -490,7 +469,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 }
 
                 return -1;
-            }
+            },
         );
 
         return $iterator;
@@ -526,7 +505,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 $bElem = strtolower($b->getName());
 
                 return $aElem <=> $bElem;
-            }
+            },
         );
 
         return $iterator;

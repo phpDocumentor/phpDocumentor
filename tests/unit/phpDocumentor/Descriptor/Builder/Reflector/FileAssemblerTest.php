@@ -36,11 +36,9 @@ final class FileAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var FileAssembler $fixture */
-    private $fixture;
+    private FileAssembler $fixture;
 
-    /** @var PackageDescriptor */
-    private $defaultPackage;
+    private PackageDescriptor $defaultPackage;
 
     /**
      * Creates a new fixture to test with.
@@ -67,7 +65,7 @@ final class FileAssemblerTest extends TestCase
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);

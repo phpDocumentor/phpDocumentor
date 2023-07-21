@@ -15,9 +15,9 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use Stringable;
 
 use function count;
-use function get_class;
 use function is_string;
 use function sprintf;
 use function str_replace;
@@ -31,7 +31,7 @@ use const PHP_EOL;
  * as the total number of elements per type of Descriptor, the number of top level namespaces or the number of parent
  * classes that could not be interpreted by the Compiler passes.
  */
-class ProjectAnalyzer
+class ProjectAnalyzer implements Stringable
 {
     protected int $fileCount = 0;
     protected int $topLevelNamespaceCount = 0;
@@ -85,7 +85,7 @@ TEXT;
             $logString,
             $this->fileCount,
             $this->topLevelNamespaceCount,
-            $this->unresolvedParentClassesCount
+            $this->unresolvedParentClassesCount,
         );
     }
 
@@ -100,11 +100,11 @@ TEXT;
      */
     protected function addElementToCounter(array $classCounters, ElementInterface $element): array
     {
-        if (!isset($classCounters[get_class($element)])) {
-            $classCounters[get_class($element)] = 0;
+        if (!isset($classCounters[$element::class])) {
+            $classCounters[$element::class] = 0;
         }
 
-        ++$classCounters[get_class($element)];
+        ++$classCounters[$element::class];
 
         return $classCounters;
     }
@@ -134,7 +134,7 @@ TEXT;
     {
         return $documentationSet->getIndexes()->fetch(
             'elements',
-            Collection::fromInterfaceString(ElementInterface::class)
+            Collection::fromInterfaceString(ElementInterface::class),
         );
     }
 }

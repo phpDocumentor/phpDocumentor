@@ -25,7 +25,7 @@ final class InvalidTagAssemblerTest extends TestCase
         self::assertEquals('ERROR', $tag->getErrors()[0]->getSeverity());
         self::assertEquals(
             'Tag "name" with body "@name Tag body" has error ',
-            $tag->getErrors()[0]->getCode()
+            $tag->getErrors()[0]->getCode(),
         );
     }
 }

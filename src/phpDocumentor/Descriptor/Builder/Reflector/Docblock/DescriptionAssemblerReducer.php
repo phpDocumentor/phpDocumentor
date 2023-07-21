@@ -32,7 +32,7 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
         /** @phpstan-var ElementInterface|TagDescriptor $descriptor */
         $description = new DescriptionDescriptor(
             $data->getDescription(),
-            $data->getDescription() !== null ? $this->createTags($data->getDescription()->getTags()) : []
+            $data->getDescription() !== null ? $this->createTags($data->getDescription()->getTags()) : [],
         );
 
         $descriptor->setDescription($description);

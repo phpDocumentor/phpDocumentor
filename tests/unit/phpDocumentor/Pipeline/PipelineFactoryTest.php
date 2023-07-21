@@ -31,13 +31,9 @@ final class PipelineFactoryTest extends TestCase
         $pipelineFactory = new PipelineFactory(new TestLogger());
         $pipeline = $pipelineFactory->create(
             [
-                static function ($value) {
-                    return $value + 1;
-                },
-                static function ($value) {
-                    return $value * 2;
-                },
-            ]
+                static fn ($value) => $value + 1,
+                static fn ($value) => $value * 2,
+            ],
         );
 
         // can only test whether it worked by running the pipeline and

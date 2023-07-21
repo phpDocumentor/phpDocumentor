@@ -19,13 +19,8 @@ use phpDocumentor\JsonPath\Parser;
 
 class Engine
 {
-    private Executor $executor;
-    private Parser $parser;
-
-    public function __construct(Executor $executor, Parser $parser)
+    public function __construct(private readonly Executor $executor, private readonly Parser $parser)
     {
-        $this->executor = $executor;
-        $this->parser = $parser;
     }
 
     /**

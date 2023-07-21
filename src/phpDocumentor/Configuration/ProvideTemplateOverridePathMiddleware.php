@@ -35,12 +35,8 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
 {
     public const PATH_TO_TEMPLATE_OVERRIDES = '.phpdoc/template';
 
-    /** @var EnvironmentFactory */
-    private $environmentFactory;
-
-    public function __construct(EnvironmentFactory $environmentFactory)
+    public function __construct(private readonly EnvironmentFactory $environmentFactory)
     {
-        $this->environmentFactory = $environmentFactory;
     }
 
     public function __invoke(Configuration $configuration, ?UriInterface $pathOfConfigFile = null): Configuration

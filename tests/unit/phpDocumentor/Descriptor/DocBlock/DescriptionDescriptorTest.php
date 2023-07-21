@@ -37,7 +37,7 @@ final class DescriptionDescriptorTest extends TestCase
         $bodyTemplate = 'my template %s';
         $description = new Description(
             $bodyTemplate,
-            [new Generic('internal', new Description('Some text'))]
+            [new Generic('internal', new Description('Some text'))],
         );
 
         $descriptor = new DescriptionDescriptor(
@@ -47,10 +47,10 @@ final class DescriptionDescriptorTest extends TestCase
                     'internal',
                     new DescriptionDescriptor(
                         new Description('Some text'),
-                        []
-                    )
+                        [],
+                    ),
                 ),
-            ]
+            ],
         );
 
         self::assertSame((string) $description, (string) $descriptor);
@@ -64,7 +64,7 @@ final class DescriptionDescriptorTest extends TestCase
         $bodyTemplate = 'my template %1$s';
         $description = new Description(
             $bodyTemplate,
-            [new Generic('internal', new Description('Some text'))]
+            [new Generic('internal', new Description('Some text'))],
         );
 
         $descriptor = new DescriptionDescriptor(
@@ -74,15 +74,15 @@ final class DescriptionDescriptorTest extends TestCase
                     'internal',
                     new DescriptionDescriptor(
                         new Description('Some text'),
-                        []
-                    )
+                        [],
+                    ),
                 ),
-            ]
+            ],
         );
 
         $descriptor->replaceTag(
             0,
-            $tagDescriptorReplacement
+            $tagDescriptorReplacement,
         );
 
         self::assertSame($expected, (string) $descriptor);
@@ -96,8 +96,8 @@ final class DescriptionDescriptorTest extends TestCase
                     'internal',
                     new DescriptionDescriptor(
                         new Description('Replaced'),
-                        []
-                    )
+                        [],
+                    ),
                 ),
                 'my template {@internal Replaced}',
             ],

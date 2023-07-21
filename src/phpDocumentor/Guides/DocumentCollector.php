@@ -12,11 +12,8 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 
 final class DocumentCollector
 {
-    private GuideSetDescriptor $guideSetDescriptor;
-
-    public function __construct(GuideSetDescriptor $guideSetDescriptor)
+    public function __construct(private readonly GuideSetDescriptor $guideSetDescriptor)
     {
-        $this->guideSetDescriptor = $guideSetDescriptor;
     }
 
     public function __invoke(PostParseDocument $event): void
@@ -38,8 +35,8 @@ final class DocumentCollector
                 $document,
                 $document->getHash(),
                 $file,
-                $document->getTitle()->getId()
-            )
+                $document->getTitle()->getId(),
+            ),
         );
     }
 }

@@ -23,8 +23,6 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-use function get_class;
-
 /**
  * Tests the functionality for the Linker class.
  *
@@ -145,7 +143,7 @@ final class LinkerTest extends TestCase
                 new Fqsen($fqsenString2), // Won't be resolved and stays like this
                 new Fqsen($fqsenString3), // Will be resolved to a string
             ],
-            $container
+            $container,
         );
 
         $this->assertIsArray($result);
@@ -182,7 +180,7 @@ final class LinkerTest extends TestCase
                 ],
                 new Fqsen($fqsenString3), // Will be resolved to a string
             ],
-            $container
+            $container,
         );
 
         $this->assertIsArray($result);
@@ -231,7 +229,7 @@ final class LinkerTest extends TestCase
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
 
-        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+        $this->linker = new Linker([$class->reveal()::class => ['parent']], $this->descriptorRepository->reveal());
 
         // Only when field returns null, no update happens
         $class->getParent()->willReturn(null)->shouldBeCalledOnce();
@@ -249,7 +247,7 @@ final class LinkerTest extends TestCase
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
 
-        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+        $this->linker = new Linker([$class->reveal()::class => ['parent']], $this->descriptorRepository->reveal());
 
         $parentFqsenString = '\My\Parent\Class';
         $parentFqsenObject = new Fqsen($parentFqsenString);
@@ -283,7 +281,7 @@ final class LinkerTest extends TestCase
     {
         $result = new ClassDescriptor();
         $object = $this->prophesize(ClassDescriptor::class);
-        $fqsen = get_class($object);
+        $fqsen = $object::class;
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('elements')->set($fqsen, $result);

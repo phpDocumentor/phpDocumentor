@@ -38,7 +38,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     private Collection $partials;
 
     /** @var Collection<VersionDescriptor> $versions */
-    private Collection $versions;
+    private readonly Collection $versions;
 
     /**
      * Initializes this descriptor.

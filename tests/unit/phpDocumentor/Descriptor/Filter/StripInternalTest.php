@@ -32,8 +32,7 @@ final class StripInternalTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var StripInternal $fixture */
-    private $fixture;
+    private StripInternal $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -56,7 +55,7 @@ final class StripInternalTest extends TestCase
             [
                 new TagDescriptor('internal'),
                 $otherTag,
-            ]
+            ],
         );
 
         $apiSpec = ApiSpecification::createDefault();
@@ -67,8 +66,8 @@ final class StripInternalTest extends TestCase
         $this->assertSame(
             [null, $otherTag],
             $this->fixture->__invoke(
-                new FilterPayload($descriptor, $apiSpec)
-            )->getFilterable()->getDescription()->getTags()
+                new FilterPayload($descriptor, $apiSpec),
+            )->getFilterable()->getDescription()->getTags(),
         );
     }
 
@@ -86,7 +85,7 @@ final class StripInternalTest extends TestCase
 
         $description = new DescriptionDescriptor(
             new DocBlockDescription('irelavant'),
-            $tags
+            $tags,
         );
 
         $apiSpec = ApiSpecification::createDefault();
@@ -97,8 +96,8 @@ final class StripInternalTest extends TestCase
         self::assertSame(
             $tags,
             $this->fixture->__invoke(
-                new FilterPayload($descriptor, $apiSpec)
-            )->getFilterable()->getDescription()->getTags()
+                new FilterPayload($descriptor, $apiSpec),
+            )->getFilterable()->getDescription()->getTags(),
         );
     }
 
@@ -118,7 +117,7 @@ final class StripInternalTest extends TestCase
         $descriptor->getTags()->shouldBeCalled()->willReturn($collection->reveal());
 
         self::assertNull(
-            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable(),
         );
     }
 
@@ -134,7 +133,7 @@ final class StripInternalTest extends TestCase
 
         self::assertSame(
             $descriptor->reveal(),
-            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable(),
         );
     }
 
@@ -150,7 +149,7 @@ final class StripInternalTest extends TestCase
 
         self::assertSame(
             $descriptor->reveal(),
-            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable()
+            $this->fixture->__invoke(new FilterPayload($descriptor->reveal(), $apiSpec))->getFilterable(),
         );
     }
 }

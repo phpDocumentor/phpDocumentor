@@ -21,8 +21,7 @@ use Symfony\Component\String\ByteString;
 
 final class ReEncodingMiddleware implements Middleware
 {
-    /** @var string */
-    private $encoding = 'UTF-8';
+    private string $encoding = 'UTF-8';
 
     public function withEncoding(string $encoding): void
     {
@@ -40,7 +39,7 @@ final class ReEncodingMiddleware implements Middleware
 
         $file = new ReEncodedFile(
             $command->getFile()->path(),
-            (new ByteString($command->getFile()->getContents()))->toUnicodeString($this->encoding)
+            (new ByteString($command->getFile()->getContents()))->toUnicodeString($this->encoding),
         );
 
         return $next(new CreateCommand($command->getContext(), $file, $command->getStrategies()));

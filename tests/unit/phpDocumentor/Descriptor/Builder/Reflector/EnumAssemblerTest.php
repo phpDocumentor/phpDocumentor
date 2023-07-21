@@ -24,8 +24,7 @@ final class EnumAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var EnumAssembler */
-    private $assembler;
+    private EnumAssembler $assembler;
 
     /** @var ProjectDescriptorBuilder&ObjectProphecy */
     private $builder;
@@ -91,7 +90,7 @@ final class EnumAssemblerTest extends TestCase
             $fqsen,
             new String_(),
             new DocBlock('Summary'),
-            new Location(10, 0)
+            new Location(10, 0),
         );
     }
 }

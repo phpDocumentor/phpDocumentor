@@ -31,11 +31,10 @@ use const DIRECTORY_SEPARATOR;
  */
 class Finder
 {
-    /** @var string */
-    private $sourceDirectory = '';
+    private string $sourceDirectory = '';
 
     /** @var string[] */
-    private $exampleDirectories = [];
+    private array $exampleDirectories = [];
 
     /**
      * Attempts to find the example contents for the given descriptor.
@@ -51,7 +50,7 @@ class Finder
 
         return implode(
             '',
-            array_slice($file, $descriptor->getStartingLine() - 1, $descriptor->getLineCount())
+            array_slice($file, $descriptor->getStartingLine() - 1, $descriptor->getLineCount()),
         );
     }
 
@@ -154,7 +153,7 @@ class Finder
             '%s%s%s',
             trim($this->getSourceDirectory(), '\\/'),
             DIRECTORY_SEPARATOR,
-            trim($file, '"')
+            trim($file, '"'),
         );
     }
 }

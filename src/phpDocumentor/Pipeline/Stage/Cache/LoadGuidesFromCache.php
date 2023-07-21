@@ -11,16 +11,8 @@ use Psr\Log\LoggerInterface;
 
 final class LoadGuidesFromCache
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CommandBus */
-    private $commandBus;
-
-    public function __construct(CommandBus $commandBus, LoggerInterface $logger)
+    public function __construct(private readonly CommandBus $commandBus, private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -35,8 +27,8 @@ final class LoadGuidesFromCache
                 $this->commandBus->handle(
                     new LoadCacheCommand(
                         ((string) $cacheFolder) . '/guides',
-                        $useCache
-                    )
+                        $useCache,
+                    ),
                 );
             }
         }

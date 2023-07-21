@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
+use Stringable;
+
 /**
  * Model representing a parameter in a template or transformation.
  */
-final class Parameter
+final class Parameter implements Stringable
 {
-    /** @var string */
-    private $key;
-
-    /** @var string */
-    private $value;
-
-    public function __construct(string $key, string $value)
+    public function __construct(private readonly string $key, private readonly string $value)
     {
-        $this->key = $key;
-        $this->value = $value;
     }
 
     public function key(): string

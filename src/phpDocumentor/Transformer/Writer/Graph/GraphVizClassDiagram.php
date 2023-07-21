@@ -130,7 +130,7 @@ final class GraphVizClassDiagram implements Generator
         if ($error !== 0) {
             throw new RuntimeException(
                 'Unable to find the `dot` command of the GraphViz package. '
-                . 'Is GraphViz correctly installed and present in your path?'
+                . 'Is GraphViz correctly installed and present in your path?',
             );
         }
     }
@@ -148,7 +148,7 @@ final class GraphVizClassDiagram implements Generator
             $namespaceParts = explode('\\', $fromName);
             $this->nodeCache[$fromName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
-                $this->createNamespaceGraph($fromName)
+                $this->createNamespaceGraph($fromName),
             );
         }
 
@@ -156,7 +156,7 @@ final class GraphVizClassDiagram implements Generator
             $namespaceParts = explode('\\', $toName);
             $this->nodeCache[$toName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
-                $this->createNamespaceGraph($toName)
+                $this->createNamespaceGraph($toName),
             );
         }
 
@@ -229,14 +229,14 @@ final class GraphVizClassDiagram implements Generator
         $elements = array_merge(
             $namespace->getClasses()->getAll(),
             $namespace->getInterfaces()->getAll(),
-            $namespace->getTraits()->getAll()
+            $namespace->getTraits()->getAll(),
         );
 
         /** @var ClassDescriptor|InterfaceDescriptor|TraitDescriptor $subElement */
         foreach ($elements as $subElement) {
             $node = Node::create(
                 (string) $subElement->getFullyQualifiedStructuralElementName(),
-                $subElement->getName()
+                $subElement->getName(),
             )
                 ->setShape('box')
                 ->setFontName('Courier')

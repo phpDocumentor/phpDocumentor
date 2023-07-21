@@ -23,7 +23,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
 
         self::assertNull($reducer->create(
             new DocBlock('Summary', new DocBlock\Description('template')),
-            null
+            null,
         ));
     }
 
@@ -35,7 +35,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
 
         $inputData = new DocBlock(
             'Summary',
-            new DocBlock\Description('template', [new DocBlock\Tags\Generic('Tag')])
+            new DocBlock\Description('template', [new DocBlock\Tags\Generic('Tag')]),
         );
 
         $reducer = new DescriptionAssemblerReducer();
@@ -46,7 +46,7 @@ final class DescriptionAssemblerReducerTest extends TestCase
 
         self::assertEquals(
             new DescriptionDescriptor($inputData->getDescription(), [new TagDescriptor('Tag')]),
-            $result->getDescription()
+            $result->getDescription(),
         );
     }
 }

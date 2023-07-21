@@ -26,20 +26,15 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     use Faker;
 
-    /** @var Transformation $fixture */
-    private $fixture;
+    private Transformation $fixture;
 
-    /** @var string */
-    private $query = 'queryString';
+    private string $query = 'queryString';
 
-    /** @var string */
-    private $writer = 'writerString';
+    private string $writer = 'writerString';
 
-    /** @var string */
-    private $source = 'sourceString';
+    private string $source = 'sourceString';
 
-    /** @var string */
-    private $artifact = 'artifactString';
+    private string $artifact = 'artifactString';
 
     /** @var Template */
     private $template;
@@ -55,7 +50,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
             $this->query,
             $this->writer,
             $this->source,
-            $this->artifact
+            $this->artifact,
         );
     }
 

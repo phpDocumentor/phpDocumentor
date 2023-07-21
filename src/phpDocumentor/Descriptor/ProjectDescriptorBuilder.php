@@ -23,16 +23,13 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
 
-use function array_merge;
-use function get_class;
-
 /**
  * Builds a Project Descriptor and underlying tree.
  */
 class ProjectDescriptorBuilder
 {
     /** @var string */
-    public const DEFAULT_PROJECT_NAME = 'Untitled project';
+    final public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
     /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
@@ -42,9 +39,6 @@ class ProjectDescriptorBuilder
 
     /** @var ProjectDescriptor $project */
     protected $project;
-
-    /** @var iterable<WithCustomSettings> */
-    private $servicesWithCustomSettings;
 
     private ApiSpecification $apiSpecification;
 
@@ -56,11 +50,10 @@ class ProjectDescriptorBuilder
     public function __construct(
         AssemblerFactory $assemblerFactory,
         Filter $filterManager,
-        iterable $servicesWithCustomSettings = []
+        private readonly iterable $servicesWithCustomSettings = []
     ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
-        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     public function createProjectDescriptor(): void
@@ -97,7 +90,7 @@ class ProjectDescriptorBuilder
         if (!$assembler) {
             throw new InvalidArgumentException(
                 'Unable to build a Descriptor; the provided data did not match any Assembler ' .
-                get_class($data)
+                $data::class,
             );
         }
 
@@ -173,7 +166,7 @@ class ProjectDescriptorBuilder
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set(
                 (string) $namespace->getFqsen(),
-                $this->buildDescriptor($namespace, NamespaceDescriptor::class)
+                $this->buildDescriptor($namespace, NamespaceDescriptor::class),
             );
         }
     }
@@ -215,7 +208,7 @@ class ProjectDescriptorBuilder
             // We assume that the custom settings have the non-default settings and we should not override those;
             // that is why we merge the custom settings on top of the default settings; this will cause the overrides
             // to remain in place.
-            $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
+            $customSettings = [...$service->getDefaultSettings(), ...$customSettings];
         }
 
         $this->project->getSettings()->setCustom($customSettings);
@@ -225,7 +218,7 @@ class ProjectDescriptorBuilder
     {
         if ($this->project->getVersions()->count() >= 1) {
             throw new OutOfRangeException(
-                'phpDocumentor only supports 1 version at the moment, support for multiple versions is being worked on'
+                'phpDocumentor only supports 1 version at the moment, support for multiple versions is being worked on',
             );
         }
 

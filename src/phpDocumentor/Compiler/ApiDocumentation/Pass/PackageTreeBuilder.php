@@ -44,12 +44,8 @@ use function ucfirst;
  */
 final class PackageTreeBuilder extends ApiDocumentationPass
 {
-    /** @var Parser */
-    private $parser;
-
-    public function __construct(Parser $parser)
+    public function __construct(private readonly Parser $parser)
     {
-        $this->parser = $parser;
     }
 
     public const COMPILER_PRIORITY = 9001;
@@ -80,7 +76,7 @@ final class PackageTreeBuilder extends ApiDocumentationPass
 
         $subject->getIndexes()->set(
             'packages',
-            Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
+            Collection::fromInterfaceString(ElementInterface::class, $packages->getAll()),
         );
 
         return $subject;

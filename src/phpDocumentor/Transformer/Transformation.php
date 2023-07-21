@@ -22,32 +22,13 @@ use function str_starts_with;
  */
 class Transformation
 {
-    /** @var string Reference to an object containing the business logic used to execute this transformation. */
-    private $writer;
-
-    /** @var string the location where the output should be sent to; the exact function differs per writer. */
-    private $artifact;
-
-    /** @var string the location where input for a writer should come from; the exact function differs per writer. */
-    private $source;
-
-    /**
-     * @var string a filter or other form of limitation on what information of the AST is used; the exact function
-     *     differs per writer.
-     */
-    private $query;
-
-    /** @var Transformer The object guiding the transformation process and having meta-data of it. */
-    private $transformer;
+    private ?Transformer $transformer = null;
 
     /**
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
      *     per writer.
      */
-    private $parameters = [];
-
-    /** @var Template */
-    private $template;
+    private array $parameters = [];
 
     /**
      * Constructs a new Transformation object and populates the required parameters.
@@ -57,13 +38,8 @@ class Transformation
      * @param string $source Which template or type of source to use.
      * @param string $artifact What is the filename of the result (relative to the generated root)
      */
-    public function __construct(Template $template, string $query, string $writer, string $source, string $artifact)
+    public function __construct(private readonly Template $template, private readonly string $query, private readonly string $writer, private readonly string $source, private readonly string $artifact)
     {
-        $this->template = $template;
-        $this->query = $query;
-        $this->writer = $writer;
-        $this->source = $source;
-        $this->artifact = $artifact;
     }
 
     /**

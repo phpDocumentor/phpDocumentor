@@ -26,12 +26,8 @@ class Sourcecode extends WriterAbstract
 {
     use IoTrait;
 
-    /** @var PathGenerator */
-    private $pathGenerator;
-
-    public function __construct(PathGenerator $pathGenerator)
+    public function __construct(private readonly PathGenerator $pathGenerator)
     {
-        $this->pathGenerator = $pathGenerator;
     }
 
     public function getName(): string

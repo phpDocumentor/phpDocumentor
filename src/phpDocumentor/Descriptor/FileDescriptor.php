@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\Interfaces\TracksErrors;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
+use Stringable;
 
 /**
  * Represents a file in the project.
@@ -34,7 +35,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @api
  * @package phpDocumentor\AST
  */
-class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface
+class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface, Stringable
 {
     protected string $hash = '';
     protected string $path = '';

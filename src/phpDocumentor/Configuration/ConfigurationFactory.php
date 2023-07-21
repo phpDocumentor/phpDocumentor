@@ -38,23 +38,15 @@ use function sprintf;
      *
      * @var list<MiddlewareInterface>
      */
-    private $middlewares = [];
-
-    /** @var string[] */
-    private $defaultFiles;
-
-    /** @var SymfonyConfigFactory */
-    private $symfonyConfigFactory;
+    private array $middlewares = [];
 
     /**
      * Initializes the ConfigurationFactory.
      *
      * @param array<string> $defaultFiles
      */
-    public function __construct(array $defaultFiles, SymfonyConfigFactory $symfonyConfigFactory)
+    public function __construct(private readonly array $defaultFiles, private readonly SymfonyConfigFactory $symfonyConfigFactory)
     {
-        $this->defaultFiles = $defaultFiles;
-        $this->symfonyConfigFactory = $symfonyConfigFactory;
     }
 
     /**
@@ -73,7 +65,7 @@ use function sprintf;
         foreach ($this->defaultFiles as $file) {
             try {
                 return $this->fromUri(UriFactory::createUri($file));
-            } catch (InvalidConfigPathException $e) {
+            } catch (InvalidConfigPathException) {
                 continue;
             }
         }
@@ -133,24 +125,20 @@ use function sprintf;
                 $configuration['phpdocumentor']['versions'][$versionNumber] = new VersionSpecification(
                     (string) $versionNumber,
                     array_map(
-                        static function ($api): ApiSpecification {
-                            return ApiSpecification::createFromArray($api);
-                        },
-                        $version['api']
+                        static fn ($api): ApiSpecification => ApiSpecification::createFromArray($api),
+                        $version['api'],
                     ),
                     array_map(
-                        static function ($guide): GuideSpecification {
-                            return new GuideSpecification(
-                                new Source(
-                                    $guide['source']['dsn'],
-                                    $guide['source']['paths']
-                                ),
-                                $guide['output'],
-                                $guide['format']
-                            );
-                        },
-                        $version['guides']
-                    )
+                        static fn ($guide): GuideSpecification => new GuideSpecification(
+                            new Source(
+                                $guide['source']['dsn'],
+                                $guide['source']['paths'],
+                            ),
+                            $guide['output'],
+                            $guide['format'],
+                        ),
+                        $version['guides'],
+                    ),
                 );
             }
         }

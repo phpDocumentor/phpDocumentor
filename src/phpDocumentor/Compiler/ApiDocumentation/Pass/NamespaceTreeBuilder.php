@@ -40,7 +40,7 @@ use function ucfirst;
  */
 class NamespaceTreeBuilder extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 9000;
+    final public const COMPILER_PRIORITY = 9000;
 
     public function getDescription(): string
     {
@@ -136,11 +136,11 @@ class NamespaceTreeBuilder extends ApiDocumentationPass
         /** @var NamespaceInterface|null $parent */
         $parent = $documentationSet->getIndexes()->fetch(
             'namespaces',
-            new Collection()
+            new Collection(),
         )->fetch((string) $namespace->getNamespace());
         $documentationSet->getIndexes()->fetch('elements', new Collection())->set(
             '~' . (string) $namespace->getFullyQualifiedStructuralElementName(),
-            $namespace
+            $namespace,
         );
 
         try {
@@ -159,7 +159,7 @@ class NamespaceTreeBuilder extends ApiDocumentationPass
 
             $namespace->setParent($parent);
             $parent->getChildren()->set($namespace->getName(), $namespace);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             //bit hacky but it works for now.
             //$project->getNamespace()->getChildren()->add($namespace);
         }

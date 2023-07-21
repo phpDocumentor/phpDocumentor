@@ -45,13 +45,13 @@ use function sprintf;
  */
 class Locator
 {
-    private ?Path $path;
+    private ?Path $path = null;
 
     /** @var CacheInterface&FilesystemAdapter */
-    private CacheInterface $fileCache;
+    private readonly CacheInterface $fileCache;
 
     /** @var CacheInterface&FilesystemAdapter */
-    private CacheInterface $descriptorCache;
+    private readonly CacheInterface $descriptorCache;
 
     public function __construct(CacheInterface $files, CacheInterface $descriptors)
     {
@@ -81,8 +81,8 @@ class Locator
                     sprintf(
                         'Received error "%s", while attempting to create directory "%s"',
                         $error['message'],
-                        $namespacePath
-                    )
+                        $namespacePath,
+                    ),
                 );
             }
         }

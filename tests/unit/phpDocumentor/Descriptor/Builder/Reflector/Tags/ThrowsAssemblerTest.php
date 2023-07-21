@@ -17,8 +17,7 @@ class ThrowsAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ThrowsAssembler */
-    private $fixture;
+    private ThrowsAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;
@@ -42,7 +41,7 @@ class ThrowsAssemblerTest extends TestCase
         $types = new Object_(new Fqsen('\InvalidAgumentException'));
         $reflector = new Throws(
             $types,
-            new Description('This is a description')
+            new Description('This is a description'),
         );
 
         $descriptor = $this->fixture->create($reflector);

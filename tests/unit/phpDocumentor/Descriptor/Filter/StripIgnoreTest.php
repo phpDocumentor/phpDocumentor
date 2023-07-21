@@ -28,8 +28,7 @@ final class StripIgnoreTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var StripIgnore $fixture */
-    private $fixture;
+    private StripIgnore $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -52,8 +51,8 @@ final class StripIgnoreTest extends TestCase
 
         $this->assertNull(
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault())
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault()),
+            )->getFilterable(),
         );
     }
 
@@ -71,8 +70,8 @@ final class StripIgnoreTest extends TestCase
         $this->assertEquals(
             $descriptor->reveal(),
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault())
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), ApiSpecification::createDefault()),
+            )->getFilterable(),
         );
     }
 }

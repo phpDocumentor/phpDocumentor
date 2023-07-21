@@ -47,14 +47,14 @@ final class EmittingMiddlewareTest extends TestCase
         $command = new CreateCommand(
             $this->faker()->phpParserContext(),
             new LocalFile($filename),
-            new ProjectFactoryStrategies([])
+            new ProjectFactoryStrategies([]),
         );
 
         Dispatcher::getInstance()->addListener(
             'parser.file.pre',
             function (PreFileEvent $event) use ($filename): void {
                 $this->assertSame($event->getFile(), $filename);
-            }
+            },
         );
 
         $middleware = new EmittingMiddleware();
@@ -64,7 +64,7 @@ final class EmittingMiddlewareTest extends TestCase
                 $this->assertSame($command, $receivedCommand);
 
                 return $file;
-            }
+            },
         );
 
         $this->assertSame($file, $result);

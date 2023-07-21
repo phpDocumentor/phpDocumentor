@@ -35,7 +35,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     {
         try {
             $method = $this->getMethod();
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             // TODO: Apparently, in our Mario's example this can be null. But that is weird. Investigate this after
             //       this PR
             return null;

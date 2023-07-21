@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 class MethodDescriptorTest extends TestCase
 {
-    public const EXAMPLE_NAME = 'methodname';
+    final public const EXAMPLE_NAME = 'methodname';
 
     /** @var MethodDescriptor $fixture */
     protected $fixture;

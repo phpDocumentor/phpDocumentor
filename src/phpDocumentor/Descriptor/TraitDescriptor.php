@@ -113,10 +113,10 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
                         'ERROR',
                         sprintf(
                             'Property name is invalid %s',
-                            $e->getMessage()
+                            $e->getMessage(),
                         ),
-                        null
-                    )
+                        null,
+                    ),
                 );
             }
         }

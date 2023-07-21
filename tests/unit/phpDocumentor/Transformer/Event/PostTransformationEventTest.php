@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Event\EventAbstract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -22,8 +23,7 @@ use stdClass;
  */
 final class PostTransformationEventTest extends TestCase
 {
-    /** @var PostTransformationEvent $fixture */
-    private $fixture;
+    private PostTransformationEvent|EventAbstract $fixture;
 
     /**
      * Creates a new (empty) fixture object.

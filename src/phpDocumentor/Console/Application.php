@@ -41,7 +41,7 @@ class Application extends BaseApplication
 
                 return $input->getFirstArgument();
             }
-        } catch (CommandNotFoundException $e) {
+        } catch (CommandNotFoundException) {
             //Empty by purpose
         }
 
@@ -60,11 +60,11 @@ class Application extends BaseApplication
                 'config',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                'Location of a custom configuration file'
-            )
+                'Location of a custom configuration file',
+            ),
         );
         $inputDefinition->addOption(
-            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to')
+            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
         );
 
         return $inputDefinition;

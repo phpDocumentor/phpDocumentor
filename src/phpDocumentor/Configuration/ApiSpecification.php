@@ -31,47 +31,6 @@ final class ApiSpecification implements ArrayAccess
     /** @var int by default ignore internal visibility but show others */
     public const VISIBILITY_DEFAULT = 7;
 
-    /** @var Source */
-    private $source;
-
-    /** @var string */
-    private $output;
-
-    /** @var array{
-     *      hidden: bool,
-     *      symlinks: bool,
-     *      paths: list<string>
-     *  }
-     */
-    private $ignore;
-
-    /** @var non-empty-list<string> */
-    private $extensions;
-
-    /** @var array<string> */
-    private $visibility;
-
-    /** @var string */
-    private $defaultPackageName;
-
-    /** @var bool|null */
-    private $includeSource;
-
-    /** @var array<string> */
-    private $markers;
-
-    /** @var array<string> */
-    private $ignoreTags;
-
-    /** @var Source|null */
-    private $examples;
-
-    /** @var string */
-    private $encoding;
-
-    /** @var bool */
-    private $validate;
-
     /**
      * @param array{hidden: bool, symlinks: bool, paths: list<string>} $ignore
      * @param non-empty-list<string> $extensions
@@ -79,32 +38,8 @@ final class ApiSpecification implements ArrayAccess
      * @param array<string> $markers
      * @param array<string> $ignoreTags
      */
-    private function __construct(
-        Source $source,
-        string $output,
-        array $ignore,
-        array $extensions,
-        array $visibility,
-        string $defaultPackageName,
-        bool|null $includeSource,
-        array $markers,
-        array $ignoreTags,
-        ?Source $examples,
-        string $encoding,
-        bool $validate
-    ) {
-        $this->source = $source;
-        $this->output = $output;
-        $this->ignore = $ignore;
-        $this->extensions = $extensions;
-        $this->visibility = $visibility;
-        $this->defaultPackageName = $defaultPackageName;
-        $this->includeSource = $includeSource;
-        $this->markers = $markers;
-        $this->ignoreTags = $ignoreTags;
-        $this->examples = $examples;
-        $this->encoding = $encoding;
-        $this->validate = $validate;
+    private function __construct(private Source $source, private string $output, private array $ignore, private array $extensions, private array $visibility, private string $defaultPackageName, private bool|null $includeSource, private array $markers, private array $ignoreTags, private ?Source $examples, private string $encoding, private bool $validate)
+    {
     }
 
     /**
@@ -131,11 +66,11 @@ final class ApiSpecification implements ArrayAccess
             isset($api['examples'])
                 ? new Source(
                     Dsn::createFromString($api['examples']['dsn']),
-                    array_map(static fn (string $path) => new Path($path), $api['examples']['paths'])
+                    array_map(static fn (string $path) => new Path($path), $api['examples']['paths']),
                 )
                 : null,
             $api['encoding'],
-            $api['validate']
+            $api['validate'],
         );
     }
 
@@ -144,7 +79,7 @@ final class ApiSpecification implements ArrayAccess
         return new self(
             new Source(
                 Dsn::createFromString('./'),
-                [new Path('./src')]
+                [new Path('./src')],
             ),
             './api',
             [
@@ -160,7 +95,7 @@ final class ApiSpecification implements ArrayAccess
             [],
             null,
             'utf8',
-            false
+            false,
         );
     }
 
@@ -191,30 +126,19 @@ final class ApiSpecification implements ArrayAccess
         $visibility = 0;
 
         foreach ($this->visibility as $item) {
-            switch ($item) {
-                case 'api':
-                    $visibility |= self::VISIBILITY_API;
-                    break;
-                case 'public':
-                    $visibility |= self::VISIBILITY_PUBLIC;
-                    break;
-                case 'protected':
-                    $visibility |= self::VISIBILITY_PROTECTED;
-                    break;
-                case 'private':
-                    $visibility |= self::VISIBILITY_PRIVATE;
-                    break;
-                case 'internal':
-                    $visibility |= self::VISIBILITY_INTERNAL;
-                    break;
-                default:
-                    throw new RuntimeException(
-                        sprintf(
-                            '%s is not a type of visibility, supported is: api, public, protected, private or internal',
-                            $item
-                        )
-                    );
-            }
+            match ($item) {
+                'api' => $visibility |= self::VISIBILITY_API,
+                'public' => $visibility |= self::VISIBILITY_PUBLIC,
+                'protected' => $visibility |= self::VISIBILITY_PROTECTED,
+                'private' => $visibility |= self::VISIBILITY_PRIVATE,
+                'internal' => $visibility |= self::VISIBILITY_INTERNAL,
+                default => throw new RuntimeException(
+                    sprintf(
+                        '%s is not a type of visibility, supported is: api, public, protected, private or internal',
+                        $item,
+                    ),
+                ),
+            };
         }
 
         if ($visibility === self::VISIBILITY_INTERNAL) {

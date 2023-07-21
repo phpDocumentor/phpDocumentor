@@ -3,8 +3,6 @@ bin/*
 !bin/phpdoc*
 !bin/githubaction*
 !bin/console*
-!bin/phpcs*
-!bin/phpcbf*
 !bin/utils/*
 
 # Build folder and vendor folder are generated code; no need to version this

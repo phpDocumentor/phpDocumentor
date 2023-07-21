@@ -16,11 +16,10 @@ namespace phpDocumentor\JsonPath\Fixtures;
 class Store
 {
     /** @var Book[] */
-    private array $books;
+    private array $books = [];
 
     public function __construct()
     {
-        $this->books = [];
     }
 
     public function getAddress(): string

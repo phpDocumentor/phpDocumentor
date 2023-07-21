@@ -30,26 +30,19 @@ use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
+
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
 use function strrpos;
 use function substr;
 
 class Router
 {
-    private ClassBasedFqsenUrlGenerator $fqsenUrlGenerator;
-    private UrlGeneratorInterface $urlGenerator;
-    private SluggerInterface $slugger;
-
     public function __construct(
-        ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
-        UrlGeneratorInterface $urlGenerator,
-        SluggerInterface $slugger
-    ) {
-        $this->fqsenUrlGenerator = $fqsenUrlGenerator;
-        $this->urlGenerator = $urlGenerator;
-        $this->slugger = $slugger;
+        private readonly ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly SluggerInterface $slugger
+    ){
     }
 
     /**
@@ -60,7 +53,7 @@ class Router
         if ($node instanceof DocumentDescriptor) {
             return $this->urlGenerator->generate(
                 'document',
-                ['name' => $node->getFile()]
+                ['name' => $node->getFile()],
             );
         }
 
@@ -71,14 +64,14 @@ class Router
         if ($node instanceof PackageInterface) {
             return $this->generateUrlForDescriptor(
                 'package',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
         if ($node instanceof NamespaceInterface) {
             return $this->generateUrlForDescriptor(
                 'namespace',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
@@ -90,7 +83,7 @@ class Router
         ) {
             return $this->generateUrlForDescriptor(
                 'class',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
@@ -98,7 +91,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'enumcase_' . $node->getName()
+                'enumcase_' . $node->getName(),
             );
         }
 
@@ -106,7 +99,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
-                'constant_' . $node->getName()
+                'constant_' . $node->getName(),
             );
         }
 
@@ -114,7 +107,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'constant_' . $node->getName()
+                'constant_' . $node->getName(),
             );
         }
 
@@ -122,7 +115,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'method_' . $node->getName()
+                'method_' . $node->getName(),
             );
         }
 
@@ -130,7 +123,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
-                'function_' . $node->getName()
+                'function_' . $node->getName(),
             );
         }
 
@@ -142,7 +135,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'property_' . $node->getName()
+                'property_' . $node->getName(),
             );
         }
 
@@ -165,7 +158,7 @@ class Router
 
         return $this->urlGenerator->generate(
             $type,
-            ['name' => $name, '_fragment' => $fragment]
+            ['name' => $name, '_fragment' => $fragment],
         );
     }
 

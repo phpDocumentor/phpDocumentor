@@ -20,11 +20,8 @@ use Psr\Log\LoggerInterface;
 
 final class PipelineFactory
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**

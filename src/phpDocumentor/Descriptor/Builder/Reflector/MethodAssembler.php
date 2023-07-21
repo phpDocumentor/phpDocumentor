@@ -37,16 +37,12 @@ use function substr;
  */
 class MethodAssembler extends AssemblerAbstract
 {
-    private ArgumentAssembler $argumentAssembler;
-
     /**
      * Initializes this assembler with its dependencies.
      */
-    public function __construct(ArgumentAssembler $argumentAssembler)
+    public function __construct(private readonly ArgumentAssembler $argumentAssembler)
     {
         parent::__construct();
-
-        $this->argumentAssembler = $argumentAssembler;
     }
 
     /**
@@ -61,8 +57,8 @@ class MethodAssembler extends AssemblerAbstract
             substr(
                 (string) $data->getFqsen(),
                 0,
-                strrpos((string) $data->getFqsen(), '\\')
-            )
+                strrpos((string) $data->getFqsen(), '\\'),
+            ),
         );
         $this->mapReflectorToDescriptor($data, $methodDescriptor);
 

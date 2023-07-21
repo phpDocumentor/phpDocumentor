@@ -27,11 +27,8 @@ use function sprintf;
 
 final class AbstractListAdapter implements LinkRendererInterface
 {
-    private LinkRendererInterface $rendererChain;
-
-    public function __construct(LinkRendererInterface $rendererChain)
+    public function __construct(private readonly LinkRendererInterface $rendererChain)
     {
-        $this->rendererChain = $rendererChain;
     }
 
     /**

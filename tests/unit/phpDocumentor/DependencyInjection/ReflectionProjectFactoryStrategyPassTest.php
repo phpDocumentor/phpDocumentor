@@ -30,7 +30,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
         $container->findTaggedServiceIds('phpdoc.reflection.strategy')->willReturn(
             [
                 'myStrategy' => [],
-            ]
+            ],
         );
 
         $compilerPass = new ReflectionProjectFactoryStrategyPass();
@@ -47,7 +47,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ],
                 ],
             ],
-            $serviceDefinition->getMethodCalls()
+            $serviceDefinition->getMethodCalls(),
         );
     }
 
@@ -67,7 +67,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ['priority' => 1100],
                     [],
                 ],
-            ]
+            ],
         );
 
         $compilerPass = new ReflectionProjectFactoryStrategyPass();
@@ -91,7 +91,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ],
                 ],
             ],
-            $serviceDefinition->getMethodCalls()
+            $serviceDefinition->getMethodCalls(),
         );
     }
 }

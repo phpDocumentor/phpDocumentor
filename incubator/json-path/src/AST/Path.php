@@ -17,13 +17,9 @@ use phpDocumentor\JsonPath\Executor;
 
 class Path implements QueryNode
 {
-    /** @var non-empty-list<PathNode> $nodes */
-    private array $nodes;
-
     /** @param non-empty-list<PathNode> $nodes */
-    public function __construct(array $nodes)
+    public function __construct(private readonly array $nodes)
     {
-        $this->nodes = $nodes;
     }
 
     /** @return non-empty-list<PathNode>*/

@@ -27,7 +27,7 @@ use function array_key_exists;
 final class Collection
 {
     /** @var array<string, WriterAbstract> */
-    private $writers = [];
+    private array $writers = [];
 
     /** @param iterable<string, WriterAbstract> $writers */
     public function __construct(iterable $writers = [])

@@ -22,26 +22,11 @@ use PHPUnit\Framework\TestCase;
  */
 class SeeDescriptorTest extends TestCase
 {
-    /** @var SeeDescriptor $fixture */
-    protected $fixture;
-
-    /**
-     * Creates a new fixture object.
-     */
-    protected function setUp(): void
-    {
-        $this->fixture = new SeeDescriptor('name');
-    }
-
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::setReference
-     * @covers \phpDocumentor\Descriptor\Tag\SeeDescriptor::getReference
-     */
     public function testSetAndGetReference(): void
     {
         $refrence = new FqsenReference(new Fqsen('\someFunction()'));
-        $this->fixture->setReference($refrence);
-        $result = $this->fixture->getReference();
+        $fixture = new SeeDescriptor('name', $refrence, null);
+        $result = $fixture->getReference();
 
         $this->assertSame($refrence, $result);
     }

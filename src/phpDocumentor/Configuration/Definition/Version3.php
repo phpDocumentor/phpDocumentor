@@ -79,12 +79,10 @@ use function var_export;
  */
 final class Version3 implements ConfigurationInterface, Normalizable
 {
-    /** @var string This is injected so that the name of the default template can be defined globally in the app */
-    private $defaultTemplateName;
-
-    public function __construct(string $defaultTemplateName)
-    {
-        $this->defaultTemplateName = $defaultTemplateName;
+    public function __construct(
+        /** @var string This is injected so that the name of the default template can be defined globally in the app */
+        private readonly string $defaultTemplateName
+    ) {
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
@@ -125,7 +123,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                                         }
 
                                         return $value;
-                                    }
+                                    },
                                 )
                                 ->end()
                             ->end()
@@ -263,7 +261,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->scalarNode('default-package-name')
                         ->info(
                             'When your source code is grouped using the @package tag; what is the name of the '
-                            . 'default package when none is provided?'
+                            . 'default package when none is provided?',
                         )
                         ->defaultValue('Application')
                     ->end()

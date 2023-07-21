@@ -132,7 +132,7 @@ final class DescriptorRepositoryTest extends TestCase
 
         $this->assertSame(
             '\phpDocumentor\Descriptor\MyClass',
-            (string) $repository->findAlias($fqsenWithContextMarker, $container)
+            (string) $repository->findAlias($fqsenWithContextMarker, $container),
         );
     }
 

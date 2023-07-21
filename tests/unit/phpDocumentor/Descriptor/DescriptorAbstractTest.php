@@ -180,7 +180,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             DescriptorAbstract::class,
-            ChildInterface::class
+            ChildInterface::class,
         );
         $mock->makePartial();
 
@@ -201,7 +201,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             DescriptorAbstract::class,
-            ChildInterface::class
+            ChildInterface::class,
         );
         $mock->makePartial();
 
@@ -222,7 +222,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = m::mock(
             DescriptorAbstract::class,
-            ChildInterface::class
+            ChildInterface::class,
         );
         $mock->makePartial();
 

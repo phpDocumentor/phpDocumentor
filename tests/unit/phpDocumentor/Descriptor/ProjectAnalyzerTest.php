@@ -39,7 +39,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
             [
                 $this->faker()->fileDescriptor(),
                 $this->faker()->fileDescriptor(),
-            ]
+            ],
         );
         $this->whenDescriptorHasTheFollowingElements(
             $apiSetDescriptor,
@@ -47,7 +47,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
                 'ds1' => $classDescriptor1,
                 'ds2' => $this->givenAClassWithParent($classDescriptor1),
                 'ds3' => $this->givenAnInterfaceWithParent('123'),
-            ]
+            ],
         );
         $this->whenDocumentationHasTheFollowingChildrenOfRootNamespace($apiSetDescriptor, [1, 2, 3]);
         $this->fixture->analyze($apiSetDescriptor);

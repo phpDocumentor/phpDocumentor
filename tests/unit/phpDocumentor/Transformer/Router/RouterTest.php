@@ -58,7 +58,7 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
         $result = $router->generate($node);
 
@@ -76,7 +76,7 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
 
         $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
@@ -93,7 +93,7 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
         $result = $router->generate(new stdClass()); // An stdClass is not routable
 

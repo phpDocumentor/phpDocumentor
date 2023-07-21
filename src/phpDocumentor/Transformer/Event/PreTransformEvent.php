@@ -22,11 +22,10 @@ use phpDocumentor\Transformer\Transformation;
  */
 final class PreTransformEvent extends EventAbstract
 {
-    /** @var ProjectDescriptor|null */
-    private $project;
+    private ?ProjectDescriptor $project = null;
 
     /** @var Transformation[] */
-    private $transformations;
+    private array $transformations = [];
 
     /**
      * Creates a new instance of a derived object and return that.

@@ -26,8 +26,7 @@ final class CollectionTest extends MockeryTestCase
 {
     use Faker;
 
-    /** @var Collection */
-    private $fixture;
+    private Collection $fixture;
 
     /**
      * Constructs the fixture with provided mocked dependencies.
@@ -47,7 +46,7 @@ final class CollectionTest extends MockeryTestCase
         $transformation3 = $this->givenAnEmptyTransformation();
         $this->whenThereIsATemplateWithNameAndTransformations(
             'template1',
-            ['a' => $transformation1, 'b' => $transformation2]
+            ['a' => $transformation1, 'b' => $transformation2],
         );
         $this->whenThereIsATemplateWithNameAndTransformations('template2', ['c' => $transformation3]);
 

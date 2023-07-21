@@ -16,11 +16,12 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
+use Stringable;
 
 /**
  * Base class for the actual transformation business logic (writers).
  */
-abstract class WriterAbstract
+abstract class WriterAbstract implements Stringable
 {
     /**
      * Name of this writer, used to identify this writer.

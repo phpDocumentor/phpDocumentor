@@ -252,7 +252,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         self::assertSame(
             '\MyOther\Class::$property',
-            (string) $this->fixture->getFullyQualifiedStructuralElementName()
+            (string) $this->fixture->getFullyQualifiedStructuralElementName(),
         );
     }
 

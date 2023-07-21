@@ -61,7 +61,7 @@ final class ConfigureTest extends TestCase
         $configurationFactory->addMiddleware(Argument::any())->shouldBeCalledTimes(3);
         $configurationFactory->fromDefaultLocations()->shouldNotBeCalled();
         $configurationFactory->fromDefault()->willReturn(
-            new Configuration($config)
+            new Configuration($config),
         );
 
         $stage = new Configure(
@@ -70,7 +70,7 @@ final class ConfigureTest extends TestCase
             $logger->reveal(),
             $this->cacheLocator->reveal(),
             $this->prophesize(EnvironmentFactory::class)->reveal(),
-            getcwd()
+            getcwd(),
         );
 
         self::assertEquals($config, $stage(['config' => 'none']));
@@ -91,7 +91,7 @@ final class ConfigureTest extends TestCase
             $logger->reveal(),
             $this->cacheLocator->reveal(),
             $this->prophesize(EnvironmentFactory::class)->reveal(),
-            getcwd()
+            getcwd(),
         );
 
         $stage(['config' => 'some/invalid/file.xml']);
@@ -119,7 +119,7 @@ final class ConfigureTest extends TestCase
             $logger->reveal(),
             $this->cacheLocator->reveal(),
             $this->prophesize(EnvironmentFactory::class)->reveal(),
-            getcwd()
+            getcwd(),
         );
 
         $actual = $stage([]);
@@ -150,7 +150,7 @@ final class ConfigureTest extends TestCase
             $logger->reveal(),
             $this->cacheLocator->reveal(),
             $this->prophesize(EnvironmentFactory::class)->reveal(),
-            getcwd()
+            getcwd(),
         );
 
         $actual = $stage(['config' => __FILE__]);

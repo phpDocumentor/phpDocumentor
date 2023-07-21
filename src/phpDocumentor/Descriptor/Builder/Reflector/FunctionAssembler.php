@@ -35,16 +35,12 @@ use function trim;
  */
 class FunctionAssembler extends AssemblerAbstract
 {
-    private ArgumentAssembler $argumentAssembler;
-
     /**
      * Initializes this assembler and its dependencies.
      */
-    public function __construct(ArgumentAssembler $argumentAssembler)
+    public function __construct(private readonly ArgumentAssembler $argumentAssembler)
     {
         parent::__construct();
-
-        $this->argumentAssembler = $argumentAssembler;
     }
 
     /**
@@ -86,7 +82,7 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setNamespace('\\' . trim(substr(
             (string) $reflector->getFqsen(),
             0,
-            -strlen($reflector->getName()) - 2
+            -strlen($reflector->getName()) - 2,
         ), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
         $descriptor->setHasReturnByReference($reflector->getHasReturnByReference());
@@ -106,7 +102,7 @@ class FunctionAssembler extends AssemblerAbstract
 
             $this->addArgumentDescriptorToFunction(
                 $functionDescriptor,
-                $descriptor
+                $descriptor,
             );
         }
     }

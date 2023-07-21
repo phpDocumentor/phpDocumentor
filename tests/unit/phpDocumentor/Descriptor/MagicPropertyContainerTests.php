@@ -34,7 +34,7 @@ trait MagicPropertyContainerTests
 
         self::assertEquals(
             new Collection([$expected]),
-            $magicProperties
+            $magicProperties,
         );
     }
 

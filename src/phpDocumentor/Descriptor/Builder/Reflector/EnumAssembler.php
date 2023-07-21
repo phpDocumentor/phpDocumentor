@@ -44,7 +44,7 @@ final class EnumAssembler extends AssemblerAbstract
         $descriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $descriptor->setName($data->getName());
         $descriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName(),
         );
         $descriptor->setStartLocation($data->getLocation());
         $descriptor->setEndLocation($data->getEndLocation());

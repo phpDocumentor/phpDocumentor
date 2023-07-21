@@ -17,23 +17,11 @@ use phpDocumentor\Descriptor\Collection;
 
 final class Entry
 {
-    /** @var string */
-    private $url;
-
-    /** @var string */
-    private $title;
-
-    /** @var string|null */
-    private $parent;
-
     /** @var Collection<Entry> */
-    private $children;
+    private readonly \phpDocumentor\Descriptor\Collection $children;
 
-    public function __construct(string $url, string $title, ?string $parent = null)
+    public function __construct(private readonly string $url, private readonly string $title, private readonly ?string $parent = null)
     {
-        $this->url = $url;
-        $this->title = $title;
-        $this->parent = $parent;
         $this->children = Collection::fromClassString(self::class);
     }
 

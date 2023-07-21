@@ -16,8 +16,7 @@ class ParamAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ParamAssembler */
-    private $fixture;
+    private ParamAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;
@@ -42,7 +41,7 @@ class ParamAssemblerTest extends TestCase
             '$myParameter',
             new String_(),
             false,
-            new Description('This is a description')
+            new Description('This is a description'),
         );
 
         $descriptor = $this->fixture->create($reflector);

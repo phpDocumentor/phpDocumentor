@@ -16,17 +16,13 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use InvalidArgumentException;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
-use function array_merge;
 use function is_array;
 use function is_iterable;
 
 final class IterableAdapter implements LinkRendererInterface
 {
-    private LinkRendererInterface $rendererChain;
-
-    public function __construct(LinkRendererInterface $rendererChain)
+    public function __construct(private readonly LinkRendererInterface $rendererChain)
     {
-        $this->rendererChain = $rendererChain;
     }
 
     /**
@@ -65,7 +61,7 @@ final class IterableAdapter implements LinkRendererInterface
                 $links = [$links];
             }
 
-            $result = array_merge($result, $links);
+            $result = [...$result, ...$links];
         }
 
         return $result;

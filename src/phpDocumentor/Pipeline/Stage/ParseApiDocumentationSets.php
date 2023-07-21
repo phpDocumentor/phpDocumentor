@@ -18,11 +18,8 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 
 final class ParseApiDocumentationSets
 {
-    private Pipeline $parseApiDocumentationSetPipeline;
-
-    public function __construct(Pipeline $parseApiDocumentationSetPipeline)
+    public function __construct(private readonly Pipeline $parseApiDocumentationSetPipeline)
     {
-        $this->parseApiDocumentationSetPipeline = $parseApiDocumentationSetPipeline;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -32,7 +29,7 @@ final class ParseApiDocumentationSets
         foreach ($versions as $version) {
             foreach ($version->getDocumentationSets()->filter(ApiSetDescriptor::class) as $apiSet) {
                 $this->parseApiDocumentationSetPipeline->process(
-                    new Parser\ApiSetPayload($payload->getConfig(), $payload->getBuilder(), $version, $apiSet)
+                    new Parser\ApiSetPayload($payload->getConfig(), $payload->getBuilder(), $version, $apiSet),
                 );
             }
         }

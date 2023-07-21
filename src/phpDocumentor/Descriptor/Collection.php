@@ -39,17 +39,13 @@ use function count;
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /** @var array<T> $items */
-    protected array $items = [];
-
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
      *
      * @param array<T> $items
      */
-    public function __construct(array $items = [])
+    public function __construct(protected array $items = [])
     {
-        $this->items = $items;
     }
 
     /**
@@ -257,10 +253,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
         $collection = new self(
             array_filter(
                 $this->getAll(),
-                static function ($item) use ($className) {
-                    return $item instanceof $className;
-                }
-            )
+                static fn ($item) => $item instanceof $className,
+            ),
         );
 
         return $collection;

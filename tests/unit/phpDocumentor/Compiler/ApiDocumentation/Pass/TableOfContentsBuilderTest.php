@@ -38,9 +38,7 @@ final class TableOfContentsBuilderTest extends TestCase
         $apiDocumentationSet->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
-        $router->generate(Argument::any())->will(function ($args) {
-            return (string) $args[0]->getFullyQualifiedStructuralElementName();
-        });
+        $router->generate(Argument::any())->will(fn ($args) => (string) $args[0]->getFullyQualifiedStructuralElementName());
         $pass = new TableOfContentsBuilder($router->reveal(), new NullLogger());
         $pass->__invoke(new VersionDescriptor('1', new Collection([$apiDocumentationSet])));
 
@@ -63,9 +61,7 @@ final class TableOfContentsBuilderTest extends TestCase
         $apiDocumentationSet->getPackage()->addChild($this->faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
-        $router->generate(Argument::any())->will(function ($args) {
-            return (string) $args[0]->getFullyQualifiedStructuralElementName();
-        });
+        $router->generate(Argument::any())->will(fn ($args) => (string) $args[0]->getFullyQualifiedStructuralElementName());
         $pass = new TableOfContentsBuilder($router->reveal());
         $pass->__invoke(new VersionDescriptor('1', new Collection([$apiDocumentationSet])));
 

@@ -39,11 +39,9 @@ final class PathGeneratorTest extends TestCase
     /** @var ObjectProphecy|Router */
     private $router;
 
-    /** @var PathGenerator */
-    private $generator;
+    private PathGenerator $generator;
 
-    /** @var Template */
-    private $template;
+    private Template $template;
 
     protected function setUp(): void
     {
@@ -58,7 +56,7 @@ final class PathGeneratorTest extends TestCase
 
         $this->generator = new PathGenerator(
             $this->router->reveal(),
-            $engine->reveal()
+            $engine->reveal(),
         );
     }
 
@@ -84,7 +82,7 @@ final class PathGeneratorTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            'Variable substitution in path /file/{{a}} failed, variable "a" did not return a value'
+            'Variable substitution in path /file/{{a}} failed, variable "a" did not return a value',
         );
         $transformation = $this->givenATransformationWithArtifact('file/{{a}}');
 
@@ -98,7 +96,7 @@ final class PathGeneratorTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            'Variable substitution in path /file/{{}} failed, no variable was specified'
+            'Variable substitution in path /file/{{}} failed, no variable was specified',
         );
         $transformation = $this->givenATransformationWithArtifact('file/{{}}');
 
@@ -112,7 +110,7 @@ final class PathGeneratorTest extends TestCase
             '',
             'twig',
             'templates/templateName/index.html.twig',
-            $artifact
+            $artifact,
         );
     }
 

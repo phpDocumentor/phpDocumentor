@@ -31,7 +31,7 @@ use function array_keys;
  */
 class SymfonyConfigFactory
 {
-    public const FIELD_CONFIG_VERSION = 'configVersion';
+    final public const FIELD_CONFIG_VERSION = 'configVersion';
     private const DEFAULT_CONFIG_VERSION = '2';
 
     /** @var ConfigurationInterface[] $configurationDefinitions */
@@ -79,7 +79,7 @@ class SymfonyConfigFactory
         if ($configuration[self::FIELD_CONFIG_VERSION] !== (string) array_key_last($this->configurationDefinitions)) {
             throw new RuntimeException(
                 'The configuration file does not match the latest version and auto-upgrading failed. Please '
-                . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
+                . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue',
             );
         }
 
@@ -115,7 +115,7 @@ class SymfonyConfigFactory
 
         if ($definition instanceof Upgradable) {
             $configuration = $this->processConfiguration(
-                $this->upgradeConfiguration($definition, $configuration)
+                $this->upgradeConfiguration($definition, $configuration),
             );
         }
 
@@ -128,7 +128,7 @@ class SymfonyConfigFactory
         if ($definition === null) {
             throw UnsupportedConfigVersionException::create(
                 $configurationVersion,
-                array_keys($this->configurationDefinitions)
+                array_keys($this->configurationDefinitions),
             );
         }
 

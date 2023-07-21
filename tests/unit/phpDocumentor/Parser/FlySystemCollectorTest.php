@@ -39,14 +39,14 @@ final class FlySystemCollectorTest extends TestCase
     {
         $fileCollector = new FlySystemCollector(
             new SpecificationFactory(),
-            new FlySystemFactory(new MountManager())
+            new FlySystemFactory(new MountManager()),
         );
 
         $files = $fileCollector->getFiles(
             Dsn::createFromString($this->scheme() . __DIR__ . DIRECTORY_SEPARATOR . 'assets'),
             [],
             [],
-            ['php']
+            ['php'],
         );
         static::assertCount(3, $files);
     }

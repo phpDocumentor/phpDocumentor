@@ -55,7 +55,7 @@ final class FileIoTest extends TestCase
                 'templates' => new Filesystem(new Local($this->templatesFolder->url())),
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
                 'destination' => new Filesystem(new Local($this->destinationFolder->url())),
-            ]
+            ],
         );
         $this->template = new Template('My Template', $mountManager);
     }
@@ -79,10 +79,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'index.html.twig',
-                'index.html'
+                'index.html',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
     }
@@ -106,10 +106,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images/image.png',
-                'images/destination.png'
+                'images/destination.png',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images/destination.png'));
     }
@@ -132,10 +132,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'index.html.twig',
-                'index.html'
+                'index.html',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
         $this->assertStringEqualsFile($this->destinationFolder->getChild('index.html')->url(), 'new content');
@@ -161,10 +161,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
@@ -192,10 +192,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
@@ -223,10 +223,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
@@ -256,10 +256,10 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
@@ -278,11 +278,11 @@ final class FileIoTest extends TestCase
             'copy',
             'fileio',
             'unknown_file',
-            'nah.png'
+            'nah.png',
         );
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
@@ -298,14 +298,14 @@ final class FileIoTest extends TestCase
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $transformation = new Transformation(
             $this->template,
             'not-a-copy',
             'fileio',
             'unknown_file',
-            'nah.png'
+            'nah.png',
         );
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);

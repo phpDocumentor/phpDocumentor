@@ -63,7 +63,7 @@ final class LinkAdapterTest extends TestCase
         $this->adapter = new LinkAdapter(
             $this->linkRenderer->reveal(),
             $this->urlGenerator->reveal(),
-            $this->htmlFormatter->reveal()
+            $this->htmlFormatter->reveal(),
         );
     }
 

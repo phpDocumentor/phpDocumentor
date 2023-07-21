@@ -25,23 +25,13 @@ use function in_array;
 use function ltrim;
 use function rtrim;
 use function sprintf;
-use function strpos;
-use function substr;
 
 /** @implements ArrayAccess<string, Path[]|Dsn> */
 final class Source implements ArrayAccess
 {
-    /** @var Dsn */
-    private $dsn;
-
-    /** @var array<array-key, Path> */
-    private $paths;
-
     /** @param array<array-key, Path> $paths */
-    public function __construct(Dsn $dsn, array $paths)
+    public function __construct(private Dsn $dsn, private array $paths)
     {
-        $this->dsn = $dsn;
-        $this->paths = $paths;
     }
 
     public function withDsn(Dsn $dsn): Source
@@ -76,20 +66,18 @@ final class Source implements ArrayAccess
     public function globPatterns(): array
     {
         return array_map(
-            function (Path $path): string {
-                return $this->pathToGlobPattern((string) $path);
-            },
-            $this->paths
+            fn (Path $path): string => $this->pathToGlobPattern((string) $path),
+            $this->paths,
         );
     }
 
     private function normalizePath(string $path): string
     {
-        if (strpos($path, '.') === 0) {
+        if (str_starts_with($path, '.')) {
             $path = ltrim($path, '.');
         }
 
-        if (strpos($path, '/') !== 0) {
+        if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -100,7 +88,7 @@ final class Source implements ArrayAccess
     {
         $path = $this->normalizePath($path);
 
-        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
+        if (!str_ends_with($path, '*') && !str_contains($path, '.')) {
             $path .= '/**/*';
         }
 
@@ -122,24 +110,18 @@ final class Source implements ArrayAccess
     #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        switch ($offset) {
-            case 'dsn':
-                return $this->dsn;
-
-            case 'paths':
-                return $this->paths;
-
-            default:
-                throw new OutOfBoundsException(sprintf('Offset %s does not exist', $offset));
-        }
+        return match ($offset) {
+            'dsn' => $this->dsn,
+            'paths' => $this->paths,
+            default => throw new OutOfBoundsException(sprintf('Offset %s does not exist', $offset)),
+        };
     }
 
     /**
      * @param string $offset
-     * @param mixed $value
      */
     #[ReturnTypeWillChange]
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         throw new BadMethodCallException('Cannot set offset of ' . self::class);
     }

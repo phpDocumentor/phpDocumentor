@@ -90,16 +90,14 @@ namespace Test
     {
         private $test = null;
 
-        private $test2 = ['test' => 1];
+        private array $test2 = ['test' => 1];
 
-        private $test3 = 1;
+        private int $test3 = 1;
 
         /**
          * This is a property test
-         *
-         * @var boolean
          */
-        private $test4 = true;
+        private bool $test4 = true;
 
         /**
          * Method Docblock for StaticPublicMethod
@@ -132,11 +130,11 @@ namespace Test
 
     abstract class FooBarClass extends SingleClass implements Reflector, Traversable
     {
-        const TEST = 'test2';
+        final public const TEST = 'test2';
     }
 
     class FooBarClass2 extends SingleClass
     {
-        const TEST = 'test2';
+        final public const TEST = 'test2';
     }
 }

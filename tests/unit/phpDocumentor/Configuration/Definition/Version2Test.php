@@ -77,7 +77,7 @@ final class Version2Test extends TestCase
                     ],
                 ],
             ],
-            $upgradedConfiguration
+            $upgradedConfiguration,
         );
     }
 
@@ -94,7 +94,7 @@ final class Version2Test extends TestCase
 
         $this->assertSame(
             [$newStyleGlobPattern, 'vendor/**/*', 'sdk'],
-            current(current($upgradedConfiguration['version'])['api'])['ignore']['paths']
+            current(current($upgradedConfiguration['version'])['api'])['ignore']['paths'],
         );
     }
 

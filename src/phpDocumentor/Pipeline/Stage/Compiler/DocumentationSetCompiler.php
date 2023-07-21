@@ -10,16 +10,13 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class DocumentationSetCompiler
 {
-    private Pipeline $compilerPipeline;
-
     /**
      * @param class-string<DocumentationSetDescriptor> $type
      */
     public function __construct(
-        Pipeline $compilerPipeline,
-        private readonly string $type,
+        private readonly Pipeline $compilerPipeline,
+        private readonly string $type
     ) {
-        $this->compilerPipeline = $compilerPipeline;
     }
 
     public function __invoke(VersionDescriptor $payload): VersionDescriptor

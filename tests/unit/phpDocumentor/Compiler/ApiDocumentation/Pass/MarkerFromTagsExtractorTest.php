@@ -75,15 +75,15 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $this->assertCount(3, $fileDescriptor->getMarkers());
         $this->assertSame(
             ['type' => 'TODO', 'message' => '123', 'line' => 10],
-            $fileDescriptor->getMarkers()->get(0)
+            $fileDescriptor->getMarkers()->get(0),
         );
         $this->assertSame(
             ['type' => 'TODO', 'message' => '456', 'line' => 10],
-            $fileDescriptor->getMarkers()->get(1)
+            $fileDescriptor->getMarkers()->get(1),
         );
         $this->assertSame(
             ['type' => 'TODO', 'message' => '789', 'line' => 20],
-            $fileDescriptor->getMarkers()->get(2)
+            $fileDescriptor->getMarkers()->get(2),
         );
     }
 

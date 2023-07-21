@@ -77,7 +77,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     public function setParent($parent): void
     {
         //phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaMagicConstant
-        Assert::nullOrIsInstanceOf($parent, __CLASS__);
+        Assert::nullOrIsInstanceOf($parent, self::class);
 
         $this->parent = $parent;
     }

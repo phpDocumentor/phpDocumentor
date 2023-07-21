@@ -22,8 +22,7 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class FunctionDescriptorTest extends MockeryTestCase
 {
-    /** @var FunctionDescriptor $fixture */
-    private $fixture;
+    private FunctionDescriptor $fixture;
 
     /**
      * Creates a new (emoty) fixture object.

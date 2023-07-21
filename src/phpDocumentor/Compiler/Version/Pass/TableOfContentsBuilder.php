@@ -31,11 +31,8 @@ use function sprintf;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
-    private Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(private readonly Router $router)
     {
-        $this->router = $router;
     }
 
     public function getDescription(): string
@@ -85,7 +82,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 $index,
                 $documentationSet->getGuidesProjectNode()->findDocumentEntry($index->getFile()),
                 $documentationSet,
-                $guideToc
+                $guideToc,
             );
 
             $documentationSet->addTableOfContents($guideToc);
@@ -102,7 +99,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         $entry = new Entry(
             ltrim($this->router->generate($namespace), '/'),
             (string) $namespace->getFullyQualifiedStructuralElementName(),
-            $parent?->getUrl()
+            $parent?->getUrl(),
         );
 
         $parent?->addChild($entry);
@@ -133,10 +130,10 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                             '%s/%s#%s',
                             $guideSetDescriptor->getOutputLocation(),
                             ltrim($this->router->generate($refDocument), '/'),
-                            $refMetaData->getTitle()->getId()
+                            $refMetaData->getTitle()->getId(),
                         ),
                         $refMetaData->getTitle()->toString(),
-                        $parent?->getUrl()
+                        $parent?->getUrl(),
                     );
 
                     $parent?->addChild($entry);
@@ -164,7 +161,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 ltrim($this->router->generate($documentDescriptor), '/')
                 . '#' . $metaChild->getTitle()->getId(),
                 $metaChild->getTitle()->toString(),
-                $parent?->getUrl()
+                $parent?->getUrl(),
             );
 
             $parent?->addChild($entry);

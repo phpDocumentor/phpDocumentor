@@ -72,11 +72,11 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface $parent */
         Assert::isInstanceOfAny(
             $parent,
-            [ClassInterface::class, TraitInterface::class, InterfaceInterface::class, EnumInterface::class]
+            [ClassInterface::class, TraitInterface::class, InterfaceInterface::class, EnumInterface::class],
         );
 
         $this->setFullyQualifiedStructuralElementName(
-            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()')
+            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName() . '()'),
         );
 
         // reset cached inherited element so that it can be re-detected.

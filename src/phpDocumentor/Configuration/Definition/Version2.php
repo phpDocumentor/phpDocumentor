@@ -23,7 +23,6 @@ use function array_values;
 use function explode;
 use function getcwd;
 use function implode;
-use function substr;
 
 /**
  * @psalm-type ConfigurationMap = array<mixed>
@@ -31,12 +30,10 @@ use function substr;
  */
 final class Version2 implements ConfigurationInterface, Upgradable
 {
-    /** @var string This is injected so that the name of the default template can be defined globally in the app */
-    private $defaultTemplateName;
-
-    public function __construct(string $defaultTemplateName)
-    {
-        $this->defaultTemplateName = $defaultTemplateName;
+    public function __construct(
+        /** @var string This is injected so that the name of the default template can be defined globally in the app */
+        private readonly string $defaultTemplateName
+    ) {
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
@@ -176,18 +173,14 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             'default-package-name' => $values['parser']['default-package-name'],
                             'source' => [
                                 'paths' => array_map(
-                                    function ($value) {
-                                        return $this->convertSingleStarPathEndingIntoGlobPattern($value);
-                                    },
-                                    array_merge($values['files']['files'], $values['files']['directories'])
+                                    fn ($value) => $this->convertSingleStarPathEndingIntoGlobPattern($value),
+                                    array_merge($values['files']['files'], $values['files']['directories']),
                                 ),
                             ],
                             'ignore' => [
                                 'paths' => array_map(
-                                    function ($value) {
-                                        return $this->convertSingleStarPathEndingIntoGlobPattern($value);
-                                    },
-                                    $values['files']['ignores']
+                                    fn ($value) => $this->convertSingleStarPathEndingIntoGlobPattern($value),
+                                    $values['files']['ignores'],
                                 ),
                             ],
                             'extensions' => [
@@ -195,7 +188,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
                             ],
                             'visibilities' => $values['parser']['visibility'] ? explode(
                                 ',',
-                                $values['parser']['visibility']
+                                (string) $values['parser']['visibility'],
                             ) : null,
                             'markers' => [
                                 'markers' => $values['parser']['markers']['items'],
@@ -223,7 +216,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
      */
     private function convertSingleStarPathEndingIntoGlobPattern(string $path): string
     {
-        if (substr($path, -2) === '/*' && substr($path, -4) !== '**/*') {
+        if (str_ends_with($path, '/*') && !str_ends_with($path, '**/*')) {
             $path .= '*/*';
         }
 

@@ -57,7 +57,7 @@ final class ConstantAssemblerTest extends TestCase
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlock = new DocBlock('This is a example description', $docBlockDescription);
@@ -88,7 +88,7 @@ DOCBLOCK
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
@@ -99,7 +99,7 @@ DOCBLOCK
         self::assertSame($name, $descriptor->getName());
         self::assertSame(
             '\\' . $namespace . '::' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());
@@ -122,7 +122,7 @@ DOCBLOCK
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
@@ -133,7 +133,7 @@ DOCBLOCK
         self::assertSame($name, $descriptor->getName());
         self::assertSame(
             '\\' . $namespace . '\\' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());

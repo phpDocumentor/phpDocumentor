@@ -17,11 +17,8 @@ use phpDocumentor\JsonPath\Executor;
 
 class FieldAccess implements PathNode
 {
-    private FieldName $fieldName;
-
-    public function __construct(FieldName $param)
+    public function __construct(private readonly FieldName $fieldName)
     {
-        $this->fieldName = $param;
     }
 
     /** @inheritDoc */

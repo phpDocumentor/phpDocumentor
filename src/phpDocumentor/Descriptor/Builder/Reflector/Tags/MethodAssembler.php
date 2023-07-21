@@ -57,7 +57,7 @@ class MethodAssembler extends BaseTagAssembler
 
             $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
                 $argument['name'],
-                $argument['type']
+                $argument['type'],
             );
             $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }

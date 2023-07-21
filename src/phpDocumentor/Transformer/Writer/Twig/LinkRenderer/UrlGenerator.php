@@ -30,7 +30,6 @@ use function is_string;
 use function ltrim;
 use function sprintf;
 use function strlen;
-use function strpos;
 use function substr;
 
 /**
@@ -42,13 +41,8 @@ use function substr;
  */
 class UrlGenerator
 {
-    private LinkRenderer $rendererChain;
-    private Router $router;
-
-    public function __construct(LinkRenderer $rendererChain, Router $router)
+    public function __construct(private readonly LinkRenderer $rendererChain, private readonly Router $router)
     {
-        $this->rendererChain = $rendererChain;
-        $this->router = $router;
     }
 
     /**
@@ -72,7 +66,7 @@ class UrlGenerator
 
         try {
             $url = $this->router->generate($target);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             return null;
         }
 
@@ -86,7 +80,7 @@ class UrlGenerator
     {
         if ((is_string($target) || $target instanceof Reference\Url) === false) {
             throw new InvalidArgumentException(
-                'Guide references can only be derived from a string or Url reference'
+                'Guide references can only be derived from a string or Url reference',
             );
         }
 
@@ -120,7 +114,7 @@ class UrlGenerator
 
         try {
             $document = $guideSet->getDocuments()->get($documentEntry->getFile());
-        } catch (OutOfRangeException $e) {
+        } catch (OutOfRangeException) {
             return null;
         }
 
@@ -128,7 +122,7 @@ class UrlGenerator
             '%s/%s',
             $guideSet->getOutputLocation(),
             // TODO: Add Support for DocumentEntries to the router
-            $this->withoutLeadingSlash($this->router->generate($document))
+            $this->withoutLeadingSlash($this->router->generate($document)),
         );
     }
 
@@ -141,7 +135,7 @@ class UrlGenerator
             $target = (string) $target;
         }
 
-        return is_string($target) && strpos($target, 'doc://') === 0;
+        return is_string($target) && str_starts_with($target, 'doc://');
     }
 
     private function withoutLeadingSlash(string $path): string

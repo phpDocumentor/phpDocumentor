@@ -31,16 +31,12 @@ use Webmozart\Assert\Assert;
  */
 class ExampleAssembler extends AssemblerAbstract
 {
-    /** @var ExampleFinder */
-    private $finder;
-
     /**
      * Initializes this assembler with the means to find the example file on disk.
      */
-    public function __construct(ExampleFinder $finder, AssemblerReducer ...$reducers)
+    public function __construct(private readonly ExampleFinder $finder, AssemblerReducer ...$reducers)
     {
         parent::__construct(...$reducers);
-        $this->finder = $finder;
     }
 
     /**

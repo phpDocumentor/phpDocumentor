@@ -31,20 +31,17 @@ use function sprintf;
  */
 class ProjectDescriptorMapper
 {
-    public const FILE_PREFIX = 'phpDocumentor-projectDescriptor-files-';
+    final public const FILE_PREFIX = 'phpDocumentor-projectDescriptor-files-';
 
-    public const FILE_LIST = 'phpDocumentor-projectDescriptor-filelist';
+    final public const FILE_LIST = 'phpDocumentor-projectDescriptor-filelist';
 
-    public const KEY_SETTINGS = 'phpDocumentor-projectDescriptor-settings';
-
-    private AdapterInterface $cache;
+    final public const KEY_SETTINGS = 'phpDocumentor-projectDescriptor-settings';
 
     /**
      * Initializes this mapper with the given cache instance.
      */
-    public function __construct(AdapterInterface $descriptors)
+    public function __construct(private readonly AdapterInterface $cache)
     {
-        $this->cache = $descriptors;
     }
 
     /**
@@ -90,7 +87,7 @@ class ProjectDescriptorMapper
 
         $realFileKeys = array_map(
             fn (File $file) => $this->getApiSetFileKey($fileListKey, $file->path()),
-            $files
+            $files,
         );
 
         $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));

@@ -24,16 +24,16 @@ use phpDocumentor\Descriptor\TagDescriptor;
 final class ExampleDescriptor extends TagDescriptor
 {
     /** @var string $filePath the content of the example. */
-    private $filePath = '';
+    private string $filePath = '';
 
     /** @var int|null $startingLine the content of the example. */
-    private $startingLine;
+    private ?int $startingLine = null;
 
     /** @var int|null $lineCount the content of the example. */
-    private $lineCount;
+    private ?int $lineCount = null;
 
     /** @var string $example the content of the example. */
-    private $example = '';
+    private string $example = '';
 
     /**
      * Sets the location where the example points to.

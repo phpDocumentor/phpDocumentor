@@ -22,6 +22,8 @@ use function file_get_contents;
 use function getenv;
 use function json_decode;
 
+use const JSON_THROW_ON_ERROR;
+
 final class AutoloaderLocator
 {
     public static function autoload(): ClassLoader
@@ -71,7 +73,7 @@ final class AutoloaderLocator
         } else {
             // Repository cloned via git
             $vendorDir = $baseDir . '/../../' . self::getCustomVendorPathFromComposer(
-                $baseDir . '/../../' . self::findComposerConfigurationPath()
+                $baseDir . '/../../' . self::findComposerConfigurationPath(),
             );
         }
 
@@ -113,7 +115,7 @@ final class AutoloaderLocator
         $vendorDir = 'vendor';
         if (file_exists($composerConfigurationPath)) {
             $composerFile = file_get_contents($composerConfigurationPath);
-            $composerJson = json_decode($composerFile, true);
+            $composerJson = json_decode($composerFile, true, 512, JSON_THROW_ON_ERROR);
             if ($composerJson && !empty($composerJson['config']['vendor-dir'])) {
                 $vendorDir = $composerJson['config']['vendor-dir'];
             }

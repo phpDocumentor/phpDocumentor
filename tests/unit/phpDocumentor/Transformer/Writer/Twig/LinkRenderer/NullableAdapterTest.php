@@ -51,7 +51,7 @@ final class NullableAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new NullableAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 

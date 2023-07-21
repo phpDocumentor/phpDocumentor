@@ -16,8 +16,7 @@ class PropertyAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var PropertyAssembler */
-    private $fixture;
+    private PropertyAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;
@@ -41,7 +40,7 @@ class PropertyAssemblerTest extends TestCase
         $reflector = new Property(
             '$myProperty',
             new String_(),
-            new Description('This is a description')
+            new Description('This is a description'),
         );
 
         $descriptor = $this->fixture->create($reflector);

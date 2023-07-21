@@ -73,7 +73,7 @@ final class Provider extends Base
             $templateCollection,
             $writerCollectionMock,
             new NullLogger(),
-            $this->flySystemFactory()
+            $this->flySystemFactory(),
         );
     }
 
@@ -99,7 +99,7 @@ final class Provider extends Base
     public function phpParserContext(): ContextStack
     {
         return new ContextStack(
-            new Project('test')
+            new Project('test'),
         );
     }
 
@@ -122,7 +122,7 @@ final class Provider extends Base
     {
         return new Source(
             $this->dsn(),
-            [$this->path()]
+            [$this->path()],
         );
     }
 
@@ -140,7 +140,7 @@ final class Provider extends Base
     {
         return new VersionDescriptor(
             $version ?? $this->generator->numerify('v#.#.#'),
-            DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets)
+            DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets),
         );
     }
 
@@ -150,7 +150,7 @@ final class Provider extends Base
             $name ?? $this->generator->word(),
             $this->source(),
             (string) $this->path(),
-            $this->apiSpecification()
+            $this->apiSpecification(),
         );
     }
 
@@ -160,7 +160,7 @@ final class Provider extends Base
             $this->generator->word(),
             $this->source(),
             (string) $this->path(),
-            'rst'
+            'rst',
         );
     }
 

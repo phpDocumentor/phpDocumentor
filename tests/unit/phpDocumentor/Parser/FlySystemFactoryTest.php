@@ -40,8 +40,7 @@ final class FlySystemFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var FlySystemFactory */
-    private $fixture;
+    private FlySystemFactory $fixture;
 
     /** @var ObjectProphecy|MountManager */
     private $mountManagerMock;
@@ -49,8 +48,7 @@ final class FlySystemFactoryTest extends TestCase
     /** @var ObjectProphecy|Filesystem */
     private $filesystemMock;
 
-    /** @var Dsn */
-    private $dsn;
+    private Dsn $dsn;
 
     protected function setUp(): void
     {

@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 class VersionDescriptorTest extends TestCase
 {
-    public const EXAMPLE_VERSION = '2.0';
+    final public const EXAMPLE_VERSION = '2.0';
 
     /** @var VersionDescriptor $fixture */
     protected $fixture;

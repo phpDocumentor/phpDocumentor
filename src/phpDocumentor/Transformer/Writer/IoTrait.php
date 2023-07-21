@@ -85,7 +85,7 @@ trait IoTrait
             $this->copy(
                 $transformation,
                 $scheme . '://' . $file['path'],
-                $destination . '/' . $destinationPath
+                $destination . '/' . $destinationPath,
             );
         }
     }
@@ -102,8 +102,8 @@ trait IoTrait
 
     private function isGlobalTemplateReference(string $path): bool
     {
-        return strpos($path, 'templates/') === 0
-            || strpos($path, 'templates://') === 0;
+        return str_starts_with($path, 'templates/')
+            || str_starts_with($path, 'templates://');
     }
 
     private function normalizeSourcePath(string $path): string

@@ -25,26 +25,17 @@ use UnexpectedValueException;
 use function array_map;
 use function current;
 use function explode;
-use function get_class;
 use function implode;
 use function is_string;
 use function iterator_to_array;
 use function preg_replace_callback;
 use function sprintf;
-use function strpos;
 use function trim;
 
 class PathGenerator
 {
-    /** @var Router */
-    private $router;
-
-    private Engine $queryEngine;
-
-    public function __construct(Router $router, Engine $queryEngine)
+    public function __construct(private readonly Router $router, private readonly Engine $queryEngine)
     {
-        $this->router = $router;
-        $this->queryEngine = $queryEngine;
     }
 
     /**
@@ -86,7 +77,7 @@ class PathGenerator
             if (!$path) {
                 throw new InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
-                    . 'encountered: ' . get_class($descriptor)
+                    . 'encountered: ' . $descriptor::class,
                 );
             }
         }
@@ -102,13 +93,13 @@ class PathGenerator
                 $variable = $query[1];
                 if (!$variable) {
                     throw new RuntimeException(
-                        sprintf('Variable substitution in path %s failed, no variable was specified', $path)
+                        sprintf('Variable substitution in path %s failed, no variable was specified', $path),
                     );
                 }
 
                 // Find value in Descriptor's properties / methods
                 $value = (string) current(
-                    iterator_to_array($this->queryEngine->perform($descriptor, '$.' . $variable))
+                    iterator_to_array($this->queryEngine->perform($descriptor, '$.' . $variable)),
                 );
 
                 // strip any special characters and surrounding \ or /
@@ -119,19 +110,19 @@ class PathGenerator
                         sprintf(
                             'Variable substitution in path %s failed, variable "%s" did not return a value',
                             $path,
-                            $variable
-                        )
+                            $variable,
+                        ),
                     );
                 }
 
                 // make it windows proof by transliterating to ASCII and by url encoding
                 $filepart = (new UnicodeString($filepart))->ascii()->toString();
 
-                return strpos($filepart, '/') !== false
+                return str_contains($filepart, '/')
                     ? implode('/', array_map('urlencode', explode('/', $filepart)))
                     : implode('\\', array_map('urlencode', explode('\\', $filepart)));
             },
-            $path
+            $path,
         );
 
         if (!is_string($destination)) {

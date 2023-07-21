@@ -23,17 +23,10 @@ use Twig\Source;
 use function rtrim;
 use function sprintf;
 use function strlen;
-use function strpos;
 use function substr;
 
 final class FlySystemLoader implements LoaderInterface
 {
-    /** @var FilesystemInterface */
-    private $filesystem;
-
-    /** @var string */
-    private $templatePath;
-
     /**
      * @var string|null prefix used to allow extends of base templates. For example
      *  `{% extends 'template::css/template.css.twig' %}`
@@ -41,12 +34,10 @@ final class FlySystemLoader implements LoaderInterface
     private $overloadPrefix;
 
     public function __construct(
-        FilesystemInterface $filesystem,
-        string $templatePath = '',
+        private readonly FilesystemInterface $filesystem,
+        private readonly string $templatePath = '',
         ?string $overloadPrefix = null
     ) {
-        $this->filesystem = $filesystem;
-        $this->templatePath = $templatePath;
         $this->overloadPrefix = $overloadPrefix !== null ? $overloadPrefix . '::' : null;
     }
 
@@ -67,7 +58,7 @@ final class FlySystemLoader implements LoaderInterface
         return new Source(
             $code,
             $name,
-            $path
+            $path,
         );
     }
 
@@ -122,17 +113,17 @@ final class FlySystemLoader implements LoaderInterface
 
             if ($metadata['type'] !== 'file') {
                 throw new LoaderError(
-                    sprintf('Cannot use anything other than a file as a template, received: %s', $path)
+                    sprintf('Cannot use anything other than a file as a template, received: %s', $path),
                 );
             }
-        } catch (FileNotFoundException $exception) {
+        } catch (FileNotFoundException) {
             throw new LoaderError(sprintf('Template "%s" could not be found on the given filesystem', $name));
         }
     }
 
     private function resolveTemplateName(string $name): string
     {
-        if (($this->overloadPrefix !== null) && strpos($name, $this->overloadPrefix) === 0) {
+        if (($this->overloadPrefix !== null) && str_starts_with($name, $this->overloadPrefix)) {
             $name = substr($name, strlen($this->overloadPrefix));
         }
 

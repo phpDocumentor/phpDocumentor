@@ -42,7 +42,7 @@ final class FilterTest extends TestCase
         };
 
         $filter = new Filter(
-            [$filterStep]
+            [$filterStep],
         );
 
         $this->assertSame($filterableMock, $filter->filter($filterableMock, ApiSpecification::createDefault()));

@@ -19,7 +19,7 @@ class HtmlFormatter
 
         return $this->decorateWithAnchor(
             $this->decorateWithAbbreviation($target->getTitle(), $target),
-            $target
+            $target,
         );
     }
 

@@ -20,8 +20,7 @@ use phpDocumentor\Event\EventAbstract;
  */
 final class PreFileEvent extends EventAbstract
 {
-    /** @var string */
-    private $file = '';
+    private string $file = '';
 
     /**
      * Creates a new instance of a derived object and return that.

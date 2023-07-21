@@ -23,8 +23,6 @@ use function array_merge;
 use function ltrim;
 use function rtrim;
 use function str_replace;
-use function strpos;
-use function substr;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
@@ -78,8 +76,8 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             foreach ($version->getGuides() ?? [] as $key => $guide) {
                 $version->guides[$key] = $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
-                        $guide->source()->dsn()->resolve($configDsn)
-                    )
+                        $guide->source()->dsn()->resolve($configDsn),
+                    ),
                 );
             }
         }
@@ -109,13 +107,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                         $api['ignore'],
                         [
                             'paths' => array_map(
-                                function (string $path): string {
-                                    return $this->pathToGlobPattern($path);
-                                },
-                                $api['ignore']['paths']
+                                fn (string $path): string => $this->pathToGlobPattern($path),
+                                $api['ignore']['paths'],
                             ),
-                        ]
-                    )
+                        ],
+                    ),
                 );
 
                 $version->api[$key] = $api;
@@ -125,12 +121,10 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                 $version->guides[$key] = $guide->withSource(
                     $guide->source()->withPaths(
                         array_map(
-                            function (string $path): Path {
-                                return new Path($this->normalizePath((string) $path));
-                            },
-                            $guide->source()->paths()
-                        )
-                    )
+                            fn (string $path): Path => new Path($this->normalizePath((string) $path)),
+                            $guide->source()->paths(),
+                        ),
+                    ),
                 );
             }
         }
@@ -140,11 +134,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
     private function normalizePath(string $path): string
     {
-        if (strpos($path, '.') === 0) {
+        if (str_starts_with($path, '.')) {
             $path = ltrim($path, '.');
         }
 
-        if (strpos($path, '/') !== 0) {
+        if (!str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -165,7 +159,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             return '/**/*';
         }
 
-        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
+        if (!str_ends_with($path, '*') && !str_contains($path, '.')) {
             $path .= '/**/*';
         }
 

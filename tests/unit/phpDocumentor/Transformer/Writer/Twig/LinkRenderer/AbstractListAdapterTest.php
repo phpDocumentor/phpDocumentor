@@ -63,7 +63,7 @@ final class AbstractListAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new AbstractListAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 

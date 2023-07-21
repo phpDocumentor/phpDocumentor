@@ -37,7 +37,7 @@ use function trim;
 abstract class AssemblerAbstract extends BaseAssembler
 {
     /** @var AssemblerReducer[] */
-    private $reducers;
+    private readonly array $reducers;
 
     public function __construct(AssemblerReducer ...$reducers)
     {

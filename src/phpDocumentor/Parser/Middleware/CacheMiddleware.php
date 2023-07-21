@@ -31,14 +31,8 @@ use function unserialize;
 
 final class CacheMiddleware implements Middleware
 {
-    private CacheInterface $cache;
-
-    private LoggerInterface $logger;
-
-    public function __construct(CacheInterface $files, LoggerInterface $logger)
+    public function __construct(private readonly CacheInterface $cache, private readonly LoggerInterface $logger)
     {
-        $this->cache = $files;
-        $this->logger = $logger;
     }
 
     /**
@@ -62,7 +56,7 @@ final class CacheMiddleware implements Middleware
                 $file = $next($command);
 
                 return base64_encode(serialize($file));
-            }
+            },
         );
 
         $unserializedObject = unserialize(base64_decode($cacheResponse));

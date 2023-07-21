@@ -88,7 +88,7 @@ final class SinceAssemblerTest extends TestCase
     {
         return new DocBlock\Tags\Since(
             $version,
-            new DocBlock\Description($description)
+            new DocBlock\Description($description),
         );
     }
 }

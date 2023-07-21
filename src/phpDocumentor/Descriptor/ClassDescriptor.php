@@ -147,10 +147,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                         'ERROR',
                         sprintf(
                             'Property name is invalid %s',
-                            $e->getMessage()
+                            $e->getMessage(),
                         ),
-                        null
-                    )
+                        null,
+                    ),
                 );
             }
         }

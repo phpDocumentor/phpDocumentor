@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use Stringable;
 
 /**
  * Base class for any tag descriptor and used when a tag has no specific descriptor.
@@ -22,7 +23,7 @@ use phpDocumentor\Descriptor\Filter\Filterable;
  * @api
  * @package phpDocumentor\AST
  */
-class TagDescriptor implements Descriptor, Filterable
+class TagDescriptor implements Descriptor, Filterable, Stringable
 {
     use Traits\HasName;
     use Traits\HasDescription;

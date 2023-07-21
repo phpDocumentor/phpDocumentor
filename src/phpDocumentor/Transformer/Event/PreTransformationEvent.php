@@ -21,16 +21,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class PreTransformationEvent extends Event
 {
-    /** @var Transformation */
-    private $transformation;
-
-    /** @var object */
-    private $subject;
-
-    public function __construct(object $subject, Transformation $transformation)
+    public function __construct(private readonly object $subject, private readonly Transformation $transformation)
     {
-        $this->subject = $subject;
-        $this->transformation = $transformation;
     }
 
     public static function create(object $subject, Transformation $transformation): self

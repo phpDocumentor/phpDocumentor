@@ -313,8 +313,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $superClass = m::mock(ClassDescriptor::class);
         $superClass->shouldReceive('getConstants')->andReturn(
             new Collection(
-                [$constantName => $parentConstant]
-            )
+                [$constantName => $parentConstant],
+            ),
         );
 
         // create and set the parent class for our fixture

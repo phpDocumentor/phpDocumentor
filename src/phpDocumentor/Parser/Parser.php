@@ -38,28 +38,19 @@ use function round;
 class Parser
 {
     /** @var string the name of the default package */
-    private $defaultPackageName = 'Default';
+    private string $defaultPackageName = 'Default';
 
     /** @var bool whether to execute a PHPLint on every file */
-    private $validate = false;
+    private bool $validate = false;
 
     /** @var string[] which markers (i.e. TODO or FIXME) to collect */
-    private $markers = ['TODO', 'FIXME'];
+    private array $markers = ['TODO', 'FIXME'];
 
     /** @var string target location's root path */
-    private $path = '';
-
-    /** @var LoggerInterface $logger */
-    private $logger;
+    private string $path = '';
 
     /** @var string The encoding in which the files are encoded */
-    private $encoding = 'utf-8';
-
-    /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
-    private $stopwatch;
-
-    /** @var ProjectFactory */
-    private $projectFactory;
+    private string $encoding = 'utf-8';
 
     /**
      * Initializes the parser.
@@ -71,16 +62,18 @@ class Parser
      *
      * @codeCoverageIgnore the ini_get call cannot be tested as setting it using ini_set has no effect.
      */
-    public function __construct(ProjectFactory $projectFactory, Stopwatch $stopwatch, LoggerInterface $logger)
-    {
+    public function __construct(
+        private readonly ProjectFactory $projectFactory,
+        /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
+        private readonly Stopwatch $stopwatch,
+        private readonly LoggerInterface $logger
+    ) {
         $defaultEncoding = ini_get('zend.script_encoding');
-        if ($defaultEncoding) {
-            $this->encoding = $defaultEncoding;
+        if (!$defaultEncoding) {
+            return;
         }
 
-        $this->projectFactory = $projectFactory;
-        $this->stopwatch = $stopwatch;
-        $this->logger = $logger;
+        $this->encoding = $defaultEncoding;
     }
 
     /**
@@ -198,7 +191,7 @@ class Parser
         Dispatcher::getInstance()
             ->dispatch(
                 $event->setFileCount(count($files)),
-                'parser.pre'
+                'parser.pre',
             );
 
         /** @var Project $project */

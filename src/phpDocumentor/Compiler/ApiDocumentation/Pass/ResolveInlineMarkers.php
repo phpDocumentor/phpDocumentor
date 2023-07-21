@@ -52,7 +52,7 @@ final class ResolveInlineMarkers extends ApiDocumentationPass
                 '~//[\s]*(' . implode('|', $markerTerms) . ')\:?[\s]*(.*)~',
                 $source,
                 $matches,
-                PREG_SET_ORDER | PREG_OFFSET_CAPTURE
+                PREG_SET_ORDER | PREG_OFFSET_CAPTURE,
             );
 
             foreach ($matches as $match) {
@@ -64,7 +64,7 @@ final class ResolveInlineMarkers extends ApiDocumentationPass
                         'type' => trim($match[1][0], '@'),
                         'line' => $lineNumber,
                         'message' => $match[2][0],
-                    ]
+                    ],
                 );
             }
         }

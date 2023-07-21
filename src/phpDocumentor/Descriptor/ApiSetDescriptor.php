@@ -25,18 +25,15 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
     use HasPackage;
     use HasNamespace;
 
-    private ApiSpecification $apiSpecification;
-
     public function __construct(
         string $name,
         Source $source,
         string $outputLocation,
-        ApiSpecification $apiSpecification
+        private readonly ApiSpecification $apiSpecification
     ) {
         $this->name = $name;
         $this->source = $source;
         $this->outputLocation = $outputLocation;
-        $this->apiSpecification = $apiSpecification;
 
         parent::__construct();
 

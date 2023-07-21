@@ -42,7 +42,7 @@ final class UsedByBuilder extends ApiDocumentationPass
                 $tag->setReference($element);
                 $counterSide->getTags()->fetch(
                     'used-by',
-                    Collection::fromClassString(TagDescriptor::class)
+                    Collection::fromClassString(TagDescriptor::class),
                 )->add($tag);
             }
         }

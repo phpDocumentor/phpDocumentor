@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UsesDescriptorTest extends TestCase
 {
-    public const EXAMPLE_REFERENCE = '\Reference';
+    final public const EXAMPLE_REFERENCE = '\Reference';
 
     /** @var UsesDescriptor $fixture */
     protected $fixture;

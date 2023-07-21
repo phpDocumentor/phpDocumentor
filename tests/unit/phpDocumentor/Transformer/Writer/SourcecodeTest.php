@@ -35,17 +35,17 @@ final class SourcecodeTest extends MockeryTestCase
     use ProphecyTrait;
 
     /** @var Graph */
-    private $sourceCode;
+    private Sourcecode $sourceCode;
 
     protected function setUp(): void
     {
         $pathGenerator = $this->prophesize(PathGenerator::class);
         $pathGenerator->generate(
             Argument::type(FileDescriptor::class),
-            Argument::type(Transformation::class)
+            Argument::type(Transformation::class),
         )->willReturn((string) $this->faker()->path());
         $this->sourceCode = new Sourcecode(
-            $pathGenerator->reveal()
+            $pathGenerator->reveal(),
         );
     }
 
@@ -71,8 +71,8 @@ final class SourcecodeTest extends MockeryTestCase
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
-                [$this->faker()->fileDescriptor()]
-            )
+                [$this->faker()->fileDescriptor()],
+            ),
         );
 
         return $projectDescriptor;

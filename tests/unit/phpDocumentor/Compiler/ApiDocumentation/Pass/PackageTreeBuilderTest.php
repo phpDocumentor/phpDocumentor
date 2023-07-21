@@ -42,8 +42,7 @@ final class PackageTreeBuilderTest extends TestCase
 
     private const DEFAULT_PACKAGE_NAME = 'Default';
 
-    /** @var PackageTreeBuilder $fixture */
-    private $fixture;
+    private PackageTreeBuilder $fixture;
 
     protected function setUp(): void
     {
@@ -60,7 +59,7 @@ final class PackageTreeBuilderTest extends TestCase
     {
         $this->assertSame(
             'Build "packages" index',
-            $this->fixture->getDescription()
+            $this->fixture->getDescription(),
         );
     }
 

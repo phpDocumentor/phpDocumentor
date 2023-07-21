@@ -59,7 +59,7 @@ final class PropertyAssemblerTest extends TestCase
         $propertyReflectorMock = $this->givenAPropertyReflector(
             $namespace,
             $propertyName,
-            $this->givenADocBlockObject(true)
+            $this->givenADocBlockObject(true),
         );
 
         // Act
@@ -91,7 +91,7 @@ final class PropertyAssemblerTest extends TestCase
             false,
             null,
             null,
-            new String_()
+            new String_(),
         );
     }
 
@@ -108,7 +108,7 @@ final class PropertyAssemblerTest extends TestCase
             $tags[] = new DocBlock\Tags\Var_(
                 'variableName',
                 new String_(),
-                new Description('Var description')
+                new Description('Var description'),
             );
         }
 

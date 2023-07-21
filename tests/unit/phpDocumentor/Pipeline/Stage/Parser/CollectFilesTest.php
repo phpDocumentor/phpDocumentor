@@ -43,7 +43,7 @@ final class CollectFilesTest extends TestCase
             Argument::type(Dsn::class),
             Argument::any(),
             Argument::any(),
-            Argument::exact(['php'])
+            Argument::exact(['php']),
         )->shouldBeCalled()->willReturn([]);
 
         $fixture = new CollectFiles($fileCollector->reveal(), new NullLogger());
@@ -53,7 +53,7 @@ final class CollectFilesTest extends TestCase
             [
                 $this->faker()->apiSpecification(),
             ],
-            null
+            null,
         );
 
         $config = ['phpdocumentor' => ['versions' => ['1.0.0' => $version]]];

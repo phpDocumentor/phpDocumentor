@@ -25,8 +25,7 @@ use phpDocumentor\Configuration\ApiSpecification;
  */
 class Filter
 {
-    /** @var Pipeline */
-    private $pipeline;
+    private readonly \League\Pipeline\Pipeline $pipeline;
 
     /**
      * Constructs the filter pipeline.
@@ -38,9 +37,7 @@ class Filter
      */
     public function __construct(iterable $filters)
     {
-        $nullInteruption = new InterruptibleProcessor(static function (FilterPayload $value) {
-            return $value->getFilterable() !== null;
-        });
+        $nullInteruption = new InterruptibleProcessor(static fn (FilterPayload $value) => $value->getFilterable() !== null);
 
         $this->pipeline = new Pipeline($nullInteruption, ...$filters);
     }

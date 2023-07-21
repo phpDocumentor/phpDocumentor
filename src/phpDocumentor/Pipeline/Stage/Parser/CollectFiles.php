@@ -15,18 +15,14 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
-
 use function count;
 
 final class CollectFiles
 {
-    private FileCollector $fileCollector;
-    private LoggerInterface $logger;
-
-    public function __construct(FileCollector $fileCollector, LoggerInterface $logger)
-    {
-        $this->fileCollector = $fileCollector;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly FileCollector $fileCollector,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
@@ -38,7 +34,7 @@ final class CollectFiles
             $apiConfig->source()->dsn(),
             $apiConfig->source()->globPatterns(),
             $apiConfig['ignore'],
-            $apiConfig['extensions']
+            $apiConfig['extensions'],
         );
 
         $payload = $payload->withFiles($files);

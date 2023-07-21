@@ -27,30 +27,18 @@ use Twig\Loader\FilesystemLoader;
 
 class EnvironmentFactory
 {
-    private LinkRenderer $renderer;
     private ?Path $templateOverridesAt = null;
-    private ConverterInterface $markDownConverter;
-    private AssetsExtension $assetsExtension;
-    private UmlExtension $umlExtension;
-    private RelativePathToRootConverter $relativePathToRootConverter;
-    private PathBuilder $pathBuilder;
 
     /** @param string[] $guidesTemplateBasePath */
     public function __construct(
-        LinkRenderer $renderer,
-        ConverterInterface $markDownConverter,
-        AssetsExtension $assetsExtension,
-        UmlExtension $umlExtension,
-        RelativePathToRootConverter $relativePathToRootConverter,
-        PathBuilder $pathBuilder,
+        private readonly LinkRenderer $renderer,
+        private readonly ConverterInterface $markDownConverter,
+        private readonly AssetsExtension $assetsExtension,
+        private readonly UmlExtension $umlExtension,
+        private readonly RelativePathToRootConverter $relativePathToRootConverter,
+        private readonly PathBuilder $pathBuilder,
         private readonly array $guidesTemplateBasePath
     ) {
-        $this->renderer = $renderer;
-        $this->markDownConverter = $markDownConverter;
-        $this->assetsExtension = $assetsExtension;
-        $this->umlExtension = $umlExtension;
-        $this->relativePathToRootConverter = $relativePathToRootConverter;
-        $this->pathBuilder = $pathBuilder;
     }
 
     public function withTemplateOverridesAt(Path $path): void
@@ -97,7 +85,7 @@ class EnvironmentFactory
             $this->markDownConverter,
             $this->renderer,
             $this->relativePathToRootConverter,
-            $this->pathBuilder
+            $this->pathBuilder,
         );
         $twigEnvironment->addExtension($extension);
         $twigEnvironment->addExtension($this->assetsExtension);

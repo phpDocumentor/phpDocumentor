@@ -17,9 +17,9 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
+
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
-
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -34,13 +34,10 @@ use const DIRECTORY_SEPARATOR;
  */
 final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
-    private GraphVizClassDiagram $classDiagramGenerator;
-    private PlantumlClassDiagram $plantumlClassDiagram;
-
-    public function __construct(GraphVizClassDiagram $classDiagramGenerator, PlantumlClassDiagram $plantumlClassDiagram)
-    {
-        $this->classDiagramGenerator = $classDiagramGenerator;
-        $this->plantumlClassDiagram = $plantumlClassDiagram;
+    public function __construct(
+        private readonly GraphVizClassDiagram $classDiagramGenerator,
+        private readonly PlantumlClassDiagram $plantumlClassDiagram
+    ) {
     }
 
     public function getName(): string

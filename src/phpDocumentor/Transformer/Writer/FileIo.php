@@ -57,7 +57,7 @@ class FileIo extends WriterAbstract
         $method = $transformation->getQuery();
         if (strtolower($method) !== '$.copy') {
             throw new InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
+                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"',
             );
         }
 

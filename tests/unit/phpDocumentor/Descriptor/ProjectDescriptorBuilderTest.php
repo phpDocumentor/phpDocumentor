@@ -58,7 +58,7 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
         $this->assertInstanceOf(ProjectDescriptor::class, $this->fixture->getProjectDescriptor());
         $this->assertEquals(
             ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME,
-            $this->fixture->getProjectDescriptor()->getName()
+            $this->fixture->getProjectDescriptor()->getName(),
         );
     }
 

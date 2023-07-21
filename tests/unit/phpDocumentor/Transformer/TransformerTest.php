@@ -39,8 +39,7 @@ final class TransformerTest extends TestCase
     /** @var int Max length of description printed. */
     private const MAX_DESCRIPTION_LENGTH = 68;
 
-    /** @var Transformer $fixture */
-    private $fixture = null;
+    private ?Transformer $fixture = null;
 
     /** @var ObjectProphecy|FlySystemFactory */
     private $flySystemFactory;
@@ -65,7 +64,7 @@ final class TransformerTest extends TestCase
             new Collection(['myTestWriter' => $this->writer->reveal()]),
             new NullLogger(),
             $this->flySystemFactory->reveal(),
-            $eventDispatcher->reveal()
+            $eventDispatcher->reveal(),
         );
     }
 
@@ -80,7 +79,7 @@ final class TransformerTest extends TestCase
             new Collection([]),
             new NullLogger(),
             $flySystemFactory->reveal(),
-            $this->prophesize(EventDispatcherInterface::class)->reveal()
+            $this->prophesize(EventDispatcherInterface::class)->reveal(),
         );
 
         self::assertSame('Transform analyzed project into artifacts', $fixture->getDescription());

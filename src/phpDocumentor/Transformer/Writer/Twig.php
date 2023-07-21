@@ -27,13 +27,12 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
-
 use function array_merge;
 use function count;
+use function is_countable;
 use function ltrim;
 use function preg_split;
 use function strlen;
-use function strpos;
 use function substr;
 
 /**
@@ -96,19 +95,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 {
     use IoTrait;
 
-    private EnvironmentFactory $environmentFactory;
-    private PathGenerator $pathGenerator;
     private Environment $environment;
-    private Engine $queryEngine;
 
     public function __construct(
-        EnvironmentFactory $environmentFactory,
-        PathGenerator $pathGenerator,
-        Engine $queryEngine
+        private readonly EnvironmentFactory $environmentFactory,
+        private readonly PathGenerator $pathGenerator,
+        private readonly Engine $queryEngine
     ) {
-        $this->environmentFactory = $environmentFactory;
-        $this->pathGenerator = $pathGenerator;
-        $this->queryEngine = $queryEngine;
     }
 
     public function getName(): string
@@ -156,7 +149,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
         $extraParameters = [];
         foreach ($project->getSettings()->getCustom() as $key => $value) {
-            if (strpos($key, 'template.') !== 0) {
+            if (!str_starts_with($key, 'template.')) {
                 continue;
             }
 
@@ -170,7 +163,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                     $transformation,
                     $documentationSet,
                     $templatePath,
-                    $extraParameters
+                    $extraParameters,
                 );
             }
 
@@ -205,7 +198,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                     $transformation,
                     $documentationSet,
                     $templatePath,
-                    $extraParameters
+                    $extraParameters,
                 );
             }
 
@@ -235,10 +228,10 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
         $usesNamespaces = $documentationSet instanceof ApiSetDescriptor
-            && count($documentationSet->getNamespace()->getChildren()) > 0;
+            && (is_countable($documentationSet->getNamespace()->getChildren()) ? count($documentationSet->getNamespace()->getChildren()) : 0) > 0;
         $usesPackages = $documentationSet instanceof ApiSetDescriptor
             && $documentationSet->getPackage() !== null
-            && count($documentationSet->getPackage()->getChildren()) > 0;
+            && (is_countable($documentationSet->getPackage()->getChildren()) ? count($documentationSet->getPackage()->getChildren()) : 0) > 0;
 
         $this->environment->addGlobal('usesNamespaces', $usesNamespaces);
         $this->environment->addGlobal('usesPackages', $usesPackages);

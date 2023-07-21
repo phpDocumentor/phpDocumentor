@@ -46,7 +46,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $command = new CreateCommand(
             $this->faker()->phpParserContext(),
             new LocalFile($filename),
-            new ProjectFactoryStrategies([])
+            new ProjectFactoryStrategies([]),
         );
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -59,7 +59,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
                 $this->assertSame($command, $receivedCommand);
 
                 return $expected;
-            }
+            },
         );
 
         $this->assertSame($expected, $result);
@@ -74,7 +74,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $command = new CreateCommand(
             $this->faker()->phpParserContext(),
             new LocalFile($filename),
-            new ProjectFactoryStrategies([])
+            new ProjectFactoryStrategies([]),
         );
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -82,12 +82,12 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $logger->log(
             LogLevel::ALERT,
             '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test',
-            []
+            [],
         )->shouldBeCalled();
         $logger->log(
             LogLevel::NOTICE,
             Argument::containingString('  -- Found in '),
-            []
+            [],
         )->shouldBeCalled();
         $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
 
@@ -96,9 +96,9 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         /** @var File $result */
         $result = $middleware->execute(
             $command,
-            static function (CreateCommand $receivedCommand): void {
+            static function (CreateCommand $receivedCommand): never {
                 throw new Exception('this is a test');
-            }
+            },
         );
 
         $this->assertInstanceOf(File::class, $result);

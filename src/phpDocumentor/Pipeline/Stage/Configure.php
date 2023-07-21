@@ -29,27 +29,14 @@ use function sprintf;
 
 final class Configure
 {
-    private ConfigurationFactory $configFactory;
-    private Configuration $configuration;
-    private LoggerInterface $logger;
-    private Locator $locator;
-    private EnvironmentFactory $environmentFactory;
-    private string $currentWorkingDir;
-
     public function __construct(
-        ConfigurationFactory $configFactory,
-        Configuration $configuration,
-        LoggerInterface $logger,
-        Locator $locator,
-        EnvironmentFactory $environmentFactory,
-        string $currentWorkingDir
+        private readonly ConfigurationFactory $configFactory,
+        private Configuration $configuration,
+        private readonly LoggerInterface $logger,
+        private readonly Locator $locator,
+        private readonly EnvironmentFactory $environmentFactory,
+        private readonly string $currentWorkingDir
     ) {
-        $this->configFactory = $configFactory;
-        $this->configuration = $configuration;
-        $this->logger = $logger;
-        $this->locator = $locator;
-        $this->environmentFactory = $environmentFactory;
-        $this->currentWorkingDir = $currentWorkingDir;
     }
 
     /**
@@ -60,7 +47,7 @@ final class Configure
     public function __invoke(array $options): array
     {
         $this->configFactory->addMiddleware(
-            new CommandlineOptionsMiddleware($options, $this->configFactory, $this->currentWorkingDir)
+            new CommandlineOptionsMiddleware($options, $this->configFactory, $this->currentWorkingDir),
         );
         $this->configFactory->addMiddleware(new PathNormalizingMiddleware());
         $this->configFactory->addMiddleware(new ProvideTemplateOverridePathMiddleware($this->environmentFactory));
@@ -85,7 +72,7 @@ final class Configure
         if ($path === 'none') {
             $this->logger->notice('Not using any configuration file, relying on application defaults');
             $this->configuration->exchangeArray(
-                $this->configFactory->fromDefault()->getArrayCopy()
+                $this->configFactory->fromDefault()->getArrayCopy(),
             );
 
             return;
@@ -94,13 +81,13 @@ final class Configure
         $uri = realpath($path);
         if ($uri === false) {
             throw new InvalidArgumentException(
-                sprintf('The configuration file in path "%s" can not be found or read', $path)
+                sprintf('The configuration file in path "%s" can not be found or read', $path),
             );
         }
 
         $this->logger->notice(sprintf('Using the configuration file at: %s', $path));
         $this->configuration->exchangeArray(
-            $this->configFactory->fromUri(UriFactory::createUri($uri))->getArrayCopy()
+            $this->configFactory->fromUri(UriFactory::createUri($uri))->getArrayCopy(),
         );
     }
 }

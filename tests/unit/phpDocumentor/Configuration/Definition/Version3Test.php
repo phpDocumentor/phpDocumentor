@@ -213,7 +213,7 @@ final class Version3Test extends TestCase
             $this->defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
-            ]
+            ],
         );
 
         // for the version we do want to check whether the defaults are kept; so instead of using array_replace,
@@ -240,7 +240,7 @@ final class Version3Test extends TestCase
             $this->defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
-            ]
+            ],
         );
 
         // for the version we do want to check whether the defaults are kept; so instead of using array_replace,

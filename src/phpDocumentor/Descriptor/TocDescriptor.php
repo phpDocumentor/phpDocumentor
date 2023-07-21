@@ -16,7 +16,7 @@ final class TocDescriptor implements Descriptor
     use HasDescription;
 
     /** @var Collection<Entry> */
-    private Collection $entries;
+    private readonly Collection $entries;
 
     private int $count = 0;
 
@@ -38,10 +38,8 @@ final class TocDescriptor implements Descriptor
             Entry::class,
             array_filter(
                 $this->entries->getAll(),
-                static function (Entry $entry) {
-                    return $entry->getParent() === null;
-                }
-            )
+                static fn (Entry $entry) => $entry->getParent() === null
+            ),
         );
     }
 }

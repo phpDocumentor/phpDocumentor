@@ -56,17 +56,11 @@ class StripOnVisibility implements FilterInterface
 
     private function toVisibility(string $visibility): int
     {
-        switch ($visibility) {
-            case 'public':
-                return ApiSpecification::VISIBILITY_PUBLIC;
-
-            case 'protected':
-                return ApiSpecification::VISIBILITY_PROTECTED;
-
-            case 'private':
-                return ApiSpecification::VISIBILITY_PRIVATE;
-        }
-
-        throw new InvalidArgumentException($visibility . ' is not a valid visibility');
+        return match ($visibility) {
+            'public' => ApiSpecification::VISIBILITY_PUBLIC,
+            'protected' => ApiSpecification::VISIBILITY_PROTECTED,
+            'private' => ApiSpecification::VISIBILITY_PRIVATE,
+            default => throw new InvalidArgumentException($visibility . ' is not a valid visibility'),
+        };
     }
 }

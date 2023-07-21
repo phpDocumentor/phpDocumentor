@@ -26,7 +26,7 @@ class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCa
 {
     private ?EnumInterface $parent = null;
 
-    private ?string $value;
+    private ?string $value = null;
 
     public function setValue(?string $value): void
     {

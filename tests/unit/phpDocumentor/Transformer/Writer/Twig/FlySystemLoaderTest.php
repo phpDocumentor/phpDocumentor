@@ -50,9 +50,9 @@ final class FlySystemLoaderTest extends TestCase
             new Source(
                 'content',
                 $fileName,
-                $resolvedFileName
+                $resolvedFileName,
             ),
-            $loader->getSourceContext($fileName)
+            $loader->getSourceContext($fileName),
         );
     }
 
@@ -137,9 +137,9 @@ final class FlySystemLoaderTest extends TestCase
             new Source(
                 'content',
                 'file.twig',
-                'test/file.twig'
+                'test/file.twig',
             ),
-            $loader->getSourceContext('file.twig')
+            $loader->getSourceContext('file.twig'),
         );
     }
 }

@@ -46,7 +46,7 @@ final class TransformTest extends TestCase
     private $logger;
 
     /** @var Compile */
-    private $transform;
+    private Transform $transform;
 
     /** @var LegacyMockInterface|MockInterface|FlySystemFactory */
     private $flySystemFactory;
@@ -71,7 +71,7 @@ final class TransformTest extends TestCase
             $this->transformer->reveal(),
             $this->flySystemFactory->reveal(),
             $this->logger->reveal(),
-            $templateFactory->reveal()
+            $templateFactory->reveal(),
         );
     }
 
