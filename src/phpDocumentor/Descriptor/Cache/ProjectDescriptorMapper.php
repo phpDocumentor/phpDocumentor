@@ -20,7 +20,6 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Reflection\File;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 use function array_diff;
 use function array_map;

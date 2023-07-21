@@ -19,16 +19,12 @@ use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
 use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
 use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 use Webmozart\Assert\Assert;
 
 use function getcwd;
-use function is_dir;
 use function strlen;
 
 /** @codeCoverageIgnore Kernels do not need to be covered; mostly configuration anyway */

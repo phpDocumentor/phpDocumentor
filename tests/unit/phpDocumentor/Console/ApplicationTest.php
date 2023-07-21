@@ -16,6 +16,7 @@ namespace phpDocumentor\Console;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,7 +35,7 @@ final class ApplicationTest extends TestCase
     use ProphecyTrait;
 
     private Application $feature;
-    private \Prophecy\Prophecy\ObjectProphecy|KernelInterface $kernelMock;
+    private ObjectProphecy|KernelInterface $kernelMock;
 
     public function setUp(): void
     {
@@ -116,9 +117,7 @@ final class ApplicationTest extends TestCase
         self::assertTrue($definition->hasOption('log'));
     }
 
-    /**
-     * @covers ::getLongVersion
-     */
+    /** @covers ::getLongVersion */
     public function testGetLongVersion(): void
     {
         self::assertMatchesRegularExpression(
