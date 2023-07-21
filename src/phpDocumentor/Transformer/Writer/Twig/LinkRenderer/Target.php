@@ -37,7 +37,7 @@ final class Target
      * When this field is not null, it is used as the link text and the regular title is set as the title attribute
      * of a generated ABBR tag.
      */
-    private ?string $abbreviation;
+    private string|null $abbreviation;
 
     /**
      * How should the HTML be formatted.
@@ -65,8 +65,8 @@ final class Target
          * Sometimes, input cannot be resolved (FQCNs that we do not document). When that happens the URL is null, and the
          * {@see HtmlFormatter} will still render a reference to that FQCN, but without a link.
          */
-        private readonly ?string $url = null,
-        string $presentation = LinkRenderer::PRESENTATION_NORMAL
+        private readonly string|null $url = null,
+        string $presentation = LinkRenderer::PRESENTATION_NORMAL,
     ) {
         $this->setPresentation($presentation);
     }
@@ -76,12 +76,12 @@ final class Target
         return $this->title;
     }
 
-    public function getAbbreviation(): ?string
+    public function getAbbreviation(): string|null
     {
         return $this->abbreviation;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string|null
     {
         return $this->url;
     }

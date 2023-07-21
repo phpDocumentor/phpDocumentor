@@ -6,9 +6,7 @@ namespace phpDocumentor\Configuration;
 
 use ArrayAccess;
 
-/**
- * @implements ArrayAccess<String, mixed>
- */
+/** @implements ArrayAccess<String, mixed> */
 class GuideSpecification implements ArrayAccess
 {
     use LegacyArrayAccess;

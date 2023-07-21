@@ -54,9 +54,7 @@ final class ApplicationTest extends TestCase
         $this->feature->setAutoExit(false);
     }
 
-    /**
-     * @covers ::getCommandName
-     */
+    /** @covers ::getCommandName */
     public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
@@ -95,9 +93,7 @@ final class ApplicationTest extends TestCase
         self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
     }
 
-    /**
-     * @covers ::getCommandName
-     */
+    /** @covers ::getCommandName */
     public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
     {
         $_SERVER['argv'] = ['binary', 'something else'];
@@ -107,9 +103,7 @@ final class ApplicationTest extends TestCase
         self::assertSame(2, $this->feature->run(new StringInput('-q')));
     }
 
-    /**
-     * @covers ::getDefaultInputDefinition
-     */
+    /** @covers ::getDefaultInputDefinition */
     public function testWhetherTheConfigurationAndLogIsADefaultInput(): void
     {
         $definition = $this->feature->getDefinition();

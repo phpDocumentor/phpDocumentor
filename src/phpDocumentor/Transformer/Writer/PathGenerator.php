@@ -30,6 +30,7 @@ use function is_string;
 use function iterator_to_array;
 use function preg_replace_callback;
 use function sprintf;
+use function str_contains;
 use function trim;
 
 class PathGenerator
@@ -72,9 +73,9 @@ class PathGenerator
     private function determinePath(Descriptor $descriptor, Transformation $transformation): string
     {
         $path = '/' . $transformation->getArtifact();
-        if (!$transformation->getArtifact()) {
+        if (! $transformation->getArtifact()) {
             $path = $this->router->generate($descriptor);
-            if (!$path) {
+            if (! $path) {
                 throw new InvalidArgumentException(
                     'No matching routing rule could be found for the given node, please provide an artifact location, '
                     . 'encountered: ' . $descriptor::class,
@@ -91,7 +92,7 @@ class PathGenerator
             '/{{([^}]*)}}/', // explicitly do not use the unicode modifier; this breaks windows
             function (array $query) use ($path, $descriptor) {
                 $variable = $query[1];
-                if (!$variable) {
+                if (! $variable) {
                     throw new RuntimeException(
                         sprintf('Variable substitution in path %s failed, no variable was specified', $path),
                     );
@@ -125,7 +126,7 @@ class PathGenerator
             $path,
         );
 
-        if (!is_string($destination)) {
+        if (! is_string($destination)) {
             throw new RuntimeException(sprintf('Variable substitution in path %s failed', $path));
         }
 

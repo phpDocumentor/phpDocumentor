@@ -25,9 +25,7 @@ use function md5;
  */
 final class ReEncodedFileTest extends TestCase
 {
-    /**
-     * @covers ::path
-     */
+    /** @covers ::path */
     public function testReEncodedFileExposesPath(): void
     {
         $path = '/tmp/fileToBeParsed';
@@ -36,9 +34,7 @@ final class ReEncodedFileTest extends TestCase
         $this->assertSame($path, $file->path());
     }
 
-    /**
-     * @covers ::getContents
-     */
+    /** @covers ::getContents */
     public function testReEncodedFileExposesContents(): void
     {
         $contents = 'Contents';
@@ -47,9 +43,7 @@ final class ReEncodedFileTest extends TestCase
         $this->assertSame($contents, $file->getContents());
     }
 
-    /**
-     * @covers ::md5
-     */
+    /** @covers ::md5 */
     public function testReEncodedFileExposesHashOfContents(): void
     {
         $contents = 'Contents';

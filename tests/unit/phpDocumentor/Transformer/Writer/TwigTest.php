@@ -17,6 +17,7 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
@@ -88,17 +89,13 @@ final class TwigTest extends TestCase
         );
     }
 
-    /**
-     * @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString
-     */
+    /** @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString */
     public function testReturnsClassNameAsDescription(): void
     {
         $this->assertSame(Twig::class, (string) $this->writer);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testRendersTwigTemplateToDestination(): void
     {
         $targetDir = $this->destinationFolder->url();

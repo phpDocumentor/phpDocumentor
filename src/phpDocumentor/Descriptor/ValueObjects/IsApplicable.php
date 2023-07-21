@@ -50,7 +50,7 @@ final class IsApplicable implements Equals
 
     public function inverse(): self
     {
-        return new self(!$this->value);
+        return new self(! $this->value);
     }
 
     public function equals(Equals $other): bool

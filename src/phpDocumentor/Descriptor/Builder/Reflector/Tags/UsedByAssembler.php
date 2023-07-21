@@ -16,9 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
-/**
- * @extends BaseTagAssembler<UsedByDescriptor, Uses>
- */
+/** @extends BaseTagAssembler<UsedByDescriptor, Uses> */
 class UsedByAssembler extends BaseTagAssembler
 {
     /**

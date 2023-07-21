@@ -18,9 +18,7 @@ trait CanBeFinal
     /** @var bool $final Whether this class is marked as final and can't be subclassed. */
     protected bool $final = false;
 
-    /**
-     * @internal should not be called by any other class than the assemblers
-     */
+    /** @internal should not be called by any other class than the assemblers */
     public function setFinal(bool $final): void
     {
         $this->final = $final;

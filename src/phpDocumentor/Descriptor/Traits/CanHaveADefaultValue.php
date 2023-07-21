@@ -16,14 +16,14 @@ namespace phpDocumentor\Descriptor\Traits;
 trait CanHaveADefaultValue
 {
     /** @var string|null $default the default value for an argument or null if none is provided */
-    protected ?string $default = null;
+    protected string|null $default = null;
 
-    public function setDefault(?string $value): void
+    public function setDefault(string|null $value): void
     {
         $this->default = $value;
     }
 
-    public function getDefault(): ?string
+    public function getDefault(): string|null
     {
         return $this->default;
     }

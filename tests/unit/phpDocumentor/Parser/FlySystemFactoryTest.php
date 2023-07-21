@@ -58,9 +58,7 @@ final class FlySystemFactoryTest extends TestCase
         $this->fixture = new FlySystemFactory($this->mountManagerMock->reveal());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testCreateLocalFilesystemWithoutCache(): void
     {
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
@@ -81,9 +79,7 @@ final class FlySystemFactoryTest extends TestCase
         $this->assertSame($expected . DIRECTORY_SEPARATOR, $pathPrefix);
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testCreateLocalFilesystemWithCache(): void
     {
         $this->filesystemMock->addPlugin(Argument::any())->shouldBeCalled();
@@ -97,9 +93,7 @@ final class FlySystemFactoryTest extends TestCase
         $this->assertInstanceOf(Filesystem::class, $result);
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testUnsupportedScheme(): void
     {
         $this->expectException('InvalidArgumentException');
@@ -112,9 +106,7 @@ final class FlySystemFactoryTest extends TestCase
         $this->fixture->create($dsn);
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testFlyFinderIsRegistered(): void
     {
         $this->mountManagerMock->mountFilesystem(Argument::any(), Argument::any())->shouldBeCalledOnce();
@@ -126,9 +118,7 @@ final class FlySystemFactoryTest extends TestCase
         $fileSystem->find(new InPath(new Path('a')));
     }
 
-    /**
-     * @see FlySystemFactory::stripScheme
-     */
+    /** @see FlySystemFactory::stripScheme */
     private function formatOsSpecificResult(): string
     {
         $expected = (string) $this->dsn;

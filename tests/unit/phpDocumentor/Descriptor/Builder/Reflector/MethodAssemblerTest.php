@@ -239,10 +239,10 @@ class MethodAssemblerTest extends TestCase
         string $namespace,
         string $methodName,
         Argument $argumentMock,
-        ?DocBlock $docBlockMock = null,
+        DocBlock|null $docBlockMock = null,
         bool $hasReturnByReference = false,
-        ?Location $location = null,
-        ?Location $endLocation = null
+        Location|null $location = null,
+        Location|null $endLocation = null,
     ): Method {
         $method = new Method(
             new Fqsen('\\' . $namespace . '\\myClass::' . $methodName . '()'),

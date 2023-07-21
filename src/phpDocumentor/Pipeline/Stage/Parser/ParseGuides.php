@@ -32,7 +32,7 @@ final class ParseGuides
         private readonly CommandBus $commandBus,
         private readonly LoggerInterface $logger,
         private readonly FlySystemFactory $flySystemFactory,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -84,7 +84,7 @@ final class ParseGuides
     /**
      * Dispatches a logging request.
      *
-     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority   The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void

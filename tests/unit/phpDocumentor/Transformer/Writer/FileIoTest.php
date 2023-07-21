@@ -60,9 +60,7 @@ final class FileIoTest extends TestCase
         $this->template = new Template('My Template', $mountManager);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesFileFromCustomTemplateToDestination(): void
     {
         $this->sourceFolder->addChild(new vfsStreamFile('index.html.twig'));
@@ -87,9 +85,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesFileFromGlobalTemplateToDestination(): void
     {
         $this->templatesFolder->addChild(new vfsStreamFile('templateName/images/image.png'));
@@ -114,9 +110,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('images/destination.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiedFileOverwritesExistingFile(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -141,9 +135,7 @@ final class FileIoTest extends TestCase
         $this->assertStringEqualsFile($this->destinationFolder->getChild('index.html')->url(), 'new content');
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryFromCustomTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -170,9 +162,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryFromGlobalTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -201,9 +191,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromCustomTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -232,9 +220,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromGlobalTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -265,9 +251,7 @@ final class FileIoTest extends TestCase
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testExceptionOccursIfSourceFileCannotBeFound(): void
     {
         $this->expectException(FileNotFoundException::class);
@@ -288,9 +272,7 @@ final class FileIoTest extends TestCase
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testExceptionOccursIfQueryIsInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);

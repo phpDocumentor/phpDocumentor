@@ -34,7 +34,7 @@ final class UsesDescriptor extends TagDescriptor implements Stringable
      *
      * @return Fqsen|Descriptor|null
      */
-    public function getReference(): ?object
+    public function getReference(): object|null
     {
         return $this->reference;
     }
@@ -44,7 +44,7 @@ final class UsesDescriptor extends TagDescriptor implements Stringable
      *
      * @param Fqsen|Descriptor|null $reference
      */
-    public function setReference(?object $reference): void
+    public function setReference(object|null $reference): void
     {
         $this->reference = $reference;
     }

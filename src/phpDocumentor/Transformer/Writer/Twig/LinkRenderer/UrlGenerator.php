@@ -29,6 +29,7 @@ use Webmozart\Assert\Assert;
 use function is_string;
 use function ltrim;
 use function sprintf;
+use function str_starts_with;
 use function strlen;
 use function substr;
 
@@ -45,10 +46,8 @@ class UrlGenerator
     {
     }
 
-    /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target
-     */
-    public function generate($target, string $fallback): ?string
+    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target */
+    public function generate($target, string $fallback): string|null
     {
         $unlinkable = $target instanceof Fqsen || $target instanceof Type;
         if ($unlinkable) {
@@ -60,7 +59,7 @@ class UrlGenerator
             return $this->generateGuideUrl($target);
         }
 
-        if (!$target instanceof Descriptor) {
+        if (! $target instanceof Descriptor) {
             return $fallback;
         }
 
@@ -73,10 +72,8 @@ class UrlGenerator
         return $this->withoutLeadingSlash($url);
     }
 
-    /**
-     * @param string|Reference\Url $target
-     */
-    private function generateGuideUrl($target): ?string
+    /** @param string|Reference\Url $target */
+    private function generateGuideUrl($target): string|null
     {
         if ((is_string($target) || $target instanceof Reference\Url) === false) {
             throw new InvalidArgumentException(
@@ -126,9 +123,7 @@ class UrlGenerator
         );
     }
 
-    /**
-     * @param string|Reference\Url $target
-     */
+    /** @param string|Reference\Url $target */
     private function isGuideUrl($target): bool
     {
         if ($target instanceof Reference\Url) {

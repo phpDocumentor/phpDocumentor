@@ -40,7 +40,7 @@ final class PHPReferenceNode extends InlineNode
         $this->descriptor = $descriptor;
     }
 
-    public function getDescriptor(): ?Descriptor
+    public function getDescriptor(): Descriptor|null
     {
         return $this->descriptor;
     }

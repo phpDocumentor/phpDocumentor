@@ -78,7 +78,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function get($index)
     {
-        if (!isset($this->items[$index])) {
+        if (! isset($this->items[$index])) {
             throw new OutOfRangeException($index . ' offset not found in Collection');
         }
 
@@ -104,7 +104,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function fetch($index, $valueIfEmpty = null)
     {
-        if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
+        if (! $this->offsetExists($index) && $valueIfEmpty !== null) {
             /** @var T $valueIfEmpty */
             $this->offsetSet($index, $valueIfEmpty);
         }
@@ -112,9 +112,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
         return $this->offsetGet($index);
     }
 
-    /**
-     * @return ?T
-     */
+    /** @return ?T */
     public function first()
     {
         if (count($this->items) === 0) {

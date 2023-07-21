@@ -24,9 +24,7 @@ final class PipelineFactory
     {
     }
 
-    /**
-     * @param iterable<callable> $stages
-     */
+    /** @param iterable<callable> $stages */
     public function create(iterable $stages): PipelineInterface
     {
         $builder = new PipelineBuilder();

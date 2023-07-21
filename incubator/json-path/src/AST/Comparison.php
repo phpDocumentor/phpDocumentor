@@ -18,8 +18,11 @@ use phpDocumentor\JsonPath\Executor;
 
 final class Comparison implements Expression
 {
-    public function __construct(private readonly QueryNode $left, private readonly string $operator, private readonly QueryNode $right)
-    {
+    public function __construct(
+        private readonly QueryNode $left,
+        private readonly string $operator,
+        private readonly QueryNode $right,
+    ) {
     }
 
     /** @inheritDoc */

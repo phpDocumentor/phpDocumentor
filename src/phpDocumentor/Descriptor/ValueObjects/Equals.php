@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ValueObjects;
 
-/**
- * @template T as Equals
- */
+/** @template T as Equals */
 interface Equals
 {
-    /**
-     * @param T $other
-     */
+    /** @param T $other */
     public function equals(Equals $other): bool;
 }

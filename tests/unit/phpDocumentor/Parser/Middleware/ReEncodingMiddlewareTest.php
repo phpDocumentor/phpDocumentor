@@ -61,9 +61,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $this->assertInstanceOf(PhpFile::class, $result);
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong(): void
     {
         $this->expectException(InvalidArgumentException::class);

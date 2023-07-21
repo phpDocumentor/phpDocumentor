@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Reflection\File;
-
 use Symfony\Component\String\UnicodeString;
+
 use function md5;
 
 final class ReEncodedFile implements File

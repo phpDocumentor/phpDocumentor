@@ -100,7 +100,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         private readonly ConverterInterface $markdownConverter,
         private LinkRenderer $routeRenderer,
         private readonly RelativePathToRootConverter $relativePathToRootConverter,
-        private readonly PathBuilder $pathBuilder
+        private readonly PathBuilder $pathBuilder,
     ) {
         $this->routeRenderer = $this->routeRenderer->withProject($project)->forDocumentationSet($documentationSet);
     }
@@ -133,9 +133,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         ];
     }
 
-    /**
-     * @return list<TwigTest>
-     */
+    /** @return list<TwigTest> */
     public function getTests(): array
     {
         return [
@@ -179,7 +177,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         $this->routeRenderer->getDestination(),
                         '/',
                     );
-                    if (!$absolutePath) {
+                    if (! $absolutePath) {
                         return '';
                     }
 
@@ -201,9 +199,9 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 'link',
                 function (object $element): string {
                     if (
-                        !$element instanceof Fqsen
-                        && !$element instanceof Uri
-                        && !$element instanceof Descriptor
+                        ! $element instanceof Fqsen
+                        && ! $element instanceof Uri
+                        && ! $element instanceof Descriptor
                     ) {
                         return '';
                     }
@@ -314,8 +312,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     Environment $env,
                     Entry $entry,
                     string $template,
-                    ?int $maxDepth = null,
-                    int $depth = 0
+                    int|null $maxDepth = null,
+                    int $depth = 0,
                 ): string {
                     if ($maxDepth === $depth) {
                         return '';
@@ -348,7 +346,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return [
             'markdown' => new TwigFilter(
                 'markdown',
-                fn (?string $value): string => str_replace(
+                fn (string|null $value): string => str_replace(
                     ['<pre>', '<code>'],
                     ['<pre class="prettyprint">', '<code class="prettyprint">'],
                     $this->markdownConverter->convert($value ?? '')->getContent(),
@@ -389,10 +387,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         ];
     }
 
-    /**
-     * @param mixed[] $context
-     */
-    public function renderDescription(array $context, ?DescriptionDescriptor $description): string
+    /** @param mixed[] $context */
+    public function renderDescription(array $context, DescriptionDescriptor|null $description): string
     {
         if ($description === null || $description->getBodyTemplate() === '') {
             return '';
@@ -434,9 +430,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         return $routeRenderer->render($value, $presentation);
     }
 
-    /**
-     * @param mixed[] $context
-     */
+    /** @param mixed[] $context */
     private function contextRouteRenderer(array $context): LinkRenderer
     {
         return $this->routeRenderer

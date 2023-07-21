@@ -19,9 +19,7 @@ final class PHPReferenceTest extends TestCase
         $this->textRole = new PHPReference(new NullLogger());
     }
 
-    /**
-     * @dataProvider phpRefrenceProvider
-     */
+    /** @dataProvider phpRefrenceProvider */
     public function testProcessNodeReturnsNode(string $role, string $content, PHPReferenceNode $expected): void
     {
         $node = $this->textRole->processNode(

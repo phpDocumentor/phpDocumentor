@@ -18,7 +18,7 @@ class PlantumlRenderer
     {
     }
 
-    public function render(string $diagram): ?string
+    public function render(string $diagram): string|null
     {
         $pumlFileLocation = tempnam('phpdocumentor', 'pu_');
         if ($pumlFileLocation === false) {
@@ -46,7 +46,7 @@ PUML;
         $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 1200.0);
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             $this->logger->error('Generating the class diagram failed', ['error' => $process->getErrorOutput()]);
 
             return null;

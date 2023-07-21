@@ -22,7 +22,7 @@ use phpDocumentor\Transformer\Transformation;
  */
 final class PostTransformEvent extends EventAbstract
 {
-    private ?ProjectDescriptor $project = null;
+    private ProjectDescriptor|null $project = null;
 
     /** @var Transformation[] */
     private array $transformations = [];
@@ -40,7 +40,7 @@ final class PostTransformEvent extends EventAbstract
     /**
      * Returns the descriptor describing the project.
      */
-    public function getProject(): ?ProjectDescriptor
+    public function getProject(): ProjectDescriptor|null
     {
         return $this->project;
     }

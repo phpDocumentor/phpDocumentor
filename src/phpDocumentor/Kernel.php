@@ -30,9 +30,7 @@ use function getcwd;
 use function is_dir;
 use function strlen;
 
-/**
- * @codeCoverageIgnore Kernels do not need to be covered; mostly configuration anyway
- */
+/** @codeCoverageIgnore Kernels do not need to be covered; mostly configuration anyway */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;

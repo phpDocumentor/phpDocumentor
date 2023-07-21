@@ -48,9 +48,7 @@ final class NamespaceTreeBuilderTest extends TestCase
         $this->apiSet->getFiles()->add(new FileDescriptor('hash'));
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame(

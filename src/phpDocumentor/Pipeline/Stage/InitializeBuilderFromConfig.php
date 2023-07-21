@@ -28,9 +28,7 @@ use function md5;
 
 final class InitializeBuilderFromConfig
 {
-    /**
-     * @param PartialsCollection<string> $partials
-     */
+    /** @param PartialsCollection<string> $partials */
     public function __construct(private readonly PartialsCollection $partials)
     {
     }

@@ -35,7 +35,7 @@ final class Configure
         private readonly LoggerInterface $logger,
         private readonly Locator $locator,
         private readonly EnvironmentFactory $environmentFactory,
-        private readonly string $currentWorkingDir
+        private readonly string $currentWorkingDir,
     ) {
     }
 

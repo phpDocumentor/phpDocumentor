@@ -76,9 +76,7 @@ class ExampleAssemblerTest extends TestCase
         $this->assertSame(self::EXAMPLE_TEXT, $descriptor->getExample());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testExceptionIsThrownIfTheWrongObjectIsPassed(): void
     {
         $this->expectException('TypeError');

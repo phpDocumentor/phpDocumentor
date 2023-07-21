@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Fqsen;
 trait HasFqsen
 {
     /** @var ?Fqsen Fully Qualified Structural Element Name; the FQCN including method, property or constant name */
-    protected ?Fqsen $fqsen = null;
+    protected Fqsen|null $fqsen = null;
 
     /**
      * Sets the Fully Qualified Structural Element Name (FQSEN) for this element.
@@ -33,7 +33,7 @@ trait HasFqsen
     /**
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
-    public function getFullyQualifiedStructuralElementName(): ?Fqsen
+    public function getFullyQualifiedStructuralElementName(): Fqsen|null
     {
         return $this->fqsen;
     }

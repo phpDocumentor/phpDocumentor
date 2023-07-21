@@ -96,7 +96,7 @@ class ProjectDescriptorMapper
     private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void
     {
         $item = $this->cache->getItem(self::KEY_SETTINGS);
-        if (!$item->isHit()) {
+        if (! $item->isHit()) {
             return;
         }
 
@@ -126,7 +126,7 @@ class ProjectDescriptorMapper
         foreach ($this->cache->getItems($fileList) as $item) {
             $file = $item->get();
 
-            if (!($file instanceof FileDescriptor)) {
+            if (! ($file instanceof FileDescriptor)) {
                 continue;
             }
 
@@ -166,7 +166,7 @@ class ProjectDescriptorMapper
 
         // remove any keys that are no longer used.
         $invalidatedKeys = array_diff($currentFileList, $fileKeys);
-        if (!$invalidatedKeys) {
+        if (! $invalidatedKeys) {
             return;
         }
 

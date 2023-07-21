@@ -17,9 +17,7 @@ use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler */
 class AuthorAssemblerTest extends TestCase
 {
     /**

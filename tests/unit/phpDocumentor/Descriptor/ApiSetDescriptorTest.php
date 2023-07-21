@@ -73,9 +73,7 @@ final class ApiSetDescriptorTest extends TestCase
         self::assertSame($indexes, $set->getIndexes());
     }
 
-    /**
-     * @covers ::findElement
-     */
+    /** @covers ::findElement */
     public function testCanFetchAnElementBasedOnItsFqsen(): void
     {
         $source = $this->faker()->source();

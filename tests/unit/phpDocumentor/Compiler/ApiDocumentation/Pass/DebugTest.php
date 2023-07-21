@@ -31,9 +31,7 @@ final class DebugTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
@@ -52,9 +50,7 @@ final class DebugTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $analyzerMock = $this->prophesize(ProjectAnalyzer::class);

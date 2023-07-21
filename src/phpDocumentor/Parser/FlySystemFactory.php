@@ -60,7 +60,7 @@ class FlySystemFactory implements FileSystemFactory
 
     private function createAdapter(Dsn $dsn): AdapterInterface
     {
-        if (!in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'], true)) {
+        if (! in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'], true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a supported file system yet', $dsn->getScheme()));
         }
 

@@ -20,8 +20,6 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface NamespaceInterface extends ElementInterface, ContainerInterface, ChildInterface
 {
-    /**
-     * @return Collection<NamespaceInterface>
-     */
+    /** @return Collection<NamespaceInterface> */
     public function getChildren(): Collection;
 }

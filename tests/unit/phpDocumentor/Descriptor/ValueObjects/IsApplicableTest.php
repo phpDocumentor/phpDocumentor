@@ -15,9 +15,7 @@ namespace phpDocumentor\Descriptor\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass IsApplicable
- */
+/** @coversDefaultClass IsApplicable */
 final class IsApplicableTest extends TestCase
 {
     /**
@@ -59,18 +57,14 @@ final class IsApplicableTest extends TestCase
         self::assertTrue($changed->isTrue());
     }
 
-    /**
-     * @covers ::fromBoolean
-     */
+    /** @covers ::fromBoolean */
     public function testCanBeInstantiatedFromBoolean(): void
     {
         self::assertTrue(IsApplicable::fromBoolean(true)->isTrue());
         self::assertTrue(IsApplicable::fromBoolean(false)->isFalse());
     }
 
-    /**
-     * @covers ::equals
-     */
+    /** @covers ::equals */
     public function testCanBeComparedToAnother(): void
     {
         self::assertTrue(IsApplicable::true()->equals(IsApplicable::true()));

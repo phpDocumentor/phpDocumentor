@@ -59,7 +59,7 @@ trait HasPackage
     /**
      * Returns the package name for this element.
      */
-    public function getPackage(): ?PackageInterface
+    public function getPackage(): PackageInterface|null
     {
         $inheritedElement = $this instanceof InheritsFromElement
             ? $this->getInheritedElement()
@@ -67,7 +67,7 @@ trait HasPackage
 
         if (
             $this->package instanceof PackageInterface
-            && !($this->package->getName() === '\\' && $inheritedElement)
+            && ! ($this->package->getName() === '\\' && $inheritedElement)
         ) {
             return $this->package;
         }

@@ -18,6 +18,7 @@ use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
 
 use function ltrim;
+use function str_starts_with;
 use function strpos;
 use function substr;
 
@@ -124,7 +125,7 @@ trait IoTrait
     private function normalizeDestination(string $destination): string
     {
         // prepend destination scheme if none was set
-        if (!UriString::parse($destination)['scheme']) {
+        if (! UriString::parse($destination)['scheme']) {
             $destination = 'destination://' . $destination;
         }
 

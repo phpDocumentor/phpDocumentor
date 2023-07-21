@@ -12,7 +12,7 @@ final class StripIgnoredTags implements FilterInterface
 {
     public function __invoke(FilterPayload $payload): FilterPayload
     {
-        if (!$payload->getFilterable() instanceof TagDescriptor) {
+        if (! $payload->getFilterable() instanceof TagDescriptor) {
             return $payload;
         }
 

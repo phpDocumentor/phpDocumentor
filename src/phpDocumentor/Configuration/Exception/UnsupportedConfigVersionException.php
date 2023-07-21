@@ -18,14 +18,10 @@ use RuntimeException;
 use function implode;
 use function sprintf;
 
-/**
- * @codeCoverageIgnore
- */
+/** @codeCoverageIgnore */
 final class UnsupportedConfigVersionException extends RuntimeException
 {
-    /**
-     * @param string[] $supportedVersions
-     */
+    /** @param string[] $supportedVersions */
     public static function create(string $configurationVersion, array $supportedVersions): self
     {
         return new self(

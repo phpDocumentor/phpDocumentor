@@ -55,14 +55,14 @@ use function sprintf;
  */
 class RunCommand extends Command
 {
-    private ?ProgressBar $progressBar = null;
+    private ProgressBar|null $progressBar = null;
 
-    private ?ProgressBar $transformerProgressBar = null;
+    private ProgressBar|null $transformerProgressBar = null;
 
     public function __construct(
         private readonly ProjectDescriptorBuilder $projectDescriptorBuilder,
         private readonly PipelineInterface $pipeline,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct('project:run');
     }

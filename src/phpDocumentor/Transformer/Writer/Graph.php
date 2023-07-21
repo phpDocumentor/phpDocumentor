@@ -17,9 +17,9 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
-
 use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
 use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
+
 use const DIRECTORY_SEPARATOR;
 
 /**
@@ -36,7 +36,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
 {
     public function __construct(
         private readonly GraphVizClassDiagram $classDiagramGenerator,
-        private readonly PlantumlClassDiagram $plantumlClassDiagram
+        private readonly PlantumlClassDiagram $plantumlClassDiagram,
     ) {
     }
 
@@ -45,9 +45,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         return 'Graph';
     }
 
-    /**
-     * @return array<string, bool>
-     */
+    /** @return array<string, bool> */
     public function getDefaultSettings(): array
     {
         return ['graphs.enabled' => false];
@@ -57,12 +55,12 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
      * Generates a UML class diagram using PlantUML or our native GraphViz integration.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      */
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         if ($project->getSettings()->getCustom()['graphs.enabled'] === false) {
             return;

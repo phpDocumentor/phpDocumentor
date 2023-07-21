@@ -50,12 +50,12 @@ abstract class WriterAbstract implements Stringable
      * Abstract definition of the transformation method.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      */
     abstract public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void;
 
     public function __toString(): string

@@ -21,6 +21,7 @@ use Stringable;
 use Webmozart\Assert\Assert;
 
 use function lcfirst;
+use function str_starts_with;
 use function substr;
 
 /**
@@ -91,7 +92,7 @@ abstract class DescriptorAbstract implements Filterable, ElementInterface, Inher
      */
     public function __call(string $name, array $arguments)
     {
-        if (!str_starts_with($name, 'get')) {
+        if (! str_starts_with($name, 'get')) {
             return null;
         }
 

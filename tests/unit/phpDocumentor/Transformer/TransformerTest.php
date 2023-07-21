@@ -36,10 +36,9 @@ final class TransformerTest extends TestCase
     use ProphecyTrait;
     use Faker;
 
-    /** @var int Max length of description printed. */
     private const MAX_DESCRIPTION_LENGTH = 68;
 
-    private ?Transformer $fixture = null;
+    private Transformer|null $fixture = null;
 
     /** @var ObjectProphecy|FlySystemFactory */
     private $flySystemFactory;
@@ -68,9 +67,7 @@ final class TransformerTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__construct
-     */
+    /** @covers ::__construct */
     public function testInitialization(): void
     {
         $flySystemFactory = $this->prophesize(FlySystemFactory::class);
@@ -103,9 +100,7 @@ final class TransformerTest extends TestCase
         $this->assertEquals($filesystem, $this->fixture->destination());
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testExecute(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -123,9 +118,7 @@ final class TransformerTest extends TestCase
         $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $description = $this->fixture->getDescription();

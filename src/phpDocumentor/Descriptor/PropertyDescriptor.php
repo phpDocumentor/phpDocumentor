@@ -39,7 +39,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     use Traits\CanHaveADefaultValue;
 
     /** @var ClassInterface|TraitInterface|null $parent */
-    protected ?ElementInterface $parent = null;
+    protected ElementInterface|null $parent = null;
 
     protected bool $static = false;
     private bool $readOnly = false;
@@ -60,10 +60,8 @@ class PropertyDescriptor extends DescriptorAbstract implements
         $this->parent = $parent;
     }
 
-    /**
-     * @return ClassInterface|TraitInterface|null
-     */
-    public function getParent(): ?ElementInterface
+    /** @return ClassInterface|TraitInterface|null */
+    public function getParent(): ElementInterface|null
     {
         return $this->parent;
     }
@@ -78,7 +76,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->static;
     }
 
-    public function getType(): ?Type
+    public function getType(): Type|null
     {
         if ($this->type === null) {
             /** @var VarDescriptor|bool $var */
@@ -91,9 +89,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         return $this->type;
     }
 
-    /**
-     * @return Collection<VarDescriptor>
-     */
+    /** @return Collection<VarDescriptor> */
     public function getVar(): Collection
     {
         /** @var Collection<VarDescriptor> $var */
@@ -125,7 +121,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     /**
      * Returns the property from which this one should inherit, if any.
      */
-    public function getInheritedElement(): ?PropertyInterface
+    public function getInheritedElement(): PropertyInterface|null
     {
         /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();

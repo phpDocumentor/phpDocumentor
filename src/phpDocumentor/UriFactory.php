@@ -12,6 +12,7 @@ use Throwable;
 use function preg_match;
 use function sprintf;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
 use function substr;
 
@@ -54,7 +55,7 @@ final class UriFactory
     private static function createPharUri(string $uriString): UriInterface
     {
         $path = substr($uriString, strlen('phar://'));
-        if (!str_starts_with($path, '/')) {
+        if (! str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 

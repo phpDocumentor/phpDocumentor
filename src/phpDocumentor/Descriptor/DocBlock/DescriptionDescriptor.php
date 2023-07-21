@@ -19,10 +19,8 @@ final class DescriptionDescriptor implements Stringable
     /** @var array<int, TagDescriptor|null> */
     private $inlineTags;
 
-    /**
-     * @param array<int, TagDescriptor|null> $inlineTags
-     */
-    public function __construct(?Description $description, array $inlineTags)
+    /** @param array<int, TagDescriptor|null> $inlineTags */
+    public function __construct(Description|null $description, array $inlineTags)
     {
         $this->description = $description ?? new Description('');
         $this->inlineTags = $inlineTags;
@@ -38,7 +36,7 @@ final class DescriptionDescriptor implements Stringable
         return $this->description->getBodyTemplate();
     }
 
-    public function replaceTag(int $position, ?TagDescriptor $tagDescriptor): void
+    public function replaceTag(int $position, TagDescriptor|null $tagDescriptor): void
     {
         $this->inlineTags[$position] = $tagDescriptor;
     }

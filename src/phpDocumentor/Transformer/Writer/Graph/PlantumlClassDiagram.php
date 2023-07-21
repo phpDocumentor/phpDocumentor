@@ -19,8 +19,8 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
-
 use Psr\Log\LoggerInterface;
+
 use function addslashes;
 use function file_put_contents;
 use function implode;
@@ -31,7 +31,7 @@ final class PlantumlClassDiagram implements Generator
 {
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly PlantumlRenderer $plantumlRenderer
+        private readonly PlantumlRenderer $plantumlRenderer,
     ) {
     }
 
@@ -53,7 +53,7 @@ set namespaceSeparator \\\\
 PUML,
         );
 
-        if (!$output) {
+        if (! $output) {
             $this->logger->error('Generating the class diagram failed');
 
             return;

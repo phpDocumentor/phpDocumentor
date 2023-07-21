@@ -36,9 +36,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testThatParsingStartIsLogged(): void
     {
         $filename = __FILE__;
@@ -65,9 +63,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testThatAnErrorIsLogged(): void
     {
         $filename = __FILE__;

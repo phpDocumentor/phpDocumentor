@@ -39,9 +39,7 @@ final class Executor
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function evaluate(QueryNode $query, mixed $currentElement, mixed $rootElement = null)
     {
         return $query->visit($this, $currentElement, $rootElement);
@@ -71,9 +69,7 @@ final class Executor
         return $value;
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function evaluatePath(mixed $root, mixed $currentElement, PathNode ...$nodes)
     {
         $result = $currentElement;
@@ -84,11 +80,13 @@ final class Executor
         return $result;
     }
 
-    /**
-     * @return mixed
-     */
-    public function evaluateFunctionCall(mixed $root, mixed $currentElement, string $functionName, QueryNode ...$arguments)
-    {
+    /** @return mixed */
+    public function evaluateFunctionCall(
+        mixed $root,
+        mixed $currentElement,
+        string $functionName,
+        QueryNode ...$arguments,
+    ) {
         switch ($functionName) {
             case 'type':
                 $class = $this->evaluate($arguments[0], $currentElement, $root)::class;
@@ -101,9 +99,7 @@ final class Executor
         }
     }
 
-    /**
-     * @return Generator<mixed>
-     */
+    /** @return Generator<mixed> */
     public function evaluateFieldAccess(mixed $currentElement, FieldName $fieldName): Generator
     {
         if (

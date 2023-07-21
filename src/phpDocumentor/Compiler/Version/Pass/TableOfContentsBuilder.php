@@ -67,7 +67,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 }
             }
 
-            if (!($documentationSet instanceof GuideSetDescriptor)) {
+            if (! ($documentationSet instanceof GuideSetDescriptor)) {
                 continue;
             }
 
@@ -94,7 +94,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
     private function createNamespaceEntries(
         NamespaceInterface $namespace,
         TocDescriptor $namespacesToc,
-        ?Entry $parent = null
+        Entry|null $parent = null,
     ): void {
         $entry = new Entry(
             ltrim($this->router->generate($namespace), '/'),
@@ -116,7 +116,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
         DocumentEntryNode|SectionEntryNode $metaEntry,
         GuideSetDescriptor $guideSetDescriptor,
         TocDescriptor $guideToc,
-        ?Entry $parent = null
+        Entry|null $parent = null,
     ): void {
         $projectNode = $guideSetDescriptor->getGuidesProjectNode();
 
@@ -148,7 +148,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
                 }
             }
 
-            if (!($metaChild instanceof SectionEntryNode)) {
+            if (! ($metaChild instanceof SectionEntryNode)) {
                 continue;
             }
 

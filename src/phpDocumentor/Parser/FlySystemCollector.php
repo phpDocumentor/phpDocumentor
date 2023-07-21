@@ -20,7 +20,7 @@ final class FlySystemCollector implements FileCollector
 {
     public function __construct(
         private readonly SpecificationFactoryInterface $specificationFactory,
-        private readonly FlySystemFactory $flySystemFactory
+        private readonly FlySystemFactory $flySystemFactory,
     ) {
     }
 

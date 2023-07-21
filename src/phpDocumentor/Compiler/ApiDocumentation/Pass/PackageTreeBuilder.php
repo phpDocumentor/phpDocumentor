@@ -90,10 +90,10 @@ final class PackageTreeBuilder extends ApiDocumentationPass
      *
      * @param Collection<PackageInterface> $packages
      * @param array<ElementInterface> $elements Series of elements to add to their respective package.
-     * @param string $type Declares which field of the package will be populated with the given
-     *                     series of elements. This name will be transformed to a getter which must exist. Out of
-     *                     performance considerations will no effort be done to verify whether the provided type is
-     *                     valid.
+     * @param string $type     Declares which field of the package will be populated with the given
+     *                         series of elements. This name will be transformed to a getter which must exist. Out of
+     *                         performance considerations will no effort be done to verify whether the provided type is
+     *                         valid.
      */
     private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type): void
     {
@@ -121,7 +121,7 @@ final class PackageTreeBuilder extends ApiDocumentationPass
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim($packageName, '\\');
-            if (!isset($packages[$packageIndexName])) {
+            if (! isset($packages[$packageIndexName])) {
                 $this->createPackageDescriptorTree($packages, $packageName);
             }
 

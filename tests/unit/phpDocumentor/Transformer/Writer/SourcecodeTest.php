@@ -49,9 +49,7 @@ final class SourcecodeTest extends MockeryTestCase
         );
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);

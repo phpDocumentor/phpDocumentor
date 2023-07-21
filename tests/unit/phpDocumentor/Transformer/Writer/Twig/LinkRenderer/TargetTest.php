@@ -23,9 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class TargetTest extends TestCase
 {
-    /**
-     * @covers ::getTitle()
-     */
+    /** @covers ::getTitle() */
     public function testTitleIsPersistedInObject(): void
     {
         $target = new Target('title');
@@ -33,9 +31,7 @@ final class TargetTest extends TestCase
         self::assertSame('title', $target->getTitle());
     }
 
-    /**
-     * @covers ::getUrl()
-     */
+    /** @covers ::getUrl() */
     public function testAUrlCanBeAssociatedWithATarget(): void
     {
         $target = new Target('title', 'url');
@@ -43,9 +39,7 @@ final class TargetTest extends TestCase
         self::assertSame('url', $target->getUrl());
     }
 
-    /**
-     * @covers ::getUrl()
-     */
+    /** @covers ::getUrl() */
     public function testUrlsMayBeOmittedFromTargets(): void
     {
         $target = new Target('title');
@@ -53,9 +47,7 @@ final class TargetTest extends TestCase
         self::assertNull($target->getUrl());
     }
 
-    /**
-     * @covers ::getPresentation()
-     */
+    /** @covers ::getPresentation() */
     public function testAPresentationStyleCanBeAssociatedWithATarget(): void
     {
         $target = new Target('title', 'url', LinkRenderer::PRESENTATION_CLASS_SHORT);
@@ -63,9 +55,7 @@ final class TargetTest extends TestCase
         self::assertSame(LinkRenderer::PRESENTATION_CLASS_SHORT, $target->getPresentation());
     }
 
-    /**
-     * @covers ::getPresentation()
-     */
+    /** @covers ::getPresentation() */
     public function testDefaultPresentationStyleIsNormal(): void
     {
         $target = new Target('title');
@@ -80,16 +70,14 @@ final class TargetTest extends TestCase
     public function testAbbreviationIsDerivedFromTitleAndPresentation(
         string $title,
         string $presentation,
-        ?string $expectedAbbreviation
+        string|null $expectedAbbreviation,
     ): void {
         $target = new Target($title, null, $presentation);
 
         self::assertSame($expectedAbbreviation, $target->getAbbreviation());
     }
 
-    /**
-     * @return array<string, list<string|null>>
-     */
+    /** @return array<string, list<string|null>> */
     public function abbreviationPerTitleAndPresentationStyle(): array
     {
         return [

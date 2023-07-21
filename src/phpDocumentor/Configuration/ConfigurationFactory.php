@@ -89,7 +89,7 @@ use function sprintf;
     {
         $filename = (string) $uri;
 
-        if (!file_exists($filename)) {
+        if (! file_exists($filename)) {
             throw new InvalidConfigPathException(sprintf('File %s could not be found', $filename));
         }
 
@@ -106,7 +106,7 @@ use function sprintf;
     /**
      * Applies all middleware callbacks onto the configuration.
      */
-    private function applyMiddleware(Configuration $configuration, ?UriInterface $uri): Configuration
+    private function applyMiddleware(Configuration $configuration, UriInterface|null $uri): Configuration
     {
         foreach ($this->middlewares as $middleware) {
             $configuration = $middleware($configuration, $uri);
@@ -115,9 +115,7 @@ use function sprintf;
         return $configuration;
     }
 
-    /**
-     * @param ConfigurationMap $configuration
-     */
+    /** @param ConfigurationMap $configuration */
     private function createConfigurationFromArray(array $configuration): Configuration
     {
         if (isset($configuration['phpdocumentor']['versions'])) {

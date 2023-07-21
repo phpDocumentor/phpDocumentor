@@ -20,6 +20,7 @@ abstract class BaseTagAssembler extends AssemblerAbstract
     public function __construct(AssemblerReducer ...$reducers)
     {
         $reducers[] = new DescriptionAssemblerReducer();
+
         parent::__construct(...$reducers);
     }
 }

@@ -32,29 +32,25 @@ trait HasConstants
         $this->constants = $constants;
     }
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getConstants(): Collection
     {
-        if (!isset($this->constants)) {
+        if (! isset($this->constants)) {
             $this->constants = Collection::fromInterfaceString(ConstantInterface::class);
         }
 
         return $this->constants;
     }
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getInheritedConstants(): Collection
     {
-        if (!$this instanceof ClassInterface) {
+        if (! $this instanceof ClassInterface) {
             return Collection::fromInterfaceString(ConstantInterface::class);
         }
 
         $parent = $this->getParent();
-        if (!$parent instanceof ClassInterface) {
+        if (! $parent instanceof ClassInterface) {
             return Collection::fromInterfaceString(ConstantInterface::class);
         }
 

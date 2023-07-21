@@ -15,13 +15,14 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
+
 use function count;
 
 final class CollectFiles
 {
     public function __construct(
         private readonly FileCollector $fileCollector,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 

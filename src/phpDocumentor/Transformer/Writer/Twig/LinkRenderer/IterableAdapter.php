@@ -57,7 +57,7 @@ final class IterableAdapter implements LinkRendererInterface
         $result = [];
         foreach ($value as $path) {
             $links = $this->rendererChain->render($path, $presentation);
-            if (!is_array($links)) {
+            if (! is_array($links)) {
                 $links = [$links];
             }
 

@@ -32,7 +32,7 @@ final class FilterNode implements PathNode
         }
 
         foreach ($currentObject as $current) {
-            if (!$this->expression->visit($param, $current, $root)) {
+            if (! $this->expression->visit($param, $current, $root)) {
                 continue;
             }
 

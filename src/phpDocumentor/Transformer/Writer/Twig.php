@@ -27,11 +27,13 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Webmozart\Assert\Assert;
+
 use function array_merge;
 use function count;
 use function is_countable;
 use function ltrim;
 use function preg_split;
+use function str_starts_with;
 use function strlen;
 use function substr;
 
@@ -100,7 +102,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     public function __construct(
         private readonly EnvironmentFactory $environmentFactory,
         private readonly PathGenerator $pathGenerator,
-        private readonly Engine $queryEngine
+        private readonly Engine $queryEngine,
     ) {
     }
 
@@ -112,7 +114,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     public function initialize(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): void {
         $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
     }
@@ -122,7 +124,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      * and creates a static html page at the artifact location.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -131,7 +133,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         // TODO: At a later stage we want to support more types of Documentation Sets using the Twig writer
         //       but at the moment this causes headaches in the migration process towards multiple sets of
@@ -149,7 +151,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
         $extraParameters = [];
         foreach ($project->getSettings()->getCustom() as $key => $value) {
-            if (!str_starts_with($key, 'template.')) {
+            if (! str_starts_with($key, 'template.')) {
                 continue;
             }
 
@@ -167,7 +169,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                 );
             }
 
-            if (!($node instanceof Descriptor)) {
+            if (! ($node instanceof Descriptor)) {
                 continue;
             }
 
@@ -189,7 +191,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         Transformation $transformation,
         DocumentationSetDescriptor $documentationSet,
         string $templatePath,
-        array $extraParameters
+        array $extraParameters,
     ): void {
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
@@ -202,7 +204,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                 );
             }
 
-            if (!($node instanceof Descriptor)) {
+            if (! ($node instanceof Descriptor)) {
                 continue;
             }
 
@@ -210,15 +212,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         }
     }
 
-    /**
-     * @param array<mixed> $extraParameters
-     */
+    /** @param array<mixed> $extraParameters */
     private function transformNode(
         Descriptor $node,
         Transformation $transformation,
         DocumentationSetDescriptor $documentationSet,
         string $templatePath,
-        array $extraParameters
+        array $extraParameters,
     ): void {
         $path = $this->pathGenerator->generate($node, $transformation);
         if ($path === '') {

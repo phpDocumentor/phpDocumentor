@@ -100,9 +100,7 @@ final class Settings
         return $this->custom;
     }
 
-    /**
-     * @param array<string, bool|string> $settings
-     */
+    /** @param array<string, bool|string> $settings */
     public function setCustom(array $settings): void
     {
         $this->setValueAndCheckIfModified('custom', $settings);

@@ -25,7 +25,7 @@ class StripIgnore implements FilterInterface
      */
     public function __invoke(FilterPayload $payload): FilterPayload
     {
-        if (!$payload->getFilterable() instanceof DescriptorAbstract) {
+        if (! $payload->getFilterable() instanceof DescriptorAbstract) {
             return $payload;
         }
 

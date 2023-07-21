@@ -40,9 +40,7 @@ final class StripOnVisibilityTest extends TestCase
         $this->fixture = new StripOnVisibility();
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testStripsDescriptorIfVisibilityIsNotAllowed(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -59,9 +57,7 @@ final class StripOnVisibilityTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItNeverStripsDescriptorIfApiIsSet(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -81,9 +77,7 @@ final class StripOnVisibilityTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testKeepsDescriptorIfVisibilityIsAllowed(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -101,9 +95,7 @@ final class StripOnVisibilityTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface(): void
     {
         $apiSpec = ApiSpecification::createDefault();

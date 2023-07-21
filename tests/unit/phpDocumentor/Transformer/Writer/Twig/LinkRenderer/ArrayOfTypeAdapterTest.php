@@ -33,18 +33,14 @@ final class ArrayOfTypeAdapterTest extends TestCase
         $this->adapter = new ArrayOfTypeAdapter();
     }
 
-    /**
-     * @covers ::supports
-     */
+    /** @covers ::supports */
     public function testItSupportsArraysOfType(): void
     {
         self::assertTrue($this->adapter->supports([new String_()]));
         self::assertFalse($this->adapter->supports(new Fqsen('\MyAwesome\Object')));
     }
 
-    /**
-     * @covers ::render
-     */
+    /** @covers ::render */
     public function testRenderOnlyAcceptsArraysOfType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -64,9 +60,7 @@ final class ArrayOfTypeAdapterTest extends TestCase
         self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));
     }
 
-    /**
-     * @return array<string, list<iterable>>
-     */
+    /** @return array<string, list<iterable>> */
     public function renderingVariations(): array
     {
         return [

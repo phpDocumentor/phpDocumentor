@@ -15,9 +15,7 @@ use phpDocumentor\Reflection\Type;
  */
 interface LinkRendererInterface
 {
-    /**
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
-     */
+    /** @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value */
     public function supports($value): bool;
 
     /**

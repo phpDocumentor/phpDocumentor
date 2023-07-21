@@ -28,7 +28,6 @@ use phpDocumentor\Reflection\Php\Project;
  */
 class ProjectDescriptorBuilder
 {
-    /** @var string */
     final public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
     /** @var AssemblerFactory $assemblerFactory */
@@ -44,13 +43,11 @@ class ProjectDescriptorBuilder
 
     private string $defaultPackageName;
 
-    /**
-     * @param iterable<WithCustomSettings> $servicesWithCustomSettings
-     */
+    /** @param iterable<WithCustomSettings> $servicesWithCustomSettings */
     public function __construct(
         AssemblerFactory $assemblerFactory,
         Filter $filterManager,
-        private readonly iterable $servicesWithCustomSettings = []
+        private readonly iterable $servicesWithCustomSettings = [],
     ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
@@ -84,10 +81,10 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data, string $type): ?Descriptor
+    public function buildDescriptor(object $data, string $type): Descriptor|null
     {
         $assembler = $this->getAssembler($data, $type);
-        if (!$assembler) {
+        if (! $assembler) {
             throw new InvalidArgumentException(
                 'Unable to build a Descriptor; the provided data did not match any Assembler ' .
                 $data::class,
@@ -118,7 +115,7 @@ class ProjectDescriptorBuilder
      * @template TInput as object
      * @template TDescriptor as Descriptor
      */
-    public function getAssembler(object $data, string $type): ?AssemblerInterface
+    public function getAssembler(object $data, string $type): AssemblerInterface|null
     {
         return $this->assemblerFactory->get($data, $type);
     }
@@ -133,9 +130,9 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor as Descriptor
      */
-    protected function filterDescriptor(Descriptor $descriptor): ?Descriptor
+    protected function filterDescriptor(Descriptor $descriptor): Descriptor|null
     {
-        if (!$descriptor instanceof Filterable) {
+        if (! $descriptor instanceof Filterable) {
             return $descriptor;
         }
 
@@ -191,17 +188,13 @@ class ProjectDescriptorBuilder
         $this->project->setName($title);
     }
 
-    /**
-     * @param Collection<string> $partials
-     */
+    /** @param Collection<string> $partials */
     public function setPartials(Collection $partials): void
     {
         $this->project->setPartials($partials);
     }
 
-    /**
-     * @param array<string, string> $customSettings
-     */
+    /** @param array<string, string> $customSettings */
     public function setCustomSettings(array $customSettings): void
     {
         foreach ($this->servicesWithCustomSettings as $service) {

@@ -29,9 +29,7 @@ final class RemoveSourcecodeTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRemovesSourceWhenDisabled(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
@@ -60,9 +58,7 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
@@ -124,9 +120,7 @@ final class RemoveSourcecodeTest extends TestCase
         return $apiDescriptor;
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $pass = new RemoveSourcecode();

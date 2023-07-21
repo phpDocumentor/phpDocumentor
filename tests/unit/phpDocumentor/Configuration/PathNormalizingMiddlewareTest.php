@@ -43,9 +43,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertEquals($configuration, $outputConfig);
     }
 
-    /**
-     * @dataProvider pathProvider
-     */
+    /** @dataProvider pathProvider */
     public function testNormalizedIgnoreToGlob(string $input, string $output): void
     {
         $configuration = $this->givenAConfiguration();
@@ -60,9 +58,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider cachePathProvider
-     */
+    /** @dataProvider cachePathProvider */
     public function testNormalizeCachePath(string $input, string $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
@@ -77,10 +73,8 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
-    /**
-     * @dataProvider templateLocationProvider
-     */
-    public function testNormalizeTemplateLocations(?string $input, ?string $output, string $configPath): void
+    /** @dataProvider templateLocationProvider */
+    public function testNormalizeTemplateLocations(string|null $input, string|null $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['templates'][0]['location'] = $input ? new Path($input) : null;

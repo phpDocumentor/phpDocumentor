@@ -9,9 +9,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor */
 final class DescriptionDescriptorTest extends TestCase
 {
     /**
@@ -56,10 +54,8 @@ final class DescriptionDescriptorTest extends TestCase
         self::assertSame((string) $description, (string) $descriptor);
     }
 
-    /**
-     * @dataProvider replacementProvider
-     */
-    public function testTagsCanBeReplaced(?TagDescriptor $tagDescriptorReplacement, string $expected): void
+    /** @dataProvider replacementProvider */
+    public function testTagsCanBeReplaced(TagDescriptor|null $tagDescriptorReplacement, string $expected): void
     {
         $bodyTemplate = 'my template %1$s';
         $description = new Description(

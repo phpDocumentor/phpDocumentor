@@ -37,9 +37,7 @@ final class GraphTest extends MockeryTestCase
         );
     }
 
-    /**
-     * @covers ::getDefaultSettings
-     */
+    /** @covers ::getDefaultSettings */
     public function testItExposesCustomSettingToEnableGraphs(): void
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());

@@ -52,9 +52,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->fixture = new PackageTreeBuilder($parser->reveal());
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame(
@@ -63,9 +61,7 @@ final class PackageTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRootPackageIsSet(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -76,9 +72,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertTrue(isset($packages['\\']));
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testFilesAreIncludedInTheIndex(): void
     {
         $packageName = '\\My\\Package';
@@ -96,9 +90,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages[$packageName]->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testPackagesAreSetOnTheDescriptors(): void
     {
         $packageName = '\\My\\Package';
@@ -119,9 +111,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertSame($packages[$packageName], $file->getPackage());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testMultipleElementsInTheSamePackageAreProperlyNestedUnderTheSamePackageDescriptor(): void
     {
         $packageName = '\\My\\Package';
@@ -142,9 +132,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file2, $packages[$packageName]->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testNestedPackagesWillBeCorrectlyFormedIntoATree(): void
     {
         $packageName = '\\My\\Package';
@@ -165,9 +153,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertNotNull($rootPackage->getChildren()['My']->getChildren()['Package']->getChildren()['ButDeeper']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testPackagesMayHaveUnderscoresAsSeparators(): void
     {
         $packageName = 'My_Package';
@@ -185,9 +171,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testPackagesMayHaveHyphensAsSeparators(): void
     {
         $packageName = 'My-Package';
@@ -205,9 +189,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testPackagesMayHaveSquareBracketsAsSeparators(): void
     {
         $packageName = 'My[Package]';
@@ -225,9 +207,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testPackagesMayHaveDotsAsSeparators(): void
     {
         $packageName = 'My.Package';
@@ -245,9 +225,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages['\\My\\Package']->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testSubpackagesAndPackagesAreMergedIntoOne(): void
     {
         $packageName = '\\My';
@@ -267,9 +245,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages[$packageName . '\\' . $subPackageName]->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testSubpackagesMayHaveSlashesAsPrefix(): void
     {
         $packageName = '\\My';
@@ -289,9 +265,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($file, $packages[$packageName . '\\' . $subPackageName]->getFiles()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testConstantsInAFileAreIncludedInTheIndex(): void
     {
         $constant = new ConstantDescriptor();
@@ -311,9 +285,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($constant, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getConstants()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testFunctionsInAFileAreIncludedInTheIndex(): void
     {
         $function = new FunctionDescriptor();
@@ -333,9 +305,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($function, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getFunctions()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testInterfacesInAFileAreIncludedInTheIndex(): void
     {
         $interface = new InterfaceDescriptor();
@@ -355,9 +325,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($interface, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getInterfaces()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testTraitsInAFileAreIncludedInTheIndex(): void
     {
         $trait = new TraitDescriptor();
@@ -377,9 +345,7 @@ final class PackageTreeBuilderTest extends TestCase
         $this->assertContains($trait, $packages['\\' . self::DEFAULT_PACKAGE_NAME]->getTraits()->getAll());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testClassesInAFileAreIncludedInTheIndex(): void
     {
         $class = new ClassDescriptor();

@@ -19,9 +19,7 @@ final class FlySystemFileTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::path()
-     */
+    /** @covers ::path() */
     public function testFileCanBeInstantiatedAndPathIsReturned(): void
     {
         $path = '/path/to/file';
@@ -30,9 +28,7 @@ final class FlySystemFileTest extends TestCase
         $this->assertSame($path, $file->path());
     }
 
-    /**
-     * @covers ::getContents
-     */
+    /** @covers ::getContents */
     public function testContentsOfFileCanBeRetrieved(): void
     {
         $path     = '/path/to/file';
@@ -46,9 +42,7 @@ final class FlySystemFileTest extends TestCase
         $this->assertSame($contents, $file->getContents());
     }
 
-    /**
-     * @covers ::md5
-     */
+    /** @covers ::md5 */
     public function testGetHashForFile(): void
     {
         $path     = '/path/to/file';

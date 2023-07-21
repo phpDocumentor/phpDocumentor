@@ -22,6 +22,7 @@ use Twig\Source;
 
 use function rtrim;
 use function sprintf;
+use function str_starts_with;
 use function strlen;
 use function substr;
 
@@ -36,14 +37,12 @@ final class FlySystemLoader implements LoaderInterface
     public function __construct(
         private readonly FilesystemInterface $filesystem,
         private readonly string $templatePath = '',
-        ?string $overloadPrefix = null
+        string|null $overloadPrefix = null,
     ) {
         $this->overloadPrefix = $overloadPrefix !== null ? $overloadPrefix . '::' : null;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function getSourceContext($name): Source
     {
         $this->guardTemplateExistsAndIsFile($name);
@@ -62,9 +61,7 @@ final class FlySystemLoader implements LoaderInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function exists($name)
     {
         return $this->filesystem->has($this->resolveTemplateName($name));
@@ -87,9 +84,7 @@ final class FlySystemLoader implements LoaderInterface
         return $name;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function isFresh($name, $time)
     {
         $this->guardTemplateExistsAndIsFile($name);
@@ -99,9 +94,7 @@ final class FlySystemLoader implements LoaderInterface
         return (int) $time >= (int) $timestamp;
     }
 
-    /**
-     * @throws LoaderError
-     */
+    /** @throws LoaderError */
     private function guardTemplateExistsAndIsFile(string $name): void
     {
         try {

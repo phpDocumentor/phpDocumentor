@@ -57,7 +57,7 @@ class ClassAssemblerTest extends TestCase
     {
         $name = 'ClassName';
         $namespace = 'Namespace';
-        $docBlockDescriptionContent = <<<DOCBLOCK
+        $docBlockDescriptionContent = <<<'DOCBLOCK'
 /**
  * This is a example description
  */
@@ -85,7 +85,7 @@ DOCBLOCK;
         $name = 'ClassName';
         $namespace = 'Namespace';
         $classFqsen = new Fqsen('\\' . $namespace . '\\' . $name);
-        $docBlockDescriptionContent = <<<DOCBLOCK
+        $docBlockDescriptionContent = <<<'DOCBLOCK'
 /**
  * This is a example description
  */
@@ -107,9 +107,9 @@ DOCBLOCK;
     /**
      * Create a ClassReflector mock
      */
-    protected function getClassReflectorDescriptor(?Fqsen $classFqsen = null, ?Fqsen $parent = null): Class_
+    protected function getClassReflectorDescriptor(Fqsen|null $classFqsen = null, Fqsen|null $parent = null): Class_
     {
-        $docBlockDescriptionContent = <<<DOCBLOCK
+        $docBlockDescriptionContent = <<<'DOCBLOCK'
 /**
  * This is a example description
  */

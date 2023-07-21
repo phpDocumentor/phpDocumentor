@@ -17,9 +17,7 @@ use phpDocumentor\Compiler\CompilableSubject;
 
 final class VersionDescriptor implements CompilableSubject
 {
-    /**
-     * @param Collection<DocumentationSetDescriptor> $documentationSets
-     */
+    /** @param Collection<DocumentationSetDescriptor> $documentationSets */
     public function __construct(private readonly string $number, private readonly Collection $documentationSets)
     {
     }
@@ -29,9 +27,7 @@ final class VersionDescriptor implements CompilableSubject
         return $this->number;
     }
 
-    /**
-     * @return Collection<DocumentationSetDescriptor>
-     */
+    /** @return Collection<DocumentationSetDescriptor> */
     public function getDocumentationSets(): Collection
     {
         return $this->documentationSets;

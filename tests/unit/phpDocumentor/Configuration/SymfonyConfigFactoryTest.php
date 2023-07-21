@@ -26,9 +26,7 @@ final class SymfonyConfigFactoryTest extends TestCase
 
     private SymfonyConfigFactory $fixture;
 
-    /**
-     * @covers ::createDefault
-     */
+    /** @covers ::createDefault */
     public function testGetDefaultConfig(): void
     {
         $fixture = $this->createConfigFactoryWithTestDefinition();
@@ -70,7 +68,7 @@ final class SymfonyConfigFactoryTest extends TestCase
 
         $root = vfsStream::setup();
         $configFile = vfsStream::newFile('config.xml')->withContent(
-            <<<XML
+            <<<'XML'
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdocumentor>
     <configVersion>foo</configVersion>

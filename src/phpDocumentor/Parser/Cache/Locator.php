@@ -45,7 +45,7 @@ use function sprintf;
  */
 class Locator
 {
-    private ?Path $path = null;
+    private Path|null $path = null;
 
     /** @var CacheInterface&FilesystemAdapter */
     private readonly CacheInterface $fileCache;
@@ -74,7 +74,7 @@ class Locator
     {
         $namespacePath = rtrim(sprintf('%s/%s', (string) $this->root(), $namespace), '/');
 
-        if (!is_dir($namespacePath) && !@mkdir($namespacePath, 0777, true)) {
+        if (! is_dir($namespacePath) && ! @mkdir($namespacePath, 0777, true)) {
             $error = error_get_last();
             if ($error) {
                 throw new RuntimeException(

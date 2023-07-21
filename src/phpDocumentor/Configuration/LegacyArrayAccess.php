@@ -41,21 +41,19 @@ trait LegacyArrayAccess
     public function offsetGet($offset)
     {
         $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
+        if (! property_exists($this, $property)) {
             throw new InvalidArgumentException('Invalid property ' . $property);
         }
 
         return $this->$property;
     }
 
-    /**
-     * @param string $offset
-     */
+    /** @param string $offset */
     #[ReturnTypeWillChange]
     public function offsetSet($offset, mixed $value): void
     {
         $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
+        if (! property_exists($this, $property)) {
             throw new InvalidArgumentException('Invalid property ' . $property);
         }
 
@@ -67,7 +65,7 @@ trait LegacyArrayAccess
     public function offsetUnset($offset): void
     {
         $property = $this->normalizePropertyName($offset);
-        if (!property_exists($this, $property)) {
+        if (! property_exists($this, $property)) {
             throw new InvalidArgumentException('Invalid property ' . $property);
         }
 

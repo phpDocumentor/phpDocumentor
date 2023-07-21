@@ -25,7 +25,7 @@ use phpDocumentor\Configuration\ApiSpecification;
  */
 class Filter
 {
-    private readonly \League\Pipeline\Pipeline $pipeline;
+    private readonly Pipeline $pipeline;
 
     /**
      * Constructs the filter pipeline.
@@ -51,7 +51,7 @@ class Filter
      *
      * @template TDescriptor as Filterable
      */
-    public function filter(Filterable $descriptor, ApiSpecification $apiSpecification): ?Filterable
+    public function filter(Filterable $descriptor, ApiSpecification $apiSpecification): Filterable|null
     {
         return $this->pipeline->process(new FilterPayload($descriptor, $apiSpecification))->getFilterable();
     }

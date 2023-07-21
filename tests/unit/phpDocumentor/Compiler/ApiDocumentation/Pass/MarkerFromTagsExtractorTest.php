@@ -45,9 +45,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
         $this->apiSet = $this->faker()->apiSetDescriptor();
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testDescriptionReturnsCorrectString(): void
     {
         $this->assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
@@ -113,7 +111,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
 
     protected function givenDescriptorHasTodoTagWithDescription(
         DescriptorAbstract $descriptor,
-        string $description
+        string $description,
     ): void {
         $todoTag = new TagDescriptor('todo');
         $todoTag->setDescription(new DescriptionDescriptor(new Description($description), []));
@@ -127,7 +125,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
      * Adds a class descriptor to the api set's elements and add a parent file.
      */
     private function givenApiSetHasClassDescriptorAssociatedWithFile(
-        ?FileDescriptor $fileDescriptor
+        FileDescriptor|null $fileDescriptor,
     ): ClassDescriptor {
         $classDescriptor = new ClassDescriptor();
         if ($fileDescriptor) {

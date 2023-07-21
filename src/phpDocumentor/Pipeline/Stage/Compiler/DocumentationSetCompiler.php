@@ -10,12 +10,10 @@ use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class DocumentationSetCompiler
 {
-    /**
-     * @param class-string<DocumentationSetDescriptor> $type
-     */
+    /** @param class-string<DocumentationSetDescriptor> $type */
     public function __construct(
         private readonly Pipeline $compilerPipeline,
-        private readonly string $type
+        private readonly string $type,
     ) {
     }
 

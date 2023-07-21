@@ -36,12 +36,10 @@ trait ImplementsInterfaces
         $this->implements = $implements;
     }
 
-    /**
-     * @return Collection<InterfaceInterface|Fqsen>
-     */
+    /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfaces(): Collection
     {
-        if (!isset($this->implements)) {
+        if (! isset($this->implements)) {
             $this->implements = new Collection();
         }
 

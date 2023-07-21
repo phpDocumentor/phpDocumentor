@@ -28,9 +28,7 @@ final class ErrorHandlingMiddleware implements Middleware
     {
     }
 
-    /**
-     * @param callable(Command): object $next
-     */
+    /** @param callable(Command): object $next */
     public function execute(Command $command, callable $next): object
     {
         Assert::isInstanceOf($command, CreateCommand::class);

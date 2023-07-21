@@ -36,9 +36,7 @@ final class CollectionTest extends MockeryTestCase
         $this->fixture = new Collection([]);
     }
 
-    /**
-     * @covers ::getTransformations
-     */
+    /** @covers ::getTransformations */
     public function testIfAllTransformationsCanBeRetrieved(): void
     {
         $transformation1 = $this->givenAnEmptyTransformation();
@@ -59,7 +57,7 @@ final class CollectionTest extends MockeryTestCase
     /**
      * Returns a transformation object without information in it.
      */
-    private function givenAnEmptyTransformation(?Template $template = null): Transformation
+    private function givenAnEmptyTransformation(Template|null $template = null): Transformation
     {
         return $this->faker()->transformation($template);
     }

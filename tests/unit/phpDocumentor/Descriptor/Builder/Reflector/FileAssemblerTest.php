@@ -61,7 +61,7 @@ final class FileAssemblerTest extends TestCase
         $hash = md5($content);
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */

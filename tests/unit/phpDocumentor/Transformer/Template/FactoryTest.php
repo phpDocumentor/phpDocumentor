@@ -96,9 +96,7 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::getTemplates
-     */
+    /** @covers ::getTemplates */
     public function testThatAnErrorOccuredWhenATemplateCannotBeFound(): void
     {
         $this->expectException(TemplateNotFound::class);
@@ -115,9 +113,7 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::getTemplatesPath
-     */
+    /** @covers ::getTemplatesPath */
     public function testReturnTemplatePathFromConstructor(): void
     {
         // Act
@@ -127,9 +123,7 @@ final class FactoryTest extends TestCase
         $this->assertSame(vfsStream::url('root'), $result);
     }
 
-    /**
-     * @covers ::getAllNames
-     */
+    /** @covers ::getAllNames */
     public function testRetrieveAllTemplateNames(): void
     {
         // Arrange

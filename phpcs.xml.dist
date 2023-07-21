@@ -15,12 +15,9 @@
          This should be kept in sync with the requirements in the composer.json file. -->
     <config name="testVersion" value="8.1-"/>
 
-    <!-- Prevent false positives for PHP features polyfilled via dependencies. -->
-    <rule ref="PHPCompatibilitySymfonyPolyfillPHP73"/>
-    <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
-
-    <rule ref="phpDocumentor">
+    <rule ref="Doctrine">
         <!-- Should be removed/fixed again once we pass the round of checks -->
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
@@ -32,12 +29,11 @@
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification" />
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
 
         <!-- Property type declarations are a PHP 7.4 feature. -->
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
-
-        <!-- Using ::class on variables is only supported in PHP 8.0 and higher. -->
-        <exclude name="SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaFunctionCall"/>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
@@ -117,5 +113,9 @@
             <property name="linesCountBeforeDeclare" value="1"/>
             <property name="spacesCountAroundEqualsSign" value="0"/>
         </properties>
+    </rule>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/tests/*/*.php</exclude-pattern>
     </rule>
 </ruleset>

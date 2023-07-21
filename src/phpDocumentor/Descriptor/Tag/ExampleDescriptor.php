@@ -27,10 +27,10 @@ final class ExampleDescriptor extends TagDescriptor
     private string $filePath = '';
 
     /** @var int|null $startingLine the content of the example. */
-    private ?int $startingLine = null;
+    private int|null $startingLine = null;
 
     /** @var int|null $lineCount the content of the example. */
-    private ?int $lineCount = null;
+    private int|null $lineCount = null;
 
     /** @var string $example the content of the example. */
     private string $example = '';
@@ -62,7 +62,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function getStartingLine(): ?int
+    public function getStartingLine(): int|null
     {
         return $this->startingLine;
     }
@@ -78,7 +78,7 @@ final class ExampleDescriptor extends TagDescriptor
     /**
      * Returns the location where this example points to.
      */
-    public function getLineCount(): ?int
+    public function getLineCount(): int|null
     {
         return $this->lineCount;
     }

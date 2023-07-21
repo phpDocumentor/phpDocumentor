@@ -25,9 +25,7 @@ final class CollectionTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::get
-     */
+    /** @covers ::get */
     public function testOffsetGetWithNonExistingIndex(): void
     {
         $this->expectException('InvalidArgumentException');
@@ -48,9 +46,7 @@ final class CollectionTest extends TestCase
         self::assertSame($writer->reveal(), $fixture->get('key'));
     }
 
-    /**
-     * @covers ::checkRequirements
-     */
+    /** @covers ::checkRequirements */
     public function testCheckRequirements(): void
     {
         $writer = $this->prophesize(WriterAbstract::class);

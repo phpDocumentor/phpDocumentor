@@ -48,7 +48,7 @@ interface ElementInterface extends Descriptor, TracksErrors
     /**
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
-    public function getFullyQualifiedStructuralElementName(): ?Fqsen;
+    public function getFullyQualifiedStructuralElementName(): Fqsen|null;
 
     /**
      * Sets a summary describing this element.
@@ -75,7 +75,7 @@ interface ElementInterface extends Descriptor, TracksErrors
     /**
      * Returns the end location where the definition for this element can be found.
      */
-    public function getEndLocation(): ?Location;
+    public function getEndLocation(): Location|null;
 
     /**
      * Sets this element's end location in the source file.
@@ -115,5 +115,5 @@ interface ElementInterface extends Descriptor, TracksErrors
     /**
      * Returns the package name for this element.
      */
-    public function getPackage(): ?PackageInterface;
+    public function getPackage(): PackageInterface|null;
 }

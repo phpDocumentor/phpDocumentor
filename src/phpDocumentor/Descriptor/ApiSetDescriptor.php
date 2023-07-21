@@ -29,7 +29,7 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
         string $name,
         Source $source,
         string $outputLocation,
-        private readonly ApiSpecification $apiSpecification
+        private readonly ApiSpecification $apiSpecification,
     ) {
         $this->name = $name;
         $this->source = $source;
@@ -60,9 +60,9 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
      * Finds a structural element with the given FQSEN in this Documentation Set, or returns null when it
      * could not be found.
      */
-    public function findElement(Fqsen $fqsen): ?ElementInterface
+    public function findElement(Fqsen $fqsen): ElementInterface|null
     {
-        if (!isset($this->getIndexes()['elements'])) {
+        if (! isset($this->getIndexes()['elements'])) {
             return null;
         }
 

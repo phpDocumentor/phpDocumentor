@@ -77,9 +77,7 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertSame($collection, $this->fixture->getMethods());
     }
 
-    /**
-     * @covers ::setPackage
-     */
+    /** @covers ::setPackage */
     public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();

@@ -52,9 +52,7 @@ final class TraitAssemblerTest extends TestCase
         $this->assembler->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testTraitWillHaveAnFqsenNameAndNamespace(): void
     {
         $fqsen = new Fqsen('\My\Space\MyTrait');
@@ -67,9 +65,7 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($fqsen, $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testTraitWillHaveAnAssociatedLocationInAFile(): void
     {
         $startLocation = new Location(10);

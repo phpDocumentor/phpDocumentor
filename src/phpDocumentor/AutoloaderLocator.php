@@ -78,7 +78,7 @@ final class AutoloaderLocator
         }
 
         // Do not use realpath() here to don't break installation from phar
-        if (!file_exists($vendorDir)) {
+        if (! file_exists($vendorDir)) {
             throw new RuntimeException('Unable to find vendor directory for ' . $baseDir);
         }
 
@@ -116,7 +116,7 @@ final class AutoloaderLocator
         if (file_exists($composerConfigurationPath)) {
             $composerFile = file_get_contents($composerConfigurationPath);
             $composerJson = json_decode($composerFile, true, 512, JSON_THROW_ON_ERROR);
-            if ($composerJson && !empty($composerJson['config']['vendor-dir'])) {
+            if ($composerJson && ! empty($composerJson['config']['vendor-dir'])) {
                 $vendorDir = $composerJson['config']['vendor-dir'];
             }
         }

@@ -22,7 +22,7 @@ final class PurgeCachesWhenForced
     public function __construct(
         private readonly AdapterInterface $filesCache,
         private readonly AdapterInterface $descriptorsCache,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -30,7 +30,7 @@ final class PurgeCachesWhenForced
     {
         $this->logger->info('Checking whether to purge cache');
         if (
-            !$payload->getConfig()['phpdocumentor']['use-cache']
+            ! $payload->getConfig()['phpdocumentor']['use-cache']
             || $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
         ) {
             $this->logger->info('Purging cache');

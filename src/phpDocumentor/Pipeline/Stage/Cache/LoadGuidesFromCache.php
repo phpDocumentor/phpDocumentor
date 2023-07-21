@@ -20,7 +20,7 @@ final class LoadGuidesFromCache
         $configuration = $payload->getConfig();
         if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {
             $useCache = $configuration['phpdocumentor']['use-cache'];
-            if ($useCache && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
+            if ($useCache && ! $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
                 $this->logger->info('Loading project from cache');
 
                 $cacheFolder = $configuration['phpdocumentor']['paths']['cache'];

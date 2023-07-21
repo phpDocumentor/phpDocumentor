@@ -26,8 +26,6 @@ use Prophecy\Argument as ProphecyArgument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-use function get_class;
-
 class FunctionAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -49,12 +47,12 @@ class FunctionAssemblerTest extends TestCase
         $this->builderMock = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->builderMock->buildDescriptor(
             ProphecyArgument::that(static function ($value) {
-                switch (get_class($value)) {
+                switch ($value::class) {
                     case DocBlock\Tags\Generic::class && $value->getName() === 'package':
                         return new PackageDescriptor();
 
                     default:
-                        throw new InvalidArgumentException('didn\'t expect ' . get_class($value));
+                        throw new InvalidArgumentException('didn\'t expect ' . $value::class);
                 }
             }),
             ProphecyArgument::any(),
@@ -119,7 +117,7 @@ class FunctionAssemblerTest extends TestCase
         string $functionName,
         Argument $argumentMock,
         DocBlock $docBlockMock,
-        bool $hasReturnByReference = false
+        bool $hasReturnByReference = false,
     ): Function_ {
         $functionReflectorMock = new Function_(
             new Fqsen('\\' . $namespace . '\\' . $functionName . '()'),

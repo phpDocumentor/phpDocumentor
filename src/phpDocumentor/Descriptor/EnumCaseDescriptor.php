@@ -24,21 +24,21 @@ use Webmozart\Assert\Assert;
  */
 class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
 {
-    private ?EnumInterface $parent = null;
+    private EnumInterface|null $parent = null;
 
-    private ?string $value = null;
+    private string|null $value = null;
 
-    public function setValue(?string $value): void
+    public function setValue(string|null $value): void
     {
         $this->value = $value;
     }
 
-    public function getValue(): ?string
+    public function getValue(): string|null
     {
         return $this->value;
     }
 
-    public function getParent(): ?EnumInterface
+    public function getParent(): EnumInterface|null
     {
         return $this->parent;
     }

@@ -112,7 +112,7 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function addArgumentDescriptorToFunction(
         FunctionInterface $functionDescriptor,
-        ArgumentInterface $argumentDescriptor
+        ArgumentInterface $argumentDescriptor,
     ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
@@ -122,12 +122,12 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function createArgumentDescriptor(
         FunctionDescriptor $functionDescriptor,
-        Argument $argument
+        Argument $argument,
     ): ArgumentInterface {
         /** @var Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
-        if (!$this->argumentAssembler->getBuilder()) {
+        if (! $this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
         }
 

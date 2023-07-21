@@ -54,9 +54,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($mock, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::setParent
-     */
+    /** @covers ::setParent */
     public function testSettingNoParent(): void
     {
         $mock = null;
@@ -126,9 +124,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($mock, $this->fixture->getMethods());
     }
 
-    /**
-     * @covers ::getInheritedMethods
-     */
+    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
@@ -136,9 +132,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertCount(0, $inheritedMethods);
     }
 
-    /**
-     * @covers ::getInheritedMethods
-     */
+    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent(): void
     {
         $mock = m::mock(ClassDescriptor::class);
@@ -193,9 +187,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertTrue($this->fixture->isReadOnly());
     }
 
-    /**
-     * @covers ::getInheritedConstants
-     */
+    /** @covers ::getInheritedConstants */
     public function testGetInheritedConstantsNoParent(): void
     {
         $descriptor = new ClassDescriptor();
@@ -205,9 +197,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
-    /**
-     * @covers ::getInheritedConstants
-     */
+    /** @covers ::getInheritedConstants */
     public function testGetInheritedConstantsWithClassDescriptorParent(): void
     {
         $collectionMock = m::mock(Collection::class);
@@ -225,9 +215,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /**
-     * @covers ::getInheritedProperties
-     */
+    /** @covers ::getInheritedProperties */
     public function testGetInheritedPropertiesNoParent(): void
     {
         $descriptor = new ClassDescriptor();
@@ -237,9 +225,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
     }
 
-    /**
-     * @covers ::getInheritedProperties
-     */
+    /** @covers ::getInheritedProperties */
     public function testGetInheritedPropertiesWithClassDescriptorParent(): void
     {
         $collectionMock = m::mock(Collection::class);
@@ -257,9 +243,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /**
-     * @covers ::getInheritedProperties
-     */
+    /** @covers ::getInheritedProperties */
     public function testRetrievingInheritedPropertiesReturnsTraitProperties(): void
     {
         // Arrange
@@ -295,9 +279,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /**
-     * @covers ::setPackage
-     */
+    /** @covers ::setPackage */
     public function testSetPackage(): void
     {
         $package = 'Package';
@@ -356,9 +338,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange

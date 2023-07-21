@@ -13,9 +13,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 
 use function sprintf;
 
-/**
- * @extends AssemblerAbstract<TagDescriptor, InvalidTag>
- */
+/** @extends AssemblerAbstract<TagDescriptor, InvalidTag> */
 final class InvalidTagAssembler extends AssemblerAbstract
 {
     public function create(object $data): TagDescriptor

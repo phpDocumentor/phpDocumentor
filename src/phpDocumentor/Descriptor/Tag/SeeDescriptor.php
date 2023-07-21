@@ -24,12 +24,9 @@ use Stringable;
  */
 class SeeDescriptor extends TagDescriptor implements Stringable
 {
-    private Reference $reference;
-
-    public function __construct(string $name, Reference $reference, ?DescriptionDescriptor $description = null)
+    public function __construct(string $name, private Reference $reference, DescriptionDescriptor|null $description = null)
     {
         parent::__construct($name, $description);
-        $this->reference = $reference;
     }
 
     public function getReference(): Reference

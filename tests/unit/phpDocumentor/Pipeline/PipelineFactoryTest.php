@@ -23,9 +23,7 @@ use Psr\Log\Test\TestLogger;
  */
 final class PipelineFactoryTest extends TestCase
 {
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function test_creates_a_pipeline_with_the_given_series_of_stages(): void
     {
         $pipelineFactory = new PipelineFactory(new TestLogger());

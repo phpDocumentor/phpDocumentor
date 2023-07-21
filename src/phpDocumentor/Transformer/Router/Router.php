@@ -30,9 +30,9 @@ use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
-
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+
 use function strrpos;
 use function substr;
 
@@ -41,13 +41,11 @@ class Router
     public function __construct(
         private readonly ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly SluggerInterface $slugger
-    ){
+        private readonly SluggerInterface $slugger,
+    ) {
     }
 
-    /**
-     * @param ElementInterface|Descriptor|Fqsen|UriInterface $node
-     */
+    /** @param ElementInterface|Descriptor|Fqsen|UriInterface $node */
     public function generate(object $node): string
     {
         if ($node instanceof DocumentDescriptor) {

@@ -44,7 +44,7 @@ class Finder
         $filename = $descriptor->getFilePath();
 
         $file = $this->getExampleFileContents($filename);
-        if (!$file) {
+        if (! $file) {
             return sprintf('** File not found : %s **', $filename);
         }
 
@@ -103,7 +103,7 @@ class Finder
      *
      * @return ?array<string>
      */
-    private function getExampleFileContents(string $filename): ?array
+    private function getExampleFileContents(string $filename): array|null
     {
         $normalizedPath = null;
 
@@ -115,7 +115,7 @@ class Finder
             }
         }
 
-        if (!$normalizedPath) {
+        if (! $normalizedPath) {
             if (is_readable($this->getExamplePathFromSource($filename))) {
                 $normalizedPath = $this->getExamplePathFromSource($filename);
             } elseif (is_readable($this->getExamplePathFromExampleDirectory($filename))) {

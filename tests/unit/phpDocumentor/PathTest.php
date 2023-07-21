@@ -32,9 +32,7 @@ final class PathTest extends TestCase
         $this->assertSame('/my/Path', (string) $path);
     }
 
-    /**
-     * @covers ::equals
-     */
+    /** @covers ::equals */
     public function testItCanCompareItselfToAnotherPath(): void
     {
         $subject    = new Path('a');
@@ -45,9 +43,7 @@ final class PathTest extends TestCase
         $this->assertFalse($subject->equals($dissimilar));
     }
 
-    /**
-     * @covers ::isAbsolutePath
-     */
+    /** @covers ::isAbsolutePath */
     public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath(): void
     {
         $this->assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));

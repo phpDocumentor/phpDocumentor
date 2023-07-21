@@ -28,7 +28,6 @@ final class ApiSpecification implements ArrayAccess
     public const VISIBILITY_INTERNAL = 8;
     public const VISIBILITY_API = 16;
 
-    /** @var int by default ignore internal visibility but show others */
     public const VISIBILITY_DEFAULT = 7;
 
     /**
@@ -38,13 +37,11 @@ final class ApiSpecification implements ArrayAccess
      * @param array<string> $markers
      * @param array<string> $ignoreTags
      */
-    private function __construct(private Source $source, private string $output, private array $ignore, private array $extensions, private array $visibility, private string $defaultPackageName, private bool|null $includeSource, private array $markers, private array $ignoreTags, private ?Source $examples, private string $encoding, private bool $validate)
+    private function __construct(private Source $source, private string $output, private array $ignore, private array $extensions, private array $visibility, private string $defaultPackageName, private bool|null $includeSource, private array $markers, private array $ignoreTags, private Source|null $examples, private string $encoding, private bool $validate)
     {
     }
 
-    /**
-     * @param ConfigurationApiMap $api
-     */
+    /** @param ConfigurationApiMap $api */
     public static function createFromArray(array $api): self
     {
         $sourcePaths = $api['source']['paths'];
@@ -107,9 +104,7 @@ final class ApiSpecification implements ArrayAccess
         return $clone;
     }
 
-    /**
-     * @param array{hidden: bool, symlinks: bool, paths: list<string>} $ignore
-     */
+    /** @param array{hidden: bool, symlinks: bool, paths: list<string>} $ignore */
     public function setIgnore(array $ignore): void
     {
         $this->ignore = $ignore;

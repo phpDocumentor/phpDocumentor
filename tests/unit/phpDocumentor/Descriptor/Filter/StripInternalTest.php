@@ -101,9 +101,7 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRemovesDescriptorIfTaggedAsInternal(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -121,9 +119,7 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -137,9 +133,7 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag(): void
     {
         $apiSpec = ApiSpecification::createDefault();

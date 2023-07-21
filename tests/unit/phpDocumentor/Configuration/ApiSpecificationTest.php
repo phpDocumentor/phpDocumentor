@@ -6,9 +6,7 @@ namespace phpDocumentor\Configuration;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\ApiSpecification
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\ApiSpecification */
 final class ApiSpecificationTest extends TestCase
 {
     /**
@@ -27,9 +25,7 @@ final class ApiSpecificationTest extends TestCase
         }
     }
 
-    /**
-     * @return array<array<string[], int>>
-     */
+    /** @return array<array<string[], int>> */
     public function visibilityProvider(): array
     {
         return [

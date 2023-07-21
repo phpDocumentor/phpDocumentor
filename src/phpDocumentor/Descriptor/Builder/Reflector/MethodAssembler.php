@@ -104,7 +104,7 @@ class MethodAssembler extends AssemblerAbstract
         /** @var Collection<ParamDescriptor> $params */
         $params = $descriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
-        if (!$this->argumentAssembler->getBuilder()) {
+        if (! $this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
         }
 
@@ -121,7 +121,7 @@ class MethodAssembler extends AssemblerAbstract
      */
     protected function addVariadicArgument(Method $data, MethodDescriptor $methodDescriptor): void
     {
-        if (!$data->getDocBlock()) {
+        if (! $data->getDocBlock()) {
             return;
         }
 
@@ -129,13 +129,13 @@ class MethodAssembler extends AssemblerAbstract
 
         /** @var Param|InvalidTag|bool $lastParamTag */
         $lastParamTag = end($paramTags);
-        if (!$lastParamTag instanceof Param) {
+        if (! $lastParamTag instanceof Param) {
             return;
         }
 
         if (
-            !$lastParamTag->isVariadic()
-            || !array_key_exists($lastParamTag->getVariableName(), $methodDescriptor->getArguments()->getAll())
+            ! $lastParamTag->isVariadic()
+            || ! array_key_exists($lastParamTag->getVariableName(), $methodDescriptor->getArguments()->getAll())
         ) {
             return;
         }

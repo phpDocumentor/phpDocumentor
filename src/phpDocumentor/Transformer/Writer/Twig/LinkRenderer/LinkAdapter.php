@@ -39,7 +39,7 @@ final class LinkAdapter implements LinkRendererInterface
     public function __construct(
         private readonly LinkRenderer $rendererChain,
         private readonly UrlGenerator $urlGenerator,
-        private readonly HtmlFormatter $formatter
+        private readonly HtmlFormatter $formatter,
     ) {
     }
 
@@ -103,9 +103,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $target;
     }
 
-    /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
-     */
+    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function normalizePresentation($resolvedTarget, string $presentation): string
     {
         $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
@@ -122,9 +120,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $presentation;
     }
 
-    /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
-     */
+    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function determineTitle($resolvedTarget): string
     {
         return (string) $resolvedTarget;

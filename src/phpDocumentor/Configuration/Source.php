@@ -25,6 +25,9 @@ use function in_array;
 use function ltrim;
 use function rtrim;
 use function sprintf;
+use function str_contains;
+use function str_ends_with;
+use function str_starts_with;
 
 /** @implements ArrayAccess<string, Path[]|Dsn> */
 final class Source implements ArrayAccess
@@ -77,7 +80,7 @@ final class Source implements ArrayAccess
             $path = ltrim($path, '.');
         }
 
-        if (!str_starts_with($path, '/')) {
+        if (! str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -88,7 +91,7 @@ final class Source implements ArrayAccess
     {
         $path = $this->normalizePath($path);
 
-        if (!str_ends_with($path, '*') && !str_contains($path, '.')) {
+        if (! str_ends_with($path, '*') && ! str_contains($path, '.')) {
             $path .= '/**/*';
         }
 
@@ -117,9 +120,7 @@ final class Source implements ArrayAccess
         };
     }
 
-    /**
-     * @param string $offset
-     */
+    /** @param string $offset */
     #[ReturnTypeWillChange]
     public function offsetSet($offset, mixed $value): void
     {

@@ -18,12 +18,12 @@ use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 
 trait HasDescription
 {
-    protected ?DescriptionDescriptor $description = null;
+    protected DescriptionDescriptor|null $description = null;
 
     /**
      * Sets a description or none to inherit from a parent.
      */
-    public function setDescription(?DescriptionDescriptor $description): void
+    public function setDescription(DescriptionDescriptor|null $description): void
     {
         $this->description = $description;
     }

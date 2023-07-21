@@ -133,7 +133,7 @@ class ElementsIndexBuilder extends ApiDocumentationPass
      */
     protected function addElementsToIndexes($elements, array $indexes): void
     {
-        if (!is_array($elements)) {
+        if (! is_array($elements)) {
             $elements = [$elements];
         }
 

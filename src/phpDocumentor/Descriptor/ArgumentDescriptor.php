@@ -31,7 +31,7 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     use Traits\CanBeByReference;
     use Traits\CanBeVariadic;
 
-    public function getInheritedElement(): ?ArgumentInterface
+    public function getInheritedElement(): ArgumentInterface|null
     {
         try {
             $method = $this->getMethod();

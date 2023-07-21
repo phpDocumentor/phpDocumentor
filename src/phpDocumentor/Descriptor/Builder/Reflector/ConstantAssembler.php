@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Reflection\Php\Constant;
 
+use function str_contains;
 use function strlen;
 use function substr;
 
@@ -42,7 +43,7 @@ class ConstantAssembler extends AssemblerAbstract
         $constantDescriptor->setFinal($data->isFinal());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
 
-        $separatorLength = !str_contains((string) $data->getFqsen(), '::') ? 1 : 2;
+        $separatorLength = ! str_contains((string) $data->getFqsen(), '::') ? 1 : 2;
         $constantDescriptor->setNamespace(
             substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - $separatorLength),
         );

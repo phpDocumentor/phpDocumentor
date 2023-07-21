@@ -73,9 +73,7 @@ final class TemplateTest extends TestCase
         $this->assertSame($transformation, $template['key']);
     }
 
-    /**
-     * @covers ::offsetSet
-     */
+    /** @covers ::offsetSet */
     public function testThatArrayElementsMayOnlyBeTransformations(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -84,9 +82,7 @@ final class TemplateTest extends TestCase
         $template['key'] = 'value';
     }
 
-    /**
-     * @covers ::setVersion
-     */
+    /** @covers ::setVersion */
     public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -95,9 +91,7 @@ final class TemplateTest extends TestCase
         $template->setVersion('abc');
     }
 
-    /**
-     * @covers ::offsetGet
-     */
+    /** @covers ::offsetGet */
     public function testThatWeCanCheckIfATransformationIsRegistered(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -125,9 +119,7 @@ final class TemplateTest extends TestCase
         $this->assertFalse(isset($template['key']));
     }
 
-    /**
-     * @covers ::count
-     */
+    /** @covers ::count */
     public function testThatWeCanCountTheNumberOfTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -137,9 +129,7 @@ final class TemplateTest extends TestCase
         $this->assertSame(1, count($template));
     }
 
-    /**
-     * @covers ::getIterator
-     */
+    /** @covers ::getIterator */
     public function testThatWeCanIterateOnTheTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -150,9 +140,7 @@ final class TemplateTest extends TestCase
         $this->assertSame(['key' => $transformation], iterator_to_array($template));
     }
 
-    /**
-     * @covers ::propagateParameters
-     */
+    /** @covers ::propagateParameters */
     public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded(): void
     {
         $parameter = new Parameter('key', 'value');

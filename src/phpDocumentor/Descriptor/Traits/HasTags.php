@@ -43,16 +43,14 @@ trait HasTags
      */
     public function getTags(): Collection
     {
-        if (!isset($this->tags)) {
+        if (! isset($this->tags)) {
             $this->tags = new Collection();
         }
 
         return $this->tags;
     }
 
-    /**
-     * @return Collection<AuthorDescriptor>
-     */
+    /** @return Collection<AuthorDescriptor> */
     public function getAuthor(): Collection
     {
         /** @var Collection<AuthorDescriptor> $author */

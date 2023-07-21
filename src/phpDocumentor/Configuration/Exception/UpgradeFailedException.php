@@ -8,9 +8,7 @@ use RuntimeException;
 
 use function sprintf;
 
-/**
- * @codeCoverageIgnore
- */
+/** @codeCoverageIgnore */
 final class UpgradeFailedException extends RuntimeException
 {
     public static function create(string $currentVersion): self

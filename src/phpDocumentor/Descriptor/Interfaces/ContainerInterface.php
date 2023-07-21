@@ -20,33 +20,21 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface ContainerInterface
 {
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getConstants(): Collection;
 
-    /**
-     * @return Collection<FunctionInterface>
-     */
+    /** @return Collection<FunctionInterface> */
     public function getFunctions(): Collection;
 
-    /**
-     * @return Collection<ClassInterface>
-     */
+    /** @return Collection<ClassInterface> */
     public function getClasses(): Collection;
 
-    /**
-     * @return Collection<InterfaceInterface>
-     */
+    /** @return Collection<InterfaceInterface> */
     public function getInterfaces(): Collection;
 
-    /**
-     * @return Collection<TraitInterface>
-     */
+    /** @return Collection<TraitInterface> */
     public function getTraits(): Collection;
 
-    /**
-     * @return Collection<EnumInterface>
-     */
+    /** @return Collection<EnumInterface> */
     public function getEnums(): Collection;
 }

@@ -16,13 +16,11 @@ final class PathBuilder
 {
     public function __construct(
         private readonly Router $router,
-        private readonly RelativePathToRootConverter $relativePathToRootConverter
+        private readonly RelativePathToRootConverter $relativePathToRootConverter,
     ) {
     }
 
-    /**
-     * @param Descriptor|Fqsen|Uri $value
-     */
+    /** @param Descriptor|Fqsen|Uri $value */
     public function link(object $value): string
     {
         Assert::isInstanceOfAny($value, [Descriptor::class, Fqsen::class, Uri::class]);
@@ -30,13 +28,11 @@ final class PathBuilder
         return $this->withoutLeadingSlash($this->router->generate($value));
     }
 
-    /**
-     * @param Descriptor|Fqsen|Uri $value
-     */
+    /** @param Descriptor|Fqsen|Uri $value */
     public function resolvedLink(string $destination, object $value): string
     {
         $uri = $this->link($value);
-        if (!$uri) {
+        if (! $uri) {
             return $uri;
         }
 

@@ -140,11 +140,11 @@ final class GraphVizClassDiagram implements Generator
      *
      * @param string|ClassDescriptor|InterfaceDescriptor|TraitDescriptor $to
      */
-    private function createEdge(string $fromName, $to): ?Edge
+    private function createEdge(string $fromName, $to): Edge|null
     {
         $toName = (string) ($to instanceof DescriptorAbstract ? $to->getFullyQualifiedStructuralElementName() : $to);
 
-        if (!isset($this->nodeCache[$fromName])) {
+        if (! isset($this->nodeCache[$fromName])) {
             $namespaceParts = explode('\\', $fromName);
             $this->nodeCache[$fromName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
@@ -152,7 +152,7 @@ final class GraphVizClassDiagram implements Generator
             );
         }
 
-        if (!isset($this->nodeCache[$toName])) {
+        if (! isset($this->nodeCache[$toName])) {
             $namespaceParts = explode('\\', $toName);
             $this->nodeCache[$toName] = $this->createEmptyNode(
                 array_pop($namespaceParts),
@@ -169,7 +169,7 @@ final class GraphVizClassDiagram implements Generator
         return null;
     }
 
-    private function createNamespaceGraph(string $fqcn): ?GraphVizGraph
+    private function createNamespaceGraph(string $fqcn): GraphVizGraph|null
     {
         $namespaceParts = explode('\\', $fqcn);
 
@@ -198,7 +198,7 @@ final class GraphVizClassDiagram implements Generator
         return $graph;
     }
 
-    private function createEmptyNode(string $name, ?GraphVizGraph $graph): ?Node
+    private function createEmptyNode(string $name, GraphVizGraph|null $graph): Node|null
     {
         if ($graph === null) {
             return null;

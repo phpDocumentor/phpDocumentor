@@ -22,11 +22,14 @@ use function array_map;
 use function array_merge;
 use function ltrim;
 use function rtrim;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
+use function str_starts_with;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
-    public function __invoke(Configuration $configuration, ?UriInterface $uri = null): Configuration
+    public function __invoke(Configuration $configuration, UriInterface|null $uri = null): Configuration
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
 
@@ -50,7 +53,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      *
      * Absolute DSNs are untouched.
      */
-    private function makeDsnRelativeToConfig(Configuration $configuration, ?UriInterface $uri): Configuration
+    private function makeDsnRelativeToConfig(Configuration $configuration, UriInterface|null $uri): Configuration
     {
         if ($uri === null) {
             return $configuration;
@@ -138,7 +141,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             $path = ltrim($path, '.');
         }
 
-        if (!str_starts_with($path, '/')) {
+        if (! str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -159,14 +162,14 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             return '/**/*';
         }
 
-        if (!str_ends_with($path, '*') && !str_contains($path, '.')) {
+        if (! str_ends_with($path, '*') && ! str_contains($path, '.')) {
             $path .= '/**/*';
         }
 
         return $path;
     }
 
-    public function normalizeCachePath(?UriInterface $uri, Path $cachePath): Path
+    public function normalizeCachePath(UriInterface|null $uri, Path $cachePath): Path
     {
         if ($cachePath::isAbsolutePath((string) $cachePath)) {
             return $cachePath;

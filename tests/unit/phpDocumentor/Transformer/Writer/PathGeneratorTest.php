@@ -75,9 +75,7 @@ final class PathGeneratorTest extends TestCase
         $this->assertSame($expected, $path);
     }
 
-    /**
-     * @covers ::generate
-     */
+    /** @covers ::generate */
     public function testAnErrorOccursWhenAnUnknownVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);
@@ -89,9 +87,7 @@ final class PathGeneratorTest extends TestCase
         $this->generator->generate(new FileDescriptor('hash'), $transformation);
     }
 
-    /**
-     * @covers ::generate
-     */
+    /** @covers ::generate */
     public function testAnErrorOccursWhenAnEmptyVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);

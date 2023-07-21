@@ -120,7 +120,7 @@ class Linker extends ApiDocumentationPass
      *
      * @return string|DocumentationSetDescriptor|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
      */
-    public function substitute($item, ?DescriptorAbstract $container = null)
+    public function substitute($item, DescriptorAbstract|null $container = null)
     {
         if ($item instanceof Type) {
             return null;
@@ -140,7 +140,7 @@ class Linker extends ApiDocumentationPass
             return $this->substituteChildrenOfCollection($item, $container);
         }
 
-        if (!is_object($item)) {
+        if (! is_object($item)) {
             return null;
         }
 
@@ -154,7 +154,7 @@ class Linker extends ApiDocumentationPass
      *
      * @return array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract>|null
      */
-    private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container): ?iterable
+    private function substituteChildrenOfCollection(iterable $collection, DescriptorAbstract|null $container): iterable|null
     {
         $isModified = false;
         foreach ($collection as $key => $element) {
@@ -201,7 +201,7 @@ class Linker extends ApiDocumentationPass
             || $item instanceof EnumInterface;
     }
 
-    private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container): void
+    private function substituteMembersOfObject(object $object, DescriptorAbstract|null $container): void
     {
         $hash = spl_object_hash($object);
         if (isset($this->processedObjects[$hash])) {

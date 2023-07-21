@@ -49,7 +49,7 @@ class Factory
     public function __construct(
         private readonly WriterCollection $writerCollection,
         private readonly FlySystemFactory $flySystemFactory,
-        private readonly string $globalTemplatesPath
+        private readonly string $globalTemplatesPath,
     ) {
     }
 
@@ -83,9 +83,7 @@ class Factory
         return new Collection($loadedTemplates);
     }
 
-    /**
-     * @param array<string, string> $parameters
-     */
+    /** @param array<string, string> $parameters */
     private function loadTemplate(FilesystemInterface $output, string $template, array $parameters): Template
     {
         $template = $this->createTemplateFromXml($output, $template, $parameters);
@@ -114,7 +112,7 @@ class Factory
             $name = $files->getBasename();
 
             // skip abstract files
-            if (!$files->isDir() || in_array($name, ['.', '..'], true)) {
+            if (! $files->isDir() || in_array($name, ['.', '..'], true)) {
                 $files->next();
                 continue;
             }
@@ -142,7 +140,7 @@ class Factory
     private function createTemplateFromXml(
         FilesystemInterface $filesystem,
         string $nameOrPath,
-        array $templateParams
+        array $templateParams,
     ): Template {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
@@ -214,7 +212,7 @@ class Factory
         if ($globalTemplatesFilesystem->has($nameOrPath)) {
             $templateFilesystem = $this->createNewFilesystemFromSubfolder($globalTemplatesFilesystem, $nameOrPath);
 
-            if (!$templateFilesystem->has('template.xml')) {
+            if (! $templateFilesystem->has('template.xml')) {
                 throw new TemplateNotFound($nameOrPath);
             }
 
@@ -240,10 +238,10 @@ class Factory
 
     private function createNewFilesystemFromSubfolder(
         Filesystem $hostFilesystem,
-        string $subfolder
+        string $subfolder,
     ): Filesystem {
         $hostFilesystemAdapter = $hostFilesystem->getAdapter();
-        if (!$hostFilesystemAdapter instanceof AbstractAdapter) {
+        if (! $hostFilesystemAdapter instanceof AbstractAdapter) {
             throw new RuntimeException(
                 'Failed to load template, The filesystem of the global templates does not support '
                 . 'getting a subfolder from it',

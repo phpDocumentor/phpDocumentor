@@ -27,6 +27,7 @@ use function ltrim;
 use function parse_str;
 use function preg_match;
 use function rtrim;
+use function str_starts_with;
 
 /**
  * Data Source Name (DSN), a reference to a path on a local or remote system with the ability to add parameters.
@@ -70,9 +71,7 @@ final class Dsn implements Stringable
         return new self($uri, $parsedParameters, $dsn);
     }
 
-    /**
-     * @param array<string> $parameters
-     */
+    /** @param array<string> $parameters */
     public static function createFromUri(UriInterface $uri, array $parameters = []): self
     {
         $dsn = implode(';', [(string) $uri] + $parameters);
@@ -95,7 +94,7 @@ final class Dsn implements Stringable
     /**
      * Returns the scheme part of the DSN
      */
-    public function getScheme(): ?string
+    public function getScheme(): string|null
     {
         return $this->uri->getScheme();
     }
@@ -111,7 +110,7 @@ final class Dsn implements Stringable
     /**
      * Returns the port part of the DSN
      */
-    public function getPort(): ?int
+    public function getPort(): int|null
     {
         $port = $this->uri->getPort();
         if ($port !== null) {
@@ -201,7 +200,7 @@ final class Dsn implements Stringable
     public function withPath(Path $path): self
     {
         $pathString = (string) $path;
-        if (!str_starts_with($pathString, '/')) {
+        if (! str_starts_with($pathString, '/')) {
             $pathString = '/' . $pathString;
         }
 
@@ -227,9 +226,7 @@ final class Dsn implements Stringable
         return $result;
     }
 
-    /**
-     * @return Generator<string, string>
-     */
+    /** @return Generator<string, string> */
     private static function parseParameter(string $part): Generator
     {
         $result = [];

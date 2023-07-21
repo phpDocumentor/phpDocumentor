@@ -27,9 +27,7 @@ final class FilterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::filter
-     */
+    /** @covers ::filter */
     public function testFilter(): void
     {
         $filterableMock = $this->prophesize(Filterable::class)->reveal();

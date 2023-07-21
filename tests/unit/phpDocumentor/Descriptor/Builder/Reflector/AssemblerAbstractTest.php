@@ -21,10 +21,8 @@ use PHPUnit\Framework\TestCase;
 
 class AssemblerAbstractTest extends TestCase
 {
-    /**
-     * @dataProvider typeProvider
-     */
-    public function testDeduplicateTypes(?Type $type, string $expected): void
+    /** @dataProvider typeProvider */
+    public function testDeduplicateTypes(Type|null $type, string $expected): void
     {
         $type = AssemblerAbstract::deduplicateTypes($type);
 

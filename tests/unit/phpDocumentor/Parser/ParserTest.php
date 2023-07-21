@@ -147,9 +147,7 @@ final class ParserTest extends TestCase
         $this->assertSame('test', $parser->getDefaultPackageName());
     }
 
-    /**
-     * @covers ::parse
-     */
+    /** @covers ::parse */
     public function testFilesAreParsedByProjectFactory(): void
     {
         $file = new vfsStreamFile('my-file.php');
@@ -170,9 +168,7 @@ final class ParserTest extends TestCase
         $this->assertSame($expectedProject, $project);
     }
 
-    /**
-     * @covers ::parse
-     */
+    /** @covers ::parse */
     public function testWhenParsingAnnounceWhenYouAreStarting(): void
     {
         $file = new vfsStreamFile('my-file.php');

@@ -60,9 +60,7 @@ class LinkRenderer implements LinkRendererInterface
         $this->adapters = $this->createAdapters();
     }
 
-    /**
-     * @deprecated will be removed once getProject is removed
-     */
+    /** @deprecated will be removed once getProject is removed */
     public function withProject(ProjectDescriptor $projectDescriptor): self
     {
         $result = clone $this;
@@ -79,9 +77,7 @@ class LinkRenderer implements LinkRendererInterface
         return $result;
     }
 
-    /**
-     * @deprecated use {@see getDocumentationSet()}
-     */
+    /** @deprecated use {@see getDocumentationSet()} */
     public function getProject(): ProjectDescriptor
     {
         return $this->project;
@@ -146,9 +142,7 @@ class LinkRenderer implements LinkRendererInterface
         );
     }
 
-    /**
-     * @return array<array-key, LinkRendererInterface>
-     */
+    /** @return array<array-key, LinkRendererInterface> */
     private function createAdapters(): array
     {
         // TODO: Because the renderer uses an immutable pattern to change itself; the $this references

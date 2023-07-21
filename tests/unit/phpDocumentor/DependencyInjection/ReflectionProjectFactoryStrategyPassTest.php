@@ -11,9 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @coversDefaultClass \phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass
- */
+/** @coversDefaultClass \phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass */
 final class ReflectionProjectFactoryStrategyPassTest extends TestCase
 {
     use ProphecyTrait;

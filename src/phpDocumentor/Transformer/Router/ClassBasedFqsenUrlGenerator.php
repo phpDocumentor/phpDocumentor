@@ -19,6 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function count;
 use function explode;
+use function str_contains;
 
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
@@ -27,7 +28,7 @@ class ClassBasedFqsenUrlGenerator
 {
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly SluggerInterface $slugger
+        private readonly SluggerInterface $slugger,
     ) {
     }
 

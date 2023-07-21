@@ -35,7 +35,7 @@ class Dispatcher extends EventDispatcher
      */
     public static function getInstance(string $name = 'default'): self
     {
-        if (!isset(self::$instances[$name])) {
+        if (! isset(self::$instances[$name])) {
             self::setInstance($name, new self());
         }
 

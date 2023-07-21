@@ -66,10 +66,10 @@ class Parser
         private readonly ProjectFactory $projectFactory,
         /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
         private readonly Stopwatch $stopwatch,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
         $defaultEncoding = ini_get('zend.script_encoding');
-        if (!$defaultEncoding) {
+        if (! $defaultEncoding) {
             return;
         }
 
@@ -215,8 +215,8 @@ class Parser
     /**
      * Dispatches a logging request.
      *
-     * @param string $message The message to log.
-     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $message    The message to log.
+     * @param string $priority   The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void

@@ -20,7 +20,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
     /** @var string */
     /** @var Collection<DocumentDescriptor> */
-    private readonly \phpDocumentor\Descriptor\Collection $documents;
+    private readonly Collection $documents;
 
     public function __construct(
         string $name,

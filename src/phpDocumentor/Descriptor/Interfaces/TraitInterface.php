@@ -20,19 +20,13 @@ use phpDocumentor\Descriptor\Collection;
  */
 interface TraitInterface extends ElementInterface, TypeInterface
 {
-    /**
-     * @param Collection<ConstantInterface> $constants
-     */
+    /** @param Collection<ConstantInterface> $constants */
     public function setConstants(Collection $constants): void;
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getConstants(): Collection;
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getInheritedConstants(): Collection;
 
     /**
@@ -80,5 +74,5 @@ interface TraitInterface extends ElementInterface, TypeInterface
     /**
      * Returns the file associated with the parent class or trait.
      */
-    public function getFile(): ?FileInterface;
+    public function getFile(): FileInterface|null;
 }

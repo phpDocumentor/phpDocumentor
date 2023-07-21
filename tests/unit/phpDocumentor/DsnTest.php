@@ -41,14 +41,14 @@ class DsnTest extends TestCase
     public function testValidDsnWithScheme(
         string $dsn,
         string $normalizedDsn,
-        ?string $scheme,
+        string|null $scheme,
         string $path = '',
         string $host = '',
-        ?int $port = null,
+        int|null $port = null,
         string $user = '',
         string $pass = '',
         array $query = [],
-        array $parameters = []
+        array $parameters = [],
     ): void {
         $fixture = Dsn::createFromString($dsn);
 
@@ -183,7 +183,7 @@ class DsnTest extends TestCase
      * @covers ::resolve
      * @dataProvider resolveDsnProvider
      */
-    public function testResolve(string $baseDsn, string $srcDsn, string $expected, ?string $scheme): void
+    public function testResolve(string $baseDsn, string $srcDsn, string $expected, string|null $scheme): void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);
         $srcDsn    = Dsn::createFromString($srcDsn);

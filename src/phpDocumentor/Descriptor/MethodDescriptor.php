@@ -45,13 +45,13 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
     use HasVisibility;
 
     /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null $parent */
-    protected ?ElementInterface $parent = null;
+    protected ElementInterface|null $parent = null;
 
     /** @var Collection<ArgumentInterface> */
     protected Collection $arguments;
 
     protected bool $static = false;
-    private ?Type $returnType = null;
+    private Type|null $returnType = null;
     private bool $hasReturnByReference = false;
 
     /**
@@ -85,10 +85,8 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $this->parent = $parent;
     }
 
-    /**
-     * @return ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null
-     */
-    public function getParent(): ?ElementInterface
+    /** @return ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null */
+    public function getParent(): ElementInterface|null
     {
         return $this->parent;
     }
@@ -103,9 +101,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $this->static;
     }
 
-    /**
-     * @param Collection<ArgumentInterface> $arguments
-     */
+    /** @param Collection<ArgumentInterface> $arguments */
     public function setArguments(Collection $arguments): void
     {
         $this->arguments = Collection::fromInterfaceString(ArgumentInterface::class);
@@ -121,9 +117,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         $this->arguments->set($name, $argument);
     }
 
-    /**
-     * @return Collection<ArgumentInterface>
-     */
+    /** @return Collection<ArgumentInterface> */
     public function getArguments(): Collection
     {
         return $this->arguments;
@@ -156,9 +150,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return $file;
     }
 
-    /**
-     * @return Collection<ReturnDescriptor>
-     */
+    /** @return Collection<ReturnDescriptor> */
     public function getReturn(): Collection
     {
         /** @var Collection<ReturnDescriptor> $var */
@@ -175,9 +167,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
         return new Collection();
     }
 
-    /**
-     * @return Collection<ParamDescriptor>
-     */
+    /** @return Collection<ParamDescriptor> */
     public function getParam(): Collection
     {
         /** @var Collection<ParamDescriptor> $var */
@@ -207,7 +197,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
      * 2. if the parent is a class and implements interfaces, check each interface for a method with the exact same
      *    name. If such a method is found, return the first hit.
      */
-    public function getInheritedElement(): ?MethodInterface
+    public function getInheritedElement(): MethodInterface|null
     {
         if ($this->inheritedElement !== null) {
             Assert::isInstanceOf($this->inheritedElement, self::class);
@@ -217,7 +207,7 @@ class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodIn
 
         /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();
-        if (!$associatedClass instanceof ClassInterface && !$associatedClass instanceof InterfaceInterface) {
+        if (! $associatedClass instanceof ClassInterface && ! $associatedClass instanceof InterfaceInterface) {
             return null;
         }
 

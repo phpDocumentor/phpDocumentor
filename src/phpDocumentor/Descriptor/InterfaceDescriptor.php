@@ -67,16 +67,14 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $this->constants;
     }
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getInheritedConstants(): Collection
     {
         $inheritedConstants = Collection::fromInterfaceString(ConstantInterface::class);
 
         /** @var InterfaceInterface|Fqsen $parent */
         foreach ($this->getParent() as $parent) {
-            if (!$parent instanceof Interfaces\InterfaceInterface) {
+            if (! $parent instanceof Interfaces\InterfaceInterface) {
                 continue;
             }
 
@@ -97,9 +95,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $this->methods;
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection
     {
         $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
@@ -117,9 +113,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedMethods;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function setPackage($package): void
     {
         parent::setPackage($package);
@@ -133,10 +127,8 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         }
     }
 
-    /**
-     * @return InterfaceInterface|Fqsen|null
-     */
-    public function getInheritedElement(): ?object
+    /** @return InterfaceInterface|Fqsen|null */
+    public function getInheritedElement(): object|null
     {
         return $this->getParent()->count() > 0
             ? $this->getParent()->getIterator()->current()

@@ -12,9 +12,7 @@ use function str_replace;
 
 use const PHP_EOL;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer */
 final class ProjectAnalyzerTest extends MockeryTestCase
 {
     use Faker;
@@ -26,9 +24,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
         $this->fixture = new ProjectAnalyzer();
     }
 
-    /**
-     * @covers ::__toString
-     */
+    /** @covers ::__toString */
     public function testIfStringOutputContainsAllCounters(): void
     {
         // Arrange
@@ -52,7 +48,7 @@ final class ProjectAnalyzerTest extends MockeryTestCase
         $this->whenDocumentationHasTheFollowingChildrenOfRootNamespace($apiSetDescriptor, [1, 2, 3]);
         $this->fixture->analyze($apiSetDescriptor);
 
-        $expected = <<<TEXT
+        $expected = <<<'TEXT'
 In the Project are:
          2 files
          3 top-level namespaces
@@ -112,7 +108,7 @@ TEXT;
      */
     private function whenDescriptorHasTheFollowingElements(
         ApiSetDescriptor $apiSet,
-        array $elements
+        array $elements,
     ): void {
         $apiSet->getIndexes()->set('elements', new Collection($elements));
     }
@@ -122,7 +118,7 @@ TEXT;
      */
     private function whenDocumentationHasTheFollowingChildrenOfRootNamespace(
         ApiSetDescriptor $apiSet,
-        array $rootNamespaceChildren
+        array $rootNamespaceChildren,
     ): void {
         $apiSet->getNamespace()->setChildren(new Collection($rootNamespaceChildren));
     }

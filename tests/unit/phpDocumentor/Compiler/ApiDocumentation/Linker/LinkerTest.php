@@ -46,9 +46,7 @@ final class LinkerTest extends TestCase
         $this->linker = new Linker([], $this->descriptorRepository->reveal());
     }
 
-    /**
-     * @covers ::getSubstitutions
-     */
+    /** @covers ::getSubstitutions */
     public function testSetFieldsToSubstitute(): void
     {
         $elementList = [
@@ -61,9 +59,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($elementList, $linker->getSubstitutions());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType(): void
     {
         $this->descriptorRepository->findAlias(Argument::cetera())->shouldNotBeCalled();
@@ -74,9 +70,7 @@ final class LinkerTest extends TestCase
         $this->assertSame(null, $result);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsDescriptorBasedOnFqsenString(): void
     {
         $fqsenString = '\My\Class';
@@ -91,9 +85,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsDescriptorBasedOnFqsenObject(): void
     {
         $fqsenString = '\My\Class';
@@ -109,9 +101,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsNullIfFqsenCannotBeFound(): void
     {
         $container = null;
@@ -122,9 +112,7 @@ final class LinkerTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors(): void
     {
         $fqsenString1 = '\My\Class1';
@@ -155,9 +143,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString3, $result[2]);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingAnArrayWorksRecursively(): void
     {
         $fqsenString1 = '\My\Class1';
@@ -195,9 +181,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString3, $result[1]);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty(): void
     {
         $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
@@ -221,9 +205,7 @@ final class LinkerTest extends TestCase
         $this->assertEquals($parentClass, $class->getParent());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
@@ -239,9 +221,7 @@ final class LinkerTest extends TestCase
         $this->linker->substitute($class->reveal());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWillReplaceFieldsOnceForEachObject(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
@@ -264,9 +244,7 @@ final class LinkerTest extends TestCase
         $this->linker->substitute([$class->reveal(), $class->reveal()]);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $linker = new Linker([], new DescriptorRepository());
@@ -274,9 +252,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($expected, $linker->getDescription());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testExecute(): void
     {
         $result = new ClassDescriptor();

@@ -56,7 +56,7 @@ class Transform
         private readonly Transformer $transformer,
         private readonly FlySystemFactory $flySystemFactory,
         private readonly LoggerInterface $logger,
-        private readonly Factory $templateFactory
+        private readonly Factory $templateFactory,
     ) {
         $this->connectOutputToEvents();
     }
@@ -125,7 +125,7 @@ class Transform
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
             function (WriterInitializationEvent $event): void {
-                if (!($event->getWriter() instanceof WriterAbstract)) {
+                if (! ($event->getWriter() instanceof WriterAbstract)) {
                     return;
                 }
 
@@ -146,7 +146,7 @@ class Transform
     {
         $target     = $dsn->getPath();
         $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
+        if (! $fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
 

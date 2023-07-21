@@ -45,7 +45,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
     public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption(
         string $argument,
         string $workingDir,
-        string $expected
+        string $expected,
     ): void {
         $configuration = new Configuration(['phpdocumentor' => ['paths' => ['output' => '/tmp']]]);
 
@@ -55,9 +55,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertEquals(Dsn::createFromString($expected), $newConfiguration['phpdocumentor']['paths']['output']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldDisableTheCacheBasedOnTheForceOption(): void
     {
         $configuration = new Configuration(['phpdocumentor' => ['use-cache' => true]]);
@@ -68,9 +66,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertFalse($newConfiguration['phpdocumentor']['use-cache']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption(): void
     {
         $expected = '/abc';
@@ -81,9 +77,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertEquals(new Path($expected), $newConfiguration['phpdocumentor']['paths']['cache']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheCacheFolderRelativeToTheCurrentWorkingDirectory(): void
     {
         $this->markTestSkipped('Windows builds fail on this test, but we need to the build to be green now');
@@ -107,9 +101,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertEquals(new Path($expectedCacheFolder), $newConfiguration['phpdocumentor']['paths']['cache']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverrideTheTitleBasedOnTheTitleOption(): void
     {
         $expected = 'phpDocumentor3';
@@ -121,9 +113,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertSame($expected, $newConfiguration['phpdocumentor']['title']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverrideTheListOfTemplatesBasedOnTheTemplateOption(): void
     {
         $expected = 'default';
@@ -135,9 +125,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         self::assertSame([['name' => $expected]], $newConfiguration['phpdocumentor']['templates']);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldAddSourceFilesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -154,9 +142,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldAddSourceDirectoriesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -173,9 +159,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldKeepSourceDirectoriesWhenNoneWereProvideOnCommandLine(): void
     {
         $configuration = $this->givenAConfiguration();
@@ -232,9 +216,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldRegisterExtensionsForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -249,9 +231,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldReplaceIgnoredDirectoriesForDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -269,9 +249,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheMarkersOfTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -286,9 +264,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheVisibilitySetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -303,9 +279,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheEncodingSetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -320,9 +294,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheDefaultPackageNameSetInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -337,9 +309,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheWhetherToIncludeSourcecodeInTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfigurationWithoutApiDefinition();
@@ -398,9 +368,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldAddExampleDirToConfig(): void
     {
         $configuration = $this->givenAConfiguration();
@@ -433,9 +401,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItShouldOverwriteTheIgnoredTagsOfTheDefaultConfiguration(): void
     {
         $configuration = $this->givenAConfiguration();
@@ -452,7 +418,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
     private function createCommandlineOptionsMiddleware(
         array $options,
-        $workingDir = '/'
+        $workingDir = '/',
     ): CommandlineOptionsMiddleware {
         return new CommandlineOptionsMiddleware(
             $options,

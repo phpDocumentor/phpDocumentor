@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 trait BelongsToClassTraitOrInterface
 {
     /** @var ClassInterface|InterfaceInterface|TraitInterface|null $parent */
-    protected ?ElementInterface $parent = null;
+    protected ElementInterface|null $parent = null;
 
     /**
      * Registers a parent class, interface or trait.
@@ -47,10 +47,8 @@ trait BelongsToClassTraitOrInterface
         $this->parent = $parent;
     }
 
-    /**
-     * @return ClassInterface|InterfaceInterface|TraitInterface|null
-     */
-    public function getParent(): ?ElementInterface
+    /** @return ClassInterface|InterfaceInterface|TraitInterface|null */
+    public function getParent(): ElementInterface|null
     {
         return $this->parent;
     }

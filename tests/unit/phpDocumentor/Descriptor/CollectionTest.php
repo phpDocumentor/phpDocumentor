@@ -33,9 +33,7 @@ final class CollectionTest extends TestCase
         $this->fixture = new Collection();
     }
 
-    /**
-     * @covers ::__construct
-     */
+    /** @covers ::__construct */
     public function testInitialize(): void
     {
         $fixture = new Collection();
@@ -43,9 +41,7 @@ final class CollectionTest extends TestCase
         self::assertEmpty($fixture->getAll());
     }
 
-    /**
-     * @covers ::__construct
-     */
+    /** @covers ::__construct */
     public function testInitializeWithExistingArray(): void
     {
         $expected = [1, 2];
@@ -54,9 +50,7 @@ final class CollectionTest extends TestCase
         self::assertEquals($expected, $fixture->getAll());
     }
 
-    /**
-     * @covers ::add
-     */
+    /** @covers ::add */
     public function testAddNewItem(): void
     {
         $expected = ['abc'];
@@ -91,18 +85,14 @@ final class CollectionTest extends TestCase
         self::assertEquals($expectedSecondRun, $this->fixture->getAll());
     }
 
-    /**
-     * @covers ::set
-     */
+    /** @covers ::set */
     public function testSetItemsWithEmptyKeyShouldThrowException(): void
     {
         $this->expectException('InvalidArgumentException');
         $this->fixture->set('', 'abc');
     }
 
-    /**
-     * @covers ::offsetSet
-     */
+    /** @covers ::offsetSet */
     public function testSetItemsUsingOffsetSetWithEmptyKeyShouldThrowException(): void
     {
         $this->expectException('InvalidArgumentException');
@@ -126,18 +116,14 @@ final class CollectionTest extends TestCase
         self::assertCount(2, $this->fixture);
     }
 
-    /**
-     * @covers ::getAll
-     */
+    /** @covers ::getAll */
     public function testRetrieveAllItems(): void
     {
         $this->fixture['a'] = 'abc';
         self::assertSame(['a' => 'abc'], $this->fixture->getAll());
     }
 
-    /**
-     * @covers ::first
-     */
+    /** @covers ::first */
     public function testRetrieveFirstItem(): void
     {
         $this->fixture['a'] = 'abc';
@@ -146,9 +132,7 @@ final class CollectionTest extends TestCase
         self::assertSame('abc', $this->fixture->first());
     }
 
-    /**
-     * @covers ::getIterator
-     */
+    /** @covers ::getIterator */
     public function testGetIterator(): void
     {
         $this->fixture['a'] = 'abc';
@@ -181,9 +165,7 @@ final class CollectionTest extends TestCase
         self::assertEquals(1, $this->fixture->count());
     }
 
-    /**
-     * @covers ::clear
-     */
+    /** @covers ::clear */
     public function testClearingTheCollection(): void
     {
         $this->fixture[1] = 'a';
@@ -196,9 +178,7 @@ final class CollectionTest extends TestCase
         self::assertCount(0, $this->fixture);
     }
 
-    /**
-     * @covers ::offsetExists
-     */
+    /** @covers ::offsetExists */
     public function testIfExistingElementsAreDetected(): void
     {
         self::assertArrayNotHasKey(0, $this->fixture);
@@ -210,9 +190,7 @@ final class CollectionTest extends TestCase
         self::assertTrue($this->fixture->offsetExists(0));
     }
 
-    /**
-     * @covers ::merge
-     */
+    /** @covers ::merge */
     public function testIfAfterMergeCollectionContainsAllItems(): void
     {
         $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
@@ -227,9 +205,7 @@ final class CollectionTest extends TestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /**
-     * @covers ::filter
-     */
+    /** @covers ::filter */
     public function testFilterReturnsOnlyInstancesOfCertainType(): void
     {
         $expected = [0 => new stdClass()];

@@ -33,19 +33,15 @@ use const PHP_URL_SCHEME;
  */
 final class Path implements Stringable
 {
-    private readonly string $path;
-
     /**
      * Initializes the path.
      */
-    public function __construct(string $path)
+    public function __construct(private readonly string $path)
     {
         Assert::notEmpty(
             $path,
             sprintf('"%s" is not a valid path', $path),
         );
-
-        $this->path = $path;
     }
 
     /**

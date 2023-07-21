@@ -49,14 +49,13 @@ class Transformer
 
     final public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
-    /** @var int represents the priority in the Compiler queue. */
     final public const COMPILER_PRIORITY = 5000;
 
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 
     /** @var FilesystemInterface|null $destination The destination filesystem to write to */
-    private ?FilesystemInterface $destination = null;
+    private FilesystemInterface|null $destination = null;
 
     /** @var Writer\Collection $writers */
     protected $writers;
@@ -68,7 +67,7 @@ class Transformer
         Writer\Collection $writerCollection,
         private readonly LoggerInterface $logger,
         private readonly FlySystemFactory $flySystemFactory,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         $this->writers = $writerCollection;
     }
@@ -92,7 +91,7 @@ class Transformer
     /**
      * Returns the location where to store the artifacts.
      */
-    public function getTarget(): ?string
+    public function getTarget(): string|null
     {
         return $this->target;
     }
@@ -119,7 +118,7 @@ class Transformer
     public function execute(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         $this->initializeWriters($project, $documentationSet, $transformations);
         $this->transform($project, $documentationSet, $transformations);
@@ -135,7 +134,7 @@ class Transformer
     private function initializeWriters(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
@@ -171,7 +170,7 @@ class Transformer
         WriterAbstract $writer,
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): void {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
@@ -193,7 +192,7 @@ class Transformer
     private function transform(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -217,7 +216,7 @@ class Transformer
     private function applyTransformation(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         $this->logger->log(
             LogLevel::NOTICE,

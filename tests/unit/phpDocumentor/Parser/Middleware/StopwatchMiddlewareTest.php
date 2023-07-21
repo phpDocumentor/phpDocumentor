@@ -37,9 +37,7 @@ final class StopwatchMiddlewareTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testThatMemoryUsageIsLogged(): void
     {
         $commandFile = new LocalFile(__FILE__);

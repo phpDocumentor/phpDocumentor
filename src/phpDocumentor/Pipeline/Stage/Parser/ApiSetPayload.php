@@ -21,9 +21,7 @@ use phpDocumentor\Reflection\File;
 
 use function array_merge;
 
-/**
- * @psalm-import-type ConfigurationMap from Configuration
- */
+/** @psalm-import-type ConfigurationMap from Configuration */
 final class ApiSetPayload
 {
     /**
@@ -35,13 +33,11 @@ final class ApiSetPayload
         private readonly ProjectDescriptorBuilder $builder,
         private readonly VersionDescriptor $version,
         private readonly ApiSetDescriptor $apiSet,
-        private readonly array $files = []
+        private readonly array $files = [],
     ) {
     }
 
-    /**
-     * @return ConfigurationMap
-     */
+    /** @return ConfigurationMap */
     public function getConfiguration(): array
     {
         return $this->configuration;
@@ -62,9 +58,7 @@ final class ApiSetPayload
         return $this->apiSet;
     }
 
-    /**
-     * @param array<File> $files
-     */
+    /** @param array<File> $files */
     public function withFiles(array $files): self
     {
         return new static(
@@ -76,9 +70,7 @@ final class ApiSetPayload
         );
     }
 
-    /**
-     * @return File[]
-     */
+    /** @return File[] */
     public function getFiles(): array
     {
         return $this->files;

@@ -81,9 +81,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($argument->getMethod(), $this->fixture);
     }
 
-    /**
-     * @covers ::addArgument
-     */
+    /** @covers ::addArgument */
     public function testAddingAnArgument(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
@@ -153,9 +151,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertEquals('private', $this->fixture->getVisibility());
     }
 
-    /**
-     * @covers ::getResponse
-     */
+    /** @covers ::getResponse */
     public function testRetrieveReturnTagForResponse(): void
     {
         $returnDescriptor = new ReturnDescriptor('return');
@@ -180,9 +176,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($returnType, $this->fixture->getResponse()->getType());
     }
 
-    /**
-     * @covers ::getFile
-     */
+    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAMethod(): void
     {
         // Arrange
@@ -195,9 +189,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($file, $result);
     }
 
-    /**
-     * @covers ::getReturn
-     */
+    /** @covers ::getReturn */
     public function testReturnTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
@@ -214,9 +206,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertEquals($returnCollection, $result);
     }
 
-    /**
-     * @covers ::getParam
-     */
+    /** @covers ::getParam */
     public function testParamTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getParam());
@@ -309,9 +299,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         return $file;
     }
 
-    /**
-     * @param string $name The name of the current method.
-     */
+    /** @param string $name The name of the current method. */
     private function whenFixtureHasMethodInParentClassWithSameName(string $name): MethodDescriptor
     {
         $result = new MethodDescriptor();

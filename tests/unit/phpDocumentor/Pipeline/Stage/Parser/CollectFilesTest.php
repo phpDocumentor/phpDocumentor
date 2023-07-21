@@ -33,9 +33,7 @@ final class CollectFilesTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testFilesAreCollectedAndAddedToPayload(): void
     {
         $fileCollector = $this->prophesize(FileCollector::class);

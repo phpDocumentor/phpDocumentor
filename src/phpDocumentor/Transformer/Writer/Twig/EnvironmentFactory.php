@@ -27,7 +27,7 @@ use Twig\Loader\FilesystemLoader;
 
 class EnvironmentFactory
 {
-    private ?Path $templateOverridesAt = null;
+    private Path|null $templateOverridesAt = null;
 
     /** @param string[] $guidesTemplateBasePath */
     public function __construct(
@@ -37,7 +37,7 @@ class EnvironmentFactory
         private readonly UmlExtension $umlExtension,
         private readonly RelativePathToRootConverter $relativePathToRootConverter,
         private readonly PathBuilder $pathBuilder,
-        private readonly array $guidesTemplateBasePath
+        private readonly array $guidesTemplateBasePath,
     ) {
     }
 
@@ -49,7 +49,7 @@ class EnvironmentFactory
     public function create(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): Environment {
         $mountManager = $template->files();
 
@@ -77,7 +77,7 @@ class EnvironmentFactory
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Environment $twigEnvironment
+        Environment $twigEnvironment,
     ): void {
         $extension = new Extension(
             $project,

@@ -15,7 +15,7 @@ use stdClass;
  */
 final class PreParsingEventTest extends TestCase
 {
-    private ?EventAbstract $fixture = null;
+    private EventAbstract|null $fixture = null;
 
     /**
      * @covers ::createInstance

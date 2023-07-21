@@ -34,12 +34,10 @@ trait HasProperties
         $this->properties = $properties;
     }
 
-    /**
-     * @return Collection<PropertyInterface>
-     */
+    /** @return Collection<PropertyInterface> */
     public function getProperties(): Collection
     {
-        if (!isset($this->properties)) {
+        if (! isset($this->properties)) {
             $this->properties = Collection::fromInterfaceString(PropertyInterface::class);
         }
 
@@ -57,7 +55,7 @@ trait HasProperties
 
         if ($this instanceof ClassInterface) {
             foreach ($this->getUsedTraits() as $trait) {
-                if (!$trait instanceof TraitInterface) {
+                if (! $trait instanceof TraitInterface) {
                     continue;
                 }
 

@@ -18,7 +18,7 @@ final class DocumentCollector
 
     public function __invoke(PostParseDocument $event): void
     {
-        if (!($event->getDocumentNode()->getTitle() instanceof TitleNode)) {
+        if (! ($event->getDocumentNode()->getTitle() instanceof TitleNode)) {
             return;
         }
 
@@ -27,7 +27,7 @@ final class DocumentCollector
 
     private function addDocumentToDocumentationSet(
         string $file,
-        DocumentNode $document
+        DocumentNode $document,
     ): void {
         $this->guideSetDescriptor->addDocument(
             $file,

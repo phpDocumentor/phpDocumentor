@@ -105,9 +105,7 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');

@@ -44,7 +44,7 @@ class Sourcecode extends WriterAbstract
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         if ($documentationSet instanceof ApiSetDescriptor === false) {
             return;

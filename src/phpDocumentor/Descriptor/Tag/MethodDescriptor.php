@@ -28,7 +28,7 @@ class MethodDescriptor extends TagDescriptor
     /** @var Collection<ArgumentDescriptor> */
     private Collection $arguments;
 
-    private ?ReturnDescriptor $response = null;
+    private ReturnDescriptor|null $response = null;
 
     private bool $static = false;
 
@@ -51,28 +51,24 @@ class MethodDescriptor extends TagDescriptor
         return $this->methodName;
     }
 
-    /**
-     * @param Collection<ArgumentDescriptor> $arguments
-     */
+    /** @param Collection<ArgumentDescriptor> $arguments */
     public function setArguments(Collection $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return Collection<ArgumentDescriptor>
-     */
+    /** @return Collection<ArgumentDescriptor> */
     public function getArguments(): Collection
     {
         return $this->arguments;
     }
 
-    public function setResponse(?ReturnDescriptor $response): void
+    public function setResponse(ReturnDescriptor|null $response): void
     {
         $this->response = $response;
     }
 
-    public function getResponse(): ?ReturnDescriptor
+    public function getResponse(): ReturnDescriptor|null
     {
         return $this->response;
     }

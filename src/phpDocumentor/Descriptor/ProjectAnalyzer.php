@@ -56,7 +56,7 @@ class ProjectAnalyzer implements Stringable
         $this->descriptorCountByType = $elementCounter;
         $this->fileCount = count($documentationSet->getFiles());
 
-        if (!$documentationSet instanceof ApiSetDescriptor) {
+        if (! $documentationSet instanceof ApiSetDescriptor) {
             return;
         }
 
@@ -68,7 +68,7 @@ class ProjectAnalyzer implements Stringable
      */
     public function __toString(): string
     {
-        $logString = <<<TEXT
+        $logString = <<<'TEXT'
 In the Project are:
   %8d files
   %8d top-level namespaces
@@ -100,7 +100,7 @@ TEXT;
      */
     protected function addElementToCounter(array $classCounters, ElementInterface $element): array
     {
-        if (!isset($classCounters[$element::class])) {
+        if (! isset($classCounters[$element::class])) {
             $classCounters[$element::class] = 0;
         }
 
@@ -114,11 +114,11 @@ TEXT;
      */
     protected function incrementUnresolvedParentCounter(ElementInterface $element): void
     {
-        if (!$element instanceof ClassInterface) {
+        if (! $element instanceof ClassInterface) {
             return;
         }
 
-        if (!is_string($element->getParent())) {
+        if (! is_string($element->getParent())) {
             return;
         }
 

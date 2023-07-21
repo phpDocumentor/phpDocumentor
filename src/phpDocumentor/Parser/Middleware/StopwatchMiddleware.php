@@ -45,7 +45,7 @@ final class StopwatchMiddleware implements Middleware
         $oldMemory = $this->memory;
         $periods = $lap->getPeriods();
         $lastPeriod = end($periods);
-        if (!$lastPeriod) {
+        if (! $lastPeriod) {
             return $result;
         }
 

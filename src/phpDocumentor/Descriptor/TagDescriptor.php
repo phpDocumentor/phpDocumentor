@@ -32,7 +32,7 @@ class TagDescriptor implements Descriptor, Filterable, Stringable
     /**
      * Initializes the tag by setting the name and errors,
      */
-    public function __construct(string $name, ?DescriptionDescriptor $description = null)
+    public function __construct(string $name, DescriptionDescriptor|null $description = null)
     {
         $this->setName($name);
         $this->setDescription($description);

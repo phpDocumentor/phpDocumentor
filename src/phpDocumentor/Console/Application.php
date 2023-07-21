@@ -33,7 +33,7 @@ class Application extends BaseApplication
         $this->setVersion(\phpDocumentor\Application::VERSION());
     }
 
-    protected function getCommandName(InputInterface $input): ?string
+    protected function getCommandName(InputInterface $input): string|null
     {
         try {
             if ($this->looksLikeACommandName($input->getFirstArgument())) {
@@ -88,7 +88,7 @@ class Application extends BaseApplication
      *
      * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
      */
-    private function looksLikeACommandName(?string $argument): bool
+    private function looksLikeACommandName(string|null $argument): bool
     {
         return $argument !== null && strlen($argument) < 100;
     }

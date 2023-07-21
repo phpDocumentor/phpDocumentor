@@ -34,12 +34,12 @@ interface IsTyped
      *
      * @todo update link to point to the final destination for the PHPDoc Standard.
      */
-    public function setType(?Type $type): void;
+    public function setType(Type|null $type): void;
 
     /**
      * Returns a normalized Types.
      *
      * @see self::setTypes() for details on what types represent.
      */
-    public function getType(): ?Type;
+    public function getType(): Type|null;
 }

@@ -47,9 +47,7 @@ class ArgumentAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
-     */
+    /** @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create */
     public function testCreateArgumentDescriptorFromReflector(): void
     {
         // Arrange
@@ -136,7 +134,7 @@ class ArgumentAssemblerTest extends TestCase
     protected function givenAnArgumentReflectorWithNameAndType(
         string $name,
         Type $type,
-        bool $isVariadic = false
+        bool $isVariadic = false,
     ): Argument {
         return new Argument($name, $type, null, false, $isVariadic);
     }

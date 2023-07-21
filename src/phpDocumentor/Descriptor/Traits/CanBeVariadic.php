@@ -33,7 +33,7 @@ trait CanBeVariadic
      */
     public function isVariadic(): bool
     {
-        if (!isset($this->isVariadic)) {
+        if (! isset($this->isVariadic)) {
             $this->isVariadic = IsApplicable::false();
         }
 

@@ -18,9 +18,7 @@ trait CanBeAbstract
     /** @var bool $abstract Whether this is an abstract class. */
     protected bool $abstract = false;
 
-    /**
-     * @internal should not be called by any other class than the assemblers
-     */
+    /** @internal should not be called by any other class than the assemblers */
     public function setAbstract(bool $abstract): void
     {
         $this->abstract = $abstract;

@@ -42,9 +42,7 @@ final class SettingsTest extends TestCase
         $this->assertFalse($settings->shouldIncludeSource());
     }
 
-    /**
-     * @covers ::isModified
-     */
+    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenChangingInclusionOfSource(): void
     {
         $settings = new Settings();
@@ -71,9 +69,7 @@ final class SettingsTest extends TestCase
         $this->assertSame(ApiSpecification::VISIBILITY_PUBLIC, $settings->getVisibility());
     }
 
-    /**
-     * @covers ::isModified
-     */
+    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenChangingVisibility(): void
     {
         $settings = new Settings();
@@ -100,9 +96,7 @@ final class SettingsTest extends TestCase
         $this->assertSame(['key' => 'value'], $settings->getCustom());
     }
 
-    /**
-     * @covers ::isModified
-     */
+    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings(): void
     {
         $settings = new Settings();
@@ -114,9 +108,7 @@ final class SettingsTest extends TestCase
         $this->assertTrue($settings->isModified());
     }
 
-    /**
-     * @covers ::clearModifiedFlag
-     */
+    /** @covers ::clearModifiedFlag */
     public function testThatTheModifiedFlagCanBeReset(): void
     {
         $settings = new Settings();

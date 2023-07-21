@@ -26,7 +26,7 @@ final class UriFactoryTest extends TestCase
      * @covers ::createUri
      * @dataProvider pathProvider
      */
-    public function testCreate(string $input, ?string $scheme, string $path): void
+    public function testCreate(string $input, string|null $scheme, string $path): void
     {
         $uri = UriFactory::createUri($input);
 
@@ -70,9 +70,7 @@ final class UriFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::createUri
-     */
+    /** @covers ::createUri */
     public function testInvalidUriThrowsInvalidArgumentException(): void
     {
         $this->expectException(InvalidArgumentException::class);

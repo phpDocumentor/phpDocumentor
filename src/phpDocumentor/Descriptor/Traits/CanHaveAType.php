@@ -25,14 +25,14 @@ use const E_USER_DEPRECATED;
 trait CanHaveAType
 {
     /** @var Type|null $type normalized type of this argument */
-    protected ?Type $type = null;
+    protected Type|null $type = null;
 
-    public function setType(?Type $type): void
+    public function setType(Type|null $type): void
     {
         $this->type = $type;
     }
 
-    public function getType(): ?Type
+    public function getType(): Type|null
     {
         if ($this->type === null && $this instanceof InheritsFromElement) {
             $inheritedElement = $this->getInheritedElement();
@@ -44,9 +44,7 @@ trait CanHaveAType
         return $this->type;
     }
 
-    /**
-     * @return list<Type>
-     */
+    /** @return list<Type> */
     public function getTypes(): array
     {
         trigger_error('Please use getType', E_USER_DEPRECATED);

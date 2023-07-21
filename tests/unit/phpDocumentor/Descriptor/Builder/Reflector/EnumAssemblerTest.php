@@ -17,9 +17,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\EnumAssembler
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\EnumAssembler */
 final class EnumAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -37,9 +35,7 @@ final class EnumAssemblerTest extends TestCase
         $this->assembler->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers ::buildDescriptor
-     */
+    /** @covers ::buildDescriptor */
     public function testAssembleBasicDescriptor(): void
     {
         $fqsen = new Fqsen('\MyNamespace\Enum');
@@ -53,9 +49,7 @@ final class EnumAssemblerTest extends TestCase
         self::assertCount(0, $descriptor->getCases());
     }
 
-    /**
-     * @covers ::buildDescriptor
-     */
+    /** @covers ::buildDescriptor */
     public function testEnumsCanHaveCases(): void
     {
         $caseFqsen = new Fqsen('\MyNamespace\Enum\Case');

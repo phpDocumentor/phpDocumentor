@@ -31,7 +31,7 @@ abstract class AssemblerAbstract implements AssemblerInterface
     /**
      * Returns the builder for this Assembler or null if none is set.
      */
-    public function getBuilder(): ?ProjectDescriptorBuilder
+    public function getBuilder(): ProjectDescriptorBuilder|null
     {
         return $this->builder;
     }

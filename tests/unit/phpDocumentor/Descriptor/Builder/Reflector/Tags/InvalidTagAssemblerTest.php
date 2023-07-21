@@ -7,14 +7,10 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\InvalidTagAssembler
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\InvalidTagAssembler */
 final class InvalidTagAssemblerTest extends TestCase
 {
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testCreateWithError(): void
     {
         $assembler = new InvalidTagAssembler();

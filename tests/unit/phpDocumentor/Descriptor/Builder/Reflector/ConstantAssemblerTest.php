@@ -53,7 +53,7 @@ final class ConstantAssemblerTest extends TestCase
         $name = 'constBoolean';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */
@@ -84,7 +84,7 @@ DOCBLOCK,
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */
@@ -118,7 +118,7 @@ DOCBLOCK,
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */

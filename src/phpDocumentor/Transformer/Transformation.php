@@ -22,7 +22,7 @@ use function str_starts_with;
  */
 class Transformation
 {
-    private ?Transformer $transformer = null;
+    private Transformer|null $transformer = null;
 
     /**
      * @var Parameter[] A series of parameters that can influence what the writer does; the exact function differs
@@ -33,9 +33,9 @@ class Transformation
     /**
      * Constructs a new Transformation object and populates the required parameters.
      *
-     * @param string $query What information to use as datasource for the writer's source.
-     * @param string $writer What type of transformation to apply (PDF, Twig etc).
-     * @param string $source Which template or type of source to use.
+     * @param string $query    What information to use as datasource for the writer's source.
+     * @param string $writer   What type of transformation to apply (PDF, Twig etc).
+     * @param string $source   Which template or type of source to use.
      * @param string $artifact What is the filename of the result (relative to the generated root)
      */
     public function __construct(private readonly Template $template, private readonly string $query, private readonly string $writer, private readonly string $source, private readonly string $artifact)
@@ -113,7 +113,7 @@ class Transformation
      *
      * @param string $name Name of the parameter to return.
      */
-    public function getParameter(string $name): ?Parameter
+    public function getParameter(string $name): Parameter|null
     {
         foreach ($this->parameters as $parameter) {
             if ($parameter->key() === $name) {
@@ -157,7 +157,7 @@ class Transformation
     /**
      * Returns the transformer for this transformation.
      */
-    public function getTransformer(): ?Transformer
+    public function getTransformer(): Transformer|null
     {
         return $this->transformer;
     }

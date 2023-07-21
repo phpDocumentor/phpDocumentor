@@ -32,9 +32,7 @@ final class EmittingMiddlewareTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testEmitsPreParsingEvent(): void
     {
         // start with a clean dispatcher

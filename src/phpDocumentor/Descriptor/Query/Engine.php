@@ -23,9 +23,7 @@ class Engine
     {
     }
 
-    /**
-     * @return mixed
-     */
+    /** @return mixed */
     public function perform(Descriptor $descriptor, string $query)
     {
         return $this->executor->evaluate($this->parser->parse($query), $descriptor);

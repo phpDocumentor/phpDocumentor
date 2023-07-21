@@ -13,15 +13,11 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Webmozart\Assert\Assert;
 
-/**
- * @extends AssemblerAbstract<Descriptor, object>
- */
+/** @extends AssemblerAbstract<Descriptor, object> */
 final class DescriptionAssemblerReducer extends AssemblerAbstract implements AssemblerReducer
 {
-    /**
-     * @return ElementInterface|TagDescriptor|null
-     */
-    public function create(object $data, ?Descriptor $descriptor = null): ?Descriptor
+    /** @return ElementInterface|TagDescriptor|null */
+    public function create(object $data, Descriptor|null $descriptor = null): Descriptor|null
     {
         if ($descriptor === null) {
             return null;

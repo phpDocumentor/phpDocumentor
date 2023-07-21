@@ -244,7 +244,7 @@ class FileAssembler extends AssemblerAbstract
     {
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
-        if (!$package) {
+        if (! $package) {
             $package = $this->getBuilder()->getDefaultPackageName();
         }
 

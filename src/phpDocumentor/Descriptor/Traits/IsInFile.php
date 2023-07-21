@@ -19,13 +19,13 @@ use phpDocumentor\Reflection\Location;
 trait IsInFile
 {
     /** @var FileInterface|null $fileDescriptor The file to which this element belongs; if applicable */
-    protected ?FileInterface $fileDescriptor = null;
+    protected FileInterface|null $fileDescriptor = null;
 
     /** @var int $line The line number on which this element occurs. */
     protected int $line = 0;
 
-    protected ?Location $startLocation = null;
-    protected ?Location $endLocation = null;
+    protected Location|null $startLocation = null;
+    protected Location|null $endLocation = null;
 
     /**
      * Sets the file and linenumber where this element is at.
@@ -49,7 +49,7 @@ trait IsInFile
     /**
      * Returns the file in which this element resides or null in case the element is not bound to a file..
      */
-    public function getFile(): ?FileInterface
+    public function getFile(): FileInterface|null
     {
         return $this->fileDescriptor;
     }
@@ -81,7 +81,7 @@ trait IsInFile
     /**
      * Returns the start location where the definition for this element can be found.
      */
-    public function getStartLocation(): ?Location
+    public function getStartLocation(): Location|null
     {
         return $this->startLocation;
     }
@@ -99,7 +99,7 @@ trait IsInFile
     /**
      * Returns the end location where the definition for this element can be found.
      */
-    public function getEndLocation(): ?Location
+    public function getEndLocation(): Location|null
     {
         return $this->endLocation;
     }

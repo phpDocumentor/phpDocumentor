@@ -362,7 +362,20 @@ final class FileDescriptorTest extends MockeryTestCase
         $this->fixture->getClasses()->set('my-test-function', $mockFunctions);
 
         // final merge and check
-        $expectedErrors = [...$errorGlobal, ...$errorClasses, ...$errorInterfaces, ...$errorTraits, ...$errorFunctions, ...$errorClassMethods, ...$errorClassConstants, ...$errorClassProperties, ...$errorInterfacesMethods, ...$errorInterfacesConstants, ...$errorTraitsMethods, ...$errorTraitsProperties];
+        $expectedErrors = [
+            ...$errorGlobal,
+            ...$errorClasses,
+            ...$errorInterfaces,
+            ...$errorTraits,
+            ...$errorFunctions,
+            ...$errorClassMethods,
+            ...$errorClassConstants,
+            ...$errorClassProperties,
+            ...$errorInterfacesMethods,
+            ...$errorInterfacesConstants,
+            ...$errorTraitsMethods,
+            ...$errorTraitsProperties,
+        ];
 
         self::assertSame($expectedErrors, $this->fixture->getAllErrors()->getAll());
     }

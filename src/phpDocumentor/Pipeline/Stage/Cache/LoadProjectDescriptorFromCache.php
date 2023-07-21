@@ -20,7 +20,7 @@ final class LoadProjectDescriptorFromCache
         $configuration = $payload->getConfig();
         if (
             $configuration['phpdocumentor']['use-cache']
-            && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
+            && ! $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
         ) {
             $this->log('Loading project from cache');
             $this->descriptorMapper->populate($payload->getBuilder()->getProjectDescriptor());
@@ -32,7 +32,7 @@ final class LoadProjectDescriptorFromCache
     /**
      * Dispatches a logging request.
      *
-     * @param string $priority The logging priority as declared in the LogLevel PSR-3 class.
+     * @param string $priority   The logging priority as declared in the LogLevel PSR-3 class.
      * @param string[] $parameters
      */
     private function log(string $message, string $priority = LogLevel::INFO, array $parameters = []): void

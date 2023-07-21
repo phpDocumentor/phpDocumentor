@@ -30,7 +30,7 @@ use Webmozart\Assert\Assert;
  */
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
-    protected ?NamespaceInterface $parent = null;
+    protected NamespaceInterface|null $parent = null;
 
     /** @var Collection<NamespaceInterface> $children */
     protected Collection $children;
@@ -85,7 +85,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns the parent namespace for this namespace.
      */
-    public function getParent(): ?NamespaceInterface
+    public function getParent(): NamespaceInterface|null
     {
         return $this->parent;
     }

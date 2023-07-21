@@ -6,9 +6,7 @@ namespace phpDocumentor\Descriptor\Builder;
 
 use function is_a;
 
-/**
- * @template T
- */
+/** @template T */
 final class Matcher
 {
     /**
@@ -33,9 +31,7 @@ final class Matcher
         return is_a($criteria, $this->type, true);
     }
 
-    /**
-     * @param class-string<T> $type
-     */
+    /** @param class-string<T> $type */
     private function __construct(private readonly string $type)
     {
     }

@@ -36,9 +36,7 @@ final class CacheMiddlewareTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testReturnsCachedResponseIfFileContentsIsTheSame(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -63,9 +61,7 @@ final class CacheMiddlewareTest extends TestCase
         $this->assertEquals($reflectedFile, $response);
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testCachesResponseWhenReturningAnUncachedFile(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -102,7 +98,7 @@ final class CacheMiddlewareTest extends TestCase
 
     private function whenFileIsAlreadyInCache(
         ArrayAdapter $cacheInterface,
-        ReflectedFile $reflectedFile
+        ReflectedFile $reflectedFile,
     ): void {
         $cacheInterface->get(
             '0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8',

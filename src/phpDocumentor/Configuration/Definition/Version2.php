@@ -23,6 +23,7 @@ use function array_values;
 use function explode;
 use function getcwd;
 use function implode;
+use function str_ends_with;
 
 /**
  * @psalm-type ConfigurationMap = array<mixed>
@@ -32,7 +33,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
 {
     public function __construct(
         /** @var string This is injected so that the name of the default template can be defined globally in the app */
-        private readonly string $defaultTemplateName
+        private readonly string $defaultTemplateName,
     ) {
     }
 
@@ -216,7 +217,7 @@ final class Version2 implements ConfigurationInterface, Upgradable
      */
     private function convertSingleStarPathEndingIntoGlobPattern(string $path): string
     {
-        if (str_ends_with($path, '/*') && !str_ends_with($path, '**/*')) {
+        if (str_ends_with($path, '/*') && ! str_ends_with($path, '**/*')) {
             $path .= '*/*';
         }
 

@@ -53,9 +53,7 @@ class ElementsIndexBuilderTest extends TestCase
         $this->apiSet->getFiles()->add($file2);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame('Build "elements" index', $this->fixture->getDescription());

@@ -81,7 +81,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
 {
     public function __construct(
         /** @var string This is injected so that the name of the default template can be defined globally in the app */
-        private readonly string $defaultTemplateName
+        private readonly string $defaultTemplateName,
     ) {
     }
 
@@ -118,7 +118,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                                 ->always(
                                     //We need to revert the phpize call in XmlUtils. Version number is always a string!
                                     static function ($value) {
-                                        if (!is_int($value) && !is_string($value)) {
+                                        if (! is_int($value) && ! is_string($value)) {
                                             return var_export($value, true);
                                         }
 
@@ -344,9 +344,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    /**
-     * @param array<string> $defaultPaths
-     */
+    /** @param array<string> $defaultPaths */
     private function source(array $defaultPaths = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
@@ -360,9 +358,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    /**
-     * @param array<string> $defaultValue
-     */
+    /** @param array<string> $defaultValue */
     private function paths(array $defaultValue = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');
