@@ -70,8 +70,9 @@ class SymfonyConfigFactory
         $configuration = $this->processConfiguration($values);
         if ($configuration[self::FIELD_CONFIG_VERSION] !== (string) array_key_last($this->configurationDefinitions)) {
             throw new RuntimeException(
-                'The configuration file does not match the latest version and auto-upgrading failed. Please '
-                . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue',
+                'The configuration file does not match the latest version and auto-upgrading failed. '
+                 . 'Please contact the maintainers and provide your configuration file '
+                 . 'or whole project to reproduce this issue',
             );
         }
 

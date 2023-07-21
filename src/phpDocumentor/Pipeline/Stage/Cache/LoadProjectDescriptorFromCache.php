@@ -11,8 +11,10 @@ use Psr\Log\LogLevel;
 
 final class LoadProjectDescriptorFromCache
 {
-    public function __construct(private readonly ProjectDescriptorMapper $descriptorMapper, private readonly LoggerInterface $logger)
-    {
+    public function __construct(
+        private readonly ProjectDescriptorMapper $descriptorMapper,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(Payload $payload): Payload

@@ -38,8 +38,13 @@ class Transformation
      * @param string $source   Which template or type of source to use.
      * @param string $artifact What is the filename of the result (relative to the generated root)
      */
-    public function __construct(private readonly Template $template, private readonly string $query, private readonly string $writer, private readonly string $source, private readonly string $artifact)
-    {
+    public function __construct(
+        private readonly Template $template,
+        private readonly string $query,
+        private readonly string $writer,
+        private readonly string $source,
+        private readonly string $artifact,
+    ) {
     }
 
     /**

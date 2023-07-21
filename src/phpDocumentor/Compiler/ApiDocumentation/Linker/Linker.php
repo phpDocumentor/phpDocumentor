@@ -69,8 +69,10 @@ class Linker extends ApiDocumentationPass
      *
      * @param array<class-string, array<string>> $substitutions
      */
-    public function __construct(private array $substitutions, private readonly DescriptorRepository $descriptorRepository)
-    {
+    public function __construct(
+        private readonly array $substitutions,
+        private readonly DescriptorRepository $descriptorRepository,
+    ) {
     }
 
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor

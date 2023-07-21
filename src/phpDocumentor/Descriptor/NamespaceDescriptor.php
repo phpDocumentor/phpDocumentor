@@ -71,7 +71,6 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * Sets the parent namespace for this namespace.
      * {@inheritDoc}
      */
     public function setParent($parent): void

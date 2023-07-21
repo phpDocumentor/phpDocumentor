@@ -36,8 +36,11 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private readonly Dsn $currentWorkingDir;
 
     /** @param array<string|string[]> $options */
-    public function __construct(private array $options, private readonly ConfigurationFactory $configFactory, string $currentWorkingDir)
-    {
+    public function __construct(
+        private readonly array $options,
+        private readonly ConfigurationFactory $configFactory,
+        string $currentWorkingDir,
+    ) {
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
@@ -359,7 +362,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private function shouldReduceNumberOfVersionsToOne(Configuration $configuration): bool
     {
         return (($this->options['filename'] ?? '') !== '' || ($this->options['directory'] ?? '') !== '')
-            && (is_countable($configuration['phpdocumentor']['versions']) ? count($configuration['phpdocumentor']['versions']) : 0) > 1;
+            && (is_countable($configuration['phpdocumentor']['versions'])
+                ? count($configuration['phpdocumentor']['versions']) : 0) > 1;
     }
 
     private function overwriteSettings(Configuration $configuration): Configuration

@@ -37,7 +37,9 @@ class Filter
      */
     public function __construct(iterable $filters)
     {
-        $nullInteruption = new InterruptibleProcessor(static fn (FilterPayload $value) => $value->getFilterable() !== null);
+        $nullInteruption = new InterruptibleProcessor(
+            static fn (FilterPayload $value) => $value->getFilterable() !== null
+        );
 
         $this->pipeline = new Pipeline($nullInteruption, ...$filters);
     }

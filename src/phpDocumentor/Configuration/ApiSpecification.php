@@ -37,8 +37,20 @@ final class ApiSpecification implements ArrayAccess
      * @param array<string> $markers
      * @param array<string> $ignoreTags
      */
-    private function __construct(private Source $source, private string $output, private array $ignore, private array $extensions, private array $visibility, private string $defaultPackageName, private bool|null $includeSource, private array $markers, private array $ignoreTags, private Source|null $examples, private string $encoding, private bool $validate)
-    {
+    private function __construct(
+        private Source $source,
+        private string $output,
+        private array $ignore,
+        private array $extensions,
+        private array $visibility,
+        private string $defaultPackageName,
+        private bool|null $includeSource,
+        private array $markers,
+        private array $ignoreTags,
+        private Source|null $examples,
+        private string $encoding,
+        private bool $validate,
+    ) {
     }
 
     /** @param ConfigurationApiMap $api */

@@ -20,8 +20,11 @@ final class Entry
     /** @var Collection<Entry> */
     private readonly Collection $children;
 
-    public function __construct(private readonly string $url, private readonly string $title, private readonly string|null $parent = null)
-    {
+    public function __construct(
+        private readonly string $url,
+        private readonly string $title,
+        private readonly string|null $parent = null,
+    ) {
         $this->children = Collection::fromClassString(self::class);
     }
 

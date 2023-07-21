@@ -84,9 +84,10 @@ class NamespaceTreeBuilder extends ApiDocumentationPass
      * element. If a namespace does not exist yet it will automatically be created.
      *
      * @param ElementInterface[] $elements Series of elements to add to their respective namespace.
-     * @param string $type     Declares which field of the namespace will be populated with the given series of elements.
-     *         This name will be transformed to a getter which must exist. Out of performance considerations will no effort
-     *         be done to verify whether the provided type is valid.
+     * @param string $type Declares which field of the namespace will be populated with the given series of elements.
+     *             This name will be transformed to a getter which must exist.
+     *             Out of performance considerations will no effort
+     *             be done to verify whether the provided type is valid.
      */
     protected function addElementsOfTypeToNamespace(
         DocumentationSetDescriptor $documentationSet,

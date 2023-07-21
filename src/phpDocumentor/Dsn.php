@@ -55,8 +55,11 @@ final class Dsn implements Stringable
      *
      * @param array<string> $parameters
      */
-    public function __construct(private readonly UriInterface $uri, private readonly array $parameters, private readonly string $dsn)
-    {
+    public function __construct(
+        private readonly UriInterface $uri,
+        private readonly array $parameters,
+        private readonly string $dsn,
+    ) {
     }
 
     public static function createFromString(string $dsn): self

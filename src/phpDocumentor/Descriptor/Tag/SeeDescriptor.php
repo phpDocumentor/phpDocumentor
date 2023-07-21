@@ -24,8 +24,11 @@ use Stringable;
  */
 class SeeDescriptor extends TagDescriptor implements Stringable
 {
-    public function __construct(string $name, private Reference $reference, DescriptionDescriptor|null $description = null)
-    {
+    public function __construct(
+        string $name,
+        private readonly Reference $reference,
+        DescriptionDescriptor|null $description = null,
+    ) {
         parent::__construct($name, $description);
     }
 

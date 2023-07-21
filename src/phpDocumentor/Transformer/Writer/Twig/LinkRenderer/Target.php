@@ -59,11 +59,11 @@ final class Target
         /**
          * The link url of this Target.
          *
-         * The {@see LinkRenderer} is responsible for converting an 'input' to something that can be linked to; and the URL
-         * represents the thing that should be linked to.
+         * The {@see LinkRenderer} is responsible for converting an 'input' to something that can be linked to;
+         * and the URL represents the thing that should be linked to.
          *
-         * Sometimes, input cannot be resolved (FQCNs that we do not document). When that happens the URL is null, and the
-         * {@see HtmlFormatter} will still render a reference to that FQCN, but without a link.
+         * Sometimes, input cannot be resolved (FQCNs that we do not document). When that happens the URL is null,
+         * and the {@see HtmlFormatter} will still render a reference to that FQCN, but without a link.
          */
         private readonly string|null $url = null,
         string $presentation = LinkRenderer::PRESENTATION_NORMAL,

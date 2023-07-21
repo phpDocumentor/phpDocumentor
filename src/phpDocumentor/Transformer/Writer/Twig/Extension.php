@@ -359,7 +359,10 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'route' => new TwigFilter(
                 'route',
-                fn ($value, string $presentation = LinkRenderer::PRESENTATION_NORMAL) => $this->routeRenderer->render($value, $presentation),
+                fn (
+                    $value,
+                    string $presentation = LinkRenderer::PRESENTATION_NORMAL,
+                ) => $this->routeRenderer->render($value, $presentation),
                 ['is_safe' => ['all']],
             ),
             'sort' => new TwigFilter('sort_*', $this->sort(...)),

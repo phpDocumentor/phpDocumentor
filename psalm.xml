@@ -6,6 +6,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorLevel="5"
     findUnusedVariablesAndParams="true"
+    cacheDirectory="build/psalm"
 >
     <projectFiles>
         <directory name="src" />

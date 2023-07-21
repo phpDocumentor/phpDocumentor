@@ -45,8 +45,10 @@ use function sprintf;
      *
      * @param array<string> $defaultFiles
      */
-    public function __construct(private readonly array $defaultFiles, private readonly SymfonyConfigFactory $symfonyConfigFactory)
-    {
+    public function __construct(
+        private readonly array $defaultFiles,
+        private readonly SymfonyConfigFactory $symfonyConfigFactory,
+    ) {
     }
 
     /**

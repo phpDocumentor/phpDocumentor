@@ -228,10 +228,12 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
         $usesNamespaces = $documentationSet instanceof ApiSetDescriptor
-            && (is_countable($documentationSet->getNamespace()->getChildren()) ? count($documentationSet->getNamespace()->getChildren()) : 0) > 0;
+            && (is_countable($documentationSet->getNamespace()->getChildren())
+                ? count($documentationSet->getNamespace()->getChildren()) : 0) > 0;
         $usesPackages = $documentationSet instanceof ApiSetDescriptor
             && $documentationSet->getPackage() !== null
-            && (is_countable($documentationSet->getPackage()->getChildren()) ? count($documentationSet->getPackage()->getChildren()) : 0) > 0;
+            && (is_countable($documentationSet->getPackage()->getChildren())
+                ? count($documentationSet->getPackage()->getChildren()) : 0) > 0;
 
         $this->environment->addGlobal('usesNamespaces', $usesNamespaces);
         $this->environment->addGlobal('usesPackages', $usesPackages);
