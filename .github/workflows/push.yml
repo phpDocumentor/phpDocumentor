@@ -110,18 +110,41 @@ jobs:
       - setup
     steps:
       - uses: actions/checkout@v3
-      - name: Restore/cache vendor folder
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
         uses: actions/cache@v3
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
-      - name: Code style check
-        uses: phpDocumentor/coding-standard@latest
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: -s
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: cs2pr
+
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v2"
+        with:
+          composer-options: --optimize-autoloader
+          # Bust the cache at least once a month - output format: YYYY-MM-DD.
+          custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
+
+      - name: Code style check
+        run: ./bin/phpcs -q --no-colors --report=checkstyle | cs2pr
 
   phpstan:
     runs-on: ubuntu-latest
