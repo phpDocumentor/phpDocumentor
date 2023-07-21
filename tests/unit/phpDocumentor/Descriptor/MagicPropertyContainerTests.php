@@ -11,9 +11,7 @@ use phpDocumentor\Reflection\Types\String_;
 
 trait MagicPropertyContainerTests
 {
-    /**
-     * @covers ::getMagicProperties
-     */
+    /** @covers ::getMagicProperties */
     public function testGetMagicPropertiesUsingPropertyTags(): void
     {
         $variableName = 'variableName';
@@ -34,13 +32,11 @@ trait MagicPropertyContainerTests
 
         self::assertEquals(
             new Collection([$expected]),
-            $magicProperties
+            $magicProperties,
         );
     }
 
-    /**
-     * @covers ::getMagicProperties
-     */
+    /** @covers ::getMagicProperties */
     public function testGetMagicPropertyWithoutName(): void
     {
         $description = new DescriptionDescriptor(new Description('description'), []);
@@ -58,9 +54,7 @@ trait MagicPropertyContainerTests
         self::assertCount(1, $this->fixture->getErrors());
     }
 
-    /**
-     * @covers ::getMagicProperties
-     */
+    /** @covers ::getMagicProperties */
     public function testMagicPropertiesReturnsEmptyCollectionWhenNoTags(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMagicProperties());

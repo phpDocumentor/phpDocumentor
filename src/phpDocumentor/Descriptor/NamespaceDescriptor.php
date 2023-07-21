@@ -30,7 +30,7 @@ use Webmozart\Assert\Assert;
  */
 class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\NamespaceInterface
 {
-    protected ?NamespaceInterface $parent = null;
+    protected NamespaceInterface|null $parent = null;
 
     /** @var Collection<NamespaceInterface> $children */
     protected Collection $children;
@@ -71,13 +71,12 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     }
 
     /**
-     * Sets the parent namespace for this namespace.
      * {@inheritDoc}
      */
     public function setParent($parent): void
     {
         //phpcs:disable SlevomatCodingStandard.Classes.ModernClassNameReference.ClassNameReferencedViaMagicConstant
-        Assert::nullOrIsInstanceOf($parent, __CLASS__);
+        Assert::nullOrIsInstanceOf($parent, self::class);
 
         $this->parent = $parent;
     }
@@ -85,7 +84,7 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     /**
      * Returns the parent namespace for this namespace.
      */
-    public function getParent(): ?NamespaceInterface
+    public function getParent(): NamespaceInterface|null
     {
         return $this->parent;
     }

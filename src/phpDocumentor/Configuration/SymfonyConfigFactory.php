@@ -26,20 +26,16 @@ use Webmozart\Assert\Assert;
 use function array_key_last;
 use function array_keys;
 
-/**
- * @psalm-import-type ConfigurationMap from ConfigurationFactory
- */
+/** @psalm-import-type ConfigurationMap from ConfigurationFactory */
 class SymfonyConfigFactory
 {
-    public const FIELD_CONFIG_VERSION = 'configVersion';
+    final public const FIELD_CONFIG_VERSION = 'configVersion';
     private const DEFAULT_CONFIG_VERSION = '2';
 
     /** @var ConfigurationInterface[] $configurationDefinitions */
     private array $configurationDefinitions;
 
-    /**
-     * @param ConfigurationInterface[] $definitions
-     */
+    /** @param ConfigurationInterface[] $definitions */
     public function __construct(array $definitions)
     {
         Assert::allIsInstanceOf($definitions, ConfigurationInterface::class);
@@ -47,9 +43,7 @@ class SymfonyConfigFactory
         $this->configurationDefinitions = $definitions;
     }
 
-    /**
-     * @return ConfigurationMap
-     */
+    /** @return ConfigurationMap */
     public function createFromFile(string $filename): array
     {
         $values = XmlUtils::loadFile($filename);
@@ -58,9 +52,7 @@ class SymfonyConfigFactory
         return $this->generateConfiguration($values);
     }
 
-    /**
-     * @return ConfigurationMap
-     */
+    /** @return ConfigurationMap */
     public function createDefault(): array
     {
         return $this->generateConfiguration([
@@ -78,8 +70,9 @@ class SymfonyConfigFactory
         $configuration = $this->processConfiguration($values);
         if ($configuration[self::FIELD_CONFIG_VERSION] !== (string) array_key_last($this->configurationDefinitions)) {
             throw new RuntimeException(
-                'The configuration file does not match the latest version and auto-upgrading failed. Please '
-                . 'contact the maintainers and provide your configuration file or whole project to reproduce this issue'
+                'The configuration file does not match the latest version and auto-upgrading failed. '
+                 . 'Please contact the maintainers and provide your configuration file '
+                 . 'or whole project to reproduce this issue',
             );
         }
 
@@ -115,7 +108,7 @@ class SymfonyConfigFactory
 
         if ($definition instanceof Upgradable) {
             $configuration = $this->processConfiguration(
-                $this->upgradeConfiguration($definition, $configuration)
+                $this->upgradeConfiguration($definition, $configuration),
             );
         }
 
@@ -128,7 +121,7 @@ class SymfonyConfigFactory
         if ($definition === null) {
             throw UnsupportedConfigVersionException::create(
                 $configurationVersion,
-                array_keys($this->configurationDefinitions)
+                array_keys($this->configurationDefinitions),
             );
         }
 
@@ -147,7 +140,7 @@ class SymfonyConfigFactory
     {
         $upgradedConfiguration = $definition->upgrade($configuration);
         if (
-            !isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
+            ! isset($upgradedConfiguration[self::FIELD_CONFIG_VERSION])
             || $configuration[self::FIELD_CONFIG_VERSION] === $upgradedConfiguration[self::FIELD_CONFIG_VERSION]
         ) {
             throw UpgradeFailedException::create($configuration[self::FIELD_CONFIG_VERSION]);

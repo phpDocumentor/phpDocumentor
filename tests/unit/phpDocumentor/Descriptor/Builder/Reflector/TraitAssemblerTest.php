@@ -52,9 +52,7 @@ final class TraitAssemblerTest extends TestCase
         $this->assembler->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testTraitWillHaveAnFqsenNameAndNamespace(): void
     {
         $fqsen = new Fqsen('\My\Space\MyTrait');
@@ -67,9 +65,7 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($fqsen, $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function testTraitWillHaveAnAssociatedLocationInAFile(): void
     {
         $startLocation = new Location(10);
@@ -79,7 +75,7 @@ final class TraitAssemblerTest extends TestCase
             new Fqsen('\My\Space\MyTrait'),
             null,
             $startLocation,
-            $endLocation
+            $endLocation,
         );
 
         $result = $this->assembler->create($reflectedTrait);
@@ -145,7 +141,7 @@ final class TraitAssemblerTest extends TestCase
     private function givenReflectedConstantInTrait(string $constantName, Trait_ $reflectedTrait): Constant
     {
         $reflectedConstant = new Constant(
-            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $constantName))
+            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $constantName)),
         );
         $reflectedTrait->addConstant($reflectedConstant);
 
@@ -166,7 +162,7 @@ final class TraitAssemblerTest extends TestCase
     private function givenReflectedPropertyInTrait(string $propertyName, Trait_ $reflectedTrait): Property
     {
         $reflectedProperty = new Property(
-            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $propertyName))
+            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $propertyName)),
         );
         $reflectedTrait->addProperty($reflectedProperty);
 
@@ -187,7 +183,7 @@ final class TraitAssemblerTest extends TestCase
     private function givenReflectedMethodInTrait(string $methodName, Trait_ $reflectedTrait): Method
     {
         $reflectedMethod = new Method(
-            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $methodName))
+            new Fqsen(sprintf('%s::%s()', (string) $reflectedTrait->getFqsen(), $methodName)),
         );
         $reflectedTrait->addMethod($reflectedMethod);
 

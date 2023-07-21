@@ -84,11 +84,11 @@ final class SinceAssemblerTest extends TestCase
         self::assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    private function givenASinceTag(?string $version, string $description): Since
+    private function givenASinceTag(string|null $version, string $description): Since
     {
         return new DocBlock\Tags\Since(
             $version,
-            new DocBlock\Description($description)
+            new DocBlock\Description($description),
         );
     }
 }

@@ -27,31 +27,24 @@ use function current;
 use function end;
 use function explode;
 use function implode;
+use function is_countable;
 
 use const DIRECTORY_SEPARATOR;
 
 final class CommandlineOptionsMiddleware implements MiddlewareInterface
 {
-    /** @var array<string|string[]> */
-    private $options;
+    private readonly Dsn $currentWorkingDir;
 
-    /** @var ConfigurationFactory */
-    private $configFactory;
-
-    /** @var Dsn */
-    private $currentWorkingDir;
-
-    /**
-     * @param array<string|string[]> $options
-     */
-    public function __construct(array $options, ConfigurationFactory $configFactory, string $currentWorkingDir)
-    {
-        $this->options = $options;
-        $this->configFactory = $configFactory;
+    /** @param array<string|string[]> $options */
+    public function __construct(
+        private readonly array $options,
+        private readonly ConfigurationFactory $configFactory,
+        string $currentWorkingDir,
+    ) {
         $this->currentWorkingDir = Dsn::createFromString($currentWorkingDir);
     }
 
-    public function __invoke(Configuration $configuration, ?UriInterface $uri = null): Configuration
+    public function __invoke(Configuration $configuration, UriInterface|null $uri = null): Configuration
     {
         $configuration = $this->overwriteDestinationFolder($configuration);
         $configuration = $this->disableCache($configuration);
@@ -60,7 +53,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $configuration = $this->overwriteTemplates($configuration);
         $configuration = $this->overwriteSettings($configuration);
 
-        if (!isset($configuration['phpdocumentor']['versions'])) {
+        if (! isset($configuration['phpdocumentor']['versions'])) {
             $configuration['phpdocumentor']['versions']['1.0.0'] = $this->createDefaultVersionSettings();
         }
 
@@ -134,10 +127,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         if (isset($this->options['template']) && $this->options['template']) {
             $configuration['phpdocumentor']['templates'] = array_map(
-                static function ($templateName) {
-                    return ['name' => $templateName];
-                },
-                (array) $this->options['template']
+                static fn ($templateName) => ['name' => $templateName],
+                (array) $this->options['template'],
             );
         }
 
@@ -147,7 +138,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private function setFilesInPath(VersionSpecification $version): VersionSpecification
     {
         $filename = $this->options['filename'] ?? null;
-        if (!$filename) {
+        if (! $filename) {
             return $version;
         }
 
@@ -160,12 +151,10 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $version->api[0] = $version->api[0]->withSource(
             $version->api[0]->source()->withPaths(
                 array_map(
-                    static function ($path): Path {
-                        return new Path($path);
-                    },
-                    $filename
-                )
-            )
+                    static fn ($path): Path => new Path($path),
+                    $filename,
+                ),
+            ),
         );
 
         return $version;
@@ -175,7 +164,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         /** @var string|string[]|null $directory */
         $directory = $this->options['directory'] ?? '';
-        if (!$directory) {
+        if (! $directory) {
             return $version;
         }
 
@@ -184,7 +173,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
         $directory = explode(',', implode(',', $directory));
 
         $currentApiConfig = current($version->getApi());
-        if (!$currentApiConfig) {
+        if (! $currentApiConfig) {
             $currentApiConfig = $this->createDefaultApiSettings();
         }
 
@@ -197,13 +186,13 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
             // A version may contain multiple APIs.
             if (Path::isAbsolutePath($path)) {
                 $version->addApi(
-                    $currentApiConfig->withSource(new Source(Dsn::createFromString($path), [new Path('./')]))
+                    $currentApiConfig->withSource(new Source(Dsn::createFromString($path), [new Path('./')])),
                 );
             } else {
                 $currentApiConfig = $currentApiConfig->withSource(
                     $currentApiConfig->source()->withPaths(
-                        array_merge($currentApiConfig->source()->paths(), [new Path($path)])
-                    )
+                        array_merge($currentApiConfig->source()->paths(), [new Path($path)]),
+                    ),
                 );
             }
         }
@@ -217,7 +206,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function registerExtensions(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['extensions']) || !$this->options['extensions']) {
+        if (! isset($this->options['extensions']) || ! $this->options['extensions']) {
             return $version;
         }
 
@@ -234,7 +223,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteIgnoredPaths(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['ignore']) || !$this->options['ignore']) {
+        if (! isset($this->options['ignore']) || ! $this->options['ignore']) {
             return $version;
         }
 
@@ -247,13 +236,11 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $version->api[0]['ignore'],
                 [
                     'paths' => array_map(
-                        static function ($path): Path {
-                            return new Path($path);
-                        },
-                        $this->options['ignore']
+                        static fn ($path): Path => new Path($path),
+                        $this->options['ignore'],
                     ),
-                ]
-            )
+                ],
+            ),
         );
 
         return $version;
@@ -261,7 +248,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteIgnoredTags(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['ignore-tags']) || !$this->options['ignore-tags']) {
+        if (! isset($this->options['ignore-tags']) || ! $this->options['ignore-tags']) {
             return $version;
         }
 
@@ -278,7 +265,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteMarkers(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['markers']) || !$this->options['markers']) {
+        if (! isset($this->options['markers']) || ! $this->options['markers']) {
             return $version;
         }
 
@@ -295,7 +282,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteIncludeSource(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['sourcecode'])) {
+        if (! isset($this->options['sourcecode'])) {
             return $version;
         }
 
@@ -312,7 +299,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         /** @var string[]|string|null $visibilityFlags */
         $visibilityFlags = $this->options['visibility'] ?? null;
-        if (!$visibilityFlags) {
+        if (! $visibilityFlags) {
             return $version;
         }
 
@@ -328,7 +315,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
 
     private function overwriteDefaultPackageName(VersionSpecification $version): VersionSpecification
     {
-        if (!isset($this->options['defaultpackagename']) || !$this->options['defaultpackagename']) {
+        if (! isset($this->options['defaultpackagename']) || ! $this->options['defaultpackagename']) {
             return $version;
         }
 
@@ -345,7 +332,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         /** @var string|null $examples */
         $examples = $this->options['examples-dir'] ?? null;
-        if (!$examples) {
+        if (! $examples) {
             return $version;
         }
 
@@ -375,19 +362,20 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private function shouldReduceNumberOfVersionsToOne(Configuration $configuration): bool
     {
         return (($this->options['filename'] ?? '') !== '' || ($this->options['directory'] ?? '') !== '')
-            && count($configuration['phpdocumentor']['versions']) > 1;
+            && (is_countable($configuration['phpdocumentor']['versions'])
+                ? count($configuration['phpdocumentor']['versions']) : 0) > 1;
     }
 
     private function overwriteSettings(Configuration $configuration): Configuration
     {
-        if (!($configuration['phpdocumentor']['settings'] ?? null)) {
+        if (! ($configuration['phpdocumentor']['settings'] ?? null)) {
             $configuration['phpdocumentor']['settings'] = [];
         }
 
         foreach (($this->options['setting'] ?? []) as $setting) {
             [$key, $value] = explode('=', $setting);
 
-            if (!$key || !$value) {
+            if (! $key || ! $value) {
                 continue;
             }
 
@@ -409,7 +397,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         /** @var string|null $encoding */
         $encoding = $this->options['encoding'] ?? null;
-        if (!$encoding) {
+        if (! $encoding) {
             return $version;
         }
 
@@ -433,8 +421,8 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
                 $version->api[0]['ignore'],
                 [
                     'symlinks' => $this->options['ignore-symlinks'],
-                ]
-            )
+                ],
+            ),
         );
 
         return $version;

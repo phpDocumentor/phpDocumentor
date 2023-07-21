@@ -30,10 +30,11 @@ use Webmozart\Assert\Assert;
 
 use function array_merge;
 use function count;
+use function is_countable;
 use function ltrim;
 use function preg_split;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 
 /**
@@ -96,19 +97,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 {
     use IoTrait;
 
-    private EnvironmentFactory $environmentFactory;
-    private PathGenerator $pathGenerator;
     private Environment $environment;
-    private Engine $queryEngine;
 
     public function __construct(
-        EnvironmentFactory $environmentFactory,
-        PathGenerator $pathGenerator,
-        Engine $queryEngine
+        private readonly EnvironmentFactory $environmentFactory,
+        private readonly PathGenerator $pathGenerator,
+        private readonly Engine $queryEngine,
     ) {
-        $this->environmentFactory = $environmentFactory;
-        $this->pathGenerator = $pathGenerator;
-        $this->queryEngine = $queryEngine;
     }
 
     public function getName(): string
@@ -119,7 +114,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     public function initialize(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): void {
         $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
     }
@@ -129,7 +124,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      * and creates a static html page at the artifact location.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -138,7 +133,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         // TODO: At a later stage we want to support more types of Documentation Sets using the Twig writer
         //       but at the moment this causes headaches in the migration process towards multiple sets of
@@ -156,7 +151,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
         $extraParameters = [];
         foreach ($project->getSettings()->getCustom() as $key => $value) {
-            if (strpos($key, 'template.') !== 0) {
+            if (! str_starts_with($key, 'template.')) {
                 continue;
             }
 
@@ -170,11 +165,11 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                     $transformation,
                     $documentationSet,
                     $templatePath,
-                    $extraParameters
+                    $extraParameters,
                 );
             }
 
-            if (!($node instanceof Descriptor)) {
+            if (! ($node instanceof Descriptor)) {
                 continue;
             }
 
@@ -196,7 +191,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         Transformation $transformation,
         DocumentationSetDescriptor $documentationSet,
         string $templatePath,
-        array $extraParameters
+        array $extraParameters,
     ): void {
         foreach ($nodes as $node) {
             if ($node instanceof DescriptorCollection) {
@@ -205,11 +200,11 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
                     $transformation,
                     $documentationSet,
                     $templatePath,
-                    $extraParameters
+                    $extraParameters,
                 );
             }
 
-            if (!($node instanceof Descriptor)) {
+            if (! ($node instanceof Descriptor)) {
                 continue;
             }
 
@@ -217,15 +212,13 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         }
     }
 
-    /**
-     * @param array<mixed> $extraParameters
-     */
+    /** @param array<mixed> $extraParameters */
     private function transformNode(
         Descriptor $node,
         Transformation $transformation,
         DocumentationSetDescriptor $documentationSet,
         string $templatePath,
-        array $extraParameters
+        array $extraParameters,
     ): void {
         $path = $this->pathGenerator->generate($node, $transformation);
         if ($path === '') {
@@ -235,10 +228,12 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
         $parameters = array_merge($transformation->getParameters(), $extraParameters);
 
         $usesNamespaces = $documentationSet instanceof ApiSetDescriptor
-            && count($documentationSet->getNamespace()->getChildren()) > 0;
+            && (is_countable($documentationSet->getNamespace()->getChildren())
+                ? count($documentationSet->getNamespace()->getChildren()) : 0) > 0;
         $usesPackages = $documentationSet instanceof ApiSetDescriptor
             && $documentationSet->getPackage() !== null
-            && count($documentationSet->getPackage()->getChildren()) > 0;
+            && (is_countable($documentationSet->getPackage()->getChildren())
+                ? count($documentationSet->getPackage()->getChildren()) : 0) > 0;
 
         $this->environment->addGlobal('usesNamespaces', $usesNamespaces);
         $this->environment->addGlobal('usesPackages', $usesPackages);

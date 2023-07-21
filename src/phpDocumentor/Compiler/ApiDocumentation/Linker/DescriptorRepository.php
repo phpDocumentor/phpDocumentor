@@ -21,9 +21,10 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 
 class DescriptorRepository
@@ -56,14 +57,14 @@ class DescriptorRepository
      *
      * @return ElementInterface|string|null
      */
-    public function findAlias(string $fqsen, ?ElementInterface $container = null)
+    public function findAlias(string $fqsen, ElementInterface|null $container = null)
     {
         if ($container === null) {
             return $this->fetchElementByFqsen($fqsen);
         }
 
         $fqsen = $this->replacePseudoTypes($fqsen, $container);
-        if (!$this->isContextMarkerInFqsen($fqsen)) {
+        if (! $this->isContextMarkerInFqsen($fqsen)) {
             return $this->fetchElementByFqsen($fqsen);
         }
 
@@ -110,14 +111,14 @@ class DescriptorRepository
     {
         $pseudoTypes = ['self', '$this'];
         foreach ($pseudoTypes as $pseudoType) {
-            if (strpos($fqsen, $pseudoType . '::') !== 0 && $fqsen !== $pseudoType) {
+            if (! str_starts_with($fqsen, $pseudoType . '::') && $fqsen !== $pseudoType) {
                 continue;
             }
 
             return sprintf(
                 '%s%s',
                 (string) $container->getFullyQualifiedStructuralElementName(),
-                substr($fqsen, strlen($pseudoType))
+                substr($fqsen, strlen($pseudoType)),
             );
         }
 
@@ -129,7 +130,7 @@ class DescriptorRepository
      */
     private function isContextMarkerInFqsen(string $fqsen): bool
     {
-        return strpos($fqsen, self::CONTEXT_MARKER) !== false;
+        return str_contains($fqsen, self::CONTEXT_MARKER);
     }
 
     /**
@@ -138,10 +139,10 @@ class DescriptorRepository
     private function getTypeWithClassAsContext(string $fqsen, ElementInterface $container): string
     {
         if (
-            !$container instanceof ClassInterface
-            && !$container instanceof InterfaceInterface
-            && !$container instanceof TraitInterface
-            && !$container instanceof EnumInterface
+            ! $container instanceof ClassInterface
+            && ! $container instanceof InterfaceInterface
+            && ! $container instanceof TraitInterface
+            && ! $container instanceof EnumInterface
         ) {
             return $fqsen;
         }
@@ -176,7 +177,7 @@ class DescriptorRepository
      * Attempts to find an element with the given Fqsen in the list of elements for this project and returns null if
      * it cannot find it.
      */
-    private function fetchElementByFqsen(string $fqsen): ?ElementInterface
+    private function fetchElementByFqsen(string $fqsen): ElementInterface|null
     {
         return $this->elementList[$fqsen] ?? null;
     }

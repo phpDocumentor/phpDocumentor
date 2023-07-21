@@ -31,7 +31,7 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
     {
         $this->markTestSkipped(
             'This test fails in CI; skipping so that build turns green and I have time to investigate: '
-            . 'https://github.com/phpDocumentor/phpDocumentor/runs/647222966'
+            . 'https://github.com/phpDocumentor/phpDocumentor/runs/647222966',
         );
         // Cannot use vfsStream because code breaks out of virtual filesystems to support PHAR file.
         $configurationFilePath = __DIR__ . '/../../../../phpdoc.dist.xml';
@@ -48,7 +48,7 @@ final class ProvideTemplateOverridePathMiddlewareTest extends TestCase
     {
         $this->markTestSkipped(
             'This test fails in CI; skipping so that build turns green and I have time to investigate: '
-            . 'https://github.com/phpDocumentor/phpDocumentor/runs/647222966'
+            . 'https://github.com/phpDocumentor/phpDocumentor/runs/647222966',
         );
         // Cannot use vfsStream because code breaks out of virtual filesystems to support PHAR file; so we chdir into
         // this project's folder. We know there is a .phpdoc/template folder there

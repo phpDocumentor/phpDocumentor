@@ -63,22 +63,18 @@ final class AbstractListAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new AbstractListAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 
-    /**
-     * @covers ::supports
-     */
+    /** @covers ::supports */
     public function testItSupportsAbstractLists(): void
     {
         self::assertTrue($this->adapter->supports(new Array_()));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /**
-     * @covers ::render
-     */
+    /** @covers ::render */
     public function testRenderOnlyAcceptsAbstractLists(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -95,9 +91,7 @@ final class AbstractListAdapterTest extends TestCase
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
     }
 
-    /**
-     * @return array<string, list<AbstractList|string>>
-     */
+    /** @return array<string, list<AbstractList|string>> */
     public function renderingVariations(): array
     {
         $unknownAbstractList = $this->prophesize(AbstractList::class);

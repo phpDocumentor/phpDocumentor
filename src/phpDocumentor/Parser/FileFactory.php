@@ -32,7 +32,7 @@ final class FileFactory
     public static function createInstance(
         DocBlockFactoryInterface $blockFactory,
         NodesFactory $nodesFactory,
-        IteratorAggregate $middlewares
+        IteratorAggregate $middlewares,
     ): Factory\File {
         return new Factory\File($blockFactory, $nodesFactory, iterator_to_array($middlewares));
     }

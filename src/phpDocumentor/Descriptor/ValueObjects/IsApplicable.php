@@ -19,11 +19,8 @@ namespace phpDocumentor\Descriptor\ValueObjects;
  */
 final class IsApplicable implements Equals
 {
-    private bool $value;
-
-    private function __construct(bool $value)
+    private function __construct(private readonly bool $value)
     {
-        $this->value = $value;
     }
 
     public static function true(): self
@@ -53,7 +50,7 @@ final class IsApplicable implements Equals
 
     public function inverse(): self
     {
-        return new self(!$this->value);
+        return new self(! $this->value);
     }
 
     public function equals(Equals $other): bool

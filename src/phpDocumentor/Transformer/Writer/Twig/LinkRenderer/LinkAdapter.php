@@ -36,15 +36,11 @@ use function is_string;
  */
 final class LinkAdapter implements LinkRendererInterface
 {
-    private LinkRenderer $rendererChain;
-    private UrlGenerator $urlGenerator;
-    private HtmlFormatter $formatter;
-
-    public function __construct(LinkRenderer $rendererChain, UrlGenerator $urlGenerator, HtmlFormatter $formatter)
-    {
-        $this->rendererChain = $rendererChain;
-        $this->formatter = $formatter;
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private readonly LinkRenderer $rendererChain,
+        private readonly UrlGenerator $urlGenerator,
+        private readonly HtmlFormatter $formatter,
+    ) {
     }
 
     /**
@@ -65,7 +61,7 @@ final class LinkAdapter implements LinkRendererInterface
         $target = new Target(
             $this->determineTitle($resolvedValue),
             $this->urlGenerator->generate($resolvedValue, (string) $value),
-            $this->normalizePresentation($resolvedValue, $presentation)
+            $this->normalizePresentation($resolvedValue, $presentation),
         );
 
         return $this->formatter->format($target);
@@ -90,7 +86,7 @@ final class LinkAdapter implements LinkRendererInterface
         if (is_string($target)) {
             try {
                 $target = new Fqsen($target);
-            } catch (InvalidArgumentException $exception) {
+            } catch (InvalidArgumentException) {
                 // do nothing; apparently this was not an FQSEN
             }
         }
@@ -107,9 +103,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $target;
     }
 
-    /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
-     */
+    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function normalizePresentation($resolvedTarget, string $presentation): string
     {
         $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
@@ -126,9 +120,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $presentation;
     }
 
-    /**
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget
-     */
+    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function determineTitle($resolvedTarget): string
     {
         return (string) $resolvedTarget;

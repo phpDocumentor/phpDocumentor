@@ -14,20 +14,13 @@ use function ltrim;
 
 final class PathBuilder
 {
-    private Router $router;
-    private RelativePathToRootConverter $relativePathToRootConverter;
-
     public function __construct(
-        Router $router,
-        RelativePathToRootConverter $relativePathToRootConverter
+        private readonly Router $router,
+        private readonly RelativePathToRootConverter $relativePathToRootConverter,
     ) {
-        $this->router = $router;
-        $this->relativePathToRootConverter = $relativePathToRootConverter;
     }
 
-    /**
-     * @param Descriptor|Fqsen|Uri $value
-     */
+    /** @param Descriptor|Fqsen|Uri $value */
     public function link(object $value): string
     {
         Assert::isInstanceOfAny($value, [Descriptor::class, Fqsen::class, Uri::class]);
@@ -35,13 +28,11 @@ final class PathBuilder
         return $this->withoutLeadingSlash($this->router->generate($value));
     }
 
-    /**
-     * @param Descriptor|Fqsen|Uri $value
-     */
+    /** @param Descriptor|Fqsen|Uri $value */
     public function resolvedLink(string $destination, object $value): string
     {
         $uri = $this->link($value);
-        if (!$uri) {
+        if (! $uri) {
             return $uri;
         }
 

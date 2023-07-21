@@ -26,9 +26,7 @@ interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromE
 
     public function isAbstract(): bool;
 
-    /**
-     * @return Collection<ArgumentInterface>
-     */
+    /** @return Collection<ArgumentInterface> */
     public function getArguments(): Collection;
 
     public function setFinal(bool $final): void;
@@ -41,13 +39,9 @@ interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromE
 
     public function setVisibility(string $visibility): void;
 
-    /**
-     * @return Collection<ParamDescriptor>
-     */
+    /** @return Collection<ParamDescriptor> */
     public function getParam(): Collection;
 
-    /**
-     * @return Collection<ReturnDescriptor>
-     */
+    /** @return Collection<ReturnDescriptor> */
     public function getReturn(): Collection;
 }

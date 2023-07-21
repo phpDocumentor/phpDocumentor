@@ -43,23 +43,18 @@ final class TwigTest extends TestCase
     use ProphecyTrait;
     use Faker;
 
-    /** @var vfsStreamDirectory */
-    private $templatesFolder;
+    private vfsStreamDirectory $templatesFolder;
 
-    /** @var vfsStreamDirectory */
-    private $sourceFolder;
+    private vfsStreamDirectory $sourceFolder;
 
-    /** @var vfsStreamDirectory */
-    private $destinationFolder;
+    private vfsStreamDirectory $destinationFolder;
 
-    /** @var Template */
-    private $template;
+    private Template $template;
 
     /** @var EnvironmentFactory|ObjectProphecy */
     private $environmentFactory;
 
-    /** @var Twig */
-    private $writer;
+    private Twig $writer;
 
     /** @var PathGenerator&ObjectProphecy */
     private $pathGenerator;
@@ -80,7 +75,7 @@ final class TwigTest extends TestCase
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
                 // VFS does not support locking, hence the 0
                 'destination' => new Filesystem(new Local($this->destinationFolder->url(), 0)),
-            ]
+            ],
         );
         $this->template = new Template('My Template', $mountManager);
 
@@ -90,28 +85,24 @@ final class TwigTest extends TestCase
         $this->writer = new Twig(
             $this->environmentFactory->reveal(),
             $this->pathGenerator->reveal(),
-            $this->prophesize(Engine::class)->reveal()
+            $this->prophesize(Engine::class)->reveal(),
         );
     }
 
-    /**
-     * @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString
-     */
+    /** @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString */
     public function testReturnsClassNameAsDescription(): void
     {
         $this->assertSame(Twig::class, (string) $this->writer);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testRendersTwigTemplateToDestination(): void
     {
         $targetDir = $this->destinationFolder->url();
         $transformer = $this->givenTransformerWithTarget($targetDir);
 
         $this->givenATwigEnvironmentFactoryWithTemplates(
-            ['/index.html.twig' => 'This is a twig file']
+            ['/index.html.twig' => 'This is a twig file'],
         );
 
         $transformation = new Transformation(
@@ -119,7 +110,7 @@ final class TwigTest extends TestCase
             '',
             'twig',
             'templates/templateName/index.html.twig',
-            'index.html'
+            'index.html',
         );
         $transformation->setTransformer($transformer->reveal());
 
@@ -139,8 +130,8 @@ final class TwigTest extends TestCase
     {
         $this->environmentFactory->create(Argument::cetera())->willReturn(
             new Environment(
-                new ArrayLoader($templates)
-            )
+                new ArrayLoader($templates),
+            ),
         );
     }
 

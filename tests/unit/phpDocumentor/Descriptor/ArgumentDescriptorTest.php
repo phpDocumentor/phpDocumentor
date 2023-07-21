@@ -217,7 +217,7 @@ final class ArgumentDescriptorTest extends TestCase
 
         self::assertNull(
             $argument->getInheritedElement(),
-            'By default, an argument does not have an inherited element'
+            'By default, an argument does not have an inherited element',
         );
 
         $this->givenAnArgumentFromWhichItCanInherit($argument);
@@ -225,9 +225,7 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertNotNull($argument->getInheritedElement());
     }
 
-    /**
-     * @return ArgumentDescriptor A 'parent' argument that can be manipulated to test whether inheritance works.
-     */
+    /** @return ArgumentDescriptor A 'parent' argument that can be manipulated to test whether inheritance works. */
     private function givenAnArgumentFromWhichItCanInherit(ArgumentDescriptor $currentArgument): ArgumentDescriptor
     {
         $argumentName = $currentArgument->getName();
@@ -263,7 +261,7 @@ final class ArgumentDescriptorTest extends TestCase
         $method->addArgument($argument->getName(), $argument);
     }
 
-    private function thenArgumentHasType(?Type $type, ArgumentDescriptor $argument): void
+    private function thenArgumentHasType(Type|null $type, ArgumentDescriptor $argument): void
     {
         self::assertSame($type, $argument->getType());
     }

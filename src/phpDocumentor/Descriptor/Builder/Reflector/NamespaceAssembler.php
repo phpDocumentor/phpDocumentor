@@ -20,9 +20,7 @@ use phpDocumentor\Reflection\Php\Namespace_;
 use function strlen;
 use function substr;
 
-/**
- * @extends AssemblerAbstract<NamespaceInterface, Namespace_>
- */
+/** @extends AssemblerAbstract<NamespaceInterface, Namespace_> */
 final class NamespaceAssembler extends AssemblerAbstract
 {
     /**

@@ -15,11 +15,8 @@ namespace phpDocumentor\JsonPath\AST;
 
 class FieldName
 {
-    private string $name;
-
-    public function __construct(string $name)
+    public function __construct(private readonly string $name)
     {
-        $this->name = $name;
     }
 
     public function getName(): string

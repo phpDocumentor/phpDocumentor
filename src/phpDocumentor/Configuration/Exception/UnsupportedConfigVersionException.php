@@ -18,14 +18,10 @@ use RuntimeException;
 use function implode;
 use function sprintf;
 
-/**
- * @codeCoverageIgnore
- */
+/** @codeCoverageIgnore */
 final class UnsupportedConfigVersionException extends RuntimeException
 {
-    /**
-     * @param string[] $supportedVersions
-     */
+    /** @param string[] $supportedVersions */
     public static function create(string $configurationVersion, array $supportedVersions): self
     {
         return new self(
@@ -33,8 +29,8 @@ final class UnsupportedConfigVersionException extends RuntimeException
                 'Configuration version "%s" is not supported by this version of phpDocumentor, '
                 . 'supported versions are: %s',
                 $configurationVersion,
-                implode(', ', $supportedVersions)
-            )
+                implode(', ', $supportedVersions),
+            ),
         );
     }
 }

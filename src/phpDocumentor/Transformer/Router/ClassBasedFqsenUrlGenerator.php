@@ -19,23 +19,17 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function count;
 use function explode;
-use function strpos;
+use function str_contains;
 
 /**
  * Generates a relative URL with properties for use in the generated HTML documentation.
  */
 class ClassBasedFqsenUrlGenerator
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
-
-    /** @var SluggerInterface */
-    private $slugger;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, SluggerInterface $slugger)
-    {
-        $this->urlGenerator = $urlGenerator;
-        $this->slugger = $slugger;
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly SluggerInterface $slugger,
+    ) {
     }
 
     /**
@@ -49,11 +43,11 @@ class ClassBasedFqsenUrlGenerator
         if (count($fqsenParts) === 1) {
             return $this->urlGenerator->generate(
                 'class',
-                ['name' => $className]
+                ['name' => $className],
             );
         }
 
-        if (strpos($fqsenParts[1], '$') !== false) {
+        if (str_contains($fqsenParts[1], '$')) {
             $propertyName = explode('$', $fqsenParts[1]);
 
             return $this->urlGenerator->generate(
@@ -61,11 +55,11 @@ class ClassBasedFqsenUrlGenerator
                 [
                     'name' => $className,
                     '_fragment' => 'property_' . $propertyName[1],
-                ]
+                ],
             );
         }
 
-        if (strpos($fqsenParts[1], '()') !== false) {
+        if (str_contains($fqsenParts[1], '()')) {
             $methodName = explode('()', $fqsenParts[1]);
 
             return $this->urlGenerator->generate(
@@ -73,7 +67,7 @@ class ClassBasedFqsenUrlGenerator
                 [
                     'name' => $className,
                     '_fragment' => 'method_' . $methodName[0],
-                ]
+                ],
             );
         }
 
@@ -82,7 +76,7 @@ class ClassBasedFqsenUrlGenerator
             [
                 'name' => $className,
                 '_fragment' => 'constant_' . $fqsenParts[1],
-            ]
+            ],
         );
     }
 }

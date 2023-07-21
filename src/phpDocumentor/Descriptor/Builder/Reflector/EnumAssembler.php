@@ -34,9 +34,7 @@ use function substr;
  */
 final class EnumAssembler extends AssemblerAbstract
 {
-    /**
-     * @param Enum_ $data
-     */
+    /** @param Enum_ $data */
     protected function buildDescriptor(object $data): EnumInterface
     {
         $descriptor = new EnumDescriptor();
@@ -44,7 +42,7 @@ final class EnumAssembler extends AssemblerAbstract
         $descriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $descriptor->setName($data->getName());
         $descriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName(),
         );
         $descriptor->setStartLocation($data->getLocation());
         $descriptor->setEndLocation($data->getEndLocation());
@@ -96,9 +94,7 @@ final class EnumAssembler extends AssemblerAbstract
         $descriptor->setUsedTraits($usedTraits);
     }
 
-    /**
-     * @param EnumCase[] $cases
-     */
+    /** @param EnumCase[] $cases */
     private function addCases(array $cases, EnumInterface $descriptor): void
     {
         foreach ($cases as $case) {

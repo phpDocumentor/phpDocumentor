@@ -32,12 +32,8 @@ use const PHP_OS_FAMILY;
 
 class FlySystemFactory implements FileSystemFactory
 {
-    /** @var MountManager */
-    private $mountManager;
-
-    public function __construct(MountManager $mountManager)
+    public function __construct(private readonly MountManager $mountManager)
     {
-        $this->mountManager = $mountManager;
     }
 
     /**
@@ -49,7 +45,7 @@ class FlySystemFactory implements FileSystemFactory
 
         try {
             $filesystem = $this->mountManager->getFilesystem($dsnId);
-        } catch (LogicException $e) {
+        } catch (LogicException) {
             $filesystem = new Filesystem($this->createAdapter($dsn));
 
             $this->mountManager->mountFilesystem($dsnId, $filesystem);
@@ -64,14 +60,14 @@ class FlySystemFactory implements FileSystemFactory
 
     private function createAdapter(Dsn $dsn): AdapterInterface
     {
-        if (!in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'], true)) {
+        if (! in_array($dsn->getScheme(), [null, 'file', 'vfs', 'phar'], true)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a supported file system yet', $dsn->getScheme()));
         }
 
         return new Local(
             $this->formatDsn($dsn),
             $dsn->getScheme() !== 'vfs' ? LOCK_EX : 0, // VFS does not support locking
-            Local::SKIP_LINKS
+            Local::SKIP_LINKS,
         );
     }
 

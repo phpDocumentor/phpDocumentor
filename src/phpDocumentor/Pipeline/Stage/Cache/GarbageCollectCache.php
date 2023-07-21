@@ -18,11 +18,8 @@ use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
 
 final class GarbageCollectCache
 {
-    private ProjectDescriptorMapper $descriptorMapper;
-
-    public function __construct(ProjectDescriptorMapper $descriptorMapper)
+    public function __construct(private readonly ProjectDescriptorMapper $descriptorMapper)
     {
-        $this->descriptorMapper = $descriptorMapper;
     }
 
     public function __invoke(ApiSetPayload $payload): ApiSetPayload
@@ -30,7 +27,7 @@ final class GarbageCollectCache
         $this->descriptorMapper->garbageCollect(
             $payload->getVersion(),
             $payload->getApiSet(),
-            $payload->getFiles()
+            $payload->getFiles(),
         );
 
         return $payload;

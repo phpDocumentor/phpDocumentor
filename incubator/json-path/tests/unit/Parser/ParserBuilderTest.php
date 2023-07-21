@@ -55,10 +55,10 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 
@@ -70,10 +70,10 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 
@@ -85,13 +85,13 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
                 new FieldAccess(
-                    new FieldName('address')
+                    new FieldName('address'),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 
@@ -102,10 +102,10 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
                 new FieldAccess(
-                    new FieldName('books')
+                    new FieldName('books'),
                 ),
                 new FilterNode(
                     new Comparison(
@@ -115,12 +115,12 @@ class ParserBuilderTest extends TestCase
                         ]),
                         '==',
                         new Value(
-                            'phpDoc'
-                        )
-                    )
+                            'phpDoc',
+                        ),
+                    ),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 
@@ -131,10 +131,10 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
                 new FieldAccess(
-                    new FieldName('books')
+                    new FieldName('books'),
                 ),
                 new FilterNode(
                     new Comparison(
@@ -142,16 +142,16 @@ class ParserBuilderTest extends TestCase
                             'type',
                             new Path([
                                 new CurrentNode(),
-                            ])
+                            ]),
                         ),
                         '==',
                         new Value(
-                            'api'
-                        )
-                    )
+                            'api',
+                        ),
+                    ),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 
@@ -162,16 +162,16 @@ class ParserBuilderTest extends TestCase
             new Path([
                 new RootNode(),
                 new FieldAccess(
-                    new FieldName('store')
+                    new FieldName('store'),
                 ),
                 new FieldAccess(
-                    new FieldName('books_title')
+                    new FieldName('books_title'),
                 ),
                 new FilterNode(
-                    new Wildcard()
+                    new Wildcard(),
                 ),
             ]),
-            $result->output()
+            $result->output(),
         );
     }
 }

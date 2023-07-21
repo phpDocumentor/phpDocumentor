@@ -28,14 +28,14 @@ final class ResolveInlineMarkersTest extends TestCase
 
         $fileDescriptor = new FileDescriptor('abc');
         $fileDescriptor->setSource(
-            <<<SOURCE
+            <<<'SOURCE'
                 <?php
                 
                 class Marker
                 {
                    //TODO: implement this
                 }      
-SOURCE
+SOURCE,
         );
 
         $apiDescriptor = $this->faker()->apiSetDescriptor();

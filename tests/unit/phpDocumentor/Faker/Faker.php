@@ -12,9 +12,7 @@ trait Faker
     /** @var Generator */
     private $faker;
 
-    /**
-     * @return Provider|Generator
-     */
+    /** @return Provider|Generator */
     public function faker(): Generator
     {
         if ($this->faker === null) {

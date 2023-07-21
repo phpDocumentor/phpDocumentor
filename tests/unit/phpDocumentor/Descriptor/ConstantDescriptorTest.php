@@ -109,9 +109,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertEquals($expected, $this->fixture->getType());
     }
 
-    /**
-     * @covers ::getVar
-     */
+    /** @covers ::getVar */
     public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent(): void
     {
         self::assertEquals(new Collection(), $this->fixture->getVar());
@@ -150,9 +148,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame('a', $this->fixture->getValue());
     }
 
-    /**
-     * @covers ::getFile
-     */
+    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAGlobalConstant(): void
     {
         // Arrange
@@ -165,9 +161,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($file, $result);
     }
 
-    /**
-     * @covers ::getFile
-     */
+    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAClassConstant(): void
     {
         // Arrange
@@ -180,9 +174,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($file, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
@@ -198,9 +190,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($summary, $result);
     }
 
-    /**
-     * @covers ::getVar
-     */
+    /** @covers ::getVar */
     public function testVarTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -217,9 +207,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($varCollection, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage */
     public function testPackageInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -235,9 +223,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($packageTagDescriptor, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -254,9 +240,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($authorCollection, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -273,9 +257,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($versionCollection, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -313,8 +295,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $superClass = m::mock(ClassDescriptor::class);
         $superClass->shouldReceive('getConstants')->andReturn(
             new Collection(
-                [$constantName => $parentConstant]
-            )
+                [$constantName => $parentConstant],
+            ),
         );
 
         // create and set the parent class for our fixture
@@ -356,9 +338,7 @@ final class ConstantDescriptorTest extends MockeryTestCase
         return $file;
     }
 
-    /**
-     * @param string $name The name of the current constant.
-     */
+    /** @param string $name The name of the current constant. */
     protected function whenFixtureHasConstantInParentClassWithSameName(string $name): ConstantDescriptor
     {
         $result = new ConstantDescriptor();

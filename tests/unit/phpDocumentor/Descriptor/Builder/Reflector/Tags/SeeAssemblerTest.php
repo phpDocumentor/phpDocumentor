@@ -97,7 +97,7 @@ class SeeAssemblerTest extends TestCase
     {
         return new DocBlock\Tags\See(
             $reference,
-            new DocBlock\Description($description)
+            new DocBlock\Description($description),
         );
     }
 

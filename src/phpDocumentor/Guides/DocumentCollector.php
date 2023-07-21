@@ -12,16 +12,13 @@ use phpDocumentor\Guides\Nodes\TitleNode;
 
 final class DocumentCollector
 {
-    private GuideSetDescriptor $guideSetDescriptor;
-
-    public function __construct(GuideSetDescriptor $guideSetDescriptor)
+    public function __construct(private readonly GuideSetDescriptor $guideSetDescriptor)
     {
-        $this->guideSetDescriptor = $guideSetDescriptor;
     }
 
     public function __invoke(PostParseDocument $event): void
     {
-        if (!($event->getDocumentNode()->getTitle() instanceof TitleNode)) {
+        if (! ($event->getDocumentNode()->getTitle() instanceof TitleNode)) {
             return;
         }
 
@@ -30,7 +27,7 @@ final class DocumentCollector
 
     private function addDocumentToDocumentationSet(
         string $file,
-        DocumentNode $document
+        DocumentNode $document,
     ): void {
         $this->guideSetDescriptor->addDocument(
             $file,
@@ -38,8 +35,8 @@ final class DocumentCollector
                 $document,
                 $document->getHash(),
                 $file,
-                $document->getTitle()->getId()
-            )
+                $document->getTitle()->getId(),
+            ),
         );
     }
 }

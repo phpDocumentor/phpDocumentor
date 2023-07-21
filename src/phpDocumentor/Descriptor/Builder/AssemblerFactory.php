@@ -87,8 +87,8 @@ class AssemblerFactory
     /**
      * Registers an assembler instance to this factory.
      *
-     * @param Matcher<object> $matcher A callback function accepting the criteria as only parameter and which must
-     *     return a boolean.
+     * @param Matcher<object> $matcher   A callback function accepting the criteria as only parameter and which must
+     *       return a boolean.
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
@@ -101,8 +101,8 @@ class AssemblerFactory
      * Registers an assembler instance to this factory that is to be executed after all other assemblers have been
      * checked.
      *
-     * @param Matcher<object> $matcher A callback function accepting the criteria as only parameter and which must
-     *     return a boolean.
+     * @param Matcher<object> $matcher   A callback function accepting the criteria as only parameter and which must
+     *       return a boolean.
      * @param AssemblerInterface<Descriptor, object> $assembler An instance of the Assembler that
      *     will be returned if the callback returns true with the provided criteria.
      */
@@ -122,7 +122,7 @@ class AssemblerFactory
      * @psalm-template TParamInput of object
      * @psalm-template TParamDescriptor of Descriptor
      */
-    public function get(object $criteria, string $type): ?AssemblerInterface
+    public function get(object $criteria, string $type): AssemblerInterface|null
     {
         foreach (array_merge($this->assemblers, $this->fallbackAssemblers) as $candidate) {
             if ($candidate->match($criteria)) {

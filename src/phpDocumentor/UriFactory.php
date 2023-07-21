@@ -12,8 +12,8 @@ use Throwable;
 use function preg_match;
 use function sprintf;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 
 use const DIRECTORY_SEPARATOR;
@@ -26,12 +26,12 @@ final class UriFactory
     {
         try {
             $uriString = str_replace(DIRECTORY_SEPARATOR, '/', $uriString);
-            if (strpos($uriString, 'phar://') === 0) {
+            if (str_starts_with($uriString, 'phar://')) {
                 return self::createPharUri($uriString);
             }
 
             if (preg_match(self::WINDOWS_URI_FORMAT, $uriString)) {
-                if (strpos($uriString, 'file:///') === 0) {
+                if (str_starts_with($uriString, 'file:///')) {
                     $uriString = substr($uriString, strlen('file:///'));
                 }
 
@@ -44,10 +44,10 @@ final class UriFactory
                 sprintf(
                     'The uri "%s" could not be parsed, the following error occured: %s',
                     $uriString,
-                    $exception->getMessage()
+                    $exception->getMessage(),
                 ),
                 0,
-                $exception
+                $exception,
             );
         }
     }
@@ -55,7 +55,7 @@ final class UriFactory
     private static function createPharUri(string $uriString): UriInterface
     {
         $path = substr($uriString, strlen('phar://'));
-        if (strpos($path, '/') !== 0) {
+        if (! str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -64,7 +64,7 @@ final class UriFactory
                 'scheme' => 'phar',
                 'host' => '',
                 'path' => $path,
-            ]
+            ],
         );
     }
 }

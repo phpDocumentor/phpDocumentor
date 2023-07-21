@@ -17,20 +17,12 @@ use phpDocumentor\Descriptor\Descriptor;
 
 final class AssemblerMatcher
 {
-    /** @var Matcher<object> */
-    private $matcher;
-
-    /** @var AssemblerInterface<Descriptor, object> */
-    private $assembler;
-
     /**
      * @param Matcher<object> $matcher
      * @param AssemblerInterface<Descriptor, object> $assembler
      */
-    public function __construct(Matcher $matcher, AssemblerInterface $assembler)
+    public function __construct(private readonly Matcher $matcher, private readonly AssemblerInterface $assembler)
     {
-        $this->matcher   = $matcher;
-        $this->assembler = $assembler;
     }
 
     public function match(object $criteria): bool
@@ -40,9 +32,7 @@ final class AssemblerMatcher
         return $matcher($criteria);
     }
 
-    /**
-     * @return AssemblerInterface<Descriptor, object>
-     */
+    /** @return AssemblerInterface<Descriptor, object> */
     public function getAssembler(): AssemblerInterface
     {
         return $this->assembler;

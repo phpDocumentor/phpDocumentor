@@ -118,9 +118,7 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
-    /**
-     * @covers ::findAlias
-     */
+    /** @covers ::findAlias */
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented(): void
     {
         $fqsenWithContextMarker = '@context::MyClass';
@@ -132,13 +130,11 @@ final class DescriptorRepositoryTest extends TestCase
 
         $this->assertSame(
             '\phpDocumentor\Descriptor\MyClass',
-            (string) $repository->findAlias($fqsenWithContextMarker, $container)
+            (string) $repository->findAlias($fqsenWithContextMarker, $container),
         );
     }
 
-    /**
-     * @covers ::findAlias
-     */
+    /** @covers ::findAlias */
     public function testFindObjectAliasReturnsNothingWithUnknownFqsen(): void
     {
         $repository = new DescriptorRepository();

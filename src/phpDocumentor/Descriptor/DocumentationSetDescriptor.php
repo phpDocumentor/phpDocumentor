@@ -29,7 +29,7 @@ abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubje
     protected string $outputLocation = '.';
 
     /** @var Collection<TocDescriptor> */
-    private Collection $tocs;
+    private readonly Collection $tocs;
 
     /** @var Collection<FileInterface> $files */
     private Collection $files;

@@ -8,9 +8,7 @@ use Mockery as m;
 
 trait TraitUsageTests
 {
-    /**
-     * @covers ::getInheritedMethods
-     */
+    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsTraitMethods(): void
     {
         // Arrange

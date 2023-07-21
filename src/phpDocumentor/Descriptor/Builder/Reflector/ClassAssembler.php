@@ -48,7 +48,7 @@ class ClassAssembler extends AssemblerAbstract
         $classDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $classDescriptor->setName($data->getName());
         $classDescriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName(),
         );
         $classDescriptor->setStartLocation($data->getLocation());
         $classDescriptor->setEndLocation($data->getEndLocation());

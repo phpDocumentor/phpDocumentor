@@ -16,14 +16,10 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
-/**
- * @extends BaseTagAssembler<TagDescriptor, Tag>
- */
+/** @extends BaseTagAssembler<TagDescriptor, Tag> */
 class GenericTagAssembler extends BaseTagAssembler
 {
-    /**
-     * @param Tag $data
-     */
+    /** @param Tag $data */
     protected function buildDescriptor(object $data): TagDescriptor
     {
         return new TagDescriptor($data->getName());

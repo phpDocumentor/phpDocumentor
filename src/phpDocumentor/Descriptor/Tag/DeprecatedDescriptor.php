@@ -24,7 +24,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 final class DeprecatedDescriptor extends TagDescriptor
 {
     /** @var string $version represents the version since when the element was deprecated. */
-    private $version = '';
+    private string $version = '';
 
     /**
      * Returns the version since when the associated element was deprecated.

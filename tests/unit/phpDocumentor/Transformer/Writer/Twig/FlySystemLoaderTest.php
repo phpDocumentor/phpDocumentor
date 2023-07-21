@@ -24,7 +24,7 @@ final class FlySystemLoaderTest extends TestCase
      * @covers ::exists
      * @dataProvider fileProvider
      */
-    public function testExists(string $fileName, string $resolvedFileName, ?string $overloadPrefix): void
+    public function testExists(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
         $fileSystem->has($resolvedFileName)->willReturn(true);
@@ -38,7 +38,7 @@ final class FlySystemLoaderTest extends TestCase
      * @covers ::getSourceContext
      * @dataProvider fileProvider
      */
-    public function testGetSourceContext(string $fileName, string $resolvedFileName, ?string $overloadPrefix): void
+    public function testGetSourceContext(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
         $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
@@ -50,9 +50,9 @@ final class FlySystemLoaderTest extends TestCase
             new Source(
                 'content',
                 $fileName,
-                $resolvedFileName
+                $resolvedFileName,
             ),
-            $loader->getSourceContext($fileName)
+            $loader->getSourceContext($fileName),
         );
     }
 
@@ -60,7 +60,7 @@ final class FlySystemLoaderTest extends TestCase
      * @covers ::getCacheKey
      * @dataProvider fileProvider
      */
-    public function testGetCacheKey(string $fileName, string $resolvedFileName, ?string $overloadPrefix): void
+    public function testGetCacheKey(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
         $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
@@ -74,7 +74,7 @@ final class FlySystemLoaderTest extends TestCase
      * @covers ::isFresh
      * @dataProvider fileProvider
      */
-    public function testIsFresh(string $fileName, string $resolvedFileName, ?string $overloadPrefix): void
+    public function testIsFresh(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
         $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
@@ -137,9 +137,9 @@ final class FlySystemLoaderTest extends TestCase
             new Source(
                 'content',
                 'file.twig',
-                'test/file.twig'
+                'test/file.twig',
             ),
-            $loader->getSourceContext('file.twig')
+            $loader->getSourceContext('file.twig'),
         );
     }
 }

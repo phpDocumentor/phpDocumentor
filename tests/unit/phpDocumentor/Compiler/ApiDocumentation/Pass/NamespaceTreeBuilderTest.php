@@ -48,14 +48,12 @@ final class NamespaceTreeBuilderTest extends TestCase
         $this->apiSet->getFiles()->add(new FileDescriptor('hash'));
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame(
             'Build "namespaces" index and add namespaces to "elements"',
-            $this->fixture->getDescription()
+            $this->fixture->getDescription(),
         );
     }
 
@@ -83,15 +81,15 @@ final class NamespaceTreeBuilderTest extends TestCase
         sort($elementNames);
         $this->assertSame(
             ['~\\', '~\\My', '~\\My\\Space', '~\\My\\Space\\Deeper', '~\\My\\Space\\Deeper2'],
-            $elementNames
+            $elementNames,
         );
         $this->assertInstanceOf(
             NamespaceDescriptor::class,
-            $this->apiSet->getNamespace()->getChildren()->get('My')
+            $this->apiSet->getNamespace()->getChildren()->get('My'),
         );
         $this->assertInstanceOf(
             NamespaceDescriptor::class,
-            $this->apiSet->getNamespace()->getChildren()->get('My')->getChildren()->get('Space')
+            $this->apiSet->getNamespace()->getChildren()->get('My')->getChildren()->get('Space'),
         );
         $this->assertSame($elements['~\\My'], $this->apiSet->getNamespace()->getChildren()->get('My'));
     }
@@ -120,7 +118,7 @@ final class NamespaceTreeBuilderTest extends TestCase
             $this->apiSet
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
-                ->get('Space')->getClasses()->getAll()
+                ->get('Space')->getClasses()->getAll(),
         );
     }
 
@@ -148,7 +146,7 @@ final class NamespaceTreeBuilderTest extends TestCase
             $this->apiSet
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
-                ->get('Space')->getInterfaces()->getAll()
+                ->get('Space')->getInterfaces()->getAll(),
         );
     }
 
@@ -176,7 +174,7 @@ final class NamespaceTreeBuilderTest extends TestCase
             $this->apiSet
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
-                ->get('Space')->getTraits()->getAll()
+                ->get('Space')->getTraits()->getAll(),
         );
     }
 
@@ -204,7 +202,7 @@ final class NamespaceTreeBuilderTest extends TestCase
             $this->apiSet
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
-                ->get('Space')->getConstants()->getAll()
+                ->get('Space')->getConstants()->getAll(),
         );
     }
 
@@ -232,7 +230,7 @@ final class NamespaceTreeBuilderTest extends TestCase
             $this->apiSet
                 ->getNamespace()->getChildren()
                 ->get('My')->getChildren()
-                ->get('Space')->getFunctions()->getAll()
+                ->get('Space')->getFunctions()->getAll(),
         );
     }
 }

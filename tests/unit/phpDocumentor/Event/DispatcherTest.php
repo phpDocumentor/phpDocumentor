@@ -18,35 +18,27 @@ class DispatcherTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers \phpDocumentor\Event\Dispatcher::getInstance
-     */
+    /** @covers \phpDocumentor\Event\Dispatcher::getInstance */
     public function testFactoryMethodReturnsInstanceOfSelf(): void
     {
         $this->assertInstanceOf(Dispatcher::class, Dispatcher::getInstance());
     }
 
-    /**
-     * @covers \phpDocumentor\Event\Dispatcher::getInstance
-     */
+    /** @covers \phpDocumentor\Event\Dispatcher::getInstance */
     public function testDefaultDispatcherAlwaysReturnsTheSameInstance(): void
     {
         $fixture = Dispatcher::getInstance();
         $this->assertSame($fixture, Dispatcher::getInstance());
     }
 
-    /**
-     * @covers \phpDocumentor\Event\Dispatcher::getInstance
-     */
+    /** @covers \phpDocumentor\Event\Dispatcher::getInstance */
     public function testNamedDispatcherAlwaysReturnsTheSameInstance(): void
     {
         $fixture = Dispatcher::getInstance('mine');
         $this->assertSame($fixture, Dispatcher::getInstance('mine'));
     }
 
-    /**
-     * @covers \phpDocumentor\Event\Dispatcher::getInstance
-     */
+    /** @covers \phpDocumentor\Event\Dispatcher::getInstance */
     public function testDifferentNamesForDispatcherReturnsADifferentInstance(): void
     {
         $fixture = Dispatcher::getInstance('mine');

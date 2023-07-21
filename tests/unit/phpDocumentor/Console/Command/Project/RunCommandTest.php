@@ -36,9 +36,7 @@ class RunCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testPipelineIsInvokedWithTheNecessaryOptions(): void
     {
         $input = new StringInput('--force -f abc');
@@ -46,9 +44,9 @@ class RunCommandTest extends TestCase
 
         $pipeline = $this->prophesize(PipelineInterface::class);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $pipeline->__invoke(Argument::that(static function (array $options) {
-            return $options['force'] === true && $options['filename'] === ['abc'];
-        }))
+        $pipeline->__invoke(Argument::that(
+            static fn (array $options) => $options['force'] === true && $options['filename'] === ['abc']
+        ))
             ->shouldBeCalledTimes(1);
 
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
@@ -63,9 +61,7 @@ class RunCommandTest extends TestCase
         $this->assertSame(0, $command->run($input, $output));
     }
 
-    /**
-     * @covers ::configure
-     */
+    /** @covers ::configure */
     public function testCommandIsConfiguredWithTheRightOptions(): void
     {
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
@@ -98,7 +94,7 @@ class RunCommandTest extends TestCase
                 'list-settings',
                 'parseprivate',
             ],
-            array_keys($options)
+            array_keys($options),
         );
     }
 }

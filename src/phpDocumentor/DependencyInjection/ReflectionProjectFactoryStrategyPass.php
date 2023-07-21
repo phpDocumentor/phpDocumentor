@@ -42,7 +42,7 @@ final class ReflectionProjectFactoryStrategyPass implements CompilerPassInterfac
                     [
                         new Reference($id),
                         ProjectFactoryStrategies::DEFAULT_PRIORITY,
-                    ]
+                    ],
                 );
 
                 continue;
@@ -54,7 +54,7 @@ final class ReflectionProjectFactoryStrategyPass implements CompilerPassInterfac
                     [
                         new Reference($id),
                         $priotity ?? ProjectFactoryStrategies::DEFAULT_PRIORITY,
-                    ]
+                    ],
                 );
             }
         }

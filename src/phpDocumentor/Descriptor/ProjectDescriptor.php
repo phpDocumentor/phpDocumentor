@@ -38,7 +38,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     private Collection $partials;
 
     /** @var Collection<VersionDescriptor> $versions */
-    private Collection $versions;
+    private readonly Collection $versions;
 
     /**
      * Initializes this descriptor.
@@ -114,9 +114,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
-    /**
-     * @return Collection<VersionDescriptor>
-     */
+    /** @return Collection<VersionDescriptor> */
     public function getVersions(): Collection
     {
         return $this->versions;
@@ -165,7 +163,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @deprecated
      */
-    public function getPackage(): ?PackageInterface
+    public function getPackage(): PackageInterface|null
     {
         return $this->getApiDocumentationSet()->getPackage();
     }

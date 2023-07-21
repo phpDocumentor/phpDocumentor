@@ -8,5 +8,5 @@ interface EnumCaseInterface extends ElementInterface, ChildInterface
 {
     public function setFile(FileInterface $file): void;
 
-    public function getValue(): ?string;
+    public function getValue(): string|null;
 }

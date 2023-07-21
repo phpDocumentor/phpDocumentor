@@ -19,21 +19,19 @@ final class PHPReferenceTest extends TestCase
         $this->textRole = new PHPReference(new NullLogger());
     }
 
-    /**
-     * @dataProvider phpRefrenceProvider
-     */
+    /** @dataProvider phpRefrenceProvider */
     public function testProcessNodeReturnsNode(string $role, string $content, PHPReferenceNode $expected): void
     {
         $node = $this->textRole->processNode(
             $this->createMock(ParserContext::class),
             $role,
             $content,
-            $content
+            $content,
         );
 
         $this->assertEquals(
             $expected,
-            $node
+            $node,
         );
     }
 
@@ -44,7 +42,7 @@ final class PHPReferenceTest extends TestCase
             'content' => '\phpDocumentor\Reflection\Fqsen',
             'expected' => new PHPReferenceNode(
                 'class',
-                new Fqsen('\phpDocumentor\Reflection\Fqsen')
+                new Fqsen('\phpDocumentor\Reflection\Fqsen'),
             ),
         ];
 
@@ -54,7 +52,7 @@ final class PHPReferenceTest extends TestCase
             'expected' => new PHPReferenceNode(
                 'class',
                 new Fqsen('\phpDocumentor\Reflection\Fqsen'),
-                'Fqen'
+                'Fqen',
             ),
         ];
 
@@ -72,7 +70,7 @@ final class PHPReferenceTest extends TestCase
             'content' => 'phpDocumentor\Reflection\Fqsen',
             'expected' => new PHPReferenceNode(
                 'class',
-                new Fqsen('\phpDocumentor\Reflection\Fqsen')
+                new Fqsen('\phpDocumentor\Reflection\Fqsen'),
             ),
         ];
     }

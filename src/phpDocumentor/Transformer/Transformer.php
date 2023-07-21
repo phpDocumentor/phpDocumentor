@@ -37,52 +37,39 @@ use function sprintf;
  */
 class Transformer
 {
-    public const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
+    final public const EVENT_PRE_TRANSFORMATION = 'transformer.transformation.pre';
 
-    public const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
+    final public const EVENT_POST_TRANSFORMATION = 'transformer.transformation.post';
 
-    public const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
+    final public const EVENT_PRE_INITIALIZATION = 'transformer.writer.initialization.pre';
 
-    public const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
+    final public const EVENT_POST_INITIALIZATION = 'transformer.writer.initialization.post';
 
-    public const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
+    final public const EVENT_PRE_TRANSFORM = 'transformer.transform.pre';
 
-    public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
+    final public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
-    /** @var int represents the priority in the Compiler queue. */
-    public const COMPILER_PRIORITY = 5000;
+    final public const COMPILER_PRIORITY = 5000;
 
     /** @var string|null $target Target location where to output the artifacts */
     protected $target = null;
 
     /** @var FilesystemInterface|null $destination The destination filesystem to write to */
-    private $destination = null;
+    private FilesystemInterface|null $destination = null;
 
     /** @var Writer\Collection $writers */
     protected $writers;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
 
     /**
      * Wires the template collection and writer collection to this transformer.
      */
     public function __construct(
         Writer\Collection $writerCollection,
-        LoggerInterface $logger,
-        FlySystemFactory $flySystemFactory,
-        EventDispatcherInterface $eventDispatcher
+        private readonly LoggerInterface $logger,
+        private readonly FlySystemFactory $flySystemFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         $this->writers = $writerCollection;
-        $this->logger = $logger;
-        $this->flySystemFactory = $flySystemFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getDescription(): string
@@ -104,7 +91,7 @@ class Transformer
     /**
      * Returns the location where to store the artifacts.
      */
-    public function getTarget(): ?string
+    public function getTarget(): string|null
     {
         return $this->target;
     }
@@ -131,7 +118,7 @@ class Transformer
     public function execute(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         $this->initializeWriters($project, $documentationSet, $transformations);
         $this->transform($project, $documentationSet, $transformations);
@@ -147,7 +134,7 @@ class Transformer
     private function initializeWriters(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
@@ -183,7 +170,7 @@ class Transformer
         WriterAbstract $writer,
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): void {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
@@ -205,7 +192,7 @@ class Transformer
     private function transform(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        array $transformations
+        array $transformations,
     ): void {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -229,7 +216,7 @@ class Transformer
     private function applyTransformation(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         $this->logger->log(
             LogLevel::NOTICE,
@@ -237,8 +224,8 @@ class Transformer
                 '  Writer %s %s on %s',
                 $transformation->getWriter(),
                 ($transformation->getQuery() ? ' using query "' . $transformation->getQuery() . '"' : ''),
-                $transformation->getArtifact()
-            )
+                $transformation->getArtifact(),
+            ),
         );
 
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);

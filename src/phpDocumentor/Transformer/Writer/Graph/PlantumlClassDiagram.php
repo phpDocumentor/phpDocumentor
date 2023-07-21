@@ -29,13 +29,10 @@ use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
 {
-    private LoggerInterface $logger;
-    private PlantumlRenderer $plantumlRenderer;
-
-    public function __construct(LoggerInterface $logger, PlantumlRenderer $plantumlRenderer)
-    {
-        $this->logger = $logger;
-        $this->plantumlRenderer = $plantumlRenderer;
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly PlantumlRenderer $plantumlRenderer,
+    ) {
     }
 
     public function create(DocumentationSetDescriptor $documentationSet, string $filename): void
@@ -53,10 +50,10 @@ left to right direction
 set namespaceSeparator \\\\
 
 {$this->renderNamespace($documentationSet->getNamespace())}
-PUML
+PUML,
         );
 
-        if (!$output) {
+        if (! $output) {
             $this->logger->error('Generating the class diagram failed');
 
             return;

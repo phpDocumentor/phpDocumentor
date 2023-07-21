@@ -20,16 +20,8 @@ use function md5;
 
 final class ReEncodedFile implements File
 {
-    /** @var string */
-    private $path;
-
-    /** @var UnicodeString */
-    private $contents;
-
-    public function __construct(string $path, UnicodeString $contents)
+    public function __construct(private readonly string $path, private readonly UnicodeString $contents)
     {
-        $this->path = $path;
-        $this->contents = $contents;
     }
 
     /**

@@ -54,12 +54,12 @@ final class Provider extends Base
         ]));
     }
 
-    public function transformation(?Template $template = null): Transformation
+    public function transformation(Template|null $template = null): Transformation
     {
         return new Transformation($template ?? $this->template(), '', '', '', '');
     }
 
-    public function transformer(?Template\Collection $templateCollection = null): Transformer
+    public function transformer(Template\Collection|null $templateCollection = null): Transformer
     {
         if ($templateCollection === null) {
             $templateCollection = m::mock(Template\Collection::class);
@@ -73,13 +73,11 @@ final class Provider extends Base
             $templateCollection,
             $writerCollectionMock,
             new NullLogger(),
-            $this->flySystemFactory()
+            $this->flySystemFactory(),
         );
     }
 
-    /**
-     * @return m\LegacyMockInterface|m\MockInterface|FlySystemFactory
-     */
+    /** @return m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
     public function flySystemFactory()
     {
         return new FlySystemFactory(new MountManager());
@@ -99,7 +97,7 @@ final class Provider extends Base
     public function phpParserContext(): ContextStack
     {
         return new ContextStack(
-            new Project('test')
+            new Project('test'),
         );
     }
 
@@ -122,7 +120,7 @@ final class Provider extends Base
     {
         return new Source(
             $this->dsn(),
-            [$this->path()]
+            [$this->path()],
         );
     }
 
@@ -136,21 +134,21 @@ final class Provider extends Base
     }
 
     /** @param DocumentationSetDescriptor[] $documentationSets */
-    public function versionDescriptor(array $documentationSets, ?string $version = null): VersionDescriptor
+    public function versionDescriptor(array $documentationSets, string|null $version = null): VersionDescriptor
     {
         return new VersionDescriptor(
             $version ?? $this->generator->numerify('v#.#.#'),
-            DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets)
+            DescriptorCollection::fromClassString(DocumentationSetDescriptor::class, $documentationSets),
         );
     }
 
-    public function apiSetDescriptor(?string $name = null): ApiSetDescriptor
+    public function apiSetDescriptor(string|null $name = null): ApiSetDescriptor
     {
         return new ApiSetDescriptor(
             $name ?? $this->generator->word(),
             $this->source(),
             (string) $this->path(),
-            $this->apiSpecification()
+            $this->apiSpecification(),
         );
     }
 
@@ -160,7 +158,7 @@ final class Provider extends Base
             $this->generator->word(),
             $this->source(),
             (string) $this->path(),
-            'rst'
+            'rst',
         );
     }
 

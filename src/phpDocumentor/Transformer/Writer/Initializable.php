@@ -22,6 +22,6 @@ interface Initializable
     public function initialize(
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
-        Template $template
+        Template $template,
     ): void;
 }

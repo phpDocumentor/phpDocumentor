@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class TagDescriptorTest extends TestCase
 {
-    public const TAG_NAME = 'test';
+    final public const TAG_NAME = 'test';
 
     private TagDescriptor $fixture;
 

@@ -73,7 +73,7 @@ class UsesAssemblerTest extends TestCase
     {
         return new Uses(
             new Fqsen($reference),
-            new DocBlock\Description($description)
+            new DocBlock\Description($description),
         );
     }
 }

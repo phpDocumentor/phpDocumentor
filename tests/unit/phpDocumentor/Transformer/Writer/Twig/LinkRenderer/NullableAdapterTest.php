@@ -51,22 +51,18 @@ final class NullableAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new NullableAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 
-    /**
-     * @covers ::supports
-     */
+    /** @covers ::supports */
     public function testItSupportsNullableTypes(): void
     {
         self::assertTrue($this->adapter->supports(new Nullable(new String_())));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /**
-     * @covers ::render
-     */
+    /** @covers ::render */
     public function testRenderOnlyAcceptsNullableElements(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -83,9 +79,7 @@ final class NullableAdapterTest extends TestCase
         self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));
     }
 
-    /**
-     * @return array<string, list<iterable>>
-     */
+    /** @return array<string, list<iterable>> */
     public function renderingVariations(): array
     {
         return [

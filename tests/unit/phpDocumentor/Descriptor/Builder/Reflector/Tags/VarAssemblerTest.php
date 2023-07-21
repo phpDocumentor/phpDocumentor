@@ -16,8 +16,7 @@ class VarAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var VarAssembler */
-    private $fixture;
+    private VarAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $builder;

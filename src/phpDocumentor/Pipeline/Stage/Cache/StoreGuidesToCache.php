@@ -20,16 +20,8 @@ use Psr\Log\LoggerInterface;
 
 final class StoreGuidesToCache
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CommandBus */
-    private $commandBus;
-
-    public function __construct(CommandBus $commandBus, LoggerInterface $logger)
+    public function __construct(private readonly CommandBus $commandBus, private readonly LoggerInterface $logger)
     {
-        $this->commandBus = $commandBus;
-        $this->logger = $logger;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -42,8 +34,8 @@ final class StoreGuidesToCache
             $this->commandBus->handle(
                 new PersistCacheCommand(
                     ((string) $configuration['phpdocumentor']['paths']['cache']) . '/guides',
-                    $configuration['phpdocumentor']['use-cache']
-                )
+                    $configuration['phpdocumentor']['use-cache'],
+                ),
             );
 
             $this->logger->info('OK');

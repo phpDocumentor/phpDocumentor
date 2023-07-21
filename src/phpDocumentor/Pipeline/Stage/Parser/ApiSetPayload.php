@@ -21,42 +21,23 @@ use phpDocumentor\Reflection\File;
 
 use function array_merge;
 
-/**
- * @psalm-import-type ConfigurationMap from Configuration
- */
+/** @psalm-import-type ConfigurationMap from Configuration */
 final class ApiSetPayload
 {
-    private ProjectDescriptorBuilder $builder;
-    private VersionDescriptor $version;
-    private ApiSetDescriptor $apiSet;
-
-    /** @var ConfigurationMap */
-    private array $configuration;
-
-    /** @var File[] */
-    private array $files;
-
     /**
      * @param ConfigurationMap $configuration
      * @param File[] $files
      */
     public function __construct(
-        array $configuration,
-        ProjectDescriptorBuilder $builder,
-        VersionDescriptor $version,
-        ApiSetDescriptor $apiSet,
-        array $files = []
+        private readonly array $configuration,
+        private readonly ProjectDescriptorBuilder $builder,
+        private readonly VersionDescriptor $version,
+        private readonly ApiSetDescriptor $apiSet,
+        private readonly array $files = [],
     ) {
-        $this->configuration = $configuration;
-        $this->builder = $builder;
-        $this->version = $version;
-        $this->apiSet = $apiSet;
-        $this->files = $files;
     }
 
-    /**
-     * @return ConfigurationMap
-     */
+    /** @return ConfigurationMap */
     public function getConfiguration(): array
     {
         return $this->configuration;
@@ -77,9 +58,7 @@ final class ApiSetPayload
         return $this->apiSet;
     }
 
-    /**
-     * @param array<File> $files
-     */
+    /** @param array<File> $files */
     public function withFiles(array $files): self
     {
         return new static(
@@ -87,13 +66,11 @@ final class ApiSetPayload
             $this->getBuilder(),
             $this->getVersion(),
             $this->getApiSet(),
-            array_merge($this->getFiles(), $files)
+            array_merge($this->getFiles(), $files),
         );
     }
 
-    /**
-     * @return File[]
-     */
+    /** @return File[] */
     public function getFiles(): array
     {
         return $this->files;

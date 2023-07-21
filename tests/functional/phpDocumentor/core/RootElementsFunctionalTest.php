@@ -33,13 +33,13 @@ final class RootElementsFunctionalTest extends FunctionalTestCase
         /** @var ApiSetDescriptor $apiSet */
         $apiSet = $apiSets->first();
 
-        $traitDescriptor = $apiSet->getIndexes()->get('traits')->get('\App\Traits\Test');
+        $traitDescriptor = $apiSet->getIndexes()->get('traits')->get('\\' . \App\Traits\Test::class);
         self::assertInstanceOf(TraitDescriptor::class, $traitDescriptor);
 
         $fileDescriptor = $apiSet->getFiles()->get('test.php');
-        self::assertInstanceOf(TraitDescriptor::class, $fileDescriptor->getTraits()->get('\App\Traits\Test'));
+        self::assertInstanceOf(TraitDescriptor::class, $fileDescriptor->getTraits()->get('\\' . \App\Traits\Test::class));
 
         $namespaceDescriptor = $apiSet->getNamespace()->getChildren()->get('App')->getChildren()->get('Traits');
-        self::assertInstanceOf(TraitDescriptor::class, $namespaceDescriptor->getTraits()->get('\App\Traits\Test'));
+        self::assertInstanceOf(TraitDescriptor::class, $namespaceDescriptor->getTraits()->get('\\' . \App\Traits\Test::class));
     }
 }

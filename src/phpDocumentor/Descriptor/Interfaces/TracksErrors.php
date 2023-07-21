@@ -18,8 +18,6 @@ use phpDocumentor\Descriptor\Validation\Error;
 
 interface TracksErrors
 {
-    /**
-     * @return Collection<Error>
-     */
+    /** @return Collection<Error> */
     public function getErrors(): Collection;
 }

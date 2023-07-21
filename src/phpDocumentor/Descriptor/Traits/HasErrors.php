@@ -40,7 +40,7 @@ trait HasErrors
      */
     public function getErrors(): Collection
     {
-        if (!isset($this->errors)) {
+        if (! isset($this->errors)) {
             $this->errors = Collection::fromClassString(Error::class);
         }
 

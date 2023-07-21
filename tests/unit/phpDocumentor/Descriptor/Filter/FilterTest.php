@@ -27,9 +27,7 @@ final class FilterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::filter
-     */
+    /** @covers ::filter */
     public function testFilter(): void
     {
         $filterableMock = $this->prophesize(Filterable::class)->reveal();
@@ -42,7 +40,7 @@ final class FilterTest extends TestCase
         };
 
         $filter = new Filter(
-            [$filterStep]
+            [$filterStep],
         );
 
         $this->assertSame($filterableMock, $filter->filter($filterableMock, ApiSpecification::createDefault()));

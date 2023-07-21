@@ -38,7 +38,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
 
     protected string $value = '';
 
-    public function getType(): ?Type
+    public function getType(): Type|null
     {
         if ($this->type === null) {
             $var = $this->getVar()->fetch(0);
@@ -60,9 +60,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
         return $this->value;
     }
 
-    /**
-     * @return Collection<VarDescriptor>
-     */
+    /** @return Collection<VarDescriptor> */
     public function getVar(): Collection
     {
         /** @var Collection<VarDescriptor> $var */
@@ -94,7 +92,7 @@ class ConstantDescriptor extends DescriptorAbstract implements
     /**
      * Returns the Constant from which this one should inherit, if any.
      */
-    public function getInheritedElement(): ?ConstantInterface
+    public function getInheritedElement(): ConstantInterface|null
     {
         /** @var ClassInterface|InterfaceInterface|null $associatedClass */
         $associatedClass = $this->getParent();

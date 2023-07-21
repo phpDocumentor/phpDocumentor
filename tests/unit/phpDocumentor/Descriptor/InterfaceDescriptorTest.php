@@ -25,8 +25,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
  */
 final class InterfaceDescriptorTest extends MockeryTestCase
 {
-    /** @var InterfaceDescriptor $fixture */
-    private $fixture;
+    private InterfaceDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -81,9 +80,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($mock, $this->fixture->getMethods());
     }
 
-    /**
-     * @covers ::getInheritedConstants
-     */
+    /** @covers ::getInheritedConstants */
     public function testGetInheritedConstantsNoParent(): void
     {
         $descriptor = new InterfaceDescriptor();
@@ -93,9 +90,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
@@ -111,9 +106,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($summary, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -130,9 +123,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($authorCollection, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -149,9 +140,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($copyrightCollection, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -168,9 +157,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($versionCollection, $result);
     }
 
-    /**
-     * @covers ::getInheritedConstants
-     */
+    /** @covers ::getInheritedConstants */
     public function testGetInheritedConstantsWithClassDescriptorParent(): void
     {
         $constantInParent = $this->givenConstantWithName('constant');
@@ -195,9 +182,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame([$constantInParent, $constantInGrandParent], $result->getAll());
     }
 
-    /**
-     * @covers ::getInheritedMethods
-     */
+    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
@@ -205,9 +190,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertCount(0, $inheritedMethods);
     }
 
-    /**
-     * @covers ::getInheritedMethods
-     */
+    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent(): void
     {
         $parentDescriptor = new MethodDescriptor();

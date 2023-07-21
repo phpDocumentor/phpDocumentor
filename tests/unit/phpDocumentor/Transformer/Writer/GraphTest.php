@@ -27,20 +27,17 @@ use Psr\Log\NullLogger;
  */
 final class GraphTest extends MockeryTestCase
 {
-    /** @var Graph */
-    private $graph;
+    private Graph $graph;
 
     protected function setUp(): void
     {
         $this->graph = new Graph(
             new GraphVizClassDiagram(),
-            new PlantumlClassDiagram(new NullLogger(), m::mock(PlantumlRenderer::class))
+            new PlantumlClassDiagram(new NullLogger(), m::mock(PlantumlRenderer::class)),
         );
     }
 
-    /**
-     * @covers ::getDefaultSettings
-     */
+    /** @covers ::getDefaultSettings */
     public function testItExposesCustomSettingToEnableGraphs(): void
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());

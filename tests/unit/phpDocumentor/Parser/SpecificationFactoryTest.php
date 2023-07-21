@@ -28,8 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class SpecificationFactoryTest extends TestCase
 {
-    /** @var SpecificationFactory */
-    private $fixture;
+    private SpecificationFactory $fixture;
 
     protected function setUp(): void
     {
@@ -41,7 +40,7 @@ final class SpecificationFactoryTest extends TestCase
         $specification = $this->fixture->create(
             ['/some/path/**/*', '/a/second/path/**/*'],
             ['hidden' => true],
-            ['php', 'php3']
+            ['php', 'php3'],
         );
 
         $this->assertEquals(
@@ -49,15 +48,15 @@ final class SpecificationFactoryTest extends TestCase
                 new AndSpecification(
                     new HasExtension(['php', 'php3']),
                     new NotSpecification(
-                        new IsHidden()
-                    )
+                        new IsHidden(),
+                    ),
                 ),
                 new OrSpecification(
                     new Glob('/some/path/**/*'),
-                    new Glob('/a/second/path/**/*')
-                )
+                    new Glob('/a/second/path/**/*'),
+                ),
             ),
-            $specification
+            $specification,
         );
     }
 
@@ -66,7 +65,7 @@ final class SpecificationFactoryTest extends TestCase
         $specification = $this->fixture->create(
             ['/src/'],
             ['paths' => ['/src/some/path', '/src/some/other/path']],
-            ['php']
+            ['php'],
         );
 
         $this->assertEquals(
@@ -76,13 +75,13 @@ final class SpecificationFactoryTest extends TestCase
                     new NotSpecification(
                         new OrSpecification(
                             new Glob('/src/some/path'),
-                            new Glob('/src/some/other/path')
-                        )
-                    )
+                            new Glob('/src/some/other/path'),
+                        ),
+                    ),
                 ),
-                new Glob('/src/')
+                new Glob('/src/'),
             ),
-            $specification
+            $specification,
         );
     }
 
@@ -94,10 +93,10 @@ final class SpecificationFactoryTest extends TestCase
             new AndSpecification(
                 new HasExtension(['php']),
                 new NotSpecification(
-                    new Glob('/src/some/path')
-                )
+                    new Glob('/src/some/path'),
+                ),
             ),
-            $specification
+            $specification,
         );
     }
 
@@ -108,9 +107,9 @@ final class SpecificationFactoryTest extends TestCase
         $this->assertEquals(
             new AndSpecification(
                 new HasExtension(['php']),
-                new Glob('/src/')
+                new Glob('/src/'),
             ),
-            $specification
+            $specification,
         );
     }
 
@@ -122,7 +121,7 @@ final class SpecificationFactoryTest extends TestCase
                 '/PHPCompatibility/Sniffs/',
             ],
             ['paths' => []],
-            ['php']
+            ['php'],
         );
 
         $this->assertEquals(
@@ -130,10 +129,10 @@ final class SpecificationFactoryTest extends TestCase
                 new HasExtension(['php']),
                 new OrSpecification(
                     new Glob('/PHPCompatibility/*'),
-                    new Glob('/PHPCompatibility/Sniffs/')
-                )
+                    new Glob('/PHPCompatibility/Sniffs/'),
+                ),
             ),
-            $specification
+            $specification,
         );
     }
 }

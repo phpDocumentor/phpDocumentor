@@ -41,28 +41,16 @@ use const DIRECTORY_SEPARATOR;
 
 class Factory
 {
-    public const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
-
-    /** @var string */
-    private $globalTemplatesPath;
-
-    /** @var WriterCollection */
-    private $writerCollection;
+    final public const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
 
     /**
      * Constructs a new template factory with its dependencies.
      */
     public function __construct(
-        WriterCollection $writerCollection,
-        FlySystemFactory $flySystemFactory,
-        string $globalTemplatesPath
+        private readonly WriterCollection $writerCollection,
+        private readonly FlySystemFactory $flySystemFactory,
+        private readonly string $globalTemplatesPath,
     ) {
-        $this->flySystemFactory = $flySystemFactory;
-        $this->globalTemplatesPath = $globalTemplatesPath;
-        $this->writerCollection = $writerCollection;
     }
 
     /**
@@ -87,7 +75,7 @@ class Factory
             $loadedTemplates[$template['name']] = $this->loadTemplate(
                 $output,
                 $templateNameOrLocation,
-                $template['parameters'] ?? []
+                $template['parameters'] ?? [],
             );
             $stopWatch->stop('load template');
         }
@@ -95,9 +83,7 @@ class Factory
         return new Collection($loadedTemplates);
     }
 
-    /**
-     * @param array<string, string> $parameters
-     */
+    /** @param array<string, string> $parameters */
     private function loadTemplate(FilesystemInterface $output, string $template, array $parameters): Template
     {
         $template = $this->createTemplateFromXml($output, $template, $parameters);
@@ -126,7 +112,7 @@ class Factory
             $name = $files->getBasename();
 
             // skip abstract files
-            if (!$files->isDir() || in_array($name, ['.', '..'], true)) {
+            if (! $files->isDir() || in_array($name, ['.', '..'], true)) {
                 $files->next();
                 continue;
             }
@@ -154,7 +140,7 @@ class Factory
     private function createTemplateFromXml(
         FilesystemInterface $filesystem,
         string $nameOrPath,
-        array $templateParams
+        array $templateParams,
     ): Template {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
@@ -164,7 +150,7 @@ class Factory
                 'templates' => $this->getTemplatesDirectory(),
                 'template' => $this->resolve($nameOrPath),
                 'destination' => $filesystem,
-            ]
+            ],
         );
 
         $xml = $files->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
@@ -196,7 +182,7 @@ class Factory
                 (string) $transformation->attributes()->query,
                 (string) $transformation->attributes()->writer,
                 (string) $transformation->attributes()->source,
-                (string) $transformation->attributes()->artifact
+                (string) $transformation->attributes()->artifact,
             );
             $parameters = [];
             foreach ($transformation->parameter as $parameter) {
@@ -226,7 +212,7 @@ class Factory
         if ($globalTemplatesFilesystem->has($nameOrPath)) {
             $templateFilesystem = $this->createNewFilesystemFromSubfolder($globalTemplatesFilesystem, $nameOrPath);
 
-            if (!$templateFilesystem->has('template.xml')) {
+            if (! $templateFilesystem->has('template.xml')) {
                 throw new TemplateNotFound($nameOrPath);
             }
 
@@ -241,9 +227,9 @@ class Factory
         $dsnString = $this->getTemplatesPath();
         try {
             $filesystem = $this->flySystemFactory->create(Dsn::createFromString($dsnString));
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             throw new RuntimeException(
-                'Unable to access the folder with the global templates, received DSN is: ' . $dsnString
+                'Unable to access the folder with the global templates, received DSN is: ' . $dsnString,
             );
         }
 
@@ -252,13 +238,13 @@ class Factory
 
     private function createNewFilesystemFromSubfolder(
         Filesystem $hostFilesystem,
-        string $subfolder
+        string $subfolder,
     ): Filesystem {
         $hostFilesystemAdapter = $hostFilesystem->getAdapter();
-        if (!$hostFilesystemAdapter instanceof AbstractAdapter) {
+        if (! $hostFilesystemAdapter instanceof AbstractAdapter) {
             throw new RuntimeException(
                 'Failed to load template, The filesystem of the global templates does not support '
-                . 'getting a subfolder from it'
+                . 'getting a subfolder from it',
             );
         }
 

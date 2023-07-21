@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use Stringable;
 use Webmozart\Assert\Assert;
 
 use function array_pop;
@@ -30,22 +31,17 @@ use const PHP_URL_SCHEME;
  * Value Object for paths.
  * This can be absolute or relative.
  */
-final class Path
+final class Path implements Stringable
 {
-    /** @var string */
-    private $path;
-
     /**
      * Initializes the path.
      */
-    public function __construct(string $path)
+    public function __construct(private readonly string $path)
     {
         Assert::notEmpty(
             $path,
-            sprintf('"%s" is not a valid path', $path)
+            sprintf('"%s" is not a valid path', $path),
         );
-
-        $this->path = $path;
     }
 
     /**

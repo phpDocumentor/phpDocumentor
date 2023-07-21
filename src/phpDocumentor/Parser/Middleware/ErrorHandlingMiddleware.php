@@ -24,17 +24,11 @@ use Webmozart\Assert\Assert;
 
 final class ErrorHandlingMiddleware implements Middleware
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
-    /**
-     * @param callable(Command): object $next
-     */
+    /** @param callable(Command): object $next */
     public function execute(Command $command, callable $next): object
     {
         Assert::isInstanceOf($command, CreateCommand::class);
@@ -47,7 +41,7 @@ final class ErrorHandlingMiddleware implements Middleware
         } catch (Throwable $e) {
             $this->log(
                 '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
-                LogLevel::ALERT
+                LogLevel::ALERT,
             );
             $this->log('  -- Found in ' . $e->getFile() . ' at line ' . $e->getLine(), LogLevel::NOTICE);
             $this->log('  ' . $e->getTraceAsString(), LogLevel::DEBUG);

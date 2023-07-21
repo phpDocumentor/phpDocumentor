@@ -30,7 +30,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\Assert\Assert;
 
 use function count;
-use function get_class;
 use function getcwd;
 use function sprintf;
 
@@ -49,32 +48,16 @@ use const DIRECTORY_SEPARATOR;
  */
 class Transform
 {
-    /** @var Transformer $transformer Principal object for guiding the transformation process */
-    private $transformer;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var Factory */
-    private $templateFactory;
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
-
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
     public function __construct(
-        Transformer $transformer,
-        FlySystemFactory $flySystemFactory,
-        LoggerInterface $logger,
-        Factory $templateFactory
+        /** @var Transformer $transformer Principal object for guiding the transformation process */
+        private readonly Transformer $transformer,
+        private readonly FlySystemFactory $flySystemFactory,
+        private readonly LoggerInterface $logger,
+        private readonly Factory $templateFactory,
     ) {
-        $this->transformer   = $transformer;
-        $this->logger        = $logger;
-        $this->templateFactory  = $templateFactory;
-        $this->flySystemFactory = $flySystemFactory;
-
         $this->connectOutputToEvents();
     }
 
@@ -91,7 +74,7 @@ class Transform
 
         $templates = $this->templateFactory->getTemplates(
             $configuration['phpdocumentor']['templates'],
-            $this->createFileSystem($configuration['phpdocumentor']['paths']['output'])
+            $this->createFileSystem($configuration['phpdocumentor']['paths']['output']),
         );
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
@@ -105,13 +88,13 @@ class Transform
                 $preTransformEvent->setTransformations($transformations);
                 Dispatcher::getInstance()->dispatch(
                     $preTransformEvent,
-                    Transformer::EVENT_PRE_TRANSFORM
+                    Transformer::EVENT_PRE_TRANSFORM,
                 );
 
                 $this->transformer->execute(
                     $project,
                     $documentationSet,
-                    $transformations
+                    $transformations,
                 );
 
                 /** @var PostTransformEvent $postTransformEvent */
@@ -137,25 +120,25 @@ class Transform
             function (PreTransformEvent $event): void {
                 $transformations = $event->getTransformations();
                 $this->logger->info(sprintf("\nApplying %d transformations", count($transformations)));
-            }
+            },
         );
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_INITIALIZATION,
             function (WriterInitializationEvent $event): void {
-                if (!($event->getWriter() instanceof WriterAbstract)) {
+                if (! ($event->getWriter() instanceof WriterAbstract)) {
                     return;
                 }
 
-                $this->logger->info('  Initialize writer "' . get_class($event->getWriter()) . '"');
-            }
+                $this->logger->info('  Initialize writer "' . $event->getWriter()::class . '"');
+            },
         );
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORMATION,
             function (PreTransformationEvent $event): void {
                 $this->logger->info(
-                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"'
+                    '  Execute transformation using writer "' . $event->getTransformation()->getWriter() . '"',
                 );
-            }
+            },
         );
     }
 
@@ -163,7 +146,7 @@ class Transform
     {
         $target     = $dsn->getPath();
         $fileSystem = new Filesystem();
-        if (!$fileSystem->isAbsolutePath((string) $target)) {
+        if (! $fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
 

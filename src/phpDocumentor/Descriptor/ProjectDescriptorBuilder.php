@@ -23,16 +23,12 @@ use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
 
-use function array_merge;
-use function get_class;
-
 /**
  * Builds a Project Descriptor and underlying tree.
  */
 class ProjectDescriptorBuilder
 {
-    /** @var string */
-    public const DEFAULT_PROJECT_NAME = 'Untitled project';
+    final public const DEFAULT_PROJECT_NAME = 'Untitled project';
 
     /** @var AssemblerFactory $assemblerFactory */
     protected $assemblerFactory;
@@ -43,24 +39,18 @@ class ProjectDescriptorBuilder
     /** @var ProjectDescriptor $project */
     protected $project;
 
-    /** @var iterable<WithCustomSettings> */
-    private $servicesWithCustomSettings;
-
     private ApiSpecification $apiSpecification;
 
     private string $defaultPackageName;
 
-    /**
-     * @param iterable<WithCustomSettings> $servicesWithCustomSettings
-     */
+    /** @param iterable<WithCustomSettings> $servicesWithCustomSettings */
     public function __construct(
         AssemblerFactory $assemblerFactory,
         Filter $filterManager,
-        iterable $servicesWithCustomSettings = []
+        private readonly iterable $servicesWithCustomSettings = [],
     ) {
         $this->assemblerFactory = $assemblerFactory;
         $this->filter = $filterManager;
-        $this->servicesWithCustomSettings = $servicesWithCustomSettings;
     }
 
     public function createProjectDescriptor(): void
@@ -91,13 +81,13 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor of Descriptor
      */
-    public function buildDescriptor(object $data, string $type): ?Descriptor
+    public function buildDescriptor(object $data, string $type): Descriptor|null
     {
         $assembler = $this->getAssembler($data, $type);
-        if (!$assembler) {
+        if (! $assembler) {
             throw new InvalidArgumentException(
                 'Unable to build a Descriptor; the provided data did not match any Assembler ' .
-                get_class($data)
+                $data::class,
             );
         }
 
@@ -125,7 +115,7 @@ class ProjectDescriptorBuilder
      * @template TInput as object
      * @template TDescriptor as Descriptor
      */
-    public function getAssembler(object $data, string $type): ?AssemblerInterface
+    public function getAssembler(object $data, string $type): AssemblerInterface|null
     {
         return $this->assemblerFactory->get($data, $type);
     }
@@ -140,9 +130,9 @@ class ProjectDescriptorBuilder
      *
      * @template TDescriptor as Descriptor
      */
-    protected function filterDescriptor(Descriptor $descriptor): ?Descriptor
+    protected function filterDescriptor(Descriptor $descriptor): Descriptor|null
     {
-        if (!$descriptor instanceof Filterable) {
+        if (! $descriptor instanceof Filterable) {
             return $descriptor;
         }
 
@@ -173,7 +163,7 @@ class ProjectDescriptorBuilder
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set(
                 (string) $namespace->getFqsen(),
-                $this->buildDescriptor($namespace, NamespaceDescriptor::class)
+                $this->buildDescriptor($namespace, NamespaceDescriptor::class),
             );
         }
     }
@@ -198,24 +188,20 @@ class ProjectDescriptorBuilder
         $this->project->setName($title);
     }
 
-    /**
-     * @param Collection<string> $partials
-     */
+    /** @param Collection<string> $partials */
     public function setPartials(Collection $partials): void
     {
         $this->project->setPartials($partials);
     }
 
-    /**
-     * @param array<string, string> $customSettings
-     */
+    /** @param array<string, string> $customSettings */
     public function setCustomSettings(array $customSettings): void
     {
         foreach ($this->servicesWithCustomSettings as $service) {
             // We assume that the custom settings have the non-default settings and we should not override those;
             // that is why we merge the custom settings on top of the default settings; this will cause the overrides
             // to remain in place.
-            $customSettings = array_merge($service->getDefaultSettings(), $customSettings);
+            $customSettings = [...$service->getDefaultSettings(), ...$customSettings];
         }
 
         $this->project->getSettings()->setCustom($customSettings);
@@ -225,7 +211,7 @@ class ProjectDescriptorBuilder
     {
         if ($this->project->getVersions()->count() >= 1) {
             throw new OutOfRangeException(
-                'phpDocumentor only supports 1 version at the moment, support for multiple versions is being worked on'
+                'phpDocumentor only supports 1 version at the moment, support for multiple versions is being worked on',
             );
         }
 

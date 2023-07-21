@@ -63,7 +63,7 @@ final class ParserBuilder
 
         return choice(
             keepSecond(char('.'), $fieldName),
-            between(string("['"), string("']"), $fieldName)
+            between(string("['"), string("']"), $fieldName),
         )->map(static fn ($args) => new FieldAccess($args));
     }
 
@@ -75,7 +75,7 @@ final class ParserBuilder
             between(
                 string('[?('),
                 string(')]'),
-                self::expression()
+                self::expression(),
             )->map((static fn ($expression) => new FilterNode($expression))),
         );
     }
@@ -84,12 +84,12 @@ final class ParserBuilder
     private static function expression(): Parser
     {
         $operator = choice(
-            string('==')
+            string('=='),
         );
 
         $value = choice(
             between(char('"'), char('"'), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value)),
-            between(char("'"), char("'"), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value))
+            between(char("'"), char("'"), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value)),
         );
 
         return collect(
@@ -98,7 +98,7 @@ final class ParserBuilder
                 self::functionCall(),
             ),
             optional(whitespace())->followedBy($operator),
-            optional(whitespace())->followedBy($value)
+            optional(whitespace())->followedBy($value),
         )->map(static fn ($args) => new Comparison($args[0], $args[1], $args[2]));
     }
 
@@ -106,7 +106,7 @@ final class ParserBuilder
     private static function currentNodeFollowUp(): Parser
     {
         $inner = choice(
-            self::fieldAccess()
+            self::fieldAccess(),
         );
 
         $path = recursive();
@@ -114,7 +114,7 @@ final class ParserBuilder
 
         return collect(
             self::currentNode(),
-            some($inner)->optional()->map(static fn ($args) => is_array($args) ? $args : [])
+            some($inner)->optional()->map(static fn ($args) => is_array($args) ? $args : []),
         )->map(
             static fn ($args) => new Path([$args[0], ...$args[1]])
         );
@@ -129,9 +129,9 @@ final class ParserBuilder
                 between(
                     char('('),
                     char(')'),
-                    optional(self::arguments())
-                )
-            )
+                    optional(self::arguments()),
+                ),
+            ),
         )->map(static fn ($a) => new FunctionCall($a[0], ...$a[1]));
     }
 
@@ -154,7 +154,7 @@ final class ParserBuilder
     {
         $inner = choice(
             self::fieldAccess(),
-            self::filter()
+            self::filter(),
         );
 
         $path = recursive();
@@ -162,7 +162,7 @@ final class ParserBuilder
 
         return collect(
             self::rootNode(),
-            some($inner)
+            some($inner),
         )->map(
             static fn ($args) => new Path([$args[0], ...$args[1]])
         );

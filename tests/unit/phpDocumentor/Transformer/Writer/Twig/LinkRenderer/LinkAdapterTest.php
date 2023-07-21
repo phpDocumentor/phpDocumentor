@@ -63,13 +63,11 @@ final class LinkAdapterTest extends TestCase
         $this->adapter = new LinkAdapter(
             $this->linkRenderer->reveal(),
             $this->urlGenerator->reveal(),
-            $this->htmlFormatter->reveal()
+            $this->htmlFormatter->reveal(),
         );
     }
 
-    /**
-     * @covers ::supports()
-     */
+    /** @covers ::supports() */
     public function testItSupportsAnyType(): void
     {
         self::assertTrue($this->adapter->supports('http://example.org'));
@@ -95,9 +93,7 @@ final class LinkAdapterTest extends TestCase
         self::assertSame('HTML', $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));
     }
 
-    /**
-     * @return array<string, list<iterable>>
-     */
+    /** @return array<string, list<iterable>> */
     public function renderingVariations(): array
     {
         $presentation = LinkRenderer::PRESENTATION_NORMAL;

@@ -34,7 +34,7 @@ final class Issue2425FunctionalTest extends FunctionalTestCase
         $apiSet = $apiSets->first();
 
         /** @var ClassDescriptor $classDescriptor */
-        $classDescriptor = $apiSet->getIndexes()->get('classes')->get('\Project\Sub\Level\Issue2425A');
+        $classDescriptor = $apiSet->getIndexes()->get('classes')->get('\\' . \Project\Sub\Level\Issue2425A::class);
 
         self::assertSame(
             <<<DESCRIPTION

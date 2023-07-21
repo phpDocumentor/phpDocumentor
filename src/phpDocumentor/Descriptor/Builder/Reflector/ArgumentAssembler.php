@@ -58,7 +58,7 @@ class ArgumentAssembler extends BaseAssembler
     protected function overwriteTypeAndDescriptionFromParamTag(
         Argument $argument,
         ParamDescriptor $paramDescriptor,
-        ArgumentInterface $argumentDescriptor
+        ArgumentInterface $argumentDescriptor,
     ): void {
         if ($paramDescriptor->getVariableName() !== $argument->getName()) {
             return;
@@ -68,7 +68,7 @@ class ArgumentAssembler extends BaseAssembler
         $argumentDescriptor->setType($paramDescriptor->getType());
     }
 
-    protected function prettifyValue(?string $value): ?string
+    protected function prettifyValue(string|null $value): string|null
     {
         if ($value === null) {
             return null;

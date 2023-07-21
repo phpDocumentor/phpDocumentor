@@ -55,14 +55,12 @@ final class FileIoTest extends TestCase
                 'templates' => new Filesystem(new Local($this->templatesFolder->url())),
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
                 'destination' => new Filesystem(new Local($this->destinationFolder->url())),
-            ]
+            ],
         );
         $this->template = new Template('My Template', $mountManager);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesFileFromCustomTemplateToDestination(): void
     {
         $this->sourceFolder->addChild(new vfsStreamFile('index.html.twig'));
@@ -79,17 +77,15 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'index.html.twig',
-                'index.html'
+                'index.html',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesFileFromGlobalTemplateToDestination(): void
     {
         $this->templatesFolder->addChild(new vfsStreamFile('templateName/images/image.png'));
@@ -106,17 +102,15 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images/image.png',
-                'images/destination.png'
+                'images/destination.png',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images/destination.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiedFileOverwritesExistingFile(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -132,18 +126,16 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'index.html.twig',
-                'index.html'
+                'index.html',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
         $this->assertStringEqualsFile($this->destinationFolder->getChild('index.html')->url(), 'new content');
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryFromCustomTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -161,18 +153,16 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryFromGlobalTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -192,18 +182,16 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/image1.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromCustomTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -223,18 +211,16 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromGlobalTemplateToDestination(): void
     {
         $apiSet = $this->faker()->apiSetDescriptor();
@@ -256,18 +242,16 @@ final class FileIoTest extends TestCase
                 'copy',
                 'fileio',
                 'templates/templateName/images',
-                'images'
+                'images',
             ),
             $project,
-            $apiSet
+            $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testExceptionOccursIfSourceFileCannotBeFound(): void
     {
         $this->expectException(FileNotFoundException::class);
@@ -278,19 +262,17 @@ final class FileIoTest extends TestCase
             'copy',
             'fileio',
             'unknown_file',
-            'nah.png'
+            'nah.png',
         );
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
     }
 
-    /**
-     * @covers ::transform
-     */
+    /** @covers ::transform */
     public function testExceptionOccursIfQueryIsInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -298,14 +280,14 @@ final class FileIoTest extends TestCase
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $transformation = new Transformation(
             $this->template,
             'not-a-copy',
             'fileio',
             'unknown_file',
-            'nah.png'
+            'nah.png',
         );
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);

@@ -9,9 +9,7 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Path;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\Source
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\Source */
 final class SourceTest extends TestCase
 {
     use Faker;

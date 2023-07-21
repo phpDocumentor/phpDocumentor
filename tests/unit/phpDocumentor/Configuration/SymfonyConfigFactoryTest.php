@@ -26,15 +26,13 @@ final class SymfonyConfigFactoryTest extends TestCase
 
     private SymfonyConfigFactory $fixture;
 
-    /**
-     * @covers ::createDefault
-     */
+    /** @covers ::createDefault */
     public function testGetDefaultConfig(): void
     {
         $fixture = $this->createConfigFactoryWithTestDefinition();
         $this->assertArrayHasKey(
             SymfonyConfigFactory::FIELD_CONFIG_VERSION,
-            $fixture->createDefault()['phpdocumentor']
+            $fixture->createDefault()['phpdocumentor'],
         );
     }
 
@@ -55,7 +53,7 @@ final class SymfonyConfigFactoryTest extends TestCase
         $this->fixture = new SymfonyConfigFactory(['test' => $configMock->reveal()]);
         $this->assertArrayHasKey(
             SymfonyConfigFactory::FIELD_CONFIG_VERSION,
-            $this->fixture->createDefault()['phpdocumentor']
+            $this->fixture->createDefault()['phpdocumentor'],
         );
     }
 
@@ -70,12 +68,12 @@ final class SymfonyConfigFactoryTest extends TestCase
 
         $root = vfsStream::setup();
         $configFile = vfsStream::newFile('config.xml')->withContent(
-            <<<XML
+            <<<'XML'
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdocumentor>
     <configVersion>foo</configVersion>
 </phpdocumentor>
-XML
+XML,
         )->at($root);
 
         $fixture = $this->createConfigFactoryWithTestDefinition();

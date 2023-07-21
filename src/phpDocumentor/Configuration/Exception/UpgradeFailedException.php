@@ -8,9 +8,7 @@ use RuntimeException;
 
 use function sprintf;
 
-/**
- * @codeCoverageIgnore
- */
+/** @codeCoverageIgnore */
 final class UpgradeFailedException extends RuntimeException
 {
     public static function create(string $currentVersion): self
@@ -18,7 +16,7 @@ final class UpgradeFailedException extends RuntimeException
         return new self(sprintf(
             'Upgrading the configuration to the latest version failed, we were unable to upgrade '
             . 'version "%s" to a later version',
-            $currentVersion
+            $currentVersion,
         ));
     }
 }

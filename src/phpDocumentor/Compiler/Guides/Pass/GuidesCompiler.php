@@ -15,11 +15,8 @@ use function array_map;
 
 final class GuidesCompiler implements CompilerPassInterface
 {
-    private Compiler $compiler;
-
-    public function __construct(Compiler $compiler)
+    public function __construct(private readonly Compiler $compiler)
     {
-        $this->compiler = $compiler;
     }
 
     public function getDescription(): string
@@ -36,9 +33,9 @@ final class GuidesCompiler implements CompilerPassInterface
         $documents = $this->compiler->run(
             array_map(
                 static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
-                $subject->getDocuments()->getAll()
+                $subject->getDocuments()->getAll(),
             ),
-            new CompilerContext($subject->getGuidesProjectNode())
+            new CompilerContext($subject->getGuidesProjectNode()),
         );
         foreach ($documents as $document) {
             $subject->getDocuments()->get($document->getFilePath())->setDocumentNode($document);

@@ -79,12 +79,10 @@ use function var_export;
  */
 final class Version3 implements ConfigurationInterface, Normalizable
 {
-    /** @var string This is injected so that the name of the default template can be defined globally in the app */
-    private $defaultTemplateName;
-
-    public function __construct(string $defaultTemplateName)
-    {
-        $this->defaultTemplateName = $defaultTemplateName;
+    public function __construct(
+        /** @var string This is injected so that the name of the default template can be defined globally in the app */
+        private readonly string $defaultTemplateName,
+    ) {
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
@@ -120,12 +118,12 @@ final class Version3 implements ConfigurationInterface, Normalizable
                                 ->always(
                                     //We need to revert the phpize call in XmlUtils. Version number is always a string!
                                     static function ($value) {
-                                        if (!is_int($value) && !is_string($value)) {
+                                        if (! is_int($value) && ! is_string($value)) {
                                             return var_export($value, true);
                                         }
 
                                         return $value;
-                                    }
+                                    },
                                 )
                                 ->end()
                             ->end()
@@ -263,7 +261,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
                     ->scalarNode('default-package-name')
                         ->info(
                             'When your source code is grouped using the @package tag; what is the name of the '
-                            . 'default package when none is provided?'
+                            . 'default package when none is provided?',
                         )
                         ->defaultValue('Application')
                     ->end()
@@ -346,9 +344,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    /**
-     * @param array<string> $defaultPaths
-     */
+    /** @param array<string> $defaultPaths */
     private function source(array $defaultPaths = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('source');
@@ -362,9 +358,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->end();
     }
 
-    /**
-     * @param array<string> $defaultValue
-     */
+    /** @param array<string> $defaultValue */
     private function paths(array $defaultValue = []): ArrayNodeDefinition
     {
         $treebuilder = new TreeBuilder('paths');

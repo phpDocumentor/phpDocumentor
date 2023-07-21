@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Tag;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use Stringable;
 
 /**
  * Descriptor representing the uses tag on any element.
@@ -23,7 +24,7 @@ use phpDocumentor\Reflection\Fqsen;
  * @api
  * @package phpDocumentor\AST\Tags
  */
-final class UsesDescriptor extends TagDescriptor
+final class UsesDescriptor extends TagDescriptor implements Stringable
 {
     /** @var Fqsen|Descriptor|null the FQSEN where the uses tag refers to */
     private $reference;
@@ -33,7 +34,7 @@ final class UsesDescriptor extends TagDescriptor
      *
      * @return Fqsen|Descriptor|null
      */
-    public function getReference(): ?object
+    public function getReference(): object|null
     {
         return $this->reference;
     }
@@ -43,7 +44,7 @@ final class UsesDescriptor extends TagDescriptor
      *
      * @param Fqsen|Descriptor|null $reference
      */
-    public function setReference(?object $reference): void
+    public function setReference(object|null $reference): void
     {
         $this->reference = $reference;
     }

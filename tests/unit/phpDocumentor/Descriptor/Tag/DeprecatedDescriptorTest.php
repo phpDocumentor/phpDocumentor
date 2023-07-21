@@ -24,8 +24,7 @@ final class DeprecatedDescriptorTest extends TestCase
 {
     public const EXAMPLE_VERSION = '2.0';
 
-    /** @var DeprecatedDescriptor $fixture */
-    private $fixture;
+    private DeprecatedDescriptor $fixture;
 
     /**
      * Creates a new fixture object.

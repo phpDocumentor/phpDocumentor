@@ -23,8 +23,6 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-use function get_class;
-
 /**
  * Tests the functionality for the Linker class.
  *
@@ -48,9 +46,7 @@ final class LinkerTest extends TestCase
         $this->linker = new Linker([], $this->descriptorRepository->reveal());
     }
 
-    /**
-     * @covers ::getSubstitutions
-     */
+    /** @covers ::getSubstitutions */
     public function testSetFieldsToSubstitute(): void
     {
         $elementList = [
@@ -63,9 +59,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($elementList, $linker->getSubstitutions());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsNullWhenPassingAnUnsupportedItemType(): void
     {
         $this->descriptorRepository->findAlias(Argument::cetera())->shouldNotBeCalled();
@@ -76,9 +70,7 @@ final class LinkerTest extends TestCase
         $this->assertSame(null, $result);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsDescriptorBasedOnFqsenString(): void
     {
         $fqsenString = '\My\Class';
@@ -93,9 +85,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsDescriptorBasedOnFqsenObject(): void
     {
         $fqsenString = '\My\Class';
@@ -111,9 +101,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString, (string) $result->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstituteReturnsNullIfFqsenCannotBeFound(): void
     {
         $container = null;
@@ -124,9 +112,7 @@ final class LinkerTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingAnArrayReplacesAllElementsWithTheirDescriptors(): void
     {
         $fqsenString1 = '\My\Class1';
@@ -145,7 +131,7 @@ final class LinkerTest extends TestCase
                 new Fqsen($fqsenString2), // Won't be resolved and stays like this
                 new Fqsen($fqsenString3), // Will be resolved to a string
             ],
-            $container
+            $container,
         );
 
         $this->assertIsArray($result);
@@ -157,9 +143,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString3, $result[2]);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingAnArrayWorksRecursively(): void
     {
         $fqsenString1 = '\My\Class1';
@@ -182,7 +166,7 @@ final class LinkerTest extends TestCase
                 ],
                 new Fqsen($fqsenString3), // Will be resolved to a string
             ],
-            $container
+            $container,
         );
 
         $this->assertIsArray($result);
@@ -197,9 +181,7 @@ final class LinkerTest extends TestCase
         $this->assertSame($fqsenString3, $result[1]);
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWillReplaceFieldsIndicatedInSubstitutionsProperty(): void
     {
         $this->linker = new Linker([ClassDescriptor::class => ['parent']], $this->descriptorRepository->reveal());
@@ -223,15 +205,13 @@ final class LinkerTest extends TestCase
         $this->assertEquals($parentClass, $class->getParent());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWontReplaceFieldsWhenTheyReturnNull(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
 
-        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+        $this->linker = new Linker([$class->reveal()::class => ['parent']], $this->descriptorRepository->reveal());
 
         // Only when field returns null, no update happens
         $class->getParent()->willReturn(null)->shouldBeCalledOnce();
@@ -241,15 +221,13 @@ final class LinkerTest extends TestCase
         $this->linker->substitute($class->reveal());
     }
 
-    /**
-     * @covers ::substitute
-     */
+    /** @covers ::substitute */
     public function testSubstitutingWillReplaceFieldsOnceForEachObject(): void
     {
         $class = $this->prophesize(ClassDescriptor::class);
         $class->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\My\Class'));
 
-        $this->linker = new Linker([get_class($class->reveal()) => ['parent']], $this->descriptorRepository->reveal());
+        $this->linker = new Linker([$class->reveal()::class => ['parent']], $this->descriptorRepository->reveal());
 
         $parentFqsenString = '\My\Parent\Class';
         $parentFqsenObject = new Fqsen($parentFqsenString);
@@ -266,9 +244,7 @@ final class LinkerTest extends TestCase
         $this->linker->substitute([$class->reveal(), $class->reveal()]);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $linker = new Linker([], new DescriptorRepository());
@@ -276,14 +252,12 @@ final class LinkerTest extends TestCase
         $this->assertSame($expected, $linker->getDescription());
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testExecute(): void
     {
         $result = new ClassDescriptor();
         $object = $this->prophesize(ClassDescriptor::class);
-        $fqsen = get_class($object);
+        $fqsen = $object::class;
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('elements')->set($fqsen, $result);

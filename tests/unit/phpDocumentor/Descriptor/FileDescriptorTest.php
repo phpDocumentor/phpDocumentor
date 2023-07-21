@@ -17,8 +17,6 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Validation\Error;
 
-use function array_merge;
-
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\FileDescriptor
  * @covers ::__construct
@@ -32,8 +30,7 @@ final class FileDescriptorTest extends MockeryTestCase
 
     private const EXAMPLE_SOURCE = 'a-source-string';
 
-    /** @var FileDescriptor $fixture */
-    private $fixture;
+    private FileDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -365,20 +362,20 @@ final class FileDescriptorTest extends MockeryTestCase
         $this->fixture->getClasses()->set('my-test-function', $mockFunctions);
 
         // final merge and check
-        $expectedErrors = array_merge(
-            $errorGlobal,
-            $errorClasses,
-            $errorInterfaces,
-            $errorTraits,
-            $errorFunctions,
-            $errorClassMethods,
-            $errorClassConstants,
-            $errorClassProperties,
-            $errorInterfacesMethods,
-            $errorInterfacesConstants,
-            $errorTraitsMethods,
-            $errorTraitsProperties
-        );
+        $expectedErrors = [
+            ...$errorGlobal,
+            ...$errorClasses,
+            ...$errorInterfaces,
+            ...$errorTraits,
+            ...$errorFunctions,
+            ...$errorClassMethods,
+            ...$errorClassConstants,
+            ...$errorClassProperties,
+            ...$errorInterfacesMethods,
+            ...$errorInterfacesConstants,
+            ...$errorTraitsMethods,
+            ...$errorTraitsProperties,
+        ];
 
         self::assertSame($expectedErrors, $this->fixture->getAllErrors()->getAll());
     }

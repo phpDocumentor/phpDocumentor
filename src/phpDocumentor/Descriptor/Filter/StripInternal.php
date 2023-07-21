@@ -35,7 +35,7 @@ class StripInternal implements FilterInterface
     public function __invoke(FilterPayload $payload): FilterPayload
     {
         $isInternalAllowed = $payload->getApiSpecification()->isVisibilityAllowed(
-            ApiSpecification::VISIBILITY_INTERNAL
+            ApiSpecification::VISIBILITY_INTERNAL,
         );
 
         if ($isInternalAllowed) {

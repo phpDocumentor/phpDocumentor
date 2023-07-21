@@ -23,9 +23,7 @@ final class Version2Test extends TestCase
 {
     private const DEFAULT_TEMPLATE_NAME = 'default';
 
-    /**
-     * @dataProvider provideTestConfiguration
-     */
+    /** @dataProvider provideTestConfiguration */
     public function testLoadingADefaultConfigWorks(array $inputConfig, array $expectedConfig): void
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
@@ -77,7 +75,7 @@ final class Version2Test extends TestCase
                     ],
                 ],
             ],
-            $upgradedConfiguration
+            $upgradedConfiguration,
         );
     }
 
@@ -94,7 +92,7 @@ final class Version2Test extends TestCase
 
         $this->assertSame(
             [$newStyleGlobPattern, 'vendor/**/*', 'sdk'],
-            current(current($upgradedConfiguration['version'])['api'])['ignore']['paths']
+            current(current($upgradedConfiguration['version'])['api'])['ignore']['paths'],
         );
     }
 

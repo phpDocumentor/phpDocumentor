@@ -13,11 +13,8 @@ use phpDocumentor\Guides\Nodes\Node;
 /** @implements NodeTransformer<PHPReferenceNode> */
 final class PHPReferenceNodeTransformer implements NodeTransformer
 {
-    private DescriptorRepository $descriptorRepository;
-
-    public function __construct(DescriptorRepository $descriptorRepository)
+    public function __construct(private readonly DescriptorRepository $descriptorRepository)
     {
-        $this->descriptorRepository = $descriptorRepository;
     }
 
     public function enterNode(Node $node, CompilerContext $compilerContext): Node
@@ -33,7 +30,7 @@ final class PHPReferenceNodeTransformer implements NodeTransformer
 
         $descriptor = $this->descriptorRepository->findDescriptorByTypeAndFqsen(
             $node->getNodeType(),
-            $node->getFqsen()
+            $node->getFqsen(),
         );
 
         $node->setDescriptor($descriptor);

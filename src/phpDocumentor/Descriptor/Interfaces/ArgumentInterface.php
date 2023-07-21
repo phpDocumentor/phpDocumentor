@@ -40,7 +40,7 @@ interface ArgumentInterface extends ElementInterface, IsTyped
      *
      * @return string|null A textual representation of the default value, or null if no default value is present.
      */
-    public function getDefault(): ?string;
+    public function getDefault(): string|null;
 
     /**
      * Sets whether this argument passes its parameter by reference or by value.

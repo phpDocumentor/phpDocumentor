@@ -23,10 +23,8 @@ final class AutoloaderLocatorTest extends TestCase
 {
     /**
      * Directory structure when phpdocumentor is installed using composer.
-     *
-     * @var array
      */
-    private $composerInstalledStructure = [
+    private array $composerInstalledStructure = [
         'dummy' => [
             'vendor' => [
                 'phpDocumentor' => [
@@ -42,10 +40,8 @@ final class AutoloaderLocatorTest extends TestCase
 
     /**
      * Directory structure when phpdocumentor is installed using composer.
-     *
-     * @var array
      */
-    private $composerInstalledStructureCustomVendorDir = [
+    private array $composerInstalledStructureCustomVendorDir = [
         'dummy' => [
             'custom-vendor' => [
                 'phpDocumentor' => [
@@ -61,10 +57,8 @@ final class AutoloaderLocatorTest extends TestCase
 
     /**
      * Directory structure when phpdocumentor is installed from git.
-     *
-     * @var array
      */
-    private $standaloneStructure = [
+    private array $standaloneStructure = [
         'dummy' => [
             'vendor' => [],
             'src' => [
@@ -76,10 +70,8 @@ final class AutoloaderLocatorTest extends TestCase
 
     /**
      * Directory structure when phpdocumentor is installed from git.
-     *
-     * @var array
      */
-    private $standaloneStructureCustomVendorDir = [
+    private array $standaloneStructureCustomVendorDir = [
         'dummy' => [
             'custom-vendor' => [],
             'src' => [
@@ -95,7 +87,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../vendor',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
     }
 
@@ -106,7 +98,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
         putenv('COMPOSER_VENDOR_DIR');
     }
@@ -120,7 +112,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
     }
 
@@ -134,7 +126,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
         putenv('COMPOSER_VENDOR_DIR');
     }
@@ -149,7 +141,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/src/phpDocumentor');
         self::assertSame(
             'vfs://root/dummy/src/phpDocumentor/../../custom-vendor',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
         putenv('COMPOSER');
     }
@@ -161,7 +153,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
             'vfs://root/dummy/vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
     }
 
@@ -172,7 +164,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
             'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
     }
 
@@ -184,7 +176,7 @@ final class AutoloaderLocatorTest extends TestCase
         $baseDir = vfsStream::url('root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor');
         $this->assertSame(
             'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor/../../../../',
-            AutoloaderLocator::findVendorPath($baseDir)
+            AutoloaderLocator::findVendorPath($baseDir),
         );
         putenv('COMPOSER_VENDOR_DIR');
     }
@@ -196,7 +188,7 @@ final class AutoloaderLocatorTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
             'Unable to find vendor directory for '
-            . 'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor'
+            . 'vfs://root/dummy/custom-vendor/phpDocumentor/phpDocumentor/src/phpDocumentor',
         );
         AutoloaderLocator::findVendorPath($baseDir);
     }

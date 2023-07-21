@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 class SinceDescriptorTest extends TestCase
 {
-    public const EXAMPLE_VERSION = 'version';
+    final public const EXAMPLE_VERSION = 'version';
 
     /** @var SinceDescriptor $fixture */
     protected $fixture;

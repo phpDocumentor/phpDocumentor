@@ -35,16 +35,12 @@ use function trim;
  */
 class FunctionAssembler extends AssemblerAbstract
 {
-    private ArgumentAssembler $argumentAssembler;
-
     /**
      * Initializes this assembler and its dependencies.
      */
-    public function __construct(ArgumentAssembler $argumentAssembler)
+    public function __construct(private readonly ArgumentAssembler $argumentAssembler)
     {
         parent::__construct();
-
-        $this->argumentAssembler = $argumentAssembler;
     }
 
     /**
@@ -86,7 +82,7 @@ class FunctionAssembler extends AssemblerAbstract
         $descriptor->setNamespace('\\' . trim(substr(
             (string) $reflector->getFqsen(),
             0,
-            -strlen($reflector->getName()) - 2
+            -strlen($reflector->getName()) - 2,
         ), '\\'));
         $descriptor->setReturnType($reflector->getReturnType());
         $descriptor->setHasReturnByReference($reflector->getHasReturnByReference());
@@ -106,7 +102,7 @@ class FunctionAssembler extends AssemblerAbstract
 
             $this->addArgumentDescriptorToFunction(
                 $functionDescriptor,
-                $descriptor
+                $descriptor,
             );
         }
     }
@@ -116,7 +112,7 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function addArgumentDescriptorToFunction(
         FunctionInterface $functionDescriptor,
-        ArgumentInterface $argumentDescriptor
+        ArgumentInterface $argumentDescriptor,
     ): void {
         $functionDescriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
     }
@@ -126,12 +122,12 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function createArgumentDescriptor(
         FunctionDescriptor $functionDescriptor,
-        Argument $argument
+        Argument $argument,
     ): ArgumentInterface {
         /** @var Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
-        if (!$this->argumentAssembler->getBuilder()) {
+        if (! $this->argumentAssembler->getBuilder()) {
             $this->argumentAssembler->setBuilder($this->builder);
         }
 

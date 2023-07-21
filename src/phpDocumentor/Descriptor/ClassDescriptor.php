@@ -44,9 +44,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     /** @var bool $readOnly Whether this class is marked as readonly. */
     protected bool $readOnly = false;
 
-    /**
-     * @internal should not be called by any other class than the assemblers
-     */
+    /** @internal should not be called by any other class than the assemblers */
     public function setReadOnly(bool $readOnly): void
     {
         $this->readOnly = $readOnly;
@@ -57,22 +55,20 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $this->readOnly;
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection
     {
         $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
 
         foreach ($this->getUsedTraits() as $trait) {
-            if (!$trait instanceof TraitInterface) {
+            if (! $trait instanceof TraitInterface) {
                 continue;
             }
 
             $inheritedMethods = $inheritedMethods->merge($trait->getMethods());
         }
 
-        if (!$this->getParent() instanceof self) {
+        if (! $this->getParent() instanceof self) {
             return $inheritedMethods;
         }
 
@@ -81,9 +77,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getMagicMethods(): Collection
     {
         $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
@@ -117,9 +111,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $methods;
     }
 
-    /**
-     * @return Collection<PropertyInterface>
-     */
+    /** @return Collection<PropertyInterface> */
     public function getMagicProperties(): Collection
     {
         $tags = $this->getTags();
@@ -147,10 +139,10 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
                         'ERROR',
                         sprintf(
                             'Property name is invalid %s',
-                            $e->getMessage()
+                            $e->getMessage(),
                         ),
-                        null
-                    )
+                        null,
+                    ),
                 );
             }
         }
@@ -163,9 +155,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
         return $properties;
     }
 
-    /**
-     * @return ClassInterface|Fqsen|string|null
-     */
+    /** @return ClassInterface|Fqsen|string|null */
     public function getInheritedElement()
     {
         return $this->getParent();

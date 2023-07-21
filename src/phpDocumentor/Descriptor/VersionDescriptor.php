@@ -17,19 +17,9 @@ use phpDocumentor\Compiler\CompilableSubject;
 
 final class VersionDescriptor implements CompilableSubject
 {
-    /** @var string */
-    private $number;
-
-    /** @var Collection<DocumentationSetDescriptor> */
-    private $documentationSets;
-
-    /**
-     * @param Collection<DocumentationSetDescriptor> $documentationSets
-     */
-    public function __construct(string $number, Collection $documentationSets)
+    /** @param Collection<DocumentationSetDescriptor> $documentationSets */
+    public function __construct(private readonly string $number, private readonly Collection $documentationSets)
     {
-        $this->documentationSets = $documentationSets;
-        $this->number = $number;
     }
 
     public function getNumber(): string
@@ -37,9 +27,7 @@ final class VersionDescriptor implements CompilableSubject
         return $this->number;
     }
 
-    /**
-     * @return Collection<DocumentationSetDescriptor>
-     */
+    /** @return Collection<DocumentationSetDescriptor> */
     public function getDocumentationSets(): Collection
     {
         return $this->documentationSets;

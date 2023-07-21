@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PropertyDescriptorTest extends TestCase
 {
-    public const EXAMPLE_NAME = 'variableName';
+    final public const EXAMPLE_NAME = 'variableName';
 
     /** @var PropertyDescriptor $fixture */
     protected $fixture;

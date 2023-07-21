@@ -31,11 +31,11 @@ class ArgumentDescriptor extends DescriptorAbstract implements Interfaces\Argume
     use Traits\CanBeByReference;
     use Traits\CanBeVariadic;
 
-    public function getInheritedElement(): ?ArgumentInterface
+    public function getInheritedElement(): ArgumentInterface|null
     {
         try {
             $method = $this->getMethod();
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             // TODO: Apparently, in our Mario's example this can be null. But that is weird. Investigate this after
             //       this PR
             return null;

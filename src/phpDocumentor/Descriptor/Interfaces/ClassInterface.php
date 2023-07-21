@@ -68,7 +68,7 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
     /**
      * Returns the file associated with the parent class or trait.
      */
-    public function getFile(): ?FileInterface;
+    public function getFile(): FileInterface|null;
 
     /**
      * Sets a collection of all traits used by this class.

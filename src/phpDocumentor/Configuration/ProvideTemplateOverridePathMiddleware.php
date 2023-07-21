@@ -35,15 +35,11 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
 {
     public const PATH_TO_TEMPLATE_OVERRIDES = '.phpdoc/template';
 
-    /** @var EnvironmentFactory */
-    private $environmentFactory;
-
-    public function __construct(EnvironmentFactory $environmentFactory)
+    public function __construct(private readonly EnvironmentFactory $environmentFactory)
     {
-        $this->environmentFactory = $environmentFactory;
     }
 
-    public function __invoke(Configuration $configuration, ?UriInterface $pathOfConfigFile = null): Configuration
+    public function __invoke(Configuration $configuration, UriInterface|null $pathOfConfigFile = null): Configuration
     {
         $path = $this->normalizePath($pathOfConfigFile, new Path(self::PATH_TO_TEMPLATE_OVERRIDES));
         if (file_exists((string) $path)) {
@@ -53,7 +49,7 @@ final class ProvideTemplateOverridePathMiddleware implements MiddlewareInterface
         return $configuration;
     }
 
-    private function normalizePath(?UriInterface $uri, Path $path): Path
+    private function normalizePath(UriInterface|null $uri, Path $path): Path
     {
         if ($uri === null) {
             return new Path(getcwd() . '/' . $path);

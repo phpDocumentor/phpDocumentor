@@ -32,7 +32,7 @@ class ConfigurationLoadingTest extends TestCase
         //Don't care about the result of this factory, we just want to see if it doesn't error.
         self::assertNotEmpty($factory->fromUri(UriFactory::createUri($configFile)));
 
-        if (strpos($configFile, 'phpDocumentor3') === 0) {
+        if (str_starts_with($configFile, 'phpDocumentor3')) {
             $xml = new \DOMDocument();
             $xml->load($configFile);
             self::assertTrue($xml->schemaValidate(__DIR__ . '/../../../../data/xsd/phpdoc.xsd'));

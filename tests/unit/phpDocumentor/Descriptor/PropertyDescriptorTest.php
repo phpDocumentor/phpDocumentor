@@ -139,9 +139,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame('a', $this->fixture->getDefault());
     }
 
-    /**
-     * @covers ::getFile
-     */
+    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAProperty(): void
     {
         // Arrange
@@ -154,9 +152,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($file, $result);
     }
 
-    /**
-     * @covers ::getVar
-     */
+    /** @covers ::getVar */
     public function testVarTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -173,9 +169,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($varCollection, $result);
     }
 
-    /**
-     * @covers ::getVar
-     */
+    /** @covers ::getVar */
     public function testVarTagsWhenNoneArePresent(): void
     {
         $varCollection = new Collection();
@@ -244,15 +238,13 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($copyrightCollection, $result);
     }
 
-    /**
-     * @covers ::setParent
-     */
+    /** @covers ::setParent */
     public function testFqsenHasDollarSignWhenParentIsSet(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
         self::assertSame(
             '\MyOther\Class::$property',
-            (string) $this->fixture->getFullyQualifiedStructuralElementName()
+            (string) $this->fixture->getFullyQualifiedStructuralElementName(),
         );
     }
 
@@ -266,9 +258,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(ClassDescriptor::class, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::getInheritedElement
-     */
+    /** @covers ::getInheritedElement */
     public function testGettingAnInheritedElement(): void
     {
         $this->whenFixtureHasPropertyInParentClassWithSameName($this->fixture->getName());
@@ -278,9 +268,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($inheritedProperty->getName(), $this->fixture->getName());
     }
 
-    /**
-     * @covers ::getInheritedElement
-     */
+    /** @covers ::getInheritedElement */
     public function testGettingAnInheritedElementWhenThereIsNone(): void
     {
         self::assertNull($this->fixture->getInheritedElement());
@@ -315,9 +303,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
         return $file;
     }
 
-    /**
-     * @param string $name The name of the current property.
-     */
+    /** @param string $name The name of the current property. */
     protected function whenFixtureHasPropertyInParentClassWithSameName(string $name): PropertyDescriptor
     {
         $parent = new ClassDescriptor();

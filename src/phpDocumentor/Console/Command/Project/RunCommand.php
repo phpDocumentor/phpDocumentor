@@ -55,31 +55,16 @@ use function sprintf;
  */
 class RunCommand extends Command
 {
-    /** @var ProjectDescriptorBuilder */
-    private $projectDescriptorBuilder;
+    private ProgressBar|null $progressBar = null;
 
-    /** @var PipelineInterface */
-    private $pipeline;
-
-    /** @var ProgressBar */
-    private $progressBar;
-
-    /** @var ProgressBar */
-    private $transformerProgressBar;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private ProgressBar|null $transformerProgressBar = null;
 
     public function __construct(
-        ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline,
-        EventDispatcherInterface $eventDispatcher
+        private readonly ProjectDescriptorBuilder $projectDescriptorBuilder,
+        private readonly PipelineInterface $pipeline,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct('project:run');
-
-        $this->projectDescriptorBuilder = $projectDescriptorBuilder;
-        $this->pipeline = $pipeline;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -91,7 +76,7 @@ class RunCommand extends Command
         $this->setName('project:run')
             ->setAliases(['run'])
             ->setDescription(
-                'Parses and transforms the given files to a specified location'
+                'Parses and transforms the given files to a specified location',
             )
             ->setHelp(
                 <<<HELP
@@ -123,96 +108,96 @@ class RunCommand extends Command
                 You can get a more detailed listing of the commands using the <info>list</info>
                 command and get help by prepending the word <info>help</info> to the command
                 name.
-HELP
+HELP,
             )
             ->addOption(
                 'target',
                 't',
                 InputOption::VALUE_OPTIONAL,
-                'Path where to store the generated output'
+                'Path where to store the generated output',
             )
             ->addOption(
                 'cache-folder',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Path where to store the cache files'
+                'Path where to store the cache files',
             )
             ->addOption(
                 'filename',
                 'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'File to parse, glob patterns are supported. Provide multiple options of this type to add
-                multiple files.'
+                multiple files.',
             )
             ->addOption(
                 'directory',
                 'd',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'directory to parse, glob patterns are supported. Provide multiple options of this type to add
-                multiple directories.'
+                multiple directories.',
             )
             ->addOption(
                 'encoding',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'encoding to be used to interpret source files with'
+                'encoding to be used to interpret source files with',
             )
             ->addOption(
                 'extensions',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Provide multiple options of this type to add multiple extensions. default is php'
+                'Provide multiple options of this type to add multiple extensions. default is php',
             )
             ->addOption(
                 'ignore',
                 'i',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'File(s) and directories (relative to the source-code directory) that will be '
-                . 'ignored. Glob patterns are supported. Add multiple options of this type of add more ignore patterns'
+                . 'ignored. Glob patterns are supported. Add multiple options of this type of add more ignore patterns',
             )
             ->addOption(
                 'ignore-tags',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Tag that will be ignored, defaults to none. package, subpackage and ignore '
-                . 'may not be ignored. Add multiple options of this type to ignore multiple tags.'
+                . 'may not be ignored. Add multiple options of this type to ignore multiple tags.',
             )
             ->addOption(
                 'hidden',
                 null,
                 InputOption::VALUE_NONE,
                 'Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), '
-                . 'by default these are ignored'
+                . 'by default these are ignored',
             )
             ->addOption(
                 'ignore-symlinks',
                 null,
                 InputOption::VALUE_NEGATABLE,
-                'Ignore symlinks to other files or directories, default is on'
+                'Ignore symlinks to other files or directories, default is on',
             )
             ->addOption(
                 'markers',
                 'm',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Comma-separated list of markers/tags to filter'
+                'Comma-separated list of markers/tags to filter',
             )
             ->addOption(
                 'title',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Sets the title for this project; default is the phpDocumentor logo'
+                'Sets the title for this project; default is the phpDocumentor logo',
             )
             ->addOption(
                 'force',
                 null,
                 InputOption::VALUE_NONE,
-                'Forces a full build of the documentation, does not increment existing documentation'
+                'Forces a full build of the documentation, does not increment existing documentation',
             )
             ->addOption(
                 'validate',
                 null,
                 InputOption::VALUE_NONE,
-                'Validates every processed file using PHP Lint, costs a lot of performance'
+                'Validates every processed file using PHP Lint, costs a lot of performance',
             )
             ->addOption(
                 'visibility',
@@ -220,49 +205,49 @@ HELP
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Specifies the parse visibility that should be displayed in the documentation. Add multiple options of
                 this type to specify multiple levels.'
-                . '("public,protected")'
+                . '("public,protected")',
             )
             ->addOption(
                 'defaultpackagename',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Name to use for the default package.'
+                'Name to use for the default package.',
             )
             ->addOption(
                 'sourcecode',
                 null,
                 InputOption::VALUE_NONE | InputOption::VALUE_NEGATABLE,
-                'Whether to include syntax highlighted source code'
+                'Whether to include syntax highlighted source code',
             )
             ->addOption(
                 'template',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Name of the template to use (optional)'
+                'Name of the template to use (optional)',
             )
             ->addOption(
                 'examples-dir',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Directory to seacher for example files referenced by @example tags'
+                'Directory to seacher for example files referenced by @example tags',
             )
             ->addOption(
                 'setting',
                 's',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'Provide custom setting(s) as "key=value", run again with <info>--list-settings</info> for a list'
+                'Provide custom setting(s) as "key=value", run again with <info>--list-settings</info> for a list',
             )
             ->addOption(
                 'list-settings',
                 null,
                 InputOption::VALUE_NONE,
-                'Returns a list of available settings'
+                'Returns a list of available settings',
             )
             ->addOption(
                 'parseprivate',
                 null,
                 InputOption::VALUE_NONE,
-                'Whether to parse DocBlocks marked with @internal tag'
+                'Whether to parse DocBlocks marked with @internal tag',
             );
 
         parent::configure();
@@ -319,13 +304,13 @@ HELP
             function (PreParsingEvent $event) use ($output): void {
                 $output->writeln('Parsing files');
                 $this->progressBar = new ProgressBar($output, $event->getFileCount());
-            }
+            },
         );
         $dispatcherInstance->addListener(
             'parser.file.pre',
             function (): void {
                 $this->progressBar->advance();
-            }
+            },
         );
 
         $dispatcherInstance->addListener(
@@ -335,16 +320,16 @@ HELP
                 $output->writeln('Applying transformations (can take a while)');
                 $this->transformerProgressBar = new ProgressBar(
                     $output,
-                    count($event->getTransformations())
+                    count($event->getTransformations()),
                 );
-            }
+            },
         );
 
         $this->eventDispatcher->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
             function (): void {
                 $this->transformerProgressBar->advance();
-            }
+            },
         );
         // @codeCoverageIgnoreEnd
     }

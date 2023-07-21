@@ -49,9 +49,7 @@ interface InterfaceInterface extends ElementInterface, TypeInterface
      */
     public function getConstants(): Collection;
 
-    /**
-     * @return Collection<ConstantInterface>
-     */
+    /** @return Collection<ConstantInterface> */
     public function getInheritedConstants(): Collection;
 
     /**

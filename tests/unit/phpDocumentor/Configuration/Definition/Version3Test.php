@@ -44,9 +44,7 @@ final class Version3Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
-    /**
-     * @covers ::normalize
-     */
+    /** @covers ::normalize */
     public function testNormalizingTheOutputTransformsTheConfig(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
@@ -72,9 +70,7 @@ final class Version3Test extends TestCase
         self::assertEquals($expected, $configuration);
     }
 
-    /**
-     * @covers ::normalize
-     */
+    /** @covers ::normalize */
     public function testNormalizingAPopulatedTemplateLocationGivesAPath(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
@@ -207,13 +203,13 @@ final class Version3Test extends TestCase
     private function defaultConfigurationWithOneApiWithOverriddenSource(
         string $versionString,
         string $dsn,
-        array $paths
+        array $paths,
     ): array {
         $configuration = array_replace_recursive(
             $this->defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
-            ]
+            ],
         );
 
         // for the version we do want to check whether the defaults are kept; so instead of using array_replace,
@@ -234,13 +230,13 @@ final class Version3Test extends TestCase
     private function defaultConfigurationWithOneApiWithOverriddenExamples(
         string $versionString,
         string $dsn,
-        array $paths
+        array $paths,
     ): array {
         $configuration = array_replace_recursive(
             $this->defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
-            ]
+            ],
         );
 
         // for the version we do want to check whether the defaults are kept; so instead of using array_replace,

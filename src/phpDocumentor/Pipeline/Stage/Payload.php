@@ -16,28 +16,15 @@ namespace phpDocumentor\Pipeline\Stage;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 
-/**
- * @psalm-import-type ConfigurationMap from Configuration
- */
+/** @psalm-import-type ConfigurationMap from Configuration */
 class Payload
 {
-    /** @var ConfigurationMap */
-    private array $config;
-
-    private ProjectDescriptorBuilder $builder;
-
-    /**
-     * @param ConfigurationMap $config
-     */
-    public function __construct(array $config, ProjectDescriptorBuilder $builder)
+    /** @param ConfigurationMap $config */
+    public function __construct(private readonly array $config, private readonly ProjectDescriptorBuilder $builder)
     {
-        $this->config = $config;
-        $this->builder = $builder;
     }
 
-    /**
-     * @return ConfigurationMap
-     */
+    /** @return ConfigurationMap */
     public function getConfig(): array
     {
         return $this->config;

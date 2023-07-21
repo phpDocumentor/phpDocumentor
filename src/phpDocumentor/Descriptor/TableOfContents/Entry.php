@@ -17,23 +17,14 @@ use phpDocumentor\Descriptor\Collection;
 
 final class Entry
 {
-    /** @var string */
-    private $url;
-
-    /** @var string */
-    private $title;
-
-    /** @var string|null */
-    private $parent;
-
     /** @var Collection<Entry> */
-    private $children;
+    private readonly Collection $children;
 
-    public function __construct(string $url, string $title, ?string $parent = null)
-    {
-        $this->url = $url;
-        $this->title = $title;
-        $this->parent = $parent;
+    public function __construct(
+        private readonly string $url,
+        private readonly string $title,
+        private readonly string|null $parent = null,
+    ) {
         $this->children = Collection::fromClassString(self::class);
     }
 
@@ -47,7 +38,7 @@ final class Entry
         return $this->title;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string|null
     {
         return $this->parent;
     }

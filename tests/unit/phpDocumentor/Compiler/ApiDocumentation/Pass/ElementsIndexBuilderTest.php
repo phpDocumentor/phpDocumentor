@@ -53,9 +53,7 @@ class ElementsIndexBuilderTest extends TestCase
         $this->apiSet->getFiles()->add($file2);
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame('Build "elements" index', $this->fixture->getDescription());
@@ -243,11 +241,11 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertCount(4, $elements);
         $this->assertSame(
             ['\My\Space\Class1', '\My\Space\Class1::CONSTANT', '\My\Space\Class2', '\My\Space\Class2::CONSTANT'],
-            array_keys($elements)
+            array_keys($elements),
         );
         $this->assertSame(
             [$classDescriptor1, $classConstantDescriptor1, $classDescriptor2, $classConstantDescriptor2],
-            array_values($elements)
+            array_values($elements),
         );
 
         // class constants are not indexed separately
@@ -287,11 +285,11 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertCount(4, $elements);
         $this->assertSame(
             ['\My\Space\Class1', '\My\Space\Class1::$property', '\My\Space\Class2', '\My\Space\Class2::$property'],
-            array_keys($elements)
+            array_keys($elements),
         );
         $this->assertSame(
             [$classDescriptor1, $classPropertyDescriptor1, $classDescriptor2, $classPropertyDescriptor2],
-            array_values($elements)
+            array_values($elements),
         );
 
         // class properties are not indexed separately
@@ -330,11 +328,11 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertCount(4, $elements);
         $this->assertSame(
             ['\My\Space\Class1', '\My\Space\Class1::METHOD', '\My\Space\Class2', '\My\Space\Class2::METHOD'],
-            array_keys($elements)
+            array_keys($elements),
         );
         $this->assertSame(
             [$classDescriptor1, $classMethodDescriptor1, $classDescriptor2, $classMethodDescriptor2],
-            array_values($elements)
+            array_values($elements),
         );
 
         // class methods are not indexed separately

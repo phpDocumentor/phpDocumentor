@@ -38,29 +38,20 @@ use function substr;
 
 class Router
 {
-    private ClassBasedFqsenUrlGenerator $fqsenUrlGenerator;
-    private UrlGeneratorInterface $urlGenerator;
-    private SluggerInterface $slugger;
-
     public function __construct(
-        ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
-        UrlGeneratorInterface $urlGenerator,
-        SluggerInterface $slugger
+        private readonly ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly SluggerInterface $slugger,
     ) {
-        $this->fqsenUrlGenerator = $fqsenUrlGenerator;
-        $this->urlGenerator = $urlGenerator;
-        $this->slugger = $slugger;
     }
 
-    /**
-     * @param ElementInterface|Descriptor|Fqsen|UriInterface $node
-     */
+    /** @param ElementInterface|Descriptor|Fqsen|UriInterface $node */
     public function generate(object $node): string
     {
         if ($node instanceof DocumentDescriptor) {
             return $this->urlGenerator->generate(
                 'document',
-                ['name' => $node->getFile()]
+                ['name' => $node->getFile()],
             );
         }
 
@@ -71,14 +62,14 @@ class Router
         if ($node instanceof PackageInterface) {
             return $this->generateUrlForDescriptor(
                 'package',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
         if ($node instanceof NamespaceInterface) {
             return $this->generateUrlForDescriptor(
                 'namespace',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
@@ -90,7 +81,7 @@ class Router
         ) {
             return $this->generateUrlForDescriptor(
                 'class',
-                (string) $node->getFullyQualifiedStructuralElementName()
+                (string) $node->getFullyQualifiedStructuralElementName(),
             );
         }
 
@@ -98,7 +89,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'enumcase_' . $node->getName()
+                'enumcase_' . $node->getName(),
             );
         }
 
@@ -106,7 +97,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
-                'constant_' . $node->getName()
+                'constant_' . $node->getName(),
             );
         }
 
@@ -114,7 +105,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'constant_' . $node->getName()
+                'constant_' . $node->getName(),
             );
         }
 
@@ -122,7 +113,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'method_' . $node->getName()
+                'method_' . $node->getName(),
             );
         }
 
@@ -130,7 +121,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'namespace',
                 (string) $node->getNamespace(),
-                'function_' . $node->getName()
+                'function_' . $node->getName(),
             );
         }
 
@@ -142,7 +133,7 @@ class Router
             return $this->generateUrlForDescriptor(
                 'class',
                 (string) $node->getParent()->getFullyQualifiedStructuralElementName(),
-                'property_' . $node->getName()
+                'property_' . $node->getName(),
             );
         }
 
@@ -165,7 +156,7 @@ class Router
 
         return $this->urlGenerator->generate(
             $type,
-            ['name' => $name, '_fragment' => $fragment]
+            ['name' => $name, '_fragment' => $fragment],
         );
     }
 

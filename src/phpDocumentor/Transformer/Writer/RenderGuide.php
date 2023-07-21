@@ -30,31 +30,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use function array_map;
 use function sprintf;
 
-/**
- * @experimental this feature is in alpha stages and can have unresolved issues or missing features.
- */
+/** @experimental this feature is in alpha stages and can have unresolved issues or missing features. */
 final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
     public const FEATURE_FLAG = 'guides.enabled';
 
-    private LoggerInterface $logger;
-    private CommandBus $commandBus;
-    private FlySystemFactory $flySystemFactory;
-    private EnvironmentFactory $environmentFactory;
-    private EnvironmentBuilder $environmentBuilder;
-
     public function __construct(
-        LoggerInterface $logger,
-        CommandBus $commandBus,
-        FlySystemFactory $flySystemFactory,
-        EnvironmentFactory $environmentFactory,
-        EnvironmentBuilder $environmentBuilder
+        private readonly LoggerInterface $logger,
+        private readonly CommandBus $commandBus,
+        private readonly FlySystemFactory $flySystemFactory,
+        private readonly EnvironmentFactory $environmentFactory,
+        private readonly EnvironmentBuilder $environmentBuilder,
     ) {
-        $this->logger = $logger;
-        $this->commandBus = $commandBus;
-        $this->flySystemFactory = $flySystemFactory;
-        $this->environmentFactory = $environmentFactory;
-        $this->environmentBuilder = $environmentBuilder;
     }
 
     public function getName(): string
@@ -65,10 +52,10 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (!($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
+        if (! ($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
             return;
         }
 
@@ -77,7 +64,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         }
 
         $this->logger->warning(
-            'Generating guides is experimental, no BC guarantees are given, use at your own risk'
+            'Generating guides is experimental, no BC guarantees are given, use at your own risk',
         );
 
         //TODO Extract this, as this code is duplicated
@@ -87,7 +74,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $twig->addGlobal('destinationPath', null);
 
                 return $twig;
-            }
+            },
         );
 
         $this->renderDocumentationSet($documentationSet, $transformation);
@@ -100,7 +87,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
     private function renderDocumentationSet(
         GuideSetDescriptor $documentationSet,
-        Transformation $transformation
+        Transformation $transformation,
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
@@ -111,12 +98,12 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             $documentationSet->getOutputFormat(),
             array_map(
                 static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
-                $documentationSet->getDocuments()->getAll()
+                $documentationSet->getDocuments()->getAll(),
             ),
             $filesystem,
             $destination,
             $documentationSet->getGuidesProjectNode(),
-            $documentationSet->getOutputLocation()
+            $documentationSet->getOutputLocation(),
         ));
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
@@ -139,8 +126,8 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 'Completed rendering guide %s in %.2fms using %.2f mb memory',
                 (string) $dsn,
                 $stopwatchEvent->getDuration(),
-                $stopwatchEvent->getMemory() / 1024 / 1024
-            )
+                $stopwatchEvent->getMemory() / 1024 / 1024,
+            ),
         );
     }
 }

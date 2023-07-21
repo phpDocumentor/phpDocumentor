@@ -20,11 +20,8 @@ use function is_iterable;
 
 final class FilterNode implements PathNode
 {
-    private Expression $expression;
-
-    public function __construct(Expression $expression)
+    public function __construct(private readonly Expression $expression)
     {
-        $this->expression = $expression;
     }
 
     /** @inheritDoc */
@@ -35,7 +32,7 @@ final class FilterNode implements PathNode
         }
 
         foreach ($currentObject as $current) {
-            if (!$this->expression->visit($param, $current, $root)) {
+            if (! $this->expression->visit($param, $current, $root)) {
                 continue;
             }
 

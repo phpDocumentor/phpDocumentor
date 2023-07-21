@@ -26,8 +26,7 @@ use function dirname;
  */
 final class PathNormalizingMiddlewareTest extends TestCase
 {
-    /** @var ConfigurationFactory */
-    private $configurationFactory;
+    private ConfigurationFactory $configurationFactory;
 
     protected function setUp(): void
     {
@@ -44,9 +43,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertEquals($configuration, $outputConfig);
     }
 
-    /**
-     * @dataProvider pathProvider
-     */
+    /** @dataProvider pathProvider */
     public function testNormalizedIgnoreToGlob(string $input, string $output): void
     {
         $configuration = $this->givenAConfiguration();
@@ -57,13 +54,11 @@ final class PathNormalizingMiddlewareTest extends TestCase
 
         self::assertEquals(
             [$output],
-            $outputConfig['phpdocumentor']['versions']['1.0.0']->getApi()[0]['ignore']['paths']
+            $outputConfig['phpdocumentor']['versions']['1.0.0']->getApi()[0]['ignore']['paths'],
         );
     }
 
-    /**
-     * @dataProvider cachePathProvider
-     */
+    /** @dataProvider cachePathProvider */
     public function testNormalizeCachePath(string $input, string $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
@@ -72,16 +67,14 @@ final class PathNormalizingMiddlewareTest extends TestCase
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware(
             $configuration,
-            Uri::createFromString($configPath)
+            Uri::createFromString($configPath),
         );
 
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
-    /**
-     * @dataProvider templateLocationProvider
-     */
-    public function testNormalizeTemplateLocations(?string $input, ?string $output, string $configPath): void
+    /** @dataProvider templateLocationProvider */
+    public function testNormalizeTemplateLocations(string|null $input, string|null $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
         $configuration['phpdocumentor']['templates'][0]['location'] = $input ? new Path($input) : null;
@@ -89,7 +82,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware(
             $configuration,
-            Uri::createFromString($configPath)
+            Uri::createFromString($configPath),
         );
 
         $resultingPath = $outputConfig['phpdocumentor']['templates'][0]['location'];
@@ -108,12 +101,12 @@ final class PathNormalizingMiddlewareTest extends TestCase
 
         $outputConfig = $middleware(
             $configuration,
-            Uri::createFromString('/data/phpDocumentor/config.xml')
+            Uri::createFromString('/data/phpDocumentor/config.xml'),
         );
 
         self::assertEquals(
             '/data/phpDocumentor/',
-            (string) $outputConfig['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn']
+            (string) $outputConfig['phpdocumentor']['versions']['1.0.0']->api[0]['source']['dsn'],
         );
     }
 

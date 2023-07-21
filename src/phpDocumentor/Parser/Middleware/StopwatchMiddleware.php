@@ -26,18 +26,10 @@ use function sprintf;
 final class StopwatchMiddleware implements Middleware
 {
     /** @var int $memory amount of memory used */
-    private $memory = 0;
+    private int $memory = 0;
 
-    /** @var Stopwatch */
-    private $stopwatch;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(Stopwatch $stopwatch, LoggerInterface $logger)
+    public function __construct(private readonly Stopwatch $stopwatch, private readonly LoggerInterface $logger)
     {
-        $this->stopwatch = $stopwatch;
-        $this->logger    = $logger;
     }
 
     /**
@@ -53,7 +45,7 @@ final class StopwatchMiddleware implements Middleware
         $oldMemory = $this->memory;
         $periods = $lap->getPeriods();
         $lastPeriod = end($periods);
-        if (!$lastPeriod) {
+        if (! $lastPeriod) {
             return $result;
         }
 
@@ -64,9 +56,9 @@ final class StopwatchMiddleware implements Middleware
             sprintf(
                 '>> Memory after processing of file: %s megabytes (%s kilobytes)',
                 $this->formatMemoryInMegabytes($memory),
-                ($differenceInMemory >= 0 ? '+' : '-') . $this->formatMemoryInKilobytes($differenceInMemory)
+                ($differenceInMemory >= 0 ? '+' : '-') . $this->formatMemoryInKilobytes($differenceInMemory),
             ),
-            LogLevel::DEBUG
+            LogLevel::DEBUG,
         );
 
         $this->memory = $memory;

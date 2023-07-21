@@ -23,20 +23,16 @@ use phpDocumentor\Descriptor\TagDescriptor;
  */
 class MethodDescriptor extends TagDescriptor
 {
-    /** @var string */
-    private $methodName = '';
+    private string $methodName = '';
 
     /** @var Collection<ArgumentDescriptor> */
-    private $arguments;
+    private Collection $arguments;
 
-    /** @var ?ReturnDescriptor */
-    private $response;
+    private ReturnDescriptor|null $response = null;
 
-    /** @var bool */
-    private $static = false;
+    private bool $static = false;
 
-    /** @var bool */
-    private $hasReturnByReference = false;
+    private bool $hasReturnByReference = false;
 
     public function __construct(string $name)
     {
@@ -55,28 +51,24 @@ class MethodDescriptor extends TagDescriptor
         return $this->methodName;
     }
 
-    /**
-     * @param Collection<ArgumentDescriptor> $arguments
-     */
+    /** @param Collection<ArgumentDescriptor> $arguments */
     public function setArguments(Collection $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return Collection<ArgumentDescriptor>
-     */
+    /** @return Collection<ArgumentDescriptor> */
     public function getArguments(): Collection
     {
         return $this->arguments;
     }
 
-    public function setResponse(?ReturnDescriptor $response): void
+    public function setResponse(ReturnDescriptor|null $response): void
     {
         $this->response = $response;
     }
 
-    public function getResponse(): ?ReturnDescriptor
+    public function getResponse(): ReturnDescriptor|null
     {
         return $this->response;
     }

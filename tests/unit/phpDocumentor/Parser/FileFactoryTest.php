@@ -36,7 +36,7 @@ final class FileFactoryTest extends TestCase
         FileFactory::createInstance(
             $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
             NodesFactory::createInstance(),
-            new ArrayObject([new EmittingMiddleware()])
+            new ArrayObject([new EmittingMiddleware()]),
         );
 
         // if we reach this point then the FileFactory did not fail to instantiate and the middlewares
@@ -52,13 +52,13 @@ final class FileFactoryTest extends TestCase
         // test failures just because the previous test did not fail
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Middleware must be an instance of phpDocumentor\Reflection\Middleware\Middleware but stdClass was given'
+            'Middleware must be an instance of phpDocumentor\Reflection\Middleware\Middleware but stdClass was given',
         );
 
         FileFactory::createInstance(
             $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
             NodesFactory::createInstance(),
-            new ArrayObject([new stdClass()])
+            new ArrayObject([new stdClass()]),
         );
     }
 }

@@ -16,11 +16,12 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
+use Stringable;
 
 /**
  * Base class for the actual transformation business logic (writers).
  */
-abstract class WriterAbstract
+abstract class WriterAbstract implements Stringable
 {
     /**
      * Name of this writer, used to identify this writer.
@@ -49,12 +50,12 @@ abstract class WriterAbstract
      * Abstract definition of the transformation method.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      */
     abstract public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void;
 
     public function __toString(): string

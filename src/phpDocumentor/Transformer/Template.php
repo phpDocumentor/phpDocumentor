@@ -34,39 +34,31 @@ use function preg_match;
  */
 final class Template implements ArrayAccess, Countable, IteratorAggregate
 {
-    /** @var string Name for this template */
-    private $name;
-
     /** @var string The name and optionally mail address of the author, i.e. `Mike van Riel <me@mikevanriel.com>`. */
-    private $author = '';
+    private string $author = '';
 
     /** @var string The version of the template according to semantic versioning, i.e. 1.2.0 */
-    private $version = '';
+    private string $version = '';
 
     /** @var string A free-form copyright notice. */
-    private $copyright = '';
+    private string $copyright = '';
 
     /** @var string a text providing more information on this template. */
-    private $description = '';
+    private string $description = '';
 
     /** @var Transformation[] A series of transformations to execute in sequence during transformation. */
-    private $transformations = [];
+    private array $transformations = [];
 
     /** @var Parameter[] Global parameters that are passed to each transformation. */
-    private $parameters = [];
-
-    /** @var MountManager */
-    private $files;
+    private array $parameters = [];
 
     /**
      * Initializes this object with a name and optionally with contents.
      *
      * @param string $name Name for this template.
      */
-    public function __construct(string $name, MountManager $files)
+    public function __construct(private readonly string $name, private readonly MountManager $files)
     {
-        $this->name = $name;
-        $this->files = $files;
     }
 
     /**
@@ -124,10 +116,10 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      */
     public function setVersion(string $version): void
     {
-        if (!preg_match('/^\d+\.\d+\.\d+$/', $version)) {
+        if (! preg_match('/^\d+\.\d+\.\d+$/', $version)) {
             throw new InvalidArgumentException(
                 'Version number is invalid; ' . $version . ' does not match '
-                . 'x.x.x (where x is a number)'
+                . 'x.x.x (where x is a number)',
             );
         }
 
@@ -183,17 +175,17 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      * Sets a transformation at the given offset.
      *
      * @param int|string $offset The offset to place the value at.
-     * @param Transformation $value The transformation to add to this template.
+     * @param Transformation $value  The transformation to add to this template.
      *
      * @throws InvalidArgumentException If an invalid item was received.
      */
     #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
-        if (!$value instanceof Transformation) {
+        if (! $value instanceof Transformation) {
             throw new InvalidArgumentException(
                 '\phpDocumentor\Transformer\Template may only contain items of '
-                . 'type \phpDocumentor\Transformer\Transformation'
+                . 'type \phpDocumentor\Transformer\Transformation',
             );
         }
 
@@ -282,9 +274,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
         }
     }
 
-    /**
-     * @return ArrayIterator<int|string, Transformation>
-     */
+    /** @return ArrayIterator<int|string, Transformation> */
     #[ReturnTypeWillChange]
     public function getIterator(): ArrayIterator
     {

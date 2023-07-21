@@ -59,7 +59,7 @@ final class ParserTest extends TestCase
         $this->fixture = new Parser(
             $this->projectFactory->reveal(),
             new Stopwatch(),
-            new NullLogger()
+            new NullLogger(),
         );
     }
 
@@ -137,7 +137,7 @@ final class ParserTest extends TestCase
         $parser = new Parser(
             $this->prophesize(ProjectFactory::class)->reveal(),
             $this->prophesize(Stopwatch::class)->reveal(),
-            new NullLogger()
+            new NullLogger(),
         );
 
         $this->assertEquals('Default', $parser->getDefaultPackageName());
@@ -147,9 +147,7 @@ final class ParserTest extends TestCase
         $this->assertSame('test', $parser->getDefaultPackageName());
     }
 
-    /**
-     * @covers ::parse
-     */
+    /** @covers ::parse */
     public function testFilesAreParsedByProjectFactory(): void
     {
         $file = new vfsStreamFile('my-file.php');
@@ -162,7 +160,7 @@ final class ParserTest extends TestCase
         $expectedProject = new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME);
         $this->projectFactory->create(
             Argument::exact(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME),
-            Argument::exact($files)
+            Argument::exact($files),
         )->shouldBeCalled()->willReturn($expectedProject);
 
         $project = $this->fixture->parse($files);
@@ -170,9 +168,7 @@ final class ParserTest extends TestCase
         $this->assertSame($expectedProject, $project);
     }
 
-    /**
-     * @covers ::parse
-     */
+    /** @covers ::parse */
     public function testWhenParsingAnnounceWhenYouAreStarting(): void
     {
         $file = new vfsStreamFile('my-file.php');
@@ -185,11 +181,11 @@ final class ParserTest extends TestCase
             'parser.pre',
             static function (PreParsingEvent $event) use (&$preParsingEvent): void {
                 $preParsingEvent = $event;
-            }
+            },
         );
 
         $this->projectFactory->create(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(
-            new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME)
+            new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME),
         );
 
         $this->fixture->parse($files);

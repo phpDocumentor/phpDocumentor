@@ -36,8 +36,6 @@ interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterf
 
     public function isFinal(): bool;
 
-    /**
-     * @return Collection<VarDescriptor>
-     */
+    /** @return Collection<VarDescriptor> */
     public function getVar(): Collection;
 }

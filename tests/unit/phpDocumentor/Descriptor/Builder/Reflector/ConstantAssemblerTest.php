@@ -53,11 +53,11 @@ final class ConstantAssemblerTest extends TestCase
         $name = 'constBoolean';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlock = new DocBlock('This is a example description', $docBlockDescription);
@@ -84,11 +84,11 @@ DOCBLOCK
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
@@ -99,7 +99,7 @@ DOCBLOCK
         self::assertSame($name, $descriptor->getName());
         self::assertSame(
             '\\' . $namespace . '::' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());
@@ -118,11 +118,11 @@ DOCBLOCK
         $namespace = 'Namespace';
 
         $docBlockDescription = new DocBlock\Description(
-            <<<DOCBLOCK
+            <<<'DOCBLOCK'
             /**
              * This is a example description
              */
-DOCBLOCK
+DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
@@ -133,7 +133,7 @@ DOCBLOCK
         self::assertSame($name, $descriptor->getName());
         self::assertSame(
             '\\' . $namespace . '\\' . $name,
-            (string) $descriptor->getFullyQualifiedStructuralElementName()
+            (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());

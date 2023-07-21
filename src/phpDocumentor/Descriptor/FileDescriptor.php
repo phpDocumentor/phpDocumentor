@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\Interfaces\TracksErrors;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
+use Stringable;
 
 /**
  * Represents a file in the project.
@@ -34,11 +35,11 @@ use phpDocumentor\Reflection\Fqsen;
  * @api
  * @package phpDocumentor\AST
  */
-class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface
+class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterface, Stringable
 {
     protected string $hash = '';
     protected string $path = '';
-    protected ?string $source = null;
+    protected string|null $source = null;
 
     /** @var Collection<NamespaceInterface|Fqsen> $namespaceAliases */
     protected Collection $namespaceAliases;
@@ -110,7 +111,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * When source is included in parsing process this property will contain the raw file contents.
      */
-    public function getSource(): ?string
+    public function getSource(): string|null
     {
         return $this->source;
     }
@@ -120,7 +121,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
      *
      * @internal should not be called by any other class than the assamblers
      */
-    public function setSource(?string $source): void
+    public function setSource(string|null $source): void
     {
         $this->source = $source;
     }
@@ -283,9 +284,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
         $this->traits = $traits;
     }
 
-    /**
-     * @return Collection<EnumInterface>
-     */
+    /** @return Collection<EnumInterface> */
     public function getEnums(): Collection
     {
         return $this->enums;
@@ -399,8 +398,8 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
             }
 
             if (
-                !$element instanceof ClassInterface &&
-                !$element instanceof TraitInterface
+                ! $element instanceof ClassInterface &&
+                ! $element instanceof TraitInterface
             ) {
                 continue;
             }

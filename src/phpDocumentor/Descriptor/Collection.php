@@ -39,17 +39,13 @@ use function count;
  */
 class Collection implements Countable, IteratorAggregate, ArrayAccess
 {
-    /** @var array<T> $items */
-    protected array $items = [];
-
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
      *
      * @param array<T> $items
      */
-    public function __construct(array $items = [])
+    public function __construct(protected array $items = [])
     {
-        $this->items = $items;
     }
 
     /**
@@ -82,7 +78,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function get($index)
     {
-        if (!isset($this->items[$index])) {
+        if (! isset($this->items[$index])) {
             throw new OutOfRangeException($index . ' offset not found in Collection');
         }
 
@@ -108,7 +104,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function fetch($index, $valueIfEmpty = null)
     {
-        if (!$this->offsetExists($index) && $valueIfEmpty !== null) {
+        if (! $this->offsetExists($index) && $valueIfEmpty !== null) {
             /** @var T $valueIfEmpty */
             $this->offsetSet($index, $valueIfEmpty);
         }
@@ -116,9 +112,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
         return $this->offsetGet($index);
     }
 
-    /**
-     * @return ?T
-     */
+    /** @return ?T */
     public function first()
     {
         if (count($this->items) === 0) {
@@ -257,10 +251,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
         $collection = new self(
             array_filter(
                 $this->getAll(),
-                static function ($item) use ($className) {
-                    return $item instanceof $className;
-                }
-            )
+                static fn ($item) => $item instanceof $className,
+            ),
         );
 
         return $collection;

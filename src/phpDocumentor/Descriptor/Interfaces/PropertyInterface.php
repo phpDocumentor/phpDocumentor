@@ -44,7 +44,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
     /**
      * Returns the textual representation of the default value for a property, or null if none is provided.
      */
-    public function getDefault(): ?string;
+    public function getDefault(): string|null;
 
     /**
      * Sets whether this property is static in scope.
@@ -63,8 +63,6 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
      */
     public function setVisibility(string $visibility): void;
 
-    /**
-     * @return Collection<VarDescriptor>
-     */
+    /** @return Collection<VarDescriptor> */
     public function getVar(): Collection;
 }

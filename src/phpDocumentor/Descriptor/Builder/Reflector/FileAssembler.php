@@ -53,7 +53,7 @@ class FileAssembler extends AssemblerAbstract
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
-            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName()
+            $this->extractPackageFromDocBlock($data->getDocBlock()) ?? $this->getBuilder()->getDefaultPackageName(),
         );
 
         $fileDescriptor->setName($data->getName());
@@ -101,7 +101,7 @@ class FileAssembler extends AssemblerAbstract
 
             $fileDescriptor->getConstants()->set(
                 (string) $constantDescriptor->getFullyQualifiedStructuralElementName(),
-                $constantDescriptor
+                $constantDescriptor,
             );
         }
     }
@@ -127,7 +127,7 @@ class FileAssembler extends AssemblerAbstract
 
             $fileDescriptor->getFunctions()->set(
                 (string) $functionDescriptor->getFullyQualifiedStructuralElementName(),
-                $functionDescriptor
+                $functionDescriptor,
             );
         }
     }
@@ -149,13 +149,13 @@ class FileAssembler extends AssemblerAbstract
             if (count($classDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $classDescriptor->getTags()->set(
                     'package',
-                    $fileDescriptor->getTags()->fetch('package', new Collection())
+                    $fileDescriptor->getTags()->fetch('package', new Collection()),
                 );
             }
 
             $fileDescriptor->getClasses()->set(
                 (string) $classDescriptor->getFullyQualifiedStructuralElementName(),
-                $classDescriptor
+                $classDescriptor,
             );
         }
     }
@@ -177,13 +177,13 @@ class FileAssembler extends AssemblerAbstract
             if (count($enumDescriptor->getTags()->fetch('package', new Collection())) === 0) {
                 $enumDescriptor->getTags()->set(
                     'package',
-                    $fileDescriptor->getTags()->fetch('package', new Collection())
+                    $fileDescriptor->getTags()->fetch('package', new Collection()),
                 );
             }
 
             $fileDescriptor->getEnums()->set(
                 (string) $enumDescriptor->getFullyQualifiedStructuralElementName(),
-                $enumDescriptor
+                $enumDescriptor,
             );
         }
     }
@@ -209,7 +209,7 @@ class FileAssembler extends AssemblerAbstract
 
             $fileDescriptor->getInterfaces()->set(
                 (string) $interfaceDescriptor->getFullyQualifiedStructuralElementName(),
-                $interfaceDescriptor
+                $interfaceDescriptor,
             );
         }
     }
@@ -235,7 +235,7 @@ class FileAssembler extends AssemblerAbstract
 
             $fileDescriptor->getTraits()->set(
                 (string) $traitDescriptor->getFullyQualifiedStructuralElementName(),
-                $traitDescriptor
+                $traitDescriptor,
             );
         }
     }
@@ -244,7 +244,7 @@ class FileAssembler extends AssemblerAbstract
     {
         $packages = Collection::fromClassString(TagDescriptor::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
-        if (!$package) {
+        if (! $package) {
             $package = $this->getBuilder()->getDefaultPackageName();
         }
 

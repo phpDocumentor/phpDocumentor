@@ -22,16 +22,8 @@ use function md5;
 
 final class FlySystemFile implements File
 {
-    /** @var FilesystemInterface */
-    private $fileSystem;
-
-    /** @var string */
-    private $fileName;
-
-    public function __construct(FilesystemInterface $fileSystem, string $fileName)
+    public function __construct(private readonly FilesystemInterface $fileSystem, private readonly string $fileName)
     {
-        $this->fileSystem = $fileSystem;
-        $this->fileName   = $fileName;
     }
 
     /**

@@ -11,17 +11,14 @@ use phpDocumentor\Transformer\Router\Router;
 use function array_fill;
 use function implode;
 use function ltrim;
-use function strpos;
+use function str_starts_with;
 use function substr;
 use function substr_count;
 
 final class RelativePathToRootConverter
 {
-    private Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(private readonly Router $router)
     {
-        $this->router = $router;
     }
 
     /**
@@ -55,17 +52,17 @@ final class RelativePathToRootConverter
      *       namespace reference. As such we assume a class as that is the
      *       most common occurrence.
      */
-    public function convert(string $destination, string $pathOrReference): ?string
+    public function convert(string $destination, string $pathOrReference): string|null
     {
         if ($this->isReferenceToFqsen($pathOrReference)) {
             try {
                 $pathOrReference = $this->router->generate($this->createFqsenFromReference($pathOrReference));
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException) {
                 return null;
             }
         }
 
-        if (!$pathOrReference) {
+        if (! $pathOrReference) {
             return null;
         }
 
@@ -76,7 +73,7 @@ final class RelativePathToRootConverter
 
     private function createFqsenFromReference(string $path): Fqsen
     {
-        if (!$this->isReferenceToFqsen($path)) {
+        if (! $this->isReferenceToFqsen($path)) {
             throw new InvalidArgumentException('References to FQSENs are expected to begin with an @-sign');
         }
 
@@ -92,7 +89,7 @@ final class RelativePathToRootConverter
 
     private function isReferenceToFqsen(string $path): bool
     {
-        return strpos($path, '@') === 0;
+        return str_starts_with($path, '@');
     }
 
     private function withoutLeadingSlash(string $path): string

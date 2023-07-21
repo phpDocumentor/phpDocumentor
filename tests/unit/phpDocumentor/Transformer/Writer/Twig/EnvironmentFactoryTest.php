@@ -43,8 +43,7 @@ final class EnvironmentFactoryTest extends TestCase
     /** @var Router */
     private $router;
 
-    /** @var EnvironmentFactory */
-    private $factory;
+    private EnvironmentFactory $factory;
 
     protected function setUp(): void
     {
@@ -58,12 +57,12 @@ final class EnvironmentFactoryTest extends TestCase
             new AssetsExtension(
                 new TestLogger(),
                 $this->prophesize(NodeRenderer::class)->reveal(),
-                new UrlGenerator()
+                new UrlGenerator(),
             ),
             new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal()),
             $relativePathToRootConverter,
             new PathBuilder($this->router->reveal(), $relativePathToRootConverter),
-            ['./data/templates']
+            ['./data/templates'],
         );
     }
 
@@ -79,7 +78,7 @@ final class EnvironmentFactoryTest extends TestCase
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
@@ -101,7 +100,7 @@ final class EnvironmentFactoryTest extends TestCase
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
@@ -116,7 +115,7 @@ final class EnvironmentFactoryTest extends TestCase
                 new FlySystemLoader($mountManager->getFilesystem('template')),
                 new FilesystemLoader('./data/templates'),
             ],
-            $loader->getLoaders()
+            $loader->getLoaders(),
         );
     }
 
@@ -133,7 +132,7 @@ final class EnvironmentFactoryTest extends TestCase
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])]
+            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 

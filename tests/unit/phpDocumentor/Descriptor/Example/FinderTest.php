@@ -28,11 +28,9 @@ final class FinderTest extends TestCase
 {
     public const EXAMPLE_TEXT = 'This is an example';
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    /** @var Finder */
-    private $fixture;
+    private Finder $fixture;
 
     /**
      * Initializes the fixture.
@@ -84,7 +82,7 @@ final class FinderTest extends TestCase
                 'exampleDirectory' => [],
                 'exampleDirectory2' => ['example.txt' => self::EXAMPLE_TEXT],
                 'source' => ['example.txt' => 'this is not it'], // check if the example directory precedes this
-            ]
+            ],
         );
 
         $this->fixture->setExampleDirectories($directories);

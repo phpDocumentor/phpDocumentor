@@ -36,9 +36,7 @@ final class CacheMiddlewareTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testReturnsCachedResponseIfFileContentsIsTheSame(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -53,19 +51,17 @@ final class CacheMiddlewareTest extends TestCase
             new CreateCommand(
                 $this->faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
-                new ProjectFactoryStrategies([])
+                new ProjectFactoryStrategies([]),
             ),
             function (): void {
                 $this->fail('If we entered the next state; then caching failed');
-            }
+            },
         );
 
         $this->assertEquals($reflectedFile, $response);
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testCachesResponseWhenReturningAnUncachedFile(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -79,15 +75,13 @@ final class CacheMiddlewareTest extends TestCase
             new CreateCommand(
                 $this->faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
-                new ProjectFactoryStrategies([])
+                new ProjectFactoryStrategies([]),
             ),
-            static function () use ($reflectedFile) {
-                return $reflectedFile;
-            }
+            static fn () => $reflectedFile,
         );
 
         $this->assertTrue(
-            $cacheInterface->hasItem('0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8')
+            $cacheInterface->hasItem('0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8'),
         );
         $this->assertEquals($reflectedFile, $response);
     }
@@ -104,13 +98,11 @@ final class CacheMiddlewareTest extends TestCase
 
     private function whenFileIsAlreadyInCache(
         ArrayAdapter $cacheInterface,
-        ReflectedFile $reflectedFile
+        ReflectedFile $reflectedFile,
     ): void {
         $cacheInterface->get(
             '0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8',
-            static function () use ($reflectedFile) {
-                return base64_encode(serialize($reflectedFile));
-            }
+            static fn () => base64_encode(serialize($reflectedFile))
         );
     }
 }

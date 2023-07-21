@@ -36,7 +36,7 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
     /** @var Collection<EnumCaseInterface> */
     private Collection $cases;
 
-    private ?Type $backedType = null;
+    private Type|null $backedType = null;
 
     /**
      * Initializes the all properties representing a collection with a new Collection object.
@@ -48,15 +48,13 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         $this->setCases(new Collection());
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection
     {
         $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
 
         foreach ($this->getUsedTraits() as $trait) {
-            if (!$trait instanceof TraitInterface) {
+            if (! $trait instanceof TraitInterface) {
                 continue;
             }
 
@@ -66,9 +64,7 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         return $inheritedMethods;
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getMagicMethods(): Collection
     {
         $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
@@ -97,9 +93,7 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         return $methods;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function setPackage($package): void
     {
         parent::setPackage($package);
@@ -122,28 +116,24 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         }
     }
 
-    /**
-     * @param Collection<EnumCaseInterface> $cases
-     */
+    /** @param Collection<EnumCaseInterface> $cases */
     public function setCases(Collection $cases): void
     {
         $this->cases = $cases;
     }
 
-    /**
-     * @return Collection<EnumCaseInterface>
-     */
+    /** @return Collection<EnumCaseInterface> */
     public function getCases(): Collection
     {
         return $this->cases;
     }
 
-    public function setBackedType(?Type $type): void
+    public function setBackedType(Type|null $type): void
     {
         $this->backedType = $type;
     }
 
-    public function getBackedType(): ?Type
+    public function getBackedType(): Type|null
     {
         return $this->backedType;
     }

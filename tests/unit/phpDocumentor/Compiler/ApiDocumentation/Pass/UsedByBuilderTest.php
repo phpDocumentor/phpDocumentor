@@ -37,7 +37,7 @@ final class UsedByBuilderTest extends TestCase
 
         $usedBy = $counterClass->getTags()->fetch(
             'used-by',
-            Collection::fromClassString(UsesDescriptor::class)
+            Collection::fromClassString(UsesDescriptor::class),
         );
 
         self::assertSame($class, $usedBy->get(0)->getReference());

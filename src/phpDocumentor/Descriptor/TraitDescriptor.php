@@ -35,17 +35,13 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     use Traits\UsesTraits;
     use Traits\HasConstants;
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getInheritedMethods(): Collection
     {
         return Collection::fromInterfaceString(MethodInterface::class);
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getMagicMethods(): Collection
     {
         /** @var Collection<Tag\MethodDescriptor> $methodTags */
@@ -77,17 +73,13 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         return $methods;
     }
 
-    /**
-     * @return Collection<PropertyInterface>
-     */
+    /** @return Collection<PropertyInterface> */
     public function getInheritedProperties(): Collection
     {
         return Collection::fromInterfaceString(PropertyInterface::class);
     }
 
-    /**
-     * @return Collection<PropertyInterface>
-     */
+    /** @return Collection<PropertyInterface> */
     public function getMagicProperties(): Collection
     {
         $tags = $this->getTags();
@@ -113,10 +105,10 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
                         'ERROR',
                         sprintf(
                             'Property name is invalid %s',
-                            $e->getMessage()
+                            $e->getMessage(),
                         ),
-                        null
-                    )
+                        null,
+                    ),
                 );
             }
         }

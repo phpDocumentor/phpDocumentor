@@ -25,18 +25,15 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
     use HasPackage;
     use HasNamespace;
 
-    private ApiSpecification $apiSpecification;
-
     public function __construct(
         string $name,
         Source $source,
         string $outputLocation,
-        ApiSpecification $apiSpecification
+        private readonly ApiSpecification $apiSpecification,
     ) {
         $this->name = $name;
         $this->source = $source;
         $this->outputLocation = $outputLocation;
-        $this->apiSpecification = $apiSpecification;
 
         parent::__construct();
 
@@ -63,9 +60,9 @@ final class ApiSetDescriptor extends DocumentationSetDescriptor
      * Finds a structural element with the given FQSEN in this Documentation Set, or returns null when it
      * could not be found.
      */
-    public function findElement(Fqsen $fqsen): ?ElementInterface
+    public function findElement(Fqsen $fqsen): ElementInterface|null
     {
-        if (!isset($this->getIndexes()['elements'])) {
+        if (! isset($this->getIndexes()['elements'])) {
             return null;
         }
 

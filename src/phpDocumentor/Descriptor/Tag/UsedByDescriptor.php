@@ -33,7 +33,7 @@ final class UsedByDescriptor extends TagDescriptor
      *
      * @return Fqsen|ElementInterface|null
      */
-    public function getReference(): ?object
+    public function getReference(): object|null
     {
         return $this->reference;
     }
@@ -43,7 +43,7 @@ final class UsedByDescriptor extends TagDescriptor
      *
      * @param Fqsen|ElementInterface|null $reference
      */
-    public function setReference(?object $reference): void
+    public function setReference(object|null $reference): void
     {
         $this->reference = $reference;
     }

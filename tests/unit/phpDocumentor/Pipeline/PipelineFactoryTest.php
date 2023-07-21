@@ -23,21 +23,15 @@ use Psr\Log\Test\TestLogger;
  */
 final class PipelineFactoryTest extends TestCase
 {
-    /**
-     * @covers ::create
-     */
+    /** @covers ::create */
     public function test_creates_a_pipeline_with_the_given_series_of_stages(): void
     {
         $pipelineFactory = new PipelineFactory(new TestLogger());
         $pipeline = $pipelineFactory->create(
             [
-                static function ($value) {
-                    return $value + 1;
-                },
-                static function ($value) {
-                    return $value * 2;
-                },
-            ]
+                static fn ($value) => $value + 1,
+                static fn ($value) => $value * 2,
+            ],
         );
 
         // can only test whether it worked by running the pipeline and

@@ -22,21 +22,12 @@ final class DocumentDescriptor implements Descriptor
     use HasName;
     use HasDescription;
 
-    private DocumentNode $documentNode;
-    private string $hash;
-    private string $file;
-    private string $title;
-
     public function __construct(
-        DocumentNode $documentNode,
-        string $hash,
-        string $file,
-        string $title
+        private DocumentNode $documentNode,
+        private readonly string $hash,
+        private readonly string $file,
+        private readonly string $title,
     ) {
-        $this->documentNode = $documentNode;
-        $this->hash = $hash;
-        $this->file = $file;
-        $this->title = $title;
     }
 
     public function getDocumentNode(): DocumentNode

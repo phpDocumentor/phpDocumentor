@@ -33,7 +33,7 @@ class Application extends BaseApplication
         $this->setVersion(\phpDocumentor\Application::VERSION());
     }
 
-    protected function getCommandName(InputInterface $input): ?string
+    protected function getCommandName(InputInterface $input): string|null
     {
         try {
             if ($this->looksLikeACommandName($input->getFirstArgument())) {
@@ -41,7 +41,7 @@ class Application extends BaseApplication
 
                 return $input->getFirstArgument();
             }
-        } catch (CommandNotFoundException $e) {
+        } catch (CommandNotFoundException) {
             //Empty by purpose
         }
 
@@ -60,11 +60,11 @@ class Application extends BaseApplication
                 'config',
                 'c',
                 InputOption::VALUE_OPTIONAL,
-                'Location of a custom configuration file'
-            )
+                'Location of a custom configuration file',
+            ),
         );
         $inputDefinition->addOption(
-            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to')
+            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
         );
 
         return $inputDefinition;
@@ -88,7 +88,7 @@ class Application extends BaseApplication
      *
      * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
      */
-    private function looksLikeACommandName(?string $argument): bool
+    private function looksLikeACommandName(string|null $argument): bool
     {
         return $argument !== null && strlen($argument) < 100;
     }

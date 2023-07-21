@@ -48,7 +48,7 @@ class CallableAdapterTest extends TestCase
         yield
           'callable with parameters' => [
               'input' => new Callable_(
-                  [new CallableParameter(new String_()), new CallableParameter(new String_())]
+                  [new CallableParameter(new String_()), new CallableParameter(new String_())],
               ),
               'output' => 'callable(string, string)',
           ];
@@ -57,42 +57,42 @@ class CallableAdapterTest extends TestCase
           'callable with return type' => [
               'input' => new Callable_(
                   [],
-                  new String_()
+                  new String_(),
               ),
               'output' => 'callable(): string',
           ];
 
         yield 'callable with named parameters' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo'), new CallableParameter(new String_(), 'bar')]
+                [new CallableParameter(new String_(), 'foo'), new CallableParameter(new String_(), 'bar')],
             ),
             'output' => 'callable(string $foo, string $bar)',
         ];
 
         yield 'callable with variadic parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), null, false, true)]
+                [new CallableParameter(new String_(), null, false, true)],
             ),
             'output' => 'callable(string...)',
         ];
 
         yield 'callable with named variadic parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo', false, true)]
+                [new CallableParameter(new String_(), 'foo', false, true)],
             ),
             'output' => 'callable(string ...$foo)',
         ];
 
         yield 'callable with reference parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), null, true)]
+                [new CallableParameter(new String_(), null, true)],
             ),
             'output' => 'callable(string&)',
         ];
 
         yield 'callable with named variadic reference parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo', true, true)]
+                [new CallableParameter(new String_(), 'foo', true, true)],
             ),
             'output' => 'callable(string ...&$foo)',
         ];

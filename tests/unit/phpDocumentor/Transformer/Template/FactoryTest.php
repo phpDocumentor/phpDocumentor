@@ -34,14 +34,12 @@ final class FactoryTest extends TestCase
     use ProphecyTrait;
     use Faker;
 
-    /** @var Factory */
-    private $fixture;
+    private Factory $fixture;
 
     /** @var ObjectProphecy|FlySystemFactory */
     private $flySystemFactory;
 
-    /** @var vfsStreamDirectory */
-    private $globalTemplates;
+    private vfsStreamDirectory $globalTemplates;
 
     /**
      * Sets up the fixture with mocked dependencies.
@@ -56,10 +54,10 @@ final class FactoryTest extends TestCase
                     'FileIo' => $this->givenWriterWithName('FileIo')->reveal(),
                     'twig' => $this->givenWriterWithName('twig')->reveal(),
                     'Graph' => $this->givenWriterWithName('Graph')->reveal(),
-                ]
+                ],
             ),
             $this->flySystemFactory,
-            vfsStream::url('root')
+            vfsStream::url('root'),
         );
     }
 
@@ -77,7 +75,7 @@ final class FactoryTest extends TestCase
         // Act
         $result = $this->fixture->getTemplates(
             [['name' => $templateName, 'parameters' => []]],
-            $this->flySystemFactory->create(Dsn::createFromString('./build'))
+            $this->flySystemFactory->create(Dsn::createFromString('./build')),
         )[$templateName];
 
         // Assert
@@ -94,13 +92,11 @@ final class FactoryTest extends TestCase
         $this->assertSame('.htaccess', $result[0]->getArtifact());
         $this->assertEquals(
             ['debug' => new Parameter('debug', 'on'), 'fakeParam' => new Parameter('fakeParam', 'value')],
-            $result[0]->getParameters()
+            $result[0]->getParameters(),
         );
     }
 
-    /**
-     * @covers ::getTemplates
-     */
+    /** @covers ::getTemplates */
     public function testThatAnErrorOccuredWhenATemplateCannotBeFound(): void
     {
         $this->expectException(TemplateNotFound::class);
@@ -113,13 +109,11 @@ final class FactoryTest extends TestCase
         // Act
         $this->fixture->getTemplates(
             [['name' => 'does-not-exist', 'parameters' => []]],
-            $this->flySystemFactory->create(Dsn::createFromString('./build'))
+            $this->flySystemFactory->create(Dsn::createFromString('./build')),
         );
     }
 
-    /**
-     * @covers ::getTemplatesPath
-     */
+    /** @covers ::getTemplatesPath */
     public function testReturnTemplatePathFromConstructor(): void
     {
         // Act
@@ -129,9 +123,7 @@ final class FactoryTest extends TestCase
         $this->assertSame(vfsStream::url('root'), $result);
     }
 
-    /**
-     * @covers ::getAllNames
-     */
+    /** @covers ::getAllNames */
     public function testRetrieveAllTemplateNames(): void
     {
         // Arrange

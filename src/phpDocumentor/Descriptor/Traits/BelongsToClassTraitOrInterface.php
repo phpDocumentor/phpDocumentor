@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 trait BelongsToClassTraitOrInterface
 {
     /** @var ClassInterface|InterfaceInterface|TraitInterface|null $parent */
-    protected ?ElementInterface $parent = null;
+    protected ElementInterface|null $parent = null;
 
     /**
      * Registers a parent class, interface or trait.
@@ -37,20 +37,18 @@ trait BelongsToClassTraitOrInterface
     {
         Assert::isInstanceOfAny(
             $parent,
-            [ClassInterface::class, InterfaceInterface::class, TraitInterface::class]
+            [ClassInterface::class, InterfaceInterface::class, TraitInterface::class],
         );
 
         $this->setFullyQualifiedStructuralElementName(
-            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName())
+            new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::' . $this->getName()),
         );
 
         $this->parent = $parent;
     }
 
-    /**
-     * @return ClassInterface|InterfaceInterface|TraitInterface|null
-     */
-    public function getParent(): ?ElementInterface
+    /** @return ClassInterface|InterfaceInterface|TraitInterface|null */
+    public function getParent(): ElementInterface|null
     {
         return $this->parent;
     }

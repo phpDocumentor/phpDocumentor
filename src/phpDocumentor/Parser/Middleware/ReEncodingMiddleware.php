@@ -21,26 +21,23 @@ use Symfony\Component\String\ByteString;
 
 final class ReEncodingMiddleware implements Middleware
 {
-    /** @var string */
-    private $encoding = 'UTF-8';
+    private string $encoding = 'UTF-8';
 
     public function withEncoding(string $encoding): void
     {
         $this->encoding = $encoding;
     }
 
-    /**
-     * @param callable(Command): object $next
-     */
+    /** @param callable(Command): object $next */
     public function execute(Command $command, callable $next): object
     {
-        if (!$command instanceof CreateCommand) {
+        if (! $command instanceof CreateCommand) {
             return $next($command);
         }
 
         $file = new ReEncodedFile(
             $command->getFile()->path(),
-            (new ByteString($command->getFile()->getContents()))->toUnicodeString($this->encoding)
+            (new ByteString($command->getFile()->getContents()))->toUnicodeString($this->encoding),
         );
 
         return $next(new CreateCommand($command->getContext(), $file, $command->getStrategies()));

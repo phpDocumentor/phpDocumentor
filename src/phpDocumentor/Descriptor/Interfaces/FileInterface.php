@@ -23,17 +23,13 @@ interface FileInterface extends ElementInterface, ContainerInterface
 {
     public function getHash(): string;
 
-    public function setSource(?string $source): void;
+    public function setSource(string|null $source): void;
 
-    public function getSource(): ?string;
+    public function getSource(): string|null;
 
-    /**
-     * @return Collection<NamespaceInterface|Fqsen>
-     */
+    /** @return Collection<NamespaceInterface|Fqsen> */
     public function getNamespaceAliases(): Collection;
 
-    /**
-     * @return Collection<string>
-     */
+    /** @return Collection<string> */
     public function getIncludes(): Collection;
 }

@@ -43,7 +43,7 @@ class FileIo extends WriterAbstract
      * Invokes the query method contained in this class.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project Document containing the structure.
+     * @param ProjectDescriptor $project        Document containing the structure.
      *
      * @throws InvalidArgumentException If the query is not supported.
      * @throws FileNotFoundException If the source file does not exist or could not be read.
@@ -52,12 +52,12 @@ class FileIo extends WriterAbstract
     public function transform(
         Transformation $transformation,
         ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet
+        DocumentationSetDescriptor $documentationSet,
     ): void {
         $method = $transformation->getQuery();
         if (strtolower($method) !== '$.copy') {
             throw new InvalidArgumentException(
-                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"'
+                'The query ' . $method . ' is not supported by the FileIo writer, supported operation is "copy"',
             );
         }
 

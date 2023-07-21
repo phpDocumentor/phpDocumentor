@@ -49,13 +49,11 @@ final class IterableAdapterTest extends TestCase
             ->willReturn(['bool', 'string']);
 
         $this->adapter = new IterableAdapter(
-            $this->linkRenderer->reveal()
+            $this->linkRenderer->reveal(),
         );
     }
 
-    /**
-     * @covers ::supports
-     */
+    /** @covers ::supports */
     public function testItSupportsIterableTypes(): void
     {
         self::assertTrue($this->adapter->supports([]));
@@ -63,9 +61,7 @@ final class IterableAdapterTest extends TestCase
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /**
-     * @covers ::render
-     */
+    /** @covers ::render */
     public function testRenderOnlyAcceptsIterableElements(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -82,9 +78,7 @@ final class IterableAdapterTest extends TestCase
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
     }
 
-    /**
-     * @return array<string, list<iterable>>
-     */
+    /** @return array<string, list<iterable>> */
     public function renderingVariations(): array
     {
         return [

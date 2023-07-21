@@ -24,7 +24,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 use function array_merge;
 use function current;
-use function get_class;
 use function is_array;
 use function is_iterable;
 use function iterator_to_array;
@@ -33,29 +32,20 @@ use function substr;
 
 final class Executor
 {
-    private PropertyAccessor $propertyAccessor;
+    private readonly PropertyAccessor $propertyAccessor;
 
     public function __construct()
     {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * @param mixed $currentElement
-     * @param mixed $rootElement
-     *
-     * @return mixed
-     */
-    public function evaluate(QueryNode $query, $currentElement, $rootElement = null)
+    /** @return mixed */
+    public function evaluate(QueryNode $query, mixed $currentElement, mixed $rootElement = null)
     {
         return $query->visit($this, $currentElement, $rootElement);
     }
 
-    /**
-     * @param mixed $root
-     * @param mixed $currentObject
-     */
-    public function evaluateEqualsComparison($root, $currentObject, QueryNode $left, QueryNode $right): bool
+    public function evaluateEqualsComparison(mixed $root, mixed $currentObject, QueryNode $left, QueryNode $right): bool
     {
         $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
         $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
@@ -79,13 +69,8 @@ final class Executor
         return $value;
     }
 
-    /**
-     * @param mixed $root
-     * @param mixed $currentElement
-     *
-     * @return mixed
-     */
-    public function evaluatePath($root, $currentElement, PathNode ...$nodes)
+    /** @return mixed */
+    public function evaluatePath(mixed $root, mixed $currentElement, PathNode ...$nodes)
     {
         $result = $currentElement;
         foreach ($nodes as $node) {
@@ -95,17 +80,16 @@ final class Executor
         return $result;
     }
 
-    /**
-     * @param mixed $root
-     * @param mixed $currentElement
-     *
-     * @return mixed
-     */
-    public function evaluateFunctionCall($root, $currentElement, string $functionName, QueryNode ...$arguments)
-    {
+    /** @return mixed */
+    public function evaluateFunctionCall(
+        mixed $root,
+        mixed $currentElement,
+        string $functionName,
+        QueryNode ...$arguments,
+    ) {
         switch ($functionName) {
             case 'type':
-                $class = get_class($this->evaluate($arguments[0], $currentElement, $root));
+                $class = $this->evaluate($arguments[0], $currentElement, $root)::class;
                 $isNamespacedClass = strrpos($class, '\\');
                 if ($isNamespacedClass !== false) {
                     return substr($class, $isNamespacedClass + 1);
@@ -115,12 +99,8 @@ final class Executor
         }
     }
 
-    /**
-     * @param mixed $currentElement
-     *
-     * @return Generator<mixed>
-     */
-    public function evaluateFieldAccess($currentElement, FieldName $fieldName): Generator
+    /** @return Generator<mixed> */
+    public function evaluateFieldAccess(mixed $currentElement, FieldName $fieldName): Generator
     {
         if (
             (is_array($currentElement) || $currentElement instanceof ArrayAccess) &&
@@ -134,7 +114,7 @@ final class Executor
                     if (is_iterable($row)) {
                         $result = array_merge(
                             $result,
-                            is_array($row) ? $row : iterator_to_array($row, false)
+                            is_array($row) ? $row : iterator_to_array($row, false),
                         );
                         continue;
                     }

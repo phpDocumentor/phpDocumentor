@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class StripIgnoredTagsTest extends TestCase
 {
-    /** @var StripIgnoredTags */
-    private $fixture;
+    private StripIgnoredTags $fixture;
 
     protected function setUp(): void
     {
@@ -39,7 +38,7 @@ final class StripIgnoredTagsTest extends TestCase
 
         self::assertSame(
             $object,
-            ($this->fixture)(new FilterPayload($object, ApiSpecification::createDefault()))->getFilterable()
+            ($this->fixture)(new FilterPayload($object, ApiSpecification::createDefault()))->getFilterable(),
         );
     }
 

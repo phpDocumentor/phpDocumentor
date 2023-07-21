@@ -18,15 +18,13 @@ use function trim;
 
 final class PHPReference implements TextRole
 {
-    private InlineLexer $lexer;
-    private LoggerInterface $logger;
+    private readonly InlineLexer $lexer;
 
     public function __construct(
-        LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
     ) {
         // Do not inject the $lexer. It contains a state.
         $this->lexer = new InlineLexer();
-        $this->logger = $logger;
     }
 
     public function getName(): string

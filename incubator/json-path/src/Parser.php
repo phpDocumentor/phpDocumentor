@@ -19,26 +19,22 @@ use phpDocumentor\JsonPath\Parser\ParserBuilder;
 
 final class Parser
 {
-    /** @var InnerParser<Path> */
-    private InnerParser $innerParser;
-
     /** @param InnerParser<Path> $innerParser*/
-    private function __construct(InnerParser $innerParser)
+    private function __construct(private readonly InnerParser $innerParser)
     {
-        $this->innerParser = $innerParser;
     }
 
     public static function createInstance(): self
     {
         return new self(
-            (new ParserBuilder())->build()
+            (new ParserBuilder())->build(),
         );
     }
 
     public function parse(string $query): Query
     {
         return new Query(
-            $this->innerParser->tryString($query)->output()
+            $this->innerParser->tryString($query)->output(),
         );
     }
 }

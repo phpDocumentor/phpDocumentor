@@ -51,13 +51,13 @@ class MethodAssembler extends BaseTagAssembler
 
         /** @var array<string|Type> $argument */
         foreach ($data->getArguments() as $argument) {
-            if (!array_key_exists('name', $argument) || !array_key_exists('type', $argument)) {
+            if (! array_key_exists('name', $argument) || ! array_key_exists('type', $argument)) {
                 continue;
             }
 
             $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
                 $argument['name'],
-                $argument['type']
+                $argument['type'],
             );
             $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }

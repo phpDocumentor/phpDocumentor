@@ -42,9 +42,9 @@ final class ExecutorTest extends TestCase
                 [
                     new RootNode(),
                     new FieldAccess(new FieldName('store')),
-                ]
+                ],
             ),
-            ['store' => $store]
+            ['store' => $store],
         );
 
         self::assertSame([$store], iterator_to_array($result, false));
@@ -61,9 +61,9 @@ final class ExecutorTest extends TestCase
                 [
                     new RootNode(),
                     new FieldAccess(new FieldName('store')),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertSame([$store], iterator_to_array($result));
@@ -83,9 +83,9 @@ final class ExecutorTest extends TestCase
                     new RootNode(),
                     new FieldAccess(new FieldName('store')),
                     new FieldAccess(new FieldName('books')),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertSame($store->getBooks(), iterator_to_array($result, false));
@@ -116,13 +116,13 @@ final class ExecutorTest extends TestCase
                             ]),
                             '==',
                             new Value(
-                                'phpDoc'
-                            )
-                        )
+                                'phpDoc',
+                            ),
+                        ),
                     ),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertSame([$book], iterator_to_array($result, false));
@@ -144,10 +144,10 @@ final class ExecutorTest extends TestCase
                 [
                     new RootNode(),
                     new FieldAccess(
-                        new FieldName('store')
+                        new FieldName('store'),
                     ),
                     new FieldAccess(
-                        new FieldName('books')
+                        new FieldName('books'),
                     ),
                     new FilterNode(
                         new Comparison(
@@ -155,17 +155,17 @@ final class ExecutorTest extends TestCase
                                 'type',
                                 new Path([
                                     new CurrentNode(),
-                                ])
+                                ]),
                             ),
                             '==',
                             new Value(
-                                'Commic'
-                            )
-                        )
+                                'Commic',
+                            ),
+                        ),
                     ),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertSame([$book], iterator_to_array($result, false));
@@ -188,20 +188,20 @@ final class ExecutorTest extends TestCase
                 [
                     new RootNode(),
                     new FieldAccess(
-                        new FieldName('store')
+                        new FieldName('store'),
                     ),
                     new FieldAccess(
-                        new FieldName('books')
+                        new FieldName('books'),
                     ),
                     new FilterNode(
-                        new Wildcard()
+                        new Wildcard(),
                     ),
                     new FieldAccess(
-                        new FieldName('title')
+                        new FieldName('title'),
                     ),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertSame($books, iterator_to_array($result, false));
@@ -228,13 +228,13 @@ final class ExecutorTest extends TestCase
                 [
                     new RootNode(),
                     new FieldAccess(
-                        new FieldName('stores')
+                        new FieldName('stores'),
                     ),
                     new FilterNode(
-                        new Wildcard()
+                        new Wildcard(),
                     ),
                     new FieldAccess(
-                        new FieldName('books')
+                        new FieldName('books'),
                     ),
                     new FilterNode(
                         new Comparison(
@@ -244,16 +244,16 @@ final class ExecutorTest extends TestCase
                             ]),
                             '==',
                             new Value(
-                                'phpDoc'
-                            )
-                        )
+                                'phpDoc',
+                            ),
+                        ),
                     ),
                     new FieldAccess(
-                        new FieldName('title')
+                        new FieldName('title'),
                     ),
-                ]
+                ],
             ),
-            $root
+            $root,
         );
 
         self::assertEquals(['phpDoc', 'phpDoc'], iterator_to_array($result, false));

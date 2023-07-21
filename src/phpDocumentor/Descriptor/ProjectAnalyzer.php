@@ -15,9 +15,9 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use Stringable;
 
 use function count;
-use function get_class;
 use function is_string;
 use function sprintf;
 use function str_replace;
@@ -31,7 +31,7 @@ use const PHP_EOL;
  * as the total number of elements per type of Descriptor, the number of top level namespaces or the number of parent
  * classes that could not be interpreted by the Compiler passes.
  */
-class ProjectAnalyzer
+class ProjectAnalyzer implements Stringable
 {
     protected int $fileCount = 0;
     protected int $topLevelNamespaceCount = 0;
@@ -56,7 +56,7 @@ class ProjectAnalyzer
         $this->descriptorCountByType = $elementCounter;
         $this->fileCount = count($documentationSet->getFiles());
 
-        if (!$documentationSet instanceof ApiSetDescriptor) {
+        if (! $documentationSet instanceof ApiSetDescriptor) {
             return;
         }
 
@@ -68,7 +68,7 @@ class ProjectAnalyzer
      */
     public function __toString(): string
     {
-        $logString = <<<TEXT
+        $logString = <<<'TEXT'
 In the Project are:
   %8d files
   %8d top-level namespaces
@@ -85,7 +85,7 @@ TEXT;
             $logString,
             $this->fileCount,
             $this->topLevelNamespaceCount,
-            $this->unresolvedParentClassesCount
+            $this->unresolvedParentClassesCount,
         );
     }
 
@@ -100,11 +100,11 @@ TEXT;
      */
     protected function addElementToCounter(array $classCounters, ElementInterface $element): array
     {
-        if (!isset($classCounters[get_class($element)])) {
-            $classCounters[get_class($element)] = 0;
+        if (! isset($classCounters[$element::class])) {
+            $classCounters[$element::class] = 0;
         }
 
-        ++$classCounters[get_class($element)];
+        ++$classCounters[$element::class];
 
         return $classCounters;
     }
@@ -114,11 +114,11 @@ TEXT;
      */
     protected function incrementUnresolvedParentCounter(ElementInterface $element): void
     {
-        if (!$element instanceof ClassInterface) {
+        if (! $element instanceof ClassInterface) {
             return;
         }
 
-        if (!is_string($element->getParent())) {
+        if (! is_string($element->getParent())) {
             return;
         }
 
@@ -134,7 +134,7 @@ TEXT;
     {
         return $documentationSet->getIndexes()->fetch(
             'elements',
-            Collection::fromInterfaceString(ElementInterface::class)
+            Collection::fromInterfaceString(ElementInterface::class),
         );
     }
 }

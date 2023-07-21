@@ -13,21 +13,23 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
+use Stringable;
 
 /**
  * @api
  * @package phpDocumentor\AST\Tags
  */
-class SeeDescriptor extends TagDescriptor
+class SeeDescriptor extends TagDescriptor implements Stringable
 {
-    /** @var Reference $reference */
-    private $reference;
-
-    public function setReference(Reference $reference): void
-    {
-        $this->reference = $reference;
+    public function __construct(
+        string $name,
+        private readonly Reference $reference,
+        DescriptionDescriptor|null $description = null,
+    ) {
+        parent::__construct($name, $description);
     }
 
     public function getReference(): Reference

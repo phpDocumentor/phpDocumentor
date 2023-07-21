@@ -42,15 +42,11 @@ interface ProjectInterface
     /**
      * Returns the package name for this element.
      */
-    public function getPackage(): ?PackageInterface;
+    public function getPackage(): PackageInterface|null;
 
-    /**
-     * @return NamespaceInterface|string
-     */
+    /** @return NamespaceInterface|string */
     public function getNamespace();
 
-    /**
-     * @return Collection<VersionDescriptor>
-     */
+    /** @return Collection<VersionDescriptor> */
     public function getVersions(): Collection;
 }

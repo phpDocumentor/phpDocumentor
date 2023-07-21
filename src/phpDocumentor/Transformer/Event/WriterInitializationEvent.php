@@ -18,8 +18,7 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 
 final class WriterInitializationEvent extends EventAbstract
 {
-    /** @var WriterAbstract|null */
-    private $writer;
+    private WriterAbstract|null $writer = null;
 
     /**
      * Creates a new instance of a derived object and return that.
@@ -41,7 +40,7 @@ final class WriterInitializationEvent extends EventAbstract
         return $this;
     }
 
-    public function getWriter(): ?WriterAbstract
+    public function getWriter(): WriterAbstract|null
     {
         return $this->writer;
     }

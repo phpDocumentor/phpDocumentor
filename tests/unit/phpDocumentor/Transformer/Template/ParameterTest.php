@@ -21,9 +21,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ParameterTest extends TestCase
 {
-    /**
-     * @covers ::key
-     */
+    /** @covers ::key */
     public function testGetKey(): void
     {
         $fixture = new Parameter('key', 'value');
@@ -31,9 +29,7 @@ final class ParameterTest extends TestCase
         $this->assertSame('key', $fixture->key());
     }
 
-    /**
-     * @covers ::value
-     */
+    /** @covers ::value */
     public function testGetValue(): void
     {
         $fixture = new Parameter('key', 'value');

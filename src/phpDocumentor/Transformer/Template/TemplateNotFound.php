@@ -17,9 +17,7 @@ use InvalidArgumentException;
 
 use function sprintf;
 
-/**
- * @codeCoverageIgnore not worth it
- */
+/** @codeCoverageIgnore not worth it */
 final class TemplateNotFound extends InvalidArgumentException
 {
     public function __construct(string $template)

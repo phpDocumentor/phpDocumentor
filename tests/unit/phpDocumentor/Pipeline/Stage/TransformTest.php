@@ -46,7 +46,7 @@ final class TransformTest extends TestCase
     private $logger;
 
     /** @var Compile */
-    private $transform;
+    private Transform $transform;
 
     /** @var LegacyMockInterface|MockInterface|FlySystemFactory */
     private $flySystemFactory;
@@ -71,7 +71,7 @@ final class TransformTest extends TestCase
             $this->transformer->reveal(),
             $this->flySystemFactory->reveal(),
             $this->logger->reveal(),
-            $templateFactory->reveal()
+            $templateFactory->reveal(),
         );
     }
 
@@ -105,9 +105,7 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');

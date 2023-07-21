@@ -31,12 +31,10 @@ trait HasMethods
         $this->methods = $methods;
     }
 
-    /**
-     * @return Collection<MethodInterface>
-     */
+    /** @return Collection<MethodInterface> */
     public function getMethods(): Collection
     {
-        if (!isset($this->methods)) {
+        if (! isset($this->methods)) {
             $this->methods = Collection::fromInterfaceString(MethodInterface::class);
         }
 

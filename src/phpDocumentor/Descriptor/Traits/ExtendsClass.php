@@ -43,9 +43,7 @@ trait ExtendsClass
         $this->parent = $parent;
     }
 
-    /**
-     * @return ClassInterface|Fqsen|string|null
-     */
+    /** @return ClassInterface|Fqsen|string|null */
     public function getParent()
     {
         return $this->parent;

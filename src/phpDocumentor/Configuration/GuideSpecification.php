@@ -6,27 +6,13 @@ namespace phpDocumentor\Configuration;
 
 use ArrayAccess;
 
-/**
- * @implements ArrayAccess<String, mixed>
- */
+/** @implements ArrayAccess<String, mixed> */
 class GuideSpecification implements ArrayAccess
 {
     use LegacyArrayAccess;
 
-    /** @var Source */
-    private $source;
-
-    /** @var string */
-    private $output;
-
-    /** @var string */
-    private $format;
-
-    public function __construct(Source $source, string $output, string $format)
+    public function __construct(private Source $source, private string $output, private string $format)
     {
-        $this->source = $source;
-        $this->output = $output;
-        $this->format = $format;
     }
 
     public function source(): Source

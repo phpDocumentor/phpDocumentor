@@ -31,11 +31,10 @@ use const DIRECTORY_SEPARATOR;
  */
 class Finder
 {
-    /** @var string */
-    private $sourceDirectory = '';
+    private string $sourceDirectory = '';
 
     /** @var string[] */
-    private $exampleDirectories = [];
+    private array $exampleDirectories = [];
 
     /**
      * Attempts to find the example contents for the given descriptor.
@@ -45,13 +44,13 @@ class Finder
         $filename = $descriptor->getFilePath();
 
         $file = $this->getExampleFileContents($filename);
-        if (!$file) {
+        if (! $file) {
             return sprintf('** File not found : %s **', $filename);
         }
 
         return implode(
             '',
-            array_slice($file, $descriptor->getStartingLine() - 1, $descriptor->getLineCount())
+            array_slice($file, $descriptor->getStartingLine() - 1, $descriptor->getLineCount()),
         );
     }
 
@@ -104,7 +103,7 @@ class Finder
      *
      * @return ?array<string>
      */
-    private function getExampleFileContents(string $filename): ?array
+    private function getExampleFileContents(string $filename): array|null
     {
         $normalizedPath = null;
 
@@ -116,7 +115,7 @@ class Finder
             }
         }
 
-        if (!$normalizedPath) {
+        if (! $normalizedPath) {
             if (is_readable($this->getExamplePathFromSource($filename))) {
                 $normalizedPath = $this->getExamplePathFromSource($filename);
             } elseif (is_readable($this->getExamplePathFromExampleDirectory($filename))) {
@@ -154,7 +153,7 @@ class Finder
             '%s%s%s',
             trim($this->getSourceDirectory(), '\\/'),
             DIRECTORY_SEPARATOR,
-            trim($file, '"')
+            trim($file, '"'),
         );
     }
 }

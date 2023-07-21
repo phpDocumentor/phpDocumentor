@@ -18,25 +18,19 @@ use phpDocumentor\JsonPath\Executor;
 
 final class Comparison implements Expression
 {
-    private QueryNode $left;
-    private string $operator;
-    private QueryNode $right;
-
-    public function __construct(QueryNode $left, string $operator, QueryNode $right)
-    {
-        $this->left = $left;
-        $this->operator = $operator;
-        $this->right = $right;
+    public function __construct(
+        private readonly QueryNode $left,
+        private readonly string $operator,
+        private readonly QueryNode $right,
+    ) {
     }
 
     /** @inheritDoc */
     public function visit(Executor $param, $currentObject, $root): bool
     {
-        switch ($this->operator) {
-            case '==':
-                return $param->evaluateEqualsComparison($root, $currentObject, $this->left, $this->right);
-        }
-
-        throw new InvalidArgumentException();
+        return match ($this->operator) {
+            '==' => $param->evaluateEqualsComparison($root, $currentObject, $this->left, $this->right),
+            default => throw new InvalidArgumentException(),
+        };
     }
 }

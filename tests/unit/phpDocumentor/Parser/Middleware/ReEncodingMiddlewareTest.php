@@ -55,15 +55,13 @@ final class ReEncodingMiddlewareTest extends TestCase
                 $this->assertSame($contents->toString(), $reEncodedFile->getContents());
 
                 return new PhpFile($reEncodedFile->md5(), $reEncodedFile->path());
-            }
+            },
         );
 
         $this->assertInstanceOf(PhpFile::class, $result);
     }
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -78,11 +76,11 @@ final class ReEncodingMiddlewareTest extends TestCase
             new CreateCommand(
                 $this->faker()->phpParserContext(),
                 $file,
-                new ProjectFactoryStrategies([])
+                new ProjectFactoryStrategies([]),
             ),
             static function (): void {
                 // not important; never called due to exception
-            }
+            },
         );
     }
 

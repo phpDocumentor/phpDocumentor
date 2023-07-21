@@ -41,7 +41,7 @@ trait UsesTraits
      */
     public function getUsedTraits(): Collection
     {
-        if (!isset($this->usedTraits)) {
+        if (! isset($this->usedTraits)) {
             $this->usedTraits = new Collection();
         }
 

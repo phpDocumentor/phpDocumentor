@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Event;
 
+use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Writer\FileIo;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -14,11 +15,9 @@ use stdClass;
  */
 final class WriterInitializationEventTest extends TestCase
 {
-    /** @var WriterInitializationEvent */
-    private $fixture;
+    private WriterInitializationEvent|EventAbstract $fixture;
 
-    /** @var FileIo */
-    private $writer;
+    private FileIo $writer;
 
     protected function setUp(): void
     {

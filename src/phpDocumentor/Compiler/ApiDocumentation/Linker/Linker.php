@@ -29,7 +29,6 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 
-use function get_class;
 use function is_array;
 use function is_iterable;
 use function is_object;
@@ -55,16 +54,10 @@ use function ucfirst;
  */
 class Linker extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 10000;
-
-    /** @var array<class-string, array<string>> */
-    private $substitutions;
+    final public const COMPILER_PRIORITY = 10000;
 
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
-    private $processedObjects = [];
-
-    /** @var DescriptorRepository */
-    private $descriptorRepository;
+    private array $processedObjects = [];
 
     public function getDescription(): string
     {
@@ -76,10 +69,10 @@ class Linker extends ApiDocumentationPass
      *
      * @param array<class-string, array<string>> $substitutions
      */
-    public function __construct(array $substitutions, DescriptorRepository $descriptorRepository)
-    {
-        $this->substitutions = $substitutions;
-        $this->descriptorRepository = $descriptorRepository;
+    public function __construct(
+        private readonly array $substitutions,
+        private readonly DescriptorRepository $descriptorRepository,
+    ) {
     }
 
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
@@ -129,7 +122,7 @@ class Linker extends ApiDocumentationPass
      *
      * @return string|DocumentationSetDescriptor|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
      */
-    public function substitute($item, ?DescriptorAbstract $container = null)
+    public function substitute($item, DescriptorAbstract|null $container = null)
     {
         if ($item instanceof Type) {
             return null;
@@ -149,7 +142,7 @@ class Linker extends ApiDocumentationPass
             return $this->substituteChildrenOfCollection($item, $container);
         }
 
-        if (!is_object($item)) {
+        if (! is_object($item)) {
             return null;
         }
 
@@ -163,7 +156,7 @@ class Linker extends ApiDocumentationPass
      *
      * @return array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract>|null
      */
-    private function substituteChildrenOfCollection(iterable $collection, ?DescriptorAbstract $container): ?iterable
+    private function substituteChildrenOfCollection(iterable $collection, DescriptorAbstract|null $container): iterable|null
     {
         $isModified = false;
         foreach ($collection as $key => $element) {
@@ -210,7 +203,7 @@ class Linker extends ApiDocumentationPass
             || $item instanceof EnumInterface;
     }
 
-    private function substituteMembersOfObject(object $object, ?DescriptorAbstract $container): void
+    private function substituteMembersOfObject(object $object, DescriptorAbstract|null $container): void
     {
         $hash = spl_object_hash($object);
         if (isset($this->processedObjects[$hash])) {
@@ -222,7 +215,7 @@ class Linker extends ApiDocumentationPass
 
         $this->processedObjects[$hash] = $hash;
 
-        $objectClassName = get_class($object);
+        $objectClassName = $object::class;
         $fieldNames = $this->substitutions[$objectClassName] ?? [];
 
         foreach ($fieldNames as $fieldName) {

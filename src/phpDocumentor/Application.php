@@ -50,7 +50,7 @@ final class Application
             try {
                 $version = PrettyVersions::getRootPackageVersion()->getPrettyVersion();
                 $version = sprintf('%s', ltrim($version, 'v'));
-            } catch (OutOfBoundsException $e) {
+            } catch (OutOfBoundsException) {
             }
         }
 

@@ -30,9 +30,7 @@ final class GarbageCollectCacheTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItWillInstructTheDescriptorMapperToCollectGarbage(): void
     {
         $files = ['file1'];

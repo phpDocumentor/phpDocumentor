@@ -22,8 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class NamespaceDescriptorTest extends TestCase
 {
-    /** @var NamespaceDescriptor $fixture */
-    private $fixture;
+    private NamespaceDescriptor $fixture;
 
     /**
      * Creates a new (empty) fixture object.

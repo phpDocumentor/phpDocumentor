@@ -20,16 +20,11 @@ use Psr\Log\LoggerInterface;
 
 final class PipelineFactory
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
-    /**
-     * @param iterable<callable> $stages
-     */
+    /** @param iterable<callable> $stages */
     public function create(iterable $stages): PipelineInterface
     {
         $builder = new PipelineBuilder();

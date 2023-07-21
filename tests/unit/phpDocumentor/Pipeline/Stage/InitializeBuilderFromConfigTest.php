@@ -42,8 +42,8 @@ final class InitializeBuilderFromConfigTest extends TestCase
                         'settings' => [],
                     ],
                 ],
-                $builder->reveal()
-            )
+                $builder->reveal(),
+            ),
         );
     }
 }

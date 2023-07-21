@@ -18,17 +18,13 @@ use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
-use function array_merge;
 use function assert;
 use function is_array;
 
 final class NullableAdapter implements LinkRendererInterface
 {
-    private LinkRendererInterface $rendererChain;
-
-    public function __construct(LinkRendererInterface $rendererChain)
+    public function __construct(private readonly LinkRendererInterface $rendererChain)
     {
-        $this->rendererChain = $rendererChain;
     }
 
     /**
@@ -65,11 +61,11 @@ final class NullableAdapter implements LinkRendererInterface
         $result = [];
         foreach ($value as $path) {
             $links = $this->rendererChain->render($path, $presentation);
-            if (!is_array($links)) {
+            if (! is_array($links)) {
                 $links = [$links];
             }
 
-            $result = array_merge($result, $links);
+            $result = [...$result, ...$links];
         }
 
         return $result;

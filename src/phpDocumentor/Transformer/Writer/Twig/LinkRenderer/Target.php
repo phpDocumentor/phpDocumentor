@@ -32,29 +32,12 @@ use function explode;
 final class Target
 {
     /**
-     * The title of the target that needs to be shown in the link text, or when an abbreviation is present
-     * as part of the ABBR tag's title attribute.
-     */
-    private string $title;
-
-    /**
      * Targets can optionally have their link text be an abbreviation.
      *
      * When this field is not null, it is used as the link text and the regular title is set as the title attribute
      * of a generated ABBR tag.
      */
-    private ?string $abbreviation;
-
-    /**
-     * The link url of this Target.
-     *
-     * The {@see LinkRenderer} is responsible for converting an 'input' to something that can be linked to; and the URL
-     * represents the thing that should be linked to.
-     *
-     * Sometimes, input cannot be resolved (FQCNs that we do not document). When that happens the URL is null, and the
-     * {@see HtmlFormatter} will still render a reference to that FQCN, but without a link.
-     */
-    private ?string $url;
+    private string|null $abbreviation;
 
     /**
      * How should the HTML be formatted.
@@ -68,12 +51,23 @@ final class Target
     private string $presentation;
 
     public function __construct(
-        string $title,
-        ?string $url = null,
-        string $presentation = LinkRenderer::PRESENTATION_NORMAL
+        /**
+         * The title of the target that needs to be shown in the link text, or when an abbreviation is present
+         * as part of the ABBR tag's title attribute.
+         */
+        private readonly string $title,
+        /**
+         * The link url of this Target.
+         *
+         * The {@see LinkRenderer} is responsible for converting an 'input' to something that can be linked to;
+         * and the URL represents the thing that should be linked to.
+         *
+         * Sometimes, input cannot be resolved (FQCNs that we do not document). When that happens the URL is null,
+         * and the {@see HtmlFormatter} will still render a reference to that FQCN, but without a link.
+         */
+        private readonly string|null $url = null,
+        string $presentation = LinkRenderer::PRESENTATION_NORMAL,
     ) {
-        $this->title = $title;
-        $this->url = $url;
         $this->setPresentation($presentation);
     }
 
@@ -82,12 +76,12 @@ final class Target
         return $this->title;
     }
 
-    public function getAbbreviation(): ?string
+    public function getAbbreviation(): string|null
     {
         return $this->abbreviation;
     }
 
-    public function getUrl(): ?string
+    public function getUrl(): string|null
     {
         return $this->url;
     }

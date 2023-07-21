@@ -22,13 +22,14 @@ use function array_map;
 use function array_merge;
 use function ltrim;
 use function rtrim;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
-use function strpos;
-use function substr;
+use function str_starts_with;
 
 final class PathNormalizingMiddleware implements MiddlewareInterface
 {
-    public function __invoke(Configuration $configuration, ?UriInterface $uri = null): Configuration
+    public function __invoke(Configuration $configuration, UriInterface|null $uri = null): Configuration
     {
         $configuration = $this->makeDsnRelativeToConfig($configuration, $uri);
 
@@ -52,7 +53,7 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
      *
      * Absolute DSNs are untouched.
      */
-    private function makeDsnRelativeToConfig(Configuration $configuration, ?UriInterface $uri): Configuration
+    private function makeDsnRelativeToConfig(Configuration $configuration, UriInterface|null $uri): Configuration
     {
         if ($uri === null) {
             return $configuration;
@@ -78,8 +79,8 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             foreach ($version->getGuides() ?? [] as $key => $guide) {
                 $version->guides[$key] = $version->guides[$key]->withSource(
                     $guide->source()->withDsn(
-                        $guide->source()->dsn()->resolve($configDsn)
-                    )
+                        $guide->source()->dsn()->resolve($configDsn),
+                    ),
                 );
             }
         }
@@ -109,13 +110,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                         $api['ignore'],
                         [
                             'paths' => array_map(
-                                function (string $path): string {
-                                    return $this->pathToGlobPattern($path);
-                                },
-                                $api['ignore']['paths']
+                                fn (string $path): string => $this->pathToGlobPattern($path),
+                                $api['ignore']['paths'],
                             ),
-                        ]
-                    )
+                        ],
+                    ),
                 );
 
                 $version->api[$key] = $api;
@@ -125,12 +124,10 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
                 $version->guides[$key] = $guide->withSource(
                     $guide->source()->withPaths(
                         array_map(
-                            function (string $path): Path {
-                                return new Path($this->normalizePath((string) $path));
-                            },
-                            $guide->source()->paths()
-                        )
-                    )
+                            fn (string $path): Path => new Path($this->normalizePath((string) $path)),
+                            $guide->source()->paths(),
+                        ),
+                    ),
                 );
             }
         }
@@ -140,11 +137,11 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
 
     private function normalizePath(string $path): string
     {
-        if (strpos($path, '.') === 0) {
+        if (str_starts_with($path, '.')) {
             $path = ltrim($path, '.');
         }
 
-        if (strpos($path, '/') !== 0) {
+        if (! str_starts_with($path, '/')) {
             $path = '/' . $path;
         }
 
@@ -165,14 +162,14 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             return '/**/*';
         }
 
-        if (substr($path, -1) !== '*' && strpos($path, '.') === false) {
+        if (! str_ends_with($path, '*') && ! str_contains($path, '.')) {
             $path .= '/**/*';
         }
 
         return $path;
     }
 
-    public function normalizeCachePath(?UriInterface $uri, Path $cachePath): Path
+    public function normalizeCachePath(UriInterface|null $uri, Path $cachePath): Path
     {
         if ($cachePath::isAbsolutePath((string) $cachePath)) {
             return $cachePath;

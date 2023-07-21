@@ -46,9 +46,9 @@ interface EnumInterface extends ElementInterface, TypeInterface
     /** @return Collection<EnumCaseInterface> */
     public function getCases(): Collection;
 
-    public function setBackedType(?Type $type): void;
+    public function setBackedType(Type|null $type): void;
 
-    public function getBackedType(): ?Type;
+    public function getBackedType(): Type|null;
 
     /**
      * Sets a collection of all traits used by this class.

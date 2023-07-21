@@ -47,9 +47,7 @@ final class PropertyAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create
-     */
+    /** @covers \phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create */
     public function testCreatePropertyDescriptorFromReflector(): void
     {
         // Arrange
@@ -59,7 +57,7 @@ final class PropertyAssemblerTest extends TestCase
         $propertyReflectorMock = $this->givenAPropertyReflector(
             $namespace,
             $propertyName,
-            $this->givenADocBlockObject(true)
+            $this->givenADocBlockObject(true),
         );
 
         // Act
@@ -81,7 +79,7 @@ final class PropertyAssemblerTest extends TestCase
     private function givenAPropertyReflector(
         string $namespace,
         string $propertyName,
-        ?DocBlock $docBlockMock = null
+        DocBlock|null $docBlockMock = null,
     ): Property {
         return new Property(
             new Fqsen('\\' . $namespace . '::$' . $propertyName),
@@ -91,7 +89,7 @@ final class PropertyAssemblerTest extends TestCase
             false,
             null,
             null,
-            new String_()
+            new String_(),
         );
     }
 
@@ -108,7 +106,7 @@ final class PropertyAssemblerTest extends TestCase
             $tags[] = new DocBlock\Tags\Var_(
                 'variableName',
                 new String_(),
-                new Description('Var description')
+                new Description('Var description'),
             );
         }
 

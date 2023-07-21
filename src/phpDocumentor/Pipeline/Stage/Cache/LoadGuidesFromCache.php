@@ -11,16 +11,8 @@ use Psr\Log\LoggerInterface;
 
 final class LoadGuidesFromCache
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CommandBus */
-    private $commandBus;
-
-    public function __construct(CommandBus $commandBus, LoggerInterface $logger)
+    public function __construct(private readonly CommandBus $commandBus, private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Payload $payload): Payload
@@ -28,15 +20,15 @@ final class LoadGuidesFromCache
         $configuration = $payload->getConfig();
         if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {
             $useCache = $configuration['phpdocumentor']['use-cache'];
-            if ($useCache && !$payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
+            if ($useCache && ! $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()) {
                 $this->logger->info('Loading project from cache');
 
                 $cacheFolder = $configuration['phpdocumentor']['paths']['cache'];
                 $this->commandBus->handle(
                     new LoadCacheCommand(
                         ((string) $cacheFolder) . '/guides',
-                        $useCache
-                    )
+                        $useCache,
+                    ),
                 );
             }
         }

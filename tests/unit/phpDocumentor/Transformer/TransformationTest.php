@@ -26,20 +26,15 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     use Faker;
 
-    /** @var Transformation $fixture */
-    private $fixture;
+    private Transformation $fixture;
 
-    /** @var string */
-    private $query = 'queryString';
+    private string $query = 'queryString';
 
-    /** @var string */
-    private $writer = 'writerString';
+    private string $writer = 'writerString';
 
-    /** @var string */
-    private $source = 'sourceString';
+    private string $source = 'sourceString';
 
-    /** @var string */
-    private $artifact = 'artifactString';
+    private string $artifact = 'artifactString';
 
     /** @var Template */
     private $template;
@@ -55,45 +50,35 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
             $this->query,
             $this->writer,
             $this->source,
-            $this->artifact
+            $this->artifact,
         );
     }
 
-    /**
-     * @covers ::template
-     */
+    /** @covers ::template */
     public function testGetTemplate(): void
     {
         $this->assertSame($this->template, $this->fixture->template());
     }
 
-    /**
-     * @covers ::getQuery
-     */
+    /** @covers ::getQuery */
     public function testGetQuery(): void
     {
         $this->assertSame('$.' . $this->query, $this->fixture->getQuery());
     }
 
-    /**
-     * @covers ::getWriter
-     */
+    /** @covers ::getWriter */
     public function testGetWriter(): void
     {
         $this->assertSame($this->writer, $this->fixture->getWriter());
     }
 
-    /**
-     * @covers ::getSource
-     */
+    /** @covers ::getSource */
     public function testGetSource(): void
     {
         $this->assertSame($this->source, $this->fixture->getSource());
     }
 
-    /**
-     * @covers ::getArtifact
-     */
+    /** @covers ::getArtifact */
     public function testGetArtifact(): void
     {
         $this->assertSame($this->artifact, $this->fixture->getArtifact());
@@ -112,35 +97,27 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($parameters, $this->fixture->getParameters());
     }
 
-    /**
-     * @covers ::getParameter
-     */
+    /** @covers ::getParameter */
     public function testGetParameterWithExistingName(): void
     {
         $parameters = $this->givenAParameter();
         $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('firstKey'));
     }
 
-    /**
-     * @covers ::getParameter
-     */
+    /** @covers ::getParameter */
     public function testGetParameterWithNonExistingName(): void
     {
         $this->assertNull($this->fixture->getParameter('somethingElse'));
     }
 
-    /**
-     * @covers ::getParametersWithKey
-     */
+    /** @covers ::getParametersWithKey */
     public function testGetParametersWithKeyWithExistingName(): void
     {
         $parameters = $this->givenAParameter();
         $this->assertEquals([$parameters['firstKey']], $this->fixture->getParametersWithKey('firstKey'));
     }
 
-    /**
-     * @covers ::getParametersWithKey
-     */
+    /** @covers ::getParametersWithKey */
     public function testGetParametersWithKeyWithNonExistingName(): void
     {
         $parameters = $this->givenAParameter();

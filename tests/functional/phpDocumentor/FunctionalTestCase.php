@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
 
 class FunctionalTestCase extends TestCase
 {
-    private $workingDir;
+    private string|bool $workingDir;
 
     protected function setUp() : void
     {

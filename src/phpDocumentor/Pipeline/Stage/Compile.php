@@ -21,14 +21,11 @@ use League\Pipeline\Pipeline;
  */
 final class Compile
 {
-    private Pipeline $compilerPipeline;
-
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
-    public function __construct(Pipeline $compilerPipeline)
+    public function __construct(private readonly Pipeline $compilerPipeline)
     {
-        $this->compilerPipeline = $compilerPipeline;
     }
 
     /**

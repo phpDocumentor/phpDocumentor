@@ -44,12 +44,8 @@ use function ucfirst;
  */
 final class PackageTreeBuilder extends ApiDocumentationPass
 {
-    /** @var Parser */
-    private $parser;
-
-    public function __construct(Parser $parser)
+    public function __construct(private readonly Parser $parser)
     {
-        $this->parser = $parser;
     }
 
     public const COMPILER_PRIORITY = 9001;
@@ -80,7 +76,7 @@ final class PackageTreeBuilder extends ApiDocumentationPass
 
         $subject->getIndexes()->set(
             'packages',
-            Collection::fromInterfaceString(ElementInterface::class, $packages->getAll())
+            Collection::fromInterfaceString(ElementInterface::class, $packages->getAll()),
         );
 
         return $subject;
@@ -94,10 +90,10 @@ final class PackageTreeBuilder extends ApiDocumentationPass
      *
      * @param Collection<PackageInterface> $packages
      * @param array<ElementInterface> $elements Series of elements to add to their respective package.
-     * @param string $type Declares which field of the package will be populated with the given
-     *                     series of elements. This name will be transformed to a getter which must exist. Out of
-     *                     performance considerations will no effort be done to verify whether the provided type is
-     *                     valid.
+     * @param string $type     Declares which field of the package will be populated with the given
+     *                         series of elements. This name will be transformed to a getter which must exist. Out of
+     *                         performance considerations will no effort be done to verify whether the provided type is
+     *                         valid.
      */
     private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type): void
     {
@@ -125,7 +121,7 @@ final class PackageTreeBuilder extends ApiDocumentationPass
 
             // ensure consistency by trimming the slash prefix and then re-appending it.
             $packageIndexName = '\\' . ltrim($packageName, '\\');
-            if (!isset($packages[$packageIndexName])) {
+            if (! isset($packages[$packageIndexName])) {
                 $this->createPackageDescriptorTree($packages, $packageName);
             }
 

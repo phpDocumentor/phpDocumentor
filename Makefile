@@ -2,7 +2,7 @@ ARGS ?=
 
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
 .DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
-.PHP = docker run -it --rm -v${CURDIR}:/data -w /data php:8.1
+.PHP = docker run --user=$(shell id -u):$(shell id -g) -it --rm -v${CURDIR}:/data -w /data php:8.1
 
 .PHONY: help
 help:
@@ -77,11 +77,11 @@ pull-containers:
 
 .PHONY: phpcs
 phpcs:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -s ${ARGS}
+	${.PHP} ./bin/phpcs -s ${ARGS}
 
 .PHONY: phpcbf
 phpcbf:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest phpcbf ${ARGS}
+	${.PHP} ./bin/phpcbf ${ARGS}
 
 .PHONY: phpstan
 phpstan:

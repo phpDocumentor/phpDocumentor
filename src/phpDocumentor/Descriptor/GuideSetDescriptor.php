@@ -19,19 +19,15 @@ use phpDocumentor\Guides\Nodes\ProjectNode;
 final class GuideSetDescriptor extends DocumentationSetDescriptor
 {
     /** @var string */
-    private $inputFormat;
-    /** @var string */
     /** @var Collection<DocumentDescriptor> */
-    private $documents;
-
-    private ProjectNode $projectNode;
+    private readonly Collection $documents;
 
     public function __construct(
         string $name,
         Source $source,
         string $outputLocation,
-        string $inputFormat,
-        ProjectNode $projectNode,
+        private readonly string $inputFormat,
+        private readonly ProjectNode $projectNode,
         private readonly string $outputFormat = 'html',
         private readonly int $initialHeaderLevel = 1,
     ) {
@@ -40,9 +36,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         $this->name = $name;
         $this->source = $source;
         $this->outputLocation = $outputLocation;
-        $this->inputFormat = $inputFormat;
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
-        $this->projectNode = $projectNode;
     }
 
     public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void

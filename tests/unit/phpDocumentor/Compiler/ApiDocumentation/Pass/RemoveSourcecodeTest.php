@@ -29,9 +29,7 @@ final class RemoveSourcecodeTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRemovesSourceWhenDisabled(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
@@ -60,9 +58,7 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
@@ -83,7 +79,7 @@ final class RemoveSourcecodeTest extends TestCase
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $apiSetDescriptor->getFiles()->first()->getTags()->set(
             'filesource',
-            $this->faker()->fileDescriptor()
+            $this->faker()->fileDescriptor(),
         );
         $fixture = new RemoveSourcecode();
 
@@ -101,7 +97,7 @@ final class RemoveSourcecodeTest extends TestCase
         $apiSetDescriptor->getSettings()['include-source'] = false;
         $apiSetDescriptor->getFiles()->first()->getTags()->set(
             'filesource',
-            $this->faker()->fileDescriptor()
+            $this->faker()->fileDescriptor(),
         );
         $fixture = new RemoveSourcecode();
 
@@ -117,16 +113,14 @@ final class RemoveSourcecodeTest extends TestCase
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
-                [$this->faker()->fileDescriptor()]
-            )
+                [$this->faker()->fileDescriptor()],
+            ),
         );
 
         return $apiDescriptor;
     }
 
-    /**
-     * @covers ::getDescription
-     */
+    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $pass = new RemoveSourcecode();

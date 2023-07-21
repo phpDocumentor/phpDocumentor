@@ -40,7 +40,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
             /** @var TagDescriptor[] $todos */
             $todos = $element->getTags()->fetch('todo');
 
-            if (!$todos) {
+            if (! $todos) {
                 continue;
             }
 
@@ -64,7 +64,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
             ? $element
             : $element->getFile();
 
-        if (!$fileDescriptor instanceof FileDescriptor) {
+        if (! $fileDescriptor instanceof FileDescriptor) {
             throw new UnexpectedValueException('An element should always have a file associated with it');
         }
 
@@ -81,7 +81,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
                 'type' => 'TODO',
                 'message' => (string) $todo->getDescription(),
                 'line' => $lineNumber,
-            ]
+            ],
         );
     }
 }

@@ -17,6 +17,7 @@ use Generator;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\UriInfo;
 use League\Uri\UriResolver;
+use Stringable;
 
 use function array_shift;
 use function array_splice;
@@ -26,7 +27,7 @@ use function ltrim;
 use function parse_str;
 use function preg_match;
 use function rtrim;
-use function strpos;
+use function str_starts_with;
 
 /**
  * Data Source Name (DSN), a reference to a path on a local or remote system with the ability to add parameters.
@@ -47,27 +48,18 @@ use function strpos;
  * In the example above we reference a git repository using the http protocol and as options we mention that the branch
  * that we would like to parse is `release/3.0` and in it we want to start at the path `/src`.
  */
-final class Dsn
+final class Dsn implements Stringable
 {
-    /** @var string */
-    private $dsn;
-
-    /** @var UriInterface */
-    private $uri;
-
-    /** @var string[] */
-    private $parameters;
-
     /**
      * Initializes the Dsn
      *
      * @param array<string> $parameters
      */
-    public function __construct(UriInterface $uri, array $parameters, string $dsn)
-    {
-        $this->dsn = $dsn;
-        $this->parameters = $parameters;
-        $this->uri = $uri;
+    public function __construct(
+        private readonly UriInterface $uri,
+        private readonly array $parameters,
+        private readonly string $dsn,
+    ) {
     }
 
     public static function createFromString(string $dsn): self
@@ -82,9 +74,7 @@ final class Dsn
         return new self($uri, $parsedParameters, $dsn);
     }
 
-    /**
-     * @param array<string> $parameters
-     */
+    /** @param array<string> $parameters */
     public static function createFromUri(UriInterface $uri, array $parameters = []): self
     {
         $dsn = implode(';', [(string) $uri] + $parameters);
@@ -107,7 +97,7 @@ final class Dsn
     /**
      * Returns the scheme part of the DSN
      */
-    public function getScheme(): ?string
+    public function getScheme(): string|null
     {
         return $this->uri->getScheme();
     }
@@ -123,25 +113,18 @@ final class Dsn
     /**
      * Returns the port part of the DSN
      */
-    public function getPort(): ?int
+    public function getPort(): int|null
     {
         $port = $this->uri->getPort();
         if ($port !== null) {
             return $port;
         }
 
-        switch ($this->uri->getScheme()) {
-            case 'http':
-            case 'git+http':
-                return 80;
-
-            case 'https':
-            case 'git+https':
-                return 443;
-
-            default:
-                return null;
-        }
+        return match ($this->uri->getScheme()) {
+            'http', 'git+http' => 80,
+            'https', 'git+https' => 443,
+            default => null,
+        };
     }
 
     /**
@@ -213,14 +196,14 @@ final class Dsn
 
         return self::createFromUri(
             UriResolver::resolve($newUri, $baseDsn->uri),
-            $baseDsn->parameters
+            $baseDsn->parameters,
         );
     }
 
     public function withPath(Path $path): self
     {
         $pathString = (string) $path;
-        if (strpos($pathString, '/') !== 0) {
+        if (! str_starts_with($pathString, '/')) {
             $pathString = '/' . $pathString;
         }
 
@@ -246,9 +229,7 @@ final class Dsn
         return $result;
     }
 
-    /**
-     * @return Generator<string, string>
-     */
+    /** @return Generator<string, string> */
     private static function parseParameter(string $part): Generator
     {
         $result = [];

@@ -30,8 +30,7 @@ final class StripOnVisibilityTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var StripOnVisibility $fixture */
-    private $fixture;
+    private StripOnVisibility $fixture;
 
     /**
      * Creates a new (empty) fixture object.
@@ -41,9 +40,7 @@ final class StripOnVisibilityTest extends TestCase
         $this->fixture = new StripOnVisibility();
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testStripsDescriptorIfVisibilityIsNotAllowed(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -55,14 +52,12 @@ final class StripOnVisibilityTest extends TestCase
 
         self::assertNull(
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), $apiSpec)
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), $apiSpec),
+            )->getFilterable(),
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testItNeverStripsDescriptorIfApiIsSet(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -77,14 +72,12 @@ final class StripOnVisibilityTest extends TestCase
         self::assertSame(
             $descriptor->reveal(),
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), $apiSpec)
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), $apiSpec),
+            )->getFilterable(),
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testKeepsDescriptorIfVisibilityIsAllowed(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -97,14 +90,12 @@ final class StripOnVisibilityTest extends TestCase
         self::assertSame(
             $descriptor->reveal(),
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), $apiSpec)
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), $apiSpec),
+            )->getFilterable(),
         );
     }
 
-    /**
-     * @covers ::__invoke
-     */
+    /** @covers ::__invoke */
     public function testKeepsDescriptorIfDescriptorNotInstanceOfVisibilityInterface(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -116,8 +107,8 @@ final class StripOnVisibilityTest extends TestCase
         self::assertSame(
             $descriptor->reveal(),
             $this->fixture->__invoke(
-                new FilterPayload($descriptor->reveal(), $apiSpec)
-            )->getFilterable()
+                new FilterPayload($descriptor->reveal(), $apiSpec),
+            )->getFilterable(),
         );
     }
 }

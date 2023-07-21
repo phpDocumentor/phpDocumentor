@@ -36,8 +36,7 @@ final class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var MethodAssembler */
-    private $fixture;
+    private MethodAssembler $fixture;
 
     /** @var ProjectDescriptorBuilder|ObjectProphecy */
     protected $builder;
@@ -65,7 +64,7 @@ final class MethodAssemblerTest extends TestCase
         Type $returnType,
         string $name,
         array $arguments = [],
-        ?Description $description = null
+        Description|null $description = null,
     ): void {
         $tag = new Method($name, $arguments, $returnType, false, $description);
 

@@ -11,9 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @coversDefaultClass \phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass
- */
+/** @coversDefaultClass \phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass */
 final class ReflectionProjectFactoryStrategyPassTest extends TestCase
 {
     use ProphecyTrait;
@@ -30,7 +28,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
         $container->findTaggedServiceIds('phpdoc.reflection.strategy')->willReturn(
             [
                 'myStrategy' => [],
-            ]
+            ],
         );
 
         $compilerPass = new ReflectionProjectFactoryStrategyPass();
@@ -47,7 +45,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ],
                 ],
             ],
-            $serviceDefinition->getMethodCalls()
+            $serviceDefinition->getMethodCalls(),
         );
     }
 
@@ -67,7 +65,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ['priority' => 1100],
                     [],
                 ],
-            ]
+            ],
         );
 
         $compilerPass = new ReflectionProjectFactoryStrategyPass();
@@ -91,7 +89,7 @@ final class ReflectionProjectFactoryStrategyPassTest extends TestCase
                     ],
                 ],
             ],
-            $serviceDefinition->getMethodCalls()
+            $serviceDefinition->getMethodCalls(),
         );
     }
 }

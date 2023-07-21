@@ -37,16 +37,14 @@ final class StopwatchMiddlewareTest extends TestCase
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::execute
-     */
+    /** @covers ::execute */
     public function testThatMemoryUsageIsLogged(): void
     {
         $commandFile = new LocalFile(__FILE__);
         $command = new CreateCommand(
             $this->faker()->phpParserContext(),
             $commandFile,
-            new ProjectFactoryStrategies([])
+            new ProjectFactoryStrategies([]),
         );
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -59,8 +57,8 @@ final class StopwatchMiddlewareTest extends TestCase
 
         $stopwatch = $this->prophesize(Stopwatch::class);
         $stopwatch->lap('parser.parse')->willReturn(
-            $this->givenAStopwatchEventWithMemoryTotal(1200000),
-            $this->givenAStopwatchEventWithMemoryTotal(1300000)
+            $this->givenAStopwatchEventWithMemoryTotal(1_200_000),
+            $this->givenAStopwatchEventWithMemoryTotal(1_300_000),
         );
 
         $middleware = new StopwatchMiddleware($stopwatch->reveal(), $logger->reveal());
@@ -70,15 +68,11 @@ final class StopwatchMiddlewareTest extends TestCase
         // and second
         $middleware->execute(
             $command,
-            static function () use ($expected) {
-                return $expected;
-            }
+            static fn () => $expected,
         );
         $result = $middleware->execute(
             $command,
-            static function () use ($expected) {
-                return $expected;
-            }
+            static fn () => $expected,
         );
 
         $this->assertSame($expected, $result);

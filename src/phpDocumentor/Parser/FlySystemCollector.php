@@ -18,16 +18,10 @@ use phpDocumentor\Path;
 
 final class FlySystemCollector implements FileCollector
 {
-    /** @var SpecificationFactoryInterface */
-    private $specificationFactory;
-
-    /** @var FlySystemFactory */
-    private $flySystemFactory;
-
-    public function __construct(SpecificationFactoryInterface $specificationFactory, FlySystemFactory $flySystemFactory)
-    {
-        $this->specificationFactory = $specificationFactory;
-        $this->flySystemFactory     = $flySystemFactory;
+    public function __construct(
+        private readonly SpecificationFactoryInterface $specificationFactory,
+        private readonly FlySystemFactory $flySystemFactory,
+    ) {
     }
 
     /**

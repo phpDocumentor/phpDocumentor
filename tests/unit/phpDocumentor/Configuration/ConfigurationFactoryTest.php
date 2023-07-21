@@ -29,9 +29,7 @@ final class ConfigurationFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::createDefault
-     */
+    /** @covers ::createDefault */
     public function testCreatingTheDefaultConfiguration(): void
     {
         $configuration = ['exampleConfig'];
@@ -59,7 +57,7 @@ final class ConfigurationFactoryTest extends TestCase
     {
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(Configuration $values, ?UriInterface $uri = null): Configuration
+            public function __invoke(Configuration $values, UriInterface|null $uri = null): Configuration
             {
                 return $values + ['anotherExample'];
             }
@@ -141,9 +139,7 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /**
-     * @covers ::fromUri
-     */
+    /** @covers ::fromUri */
     public function testCreatingAConfigurationUsingTheGivenUri(): void
     {
         $this->markTestSkipped('Windows builds fail on this test, but we need to the build to be green now');
@@ -173,7 +169,7 @@ final class ConfigurationFactoryTest extends TestCase
 
         $middleware = new class implements MiddlewareInterface
         {
-            public function __invoke(Configuration $values, ?UriInterface $uri = null): Configuration
+            public function __invoke(Configuration $values, UriInterface|null $uri = null): Configuration
             {
                 $values['newKey'] = 'anotherExample';
 
@@ -197,9 +193,7 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration + ['newKey' => 'anotherExample'], $response->getArrayCopy());
     }
 
-    /**
-     * @covers ::fromUri
-     */
+    /** @covers ::fromUri */
     public function testCreatingAConfigurationUsingTheGivenUriFailsWhenFileDoesNotExist(): void
     {
         $this->expectException(InvalidConfigPathException::class);

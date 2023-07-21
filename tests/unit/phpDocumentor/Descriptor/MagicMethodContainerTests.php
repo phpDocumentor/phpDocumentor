@@ -57,9 +57,7 @@ trait MagicMethodContainerTests
         ];
     }
 
-    /**
-     * @covers ::getMagicMethods
-     */
+    /** @covers ::getMagicMethods */
     public function testMagicMethodsReturnsEmptyCollectionWhenNoTags(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMagicMethods());

@@ -35,9 +35,7 @@ class EventAbstractTest extends TestCase
         $this->assertSame($subject, $fixture->getSubject());
     }
 
-    /**
-     * @covers \phpDocumentor\Event\EventAbstract::createInstance
-     */
+    /** @covers \phpDocumentor\Event\EventAbstract::createInstance */
     public function testCanBeConstructedUsingAStaticFactoryMethod(): void
     {
         $subject = new stdClass();

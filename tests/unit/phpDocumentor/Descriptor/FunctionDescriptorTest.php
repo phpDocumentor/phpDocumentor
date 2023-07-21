@@ -17,13 +17,10 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Types\String_;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor */
 final class FunctionDescriptorTest extends MockeryTestCase
 {
-    /** @var FunctionDescriptor $fixture */
-    private $fixture;
+    private FunctionDescriptor $fixture;
 
     /**
      * Creates a new (emoty) fixture object.
@@ -33,9 +30,7 @@ final class FunctionDescriptorTest extends MockeryTestCase
         $this->fixture = new FunctionDescriptor();
     }
 
-    /**
-     * @covers ::__construct
-     */
+    /** @covers ::__construct */
     public function testInitializesWithEmptyCollection(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());

@@ -48,7 +48,7 @@ final class RouterTest extends TestCase
         $node,
         string $routeName,
         string $expected,
-        string $fragment
+        string $fragment,
     ): void {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
         $url = $routeName . '-' . $expected . '-' . $fragment;
@@ -58,16 +58,14 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
         $result = $router->generate($node);
 
         $this->assertSame($url, $result);
     }
 
-    /**
-     * @covers ::generate
-     */
+    /** @covers ::generate */
     public function testItCanGenerateUriWhenGivenAUri(): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
@@ -76,15 +74,13 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
 
         $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
     }
 
-    /**
-     * @covers ::generate
-     */
+    /** @covers ::generate */
     public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl(): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
@@ -93,7 +89,7 @@ final class RouterTest extends TestCase
         $router = new Router(
             new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
             $urlGenerator->reveal(),
-            new AsciiSlugger()
+            new AsciiSlugger(),
         );
         $result = $router->generate(new stdClass()); // An stdClass is not routable
 

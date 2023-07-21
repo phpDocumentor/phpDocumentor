@@ -100,7 +100,7 @@ final class LinkRendererTest extends TestCase
 
     public function baseLinkProvider($input): array
     {
-        $name = is_object($input) ? get_class($input) : gettype($input);
+        $name = get_debug_type($input);
 
         return [
             $name . ' with presentation url' => [

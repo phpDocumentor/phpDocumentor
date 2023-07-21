@@ -33,7 +33,7 @@ use function is_array;
  */
 class ElementsIndexBuilder extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 15000;
+    final public const COMPILER_PRIORITY = 15000;
 
     public function getDescription(): string
     {
@@ -97,28 +97,28 @@ class ElementsIndexBuilder extends ApiDocumentationPass
             $subElements = array_merge(
                 $element->getMethods()->getAll(),
                 $element->getConstants()->getAll(),
-                $element->getProperties()->getAll()
+                $element->getProperties()->getAll(),
             );
         }
 
         if ($element instanceof InterfaceInterface) {
             $subElements = array_merge(
                 $element->getMethods()->getAll(),
-                $element->getConstants()->getAll()
+                $element->getConstants()->getAll(),
             );
         }
 
         if ($element instanceof TraitInterface) {
             $subElements = array_merge(
                 $element->getMethods()->getAll(),
-                $element->getProperties()->getAll()
+                $element->getProperties()->getAll(),
             );
         }
 
         if ($element instanceof EnumInterface) {
             $subElements = array_merge(
                 $element->getMethods()->getAll(),
-                $element->getCases()->getAll()
+                $element->getCases()->getAll(),
             );
         }
 
@@ -133,7 +133,7 @@ class ElementsIndexBuilder extends ApiDocumentationPass
      */
     protected function addElementsToIndexes($elements, array $indexes): void
     {
-        if (!is_array($elements)) {
+        if (! is_array($elements)) {
             $elements = [$elements];
         }
 

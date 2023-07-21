@@ -6,11 +6,12 @@ namespace phpDocumentor\Descriptor\DocBlock;
 
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use Stringable;
 
 use function trim;
 use function vsprintf;
 
-final class DescriptionDescriptor
+final class DescriptionDescriptor implements Stringable
 {
     /** @var Description */
     private $description;
@@ -18,10 +19,8 @@ final class DescriptionDescriptor
     /** @var array<int, TagDescriptor|null> */
     private $inlineTags;
 
-    /**
-     * @param array<int, TagDescriptor|null> $inlineTags
-     */
-    public function __construct(?Description $description, array $inlineTags)
+    /** @param array<int, TagDescriptor|null> $inlineTags */
+    public function __construct(Description|null $description, array $inlineTags)
     {
         $this->description = $description ?? new Description('');
         $this->inlineTags = $inlineTags;
@@ -37,7 +36,7 @@ final class DescriptionDescriptor
         return $this->description->getBodyTemplate();
     }
 
-    public function replaceTag(int $position, ?TagDescriptor $tagDescriptor): void
+    public function replaceTag(int $position, TagDescriptor|null $tagDescriptor): void
     {
         $this->inlineTags[$position] = $tagDescriptor;
     }
@@ -64,10 +63,8 @@ final class DescriptionDescriptor
      * which requires more advanced handling of descriptions and just not some string jugling.
      *
      * @deprecated will be removed in v4
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $tags = [];
         foreach ($this->getTags() as $tag) {
