@@ -85,7 +85,7 @@ jobs:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phpunit:9.5
+        tools: pecl
 
     - name: Install Composer dependencies & cache dependencies
       uses: "ramsey/composer-install@v2"
@@ -94,11 +94,8 @@ jobs:
         # Bust the cache at least once a month - output format: YYYY-MM-DD.
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-    - name: Install PHPUnit extensions
-      run: mkdir -p tools/phpunit.d && curl -sL https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
-
     - name: PHPUnit
-      run: phpunit --testsuite=unit
+      run: ./bin/phpunit --testsuite=unit
 
     - name: Quick check code coverage level
       run: php tests/coverage-checker.php 64
@@ -300,7 +297,6 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-        tools: pecl, phpunit:9.5
 
     - name: Install Composer dependencies & cache dependencies
       uses: "ramsey/composer-install@v2"
@@ -309,11 +305,8 @@ jobs:
         # Bust the cache at least once a month - output format: YYYY-MM-DD.
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-    - name: Install PHPUnit extensions
-      run: mkdir -p tools/phpunit.d && curl -sL https://github.com/jaapio/prophecy-phpunit/releases/download/v2.2.0/prophecy-phpunit.phar --output tools/phpunit.d/prophecy-phpunit.phar
-
     - name: Run PHPUnit
-      run: phpunit --testsuite=unit,integration
+      run: ./bin/phpunit --testsuite=unit,integration
 
   e2e:
     runs-on: ubuntu-latest

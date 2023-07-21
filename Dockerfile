@@ -32,7 +32,8 @@ ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
 FROM phpdoc_base as dev
 
 RUN apt-get update \
-    && apt-get install -yq git
+    && apt-get install -yq git \
+    && useradd -m -s /bin/bash phpdoc
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 

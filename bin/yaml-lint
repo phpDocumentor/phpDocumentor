@@ -108,21 +108,12 @@ if (PHP_VERSION_ID < 80000) {
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     if (
         (function_exists('stream_get_wrappers') && in_array('phpvfscomposer', stream_get_wrappers(), true))
         || (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper'))
     ) {
-=======
-    if (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper')) {
->>>>>>> Stashed changes
-=======
-    if (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper')) {
->>>>>>> Stashed changes
-        include("phpvfscomposer://" . __DIR__ . '/..'.'/vendor/symfony/yaml/Resources/bin/yaml-lint');
-        exit(0);
+        return include("phpvfscomposer://" . __DIR__ . '/..'.'/vendor/symfony/yaml/Resources/bin/yaml-lint');
     }
 }
 
-include __DIR__ . '/..'.'/vendor/symfony/yaml/Resources/bin/yaml-lint';
+return include __DIR__ . '/..'.'/vendor/symfony/yaml/Resources/bin/yaml-lint';
