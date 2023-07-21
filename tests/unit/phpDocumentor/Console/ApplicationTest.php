@@ -16,6 +16,7 @@ namespace phpDocumentor\Console;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,6 +35,7 @@ final class ApplicationTest extends TestCase
     use ProphecyTrait;
 
     private Application $feature;
+    private ObjectProphecy|KernelInterface $kernelMock;
 
     public function setUp(): void
     {
@@ -44,19 +46,19 @@ final class ApplicationTest extends TestCase
         $container->has(Argument::any())->willReturn(false);
         $container->hasParameter(Argument::any())->willReturn(false);
 
-        $kernelMock = $this->prophesize(KernelInterface::class);
-        $kernelMock->getBundles()->willReturn([]);
-        $kernelMock->getContainer()->willReturn($container->reveal());
-        $kernelMock->getEnvironment()->willReturn();
-        $kernelMock->boot()->willReturn();
+        $this->kernelMock = $this->prophesize(KernelInterface::class);
+        $this->kernelMock->getBundles()->willReturn([]);
+        $this->kernelMock->getContainer()->willReturn($container->reveal());
+        $this->kernelMock->getEnvironment()->willReturn('dev');
 
-        $this->feature = new Application($kernelMock->reveal());
+        $this->feature = new Application($this->kernelMock->reveal());
         $this->feature->setAutoExit(false);
     }
 
     /** @covers ::getCommandName */
     public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
+        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'my:command'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
         $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
@@ -71,6 +73,7 @@ final class ApplicationTest extends TestCase
      */
     public function testCommandNamesLongerThanHundredCharactersAreIgnored(): void
     {
+        $this->kernelMock->boot()->shouldBeCalledOnce();
         $commandName = str_repeat('a', 101);
         $_SERVER['argv'] = ['binary', $commandName];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
@@ -86,6 +89,7 @@ final class ApplicationTest extends TestCase
      */
     public function testUnknownCommandNamesAreIgnored(): void
     {
+        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'unknown'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
         $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
@@ -96,6 +100,7 @@ final class ApplicationTest extends TestCase
     /** @covers ::getCommandName */
     public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
     {
+        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'something else'];
         $this->feature->add((new Command('MyCommand'))->setCode(fn () => 1));
         $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
@@ -112,25 +117,10 @@ final class ApplicationTest extends TestCase
         self::assertTrue($definition->hasOption('log'));
     }
 
-    /**
-     * @covers ::getLongVersion
-     * @requires PHPUnit >= 9
-     */
+    /** @covers ::getLongVersion */
     public function testGetLongVersion(): void
     {
         self::assertMatchesRegularExpression(
-            '~phpDocumentor <info>v(.*)</info>~',
-            $this->feature->getLongVersion(),
-        );
-    }
-
-    /**
-     * @covers ::getLongVersion
-     * @requires PHPUnit <= 8
-     */
-    public function testGetLongVersionPhp72(): void
-    {
-        self::assertRegExp(
             '~phpDocumentor <info>v(.*)</info>~',
             $this->feature->getLongVersion(),
         );

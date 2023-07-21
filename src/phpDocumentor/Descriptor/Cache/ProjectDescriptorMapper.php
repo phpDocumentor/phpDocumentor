@@ -19,7 +19,7 @@ use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Reflection\File;
 use Psr\Cache\CacheItemInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\Cache\CacheItemPoolInterface;
 
 use function array_diff;
 use function array_map;
@@ -40,7 +40,7 @@ class ProjectDescriptorMapper
     /**
      * Initializes this mapper with the given cache instance.
      */
-    public function __construct(private readonly AdapterInterface $cache)
+    public function __construct(private readonly CacheItemPoolInterface $cache)
     {
     }
 

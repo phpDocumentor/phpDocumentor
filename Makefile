@@ -108,7 +108,7 @@ integration-test: SUITE=--testsuite=integration --no-coverage
 functional-test: SUITE=--testsuite=functional --no-coverage
 
 unit-test integration-test functional-test:
-	${.PHP} tools/phpunit $(SUITE) $(ARGS)
+	${.PHP} bin/phpunit $(SUITE) $(ARGS)
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
@@ -151,7 +151,7 @@ build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/*
 
 .PHONY: docs
 docs:
-	${.DOCKER_COMPOSE_RUN} phpdoc --force
+	${.DOCKER_COMPOSE_RUN} phpdoc --force -vvv
 
 .PHONY: build-website
 build-website: demo docs

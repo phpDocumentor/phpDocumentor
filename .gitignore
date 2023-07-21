@@ -40,3 +40,8 @@ phpunit.xml
 
 # Contains local overrides for docker no need to put those in to version control
 docker-compose.override.yml
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
