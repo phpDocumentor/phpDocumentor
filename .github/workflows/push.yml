@@ -43,7 +43,7 @@ jobs:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
-          tools: composer-require-checker:3.8.0
+          tools: composer-require-checker:4.6.0
 
       - name: Install Composer dependencies & cache dependencies
         uses: "ramsey/composer-install@v2"
