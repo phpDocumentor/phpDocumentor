@@ -240,7 +240,7 @@ jobs:
       - uses: ./.github/workflows/phar
         with:
           php-version: ${{ env.defaultPHPVersion }}
-          extensions: ${{ env.extensions }}
+          php-extensions: ${{ env.extensions }}
           key: ${{ env.key }}
           secret-key: ${{ secrets.SECRET_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
