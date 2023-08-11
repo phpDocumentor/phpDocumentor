@@ -73,28 +73,18 @@ runs:
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
     - name: warm cache
-      uses: phpDocumentor/phar-ga@latest
-      with:
-        args: php bin/console cache:warmup --env=prod
+      run: php bin/console cache:warmup --env=prod
+      shell: bash
 
     - name: build phar
       run: ./tools/box compile
       shell: bash
 
-    - name: list keys
-      uses: phpDocumentor/phar-ga@latest
-      env:
-        PASSPHRASE: ${{ inputs.passphrase }}
-        SECRET_KEY: ${{ inputs.secret-key }}
-      with:
-        args: gpg --list-secret-keys
-
     - name: sign phar
-      uses: phpDocumentor/phar-ga@latest
       if: contains(github.ref, 'release') || github.ref == 'refs/heads/master'
-      env:
-        PASSPHRASE: ${{ inputs.passphrase }}
-        SECRET_KEY: ${{ inputs.secret-key }}
-      with:
-        args: gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
+      run: |
+        #import gpg key
+        echo "${{ inputs.secret-key }}" | gpg --import --batch --yes --passphrase "${{ inputs.passphrase }}"
+        #sign phar
+        gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
           --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
