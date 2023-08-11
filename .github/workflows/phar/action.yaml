@@ -84,8 +84,8 @@ runs:
       if: contains(github.ref, 'release') || github.ref == 'refs/heads/master'
       shell: bash
       run: |
-        #import gpg key
         echo "${{ inputs.secret-key }}" | gpg --import --batch --yes --passphrase "${{ inputs.passphrase }}"
         #sign phar
-        gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch
-          --detach-sign --output build/phpDocumentor.phar.asc build/phpDocumentor.phar
+        gpg --batch --yes --passphrase "${{ inputs.passphrase }}" --output build/phpDocumentor.phar.asc --detach-sig build/phpDocumentor.phar
+        #verify signature
+        gpg --verify build/phpDocumentor.phar.asc build/phpDocumentor.phar
