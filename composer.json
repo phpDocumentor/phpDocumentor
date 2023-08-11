@@ -62,7 +62,7 @@
         "symfony/cache": "^6.0",
         "symfony/config": "^6.0",
         "symfony/console": "^6.0",
-        "symfony/contracts": "^2.0",
+        "symfony/contracts": "^3.3",
         "symfony/dependency-injection": "^6.0",
         "symfony/dom-crawler": "^6.0",
         "symfony/dotenv": "^6.0",
