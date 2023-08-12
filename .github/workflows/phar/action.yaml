@@ -89,6 +89,6 @@ runs:
         echo "${{ inputs.secret-key }}" | gpg --import --batch --yes --passphrase "${{ inputs.passphrase }}"
         gpg -K
         #sign phar
-        echo "${{ inputs.passphrase }}" | gpg gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch --yes --output build/phpDocumentor.phar.asc --detach-sig build/phpDocumentor.phar
+        echo "${{ inputs.passphrase }}" | gpg --command-fd 0 --pinentry-mode loopback -u info@phpdoc.org --batch --yes --output build/phpDocumentor.phar.asc --detach-sig build/phpDocumentor.phar
         #verify signature
         gpg --verify build/phpDocumentor.phar.asc build/phpDocumentor.phar
