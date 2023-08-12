@@ -82,6 +82,8 @@ runs:
 
     - name: sign phar
       if: contains(github.ref, 'release') || github.ref == 'refs/heads/master'
+      env:
+        GPG_TTY: ${{ env.tty }}
       shell: bash
       run: |
         echo "${{ inputs.secret-key }}" | gpg --import --batch --yes --passphrase "${{ inputs.passphrase }}"
