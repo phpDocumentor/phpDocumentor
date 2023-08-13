@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\TextRoles;
 
 use phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode;
-use phpDocumentor\Guides\ParserContext;
+use phpDocumentor\Guides\RestructuredText\Parser\DocumentParserContext;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -23,7 +23,7 @@ final class PHPReferenceTest extends TestCase
     public function testProcessNodeReturnsNode(string $role, string $content, PHPReferenceNode $expected): void
     {
         $node = $this->textRole->processNode(
-            $this->createMock(ParserContext::class),
+            $this->createMock(DocumentParserContext::class),
             $role,
             $content,
             $content,
