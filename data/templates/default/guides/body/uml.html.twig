@@ -1,0 +1,9 @@
+{% apply spaceless %}
+    <figure
+            class="phpdocumentor-uml-diagram{% if node.classesString %} {{ node.classesString }}{% endif %}"
+            {% if node.hasOption('width') %}style="width: {{ node.option('width') }}"{% endif %}
+    >
+        {{ uml(node.value) }}
+        {% if node.caption %}<figcaption>{{ node.caption }}</figcaption>{% endif %}
+    </figure>
+{% endapply %}

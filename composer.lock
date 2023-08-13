@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86739cff827569dea141dc1d9c1f7aba",
+    "content-hash": "18930d9f3c836985ea83bb69b97b31b7",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1732,16 +1732,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "060ddaa912ce431c97f893ee169dd52a2167a7ec"
+                "reference": "82921cc85515a807c292aeb437547b083c3d777d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/060ddaa912ce431c97f893ee169dd52a2167a7ec",
-                "reference": "060ddaa912ce431c97f893ee169dd52a2167a7ec",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/82921cc85515a807c292aeb437547b083c3d777d",
+                "reference": "82921cc85515a807c292aeb437547b083c3d777d",
                 "shasum": ""
             },
             "require": {
@@ -1761,7 +1761,6 @@
             "require-dev": {
                 "psr/log": "^2.0 || ^3.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1776,13 +1775,13 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/0.1.0"
             },
-            "time": "2023-08-10T20:50:21+00:00"
+            "time": "2023-08-12T13:42:49+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
@@ -1801,7 +1800,6 @@
                 "symfony/process": "^5.4 || ^6.3",
                 "twig/twig": "~2.0 || ^3.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1816,13 +1814,13 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
-                "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-graphs/tree/0.1.0"
             },
             "time": "2023-07-19T20:05:13+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
@@ -1839,7 +1837,6 @@
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1854,22 +1851,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/0.1.0"
             },
             "time": "2023-07-05T15:16:20+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "703a16aec44cd62f9661b7f32c931cb530fb09b6"
+                "reference": "77da04eeee2dd2cdc3e3a60608e923940761baa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/703a16aec44cd62f9661b7f32c931cb530fb09b6",
-                "reference": "703a16aec44cd62f9661b7f32c931cb530fb09b6",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/77da04eeee2dd2cdc3e3a60608e923940761baa9",
+                "reference": "77da04eeee2dd2cdc3e3a60608e923940761baa9",
                 "shasum": ""
             },
             "require": {
@@ -1878,7 +1875,6 @@
                 "phpdocumentor/guides": "self.version",
                 "webmozart/assert": "^1.11"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1892,9 +1888,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/0.1.0"
             },
-            "time": "2023-08-06T12:34:43+00:00"
+            "time": "2023-08-12T11:30:27+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
@@ -7992,10 +7988,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/guides": 20,
-        "phpdocumentor/guides-graphs": 20,
-        "phpdocumentor/guides-markdown": 20,
-        "phpdocumentor/guides-restructured-text": 20,
         "phpdocumentor/json-path": 20
     },
     "prefer-stable": false,
