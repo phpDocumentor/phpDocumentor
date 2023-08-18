@@ -16,11 +16,13 @@ namespace phpDocumentor;
 use Jean85\PrettyVersions;
 use OutOfBoundsException;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;
 use function file_get_contents;
+use function getcwd;
 use function ini_get;
 use function ini_set;
 use function ltrim;
@@ -119,5 +121,13 @@ final class Application
         }
 
         date_default_timezone_set('UTC');
+    }
+
+    public function getWorkingDir(): string
+    {
+        $workingDirectory = getcwd();
+        Assert::stringNotEmpty($workingDirectory);
+
+        return $workingDirectory;
     }
 }

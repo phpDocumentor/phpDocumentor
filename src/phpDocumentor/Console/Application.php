@@ -13,24 +13,39 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
-use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
+use Monolog\Handler\PsrHandler;
+use Monolog\Logger;
+use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleEvent;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function sprintf;
 use function strlen;
 
 class Application extends BaseApplication
 {
-    public function __construct(KernelInterface $kernel)
+    /** @param iterable<Command> $commands */
+    public function __construct(iterable $commands, EventDispatcher $eventDispatcher, Logger $logger)
     {
-        parent::__construct($kernel);
+        parent::__construct('phpDocumentor', \phpDocumentor\Application::VERSION());
 
-        $this->setName('phpDocumentor');
-        $this->setVersion(\phpDocumentor\Application::VERSION());
+        foreach ($commands as $command) {
+            $this->add($command);
+        }
+
+        $this->setDefaultCommand('project:run', true);
+        $this->setDispatcher($eventDispatcher);
+
+        $eventDispatcher->addListener(ConsoleEvents::COMMAND, static function (ConsoleEvent $event) use ($logger): void {
+            $logger->pushHandler(new PsrHandler(new ConsoleLogger($event->getOutput())));
+        });
     }
 
     protected function getCommandName(InputInterface $input): string|null

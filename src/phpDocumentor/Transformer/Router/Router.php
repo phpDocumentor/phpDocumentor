@@ -30,7 +30,12 @@ use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Reflection\Fqsen;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function strrpos;
@@ -38,11 +43,26 @@ use function substr;
 
 class Router
 {
-    public function __construct(
-        private readonly ClassBasedFqsenUrlGenerator $fqsenUrlGenerator,
-        private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly SluggerInterface $slugger,
-    ) {
+    private readonly UrlGeneratorInterface $urlGenerator;
+    private readonly SluggerInterface $slugger;
+    private readonly ClassBasedFqsenUrlGenerator $fqsenUrlGenerator;
+
+    public function __construct()
+    {
+        $routes = new RouteCollection();
+        $routes->add('document', new Route('/{name}.html', [], ['name' => '.+']));
+        $routes->add('file', new Route('/files/{name}.html'));
+        $routes->add('package', new Route('/packages/{name}.html'));
+        $routes->add('namespace', new Route('/namespaces/{name}.html'));
+        $routes->add('class', new Route('/classes/{name}.html'));
+
+        $this->urlGenerator = new UrlGenerator(
+            $routes,
+            new RequestContext(),
+        );
+
+        $this->slugger = new AsciiSlugger();
+        $this->fqsenUrlGenerator = new ClassBasedFqsenUrlGenerator($this->urlGenerator, $this->slugger);
     }
 
     /** @param ElementInterface|Descriptor|Fqsen|UriInterface $node */
