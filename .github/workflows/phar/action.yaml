@@ -72,10 +72,6 @@ runs:
         # Bust the cache at least once a month - output format: YYYY-MM-DD.
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
-    - name: warm cache
-      run: php bin/console cache:warmup --env=prod
-      shell: bash
-
     - name: build phar
       run: ./tools/box compile
       shell: bash
