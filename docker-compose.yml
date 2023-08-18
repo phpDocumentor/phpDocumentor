@@ -8,3 +8,11 @@ services:
     user: ${CURRENT_UID}
     volumes: [".:/opt/phpdoc"]
     working_dir: "/opt/phpdoc"
+  phpdoc-pcov:
+    build:
+      context: .
+      target: dev-pcov
+      dockerfile: Dockerfile
+    user: ${CURRENT_UID}
+    volumes: [".:/opt/phpdoc"]
+    working_dir: "/opt/phpdoc"

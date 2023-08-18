@@ -108,7 +108,7 @@ integration-test: SUITE=--testsuite=integration --no-coverage
 functional-test: SUITE=--testsuite=functional --no-coverage
 
 unit-test integration-test functional-test:
-	${.PHP} bin/phpunit $(SUITE) $(ARGS)
+	${.DOCKER_COMPOSE_RUN} --entrypoint=bin/phpunit phpdoc-pcov $(SUITE) $(ARGS)
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html

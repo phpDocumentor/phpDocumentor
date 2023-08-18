@@ -29,12 +29,17 @@ RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini && phpdoc cac
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
 
-FROM phpdoc_base as dev
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+FROM phpdoc_base as prod
+
+FROM prod as dev
 
 RUN apt-get update \
     && apt-get install -yq git \
     && useradd -m -s /bin/bash phpdoc
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+FROM dev as dev-pcov
 
-FROM phpdoc_base as prod
+RUN pecl install pcov \
+	&& docker-php-ext-enable pcov
