@@ -43,9 +43,12 @@ class Application extends BaseApplication
         $this->setDefaultCommand('project:run', true);
         $this->setDispatcher($eventDispatcher);
 
-        $eventDispatcher->addListener(ConsoleEvents::COMMAND, static function (ConsoleEvent $event) use ($logger): void {
-            $logger->pushHandler(new PsrHandler(new ConsoleLogger($event->getOutput())));
-        });
+        $eventDispatcher->addListener(
+            ConsoleEvents::COMMAND,
+            static function (ConsoleEvent $event) use ($logger): void {
+                $logger->pushHandler(new PsrHandler(new ConsoleLogger($event->getOutput())));
+            },
+        );
     }
 
     protected function getCommandName(InputInterface $input): string|null

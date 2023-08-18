@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 use function str_repeat;
 
@@ -35,33 +33,26 @@ final class ApplicationTest extends TestCase
     use ProphecyTrait;
 
     private Application $feature;
-    private ObjectProphecy|KernelInterface $kernelMock;
 
     public function setUp(): void
     {
-        $container = $this->prophesize(ContainerInterface::class);
-        $container->get(Argument::exact('event_dispatcher'))
-            ->willReturn(new EventDispatcher());
-        $container->get(Argument::any())->willReturn(false);
-        $container->has(Argument::any())->willReturn(false);
-        $container->hasParameter(Argument::any())->willReturn(false);
+        $eventDispatcher = $this->prophesize(EventDispatcher::class);
+        $eventDispatcher->addListener(Argument::cetera(), Argument::cetera())->willReturn(null);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
 
-        $this->kernelMock = $this->prophesize(KernelInterface::class);
-        $this->kernelMock->getBundles()->willReturn([]);
-        $this->kernelMock->getContainer()->willReturn($container->reveal());
-        $this->kernelMock->getEnvironment()->willReturn('dev');
-
-        $this->feature = new Application($this->kernelMock->reveal());
+        $this->feature = new Application(
+            [(new Command('project:run'))->setCode(fn () => 2)],
+            $eventDispatcher->reveal(),
+            $this->prophesize(Logger::class)->reveal(),
+        );
         $this->feature->setAutoExit(false);
     }
 
     /** @covers ::getCommandName */
     public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
-        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'my:command'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
-        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(1, $this->feature->run(new StringInput('my:command -q')));
     }
@@ -73,13 +64,11 @@ final class ApplicationTest extends TestCase
      */
     public function testCommandNamesLongerThanHundredCharactersAreIgnored(): void
     {
-        $this->kernelMock->boot()->shouldBeCalledOnce();
         $commandName = str_repeat('a', 101);
         $_SERVER['argv'] = ['binary', $commandName];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
-        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
-        self::assertSame(2, $this->feature->run(new StringInput($commandName . ' -q')));
+        self::assertSame(1, $this->feature->run(new StringInput($commandName . ' -q')));
     }
 
     /**
@@ -89,21 +78,17 @@ final class ApplicationTest extends TestCase
      */
     public function testUnknownCommandNamesAreIgnored(): void
     {
-        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'unknown'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
-        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
-        self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
+        self::assertSame(1, $this->feature->run(new StringInput('unknown -q')));
     }
 
     /** @covers ::getCommandName */
     public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
     {
-        $this->kernelMock->boot()->shouldBeCalledOnce();
         $_SERVER['argv'] = ['binary', 'something else'];
         $this->feature->add((new Command('MyCommand'))->setCode(fn () => 1));
-        $this->feature->add((new Command('project:run'))->setCode(fn () => 2));
 
         self::assertSame(2, $this->feature->run(new StringInput('-q')));
     }

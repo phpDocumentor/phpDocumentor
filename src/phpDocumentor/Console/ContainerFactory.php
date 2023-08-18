@@ -26,12 +26,20 @@ final class ContainerFactory
         $this->container->addCompilerPass(new GuidesCommandsPass());
         $this->container->addCompilerPass(new ReflectionProjectFactoryStrategyPass());
 
-        foreach (array_merge([new ApplicationExtension(), new GuidesExtension(), new ReStructuredTextExtension()], $defaultExtensions) as $extension) {
+        foreach (
+            array_merge(
+                [
+                    new ApplicationExtension(),
+                    new GuidesExtension(),
+                    new ReStructuredTextExtension(),
+                ],
+                $defaultExtensions,
+            ) as $extension
+        ) {
             $this->registerExtension($extension);
         }
     }
 
-    /** @param array<mixed> $config */
     private function registerExtension(ExtensionInterface $extension): void
     {
         $this->container->registerExtension($extension);

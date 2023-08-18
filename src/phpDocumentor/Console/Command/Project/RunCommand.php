@@ -27,7 +27,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 use function count;
 use function file_put_contents;
@@ -62,7 +61,6 @@ class RunCommand extends Command
     public function __construct(
         private readonly ProjectDescriptorBuilder $projectDescriptorBuilder,
         private readonly PipelineInterface $pipeline,
-        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct('project:run');
     }
@@ -325,7 +323,7 @@ HELP,
             },
         );
 
-        $this->eventDispatcher->addListener(
+        $dispatcherInstance->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
             function (): void {
                 $this->transformerProgressBar->advance();

@@ -28,8 +28,6 @@ use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Router\Router
@@ -46,36 +44,18 @@ final class RouterTest extends TestCase
      */
     public function testItCanGenerateUrlsForAGivenNode(
         $node,
-        string $routeName,
         string $expected,
-        string $fragment,
     ): void {
-        $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
-        $url = $routeName . '-' . $expected . '-' . $fragment;
-        $urlGenerator->generate($routeName, ['name' => $expected, '_fragment' => $fragment])
-            ->willReturn($url);
-
-        $router = new Router(
-            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
-            $urlGenerator->reveal(),
-            new AsciiSlugger(),
-        );
+        $router = new Router();
         $result = $router->generate($node);
 
-        $this->assertSame($url, $result);
+        $this->assertSame($expected, $result);
     }
 
     /** @covers ::generate */
     public function testItCanGenerateUriWhenGivenAUri(): void
     {
-        $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
-        $urlGenerator->generate()->shouldNotBeCalled();
-
-        $router = new Router(
-            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
-            $urlGenerator->reveal(),
-            new AsciiSlugger(),
-        );
+        $router = new Router();
 
         $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
     }
@@ -83,14 +63,7 @@ final class RouterTest extends TestCase
     /** @covers ::generate */
     public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl(): void
     {
-        $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
-        $urlGenerator->generate()->shouldNotBeCalled();
-
-        $router = new Router(
-            new ClassBasedFqsenUrlGenerator($urlGenerator->reveal(), new AsciiSlugger()),
-            $urlGenerator->reveal(),
-            new AsciiSlugger(),
-        );
+        $router = new Router();
         $result = $router->generate(new stdClass()); // An stdClass is not routable
 
         $this->assertSame('', $result);
@@ -99,28 +72,27 @@ final class RouterTest extends TestCase
     public function provideNodesWithExpectedUrls(): array
     {
         return [
-            'for a file' => [$this->givenAFileDescriptor(), 'file', 'my-file', ''],
-            'for a package' => [$this->givenAPackageDescriptor(), 'package', 'My-Package', ''],
-            'for a namespace' => [$this->givenANamespaceDescriptor(), 'namespace', 'my-namespace', ''],
-            'for a function' => [$this->givenAFunctionDescriptor(), 'namespace', 'my-namespace', 'function_myFunction'],
+            'for a file' => [$this->givenAFileDescriptor(), '/files/my-file.html'],
+            'for a package' => [$this->givenAPackageDescriptor(), '/packages/My-Package.html'],
+            'for a namespace' => [$this->givenANamespaceDescriptor(), '/namespaces/my-namespace.html'],
+            'for a function' => [
+                $this->givenAFunctionDescriptor(),
+                '/namespaces/my-namespace.html#function_myFunction',
+            ],
             'for a global constant' => [
                 $this->givenAGlobalConstantDescriptor(),
-                'namespace',
-                'my-namespace',
-                'constant_MY_CONSTANT',
+                '/namespaces/my-namespace.html#constant_MY_CONSTANT',
             ],
-            'for a trait' => [$this->givenATraitDescriptor(), 'class', 'My-Trait', ''],
-            'for an interface' => [$this->givenAnInterfaceDescriptor(), 'class', 'My-Interface', ''],
-            'for a class' => [$this->givenAClassDescriptor(), 'class', 'My-Class', ''],
-            'for a method' => [$this->givenAMethodDescriptor(), 'class', 'My-Class', 'method_myMethod'],
-            'for a property' => [$this->givenAPropertyDescriptor(), 'class', 'My-Class', 'property_myProperty'],
+            'for a trait' => [$this->givenATraitDescriptor(), '/classes/My-Trait.html'],
+            'for an interface' => [$this->givenAnInterfaceDescriptor(), '/classes/My-Interface.html'],
+            'for a class' => [$this->givenAClassDescriptor(), '/classes/My-Class.html'],
+            'for a method' => [$this->givenAMethodDescriptor(), '/classes/My-Class.html#method_myMethod'],
+            'for a property' => [$this->givenAPropertyDescriptor(), '/classes/My-Class.html#property_myProperty'],
             'for a class constant' => [
                 $this->givenAClassConstantDescriptor(),
-                'class',
-                'My-Class',
-                'constant_MY_CONSTANT',
+                '/classes/My-Class.html#constant_MY_CONSTANT',
             ],
-            'for an fqsen' => [$this->givenAnFqsen(), 'class', 'My-Class', 'method_myMethod'],
+            'for an fqsen' => [$this->givenAnFqsen(), '/classes/My-Class.html#method_myMethod'],
         ];
     }
 
