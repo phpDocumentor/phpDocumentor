@@ -51,6 +51,7 @@ jobs:
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
             password: ${{ secrets.DOCKER_HUB_PASSWORD }}
             tag_semver: true
+            buildoptions: "--target=prod"
         - name: Trigger
           uses: benc-uk/workflow-dispatch@v121
           with:

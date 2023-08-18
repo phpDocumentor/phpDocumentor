@@ -14,3 +14,4 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           snapshot: true
           tags: 'latest, 3, 3.4'
+          buildoptions: "--target=prod"

@@ -38,3 +38,8 @@ RUN apt-get update \
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM phpdoc_base as prod
+
+FROM prod as dev-pcov
+
+RUN pecl install pcov \
+	&& docker-php-ext-enable pcov
