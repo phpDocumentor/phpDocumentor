@@ -505,7 +505,7 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     name: Trigger docker build
-    if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     needs:
       - e2e
       - phpunit
