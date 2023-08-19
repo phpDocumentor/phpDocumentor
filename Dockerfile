@@ -25,7 +25,7 @@ ENV PHPDOC_ENV=prod
 ENV PATH="/opt/phpdoc/bin:${PATH}"
 
 COPY --from=build /opt/phpdoc /opt/phpdoc
-RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini && phpdoc cache:warm
+RUN echo "memory_limit=-1" >> /usr/local/etc/php/conf.d/phpdoc.ini
 
 ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
 
