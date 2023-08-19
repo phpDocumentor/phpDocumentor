@@ -18,6 +18,7 @@
         "vendor/phpdocumentor/reflection-docblock/src/DocBlock/Tags/Author.php"
     ],
     "directories-bin": [
+        "config",
         "data"
     ],
     "git-version": "package_version",
