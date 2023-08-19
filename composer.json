@@ -58,7 +58,7 @@
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpdocumentor/type-resolver": "^1.7",
         "psr/cache": "^2.0|^3.0",
-        "psr/log": "^1.1",
+        "psr/log": "^3.0",
         "symfony/cache": "^6.0",
         "symfony/config": "^6.0",
         "symfony/console": "^6.0",
