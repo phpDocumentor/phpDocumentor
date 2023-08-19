@@ -2,43 +2,16 @@
 <?php
 
 use phpDocumentor\AutoloaderLocator;
-use phpDocumentor\Kernel;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use phpDocumentor\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
-use Symfony\Component\Dotenv\Dotenv;
 
 set_time_limit(0);
 
 require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
 $loader = AutoloaderLocator::autoload();
 
-if (!class_exists(SymfonyApplication::class)) {
-    throw new RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
-}
+$containerFactory = new \phpDocumentor\Console\ContainerFactory();
+$container = $containerFactory->create(AutoloaderLocator::findVendorPath());
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-if (!isset($_SERVER['PHPDOC_ENV']) && !Kernel::isPhar()) {
-    if (!class_exists(Dotenv::class)) {
-        throw new RuntimeException('APP_ENV environment variable is not defined. You need to define environment variables for configuration or add "symfony/dotenv" as a Composer dependency to load variables from a .env file.');
-    }
-    (new Dotenv())->load(__DIR__.'/../.env');
-}
-
-$input = new ArgvInput();
-$defaultEnv = 'prod';
-$env = $input->getParameterOption(['--env', '-e'], $_SERVER['PHPDOC_ENV'] ?? $defaultEnv);
-$debug = ($_SERVER['PHPDOC_DEBUG'] ?? ('prod' !== $env && 'phar' !== $env)) && !$input->hasParameterOption(['--no-debug', '']);
-
-if ($debug) {
-    umask(0000);
-
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
-}
-
-$kernel = new Kernel($env, $debug);
-$application = new Application($kernel);
-$application->run($input);
+$application = $container->get(\phpDocumentor\Console\Application::class);
+$application->run();

@@ -42,9 +42,9 @@
         "league/flysystem": "^1.0",
         "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
-        "league/tactician-bundle": "^1.2",
         "league/uri": "^6.7",
         "league/uri-interfaces": "^2.0",
+        "monolog/monolog": "^2.9",
         "nikic/php-parser": "^4.14",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
@@ -71,10 +71,6 @@
         "symfony/filesystem": "^6.0",
         "symfony/finder": "^6.0",
         "symfony/flex": "^1.17",
-        "symfony/framework-bundle": "^6.0",
-        "symfony/http-foundation": "^6.0",
-        "symfony/http-kernel": "^6.0",
-        "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-intl-idn": "^1.22",
         "symfony/process": "^6.0",
         "symfony/routing": "^6.0",
@@ -96,7 +92,8 @@
         "phpstan/phpstan-webmozart-assert": "^1.2",
         "phpunit/phpunit": "^9.5",
         "psalm/phar": "^4.17",
-        "rector/rector": "^0.17.6"
+        "rector/rector": "^0.17.6",
+        "symfony/var-dumper": "^6.0"
     },
     "config": {
         "bin-dir": "bin/",
@@ -133,6 +130,11 @@
             "id": "01C32VS9393M1CP9R8TEJMH62G",
             "allow-contrib": false,
             "require": "^6.0"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+
         }
     }
 }

@@ -35,21 +35,6 @@
     "league/tactician": {
         "version": "v1.0.3"
     },
-    "league/tactician-bundle": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "222c3d39d38378bc6a9790a0b5baf841ba6679b9"
-        }
-    },
-    "league/tactician-container": {
-        "version": "2.0.0"
-    },
-    "league/tactician-logger": {
-        "version": "v0.10.0"
-    },
     "league/uri": {
         "version": "6.0.1"
     },
@@ -61,9 +46,6 @@
     },
     "mockery/mockery": {
         "version": "1.0"
-    },
-    "monolog/monolog": {
-        "version": "1.23.0"
     },
     "nette/schema": {
         "version": "v1.2.2"
@@ -187,9 +169,6 @@
     "symfony/dotenv": {
         "version": "v4.0.3"
     },
-    "symfony/error-handler": {
-        "version": "v5.0.0"
-    },
     "symfony/event-dispatcher": {
         "version": "v4.0.3"
     },
@@ -209,33 +188,6 @@
             "branch": "master",
             "version": "1.0",
             "ref": "cc1afd81841db36fbef982fe56b48ade6716fac4"
-        }
-    },
-    "symfony/framework-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "18f6fdceb63737d991efbb37ae9619a6f6c978c8"
-        }
-    },
-    "symfony/http-foundation": {
-        "version": "v4.0.3"
-    },
-    "symfony/http-kernel": {
-        "version": "v4.0.3"
-    },
-    "symfony/monolog-bridge": {
-        "version": "v4.0.3"
-    },
-    "symfony/monolog-bundle": {
-        "version": "3.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.1",
-            "ref": "371d1a2b69984710646b09a1182ef1d4308c904f"
         }
     },
     "symfony/polyfill-ctype": {
@@ -285,9 +237,6 @@
     },
     "symfony/string": {
         "version": "v5.0.1"
-    },
-    "symfony/var-dumper": {
-        "version": "v5.0.0"
     },
     "symfony/var-exporter": {
         "version": "v5.0.0"
