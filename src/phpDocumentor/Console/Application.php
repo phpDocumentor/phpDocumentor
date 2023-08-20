@@ -15,6 +15,8 @@ namespace phpDocumentor\Console;
 
 use Monolog\Handler\PsrHandler;
 use Monolog\Logger;
+use phpDocumentor\Extension\ExtensionHandler;
+use phpDocumentor\Version;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\ConsoleEvents;
@@ -32,9 +34,13 @@ use function strlen;
 class Application extends BaseApplication
 {
     /** @param iterable<Command> $commands */
-    public function __construct(iterable $commands, EventDispatcher $eventDispatcher, Logger $logger)
-    {
-        parent::__construct('phpDocumentor', \phpDocumentor\Application::VERSION());
+    public function __construct(
+        iterable $commands,
+        EventDispatcher $eventDispatcher,
+        Logger $logger,
+        ExtensionHandler $extensionHandler,
+    ) {
+        parent::__construct('phpDocumentor', (new Version())->getVersion());
 
         foreach ($commands as $command) {
             $this->add($command);
@@ -48,6 +54,11 @@ class Application extends BaseApplication
             static function (ConsoleEvent $event) use ($logger): void {
                 $logger->pushHandler(new PsrHandler(new ConsoleLogger($event->getOutput())));
             },
+        );
+
+        $eventDispatcher->addListener(
+            ConsoleEvents::COMMAND,
+            [$extensionHandler, 'onBoot'],
         );
     }
 

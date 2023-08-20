@@ -7,6 +7,7 @@ namespace phpDocumentor\Console;
 use phpDocumentor\DependencyInjection\ApplicationExtension;
 use phpDocumentor\DependencyInjection\GuidesCommandsPass;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
+use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
 use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -46,10 +47,17 @@ final class ContainerFactory
         $this->container->loadFromExtension($extension->getAlias());
     }
 
-    public function create(string $vendorDir): ContainerBuilder
-    {
+    public function create(
+        string $vendorDir,
+        ExtensionHandler $extensionHandler,
+    ): ContainerBuilder {
         $this->container->setParameter('vendor_dir', $vendorDir);
         $this->container->setParameter('kernel.project_dir', dirname(__DIR__, 3));
+
+        foreach ($extensionHandler->loadExtensions() as $extension) {
+            $this->registerExtension(new $extension());
+        }
+
         $this->container->compile();
 
         return $this->container;

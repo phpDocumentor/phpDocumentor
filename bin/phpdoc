@@ -2,6 +2,7 @@
 <?php
 
 use phpDocumentor\AutoloaderLocator;
+use phpDocumentor\Extension\ExtensionHandler;
 use Symfony\Component\Console\Input\ArgvInput;
 
 set_time_limit(0);
@@ -10,7 +11,10 @@ require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
 $loader = AutoloaderLocator::autoload();
 
 $containerFactory = new \phpDocumentor\Console\ContainerFactory();
-$container = $containerFactory->create(AutoloaderLocator::findVendorPath());
+$container = $containerFactory->create(
+    AutoloaderLocator::findVendorPath(),
+    ExtensionHandler::getInstance(getcwd() . '/.phpdoc/extensions')
+);
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
 $application = $container->get(\phpDocumentor\Console\Application::class);

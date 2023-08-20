@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
-use Jean85\PrettyVersions;
-use OutOfBoundsException;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 
 use function date_default_timezone_set;
 use function extension_loaded;
 use function file_exists;
-use function file_get_contents;
 use function getcwd;
 use function ini_get;
 use function ini_set;
-use function ltrim;
-use function sprintf;
-use function trim;
 
 /**
  * Application class for phpDocumentor.
@@ -38,27 +32,6 @@ use function trim;
  */
 final class Application
 {
-    private const VERSION = '@package_version@';
-
-    public static function VERSION(): string
-    {
-        $version = self::VERSION;
-
-        $trickBoxIntoNotReplacingThisScalar = sprintf('%s%s%s', '@', 'package_version', '@');
-        $didBoxReplaceTheVersionPlaceholder = $trickBoxIntoNotReplacingThisScalar !== self::VERSION;
-
-        if ($didBoxReplaceTheVersionPlaceholder === false) {
-            $version = trim(file_get_contents(__DIR__ . '/../../VERSION'));
-            try {
-                $version = PrettyVersions::getRootPackageVersion()->getPrettyVersion();
-                $version = sprintf('%s', ltrim($version, 'v'));
-            } catch (OutOfBoundsException) {
-            }
-        }
-
-        return $version;
-    }
-
     public static function templateDirectory(): string
     {
         $templateDir = __DIR__ . '/../../data/templates';

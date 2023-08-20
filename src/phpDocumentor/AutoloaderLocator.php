@@ -26,13 +26,24 @@ use const JSON_THROW_ON_ERROR;
 
 final class AutoloaderLocator
 {
+    private static ClassLoader|null $classLoader;
+
+    public static function loader(): ClassLoader
+    {
+        return self::autoload();
+    }
+
     public static function autoload(): ClassLoader
     {
-        if (Phar::running(false)) {
-            return require 'phar://' . Phar::running(false) . '/vendor/autoload.php';
+        if (isset(self::$classLoader) === false) {
+            if (Phar::running(false)) {
+                self::$classLoader = require 'phar://' . Phar::running(false) . '/vendor/autoload.php';
+            } else {
+                self::$classLoader = require self::findVendorPath() . '/autoload.php';
+            }
         }
 
-        return require self::findVendorPath() . '/autoload.php';
+        return self::$classLoader;
     }
 
     /**
