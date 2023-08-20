@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Console;
 
 use Monolog\Logger;
+use phpDocumentor\Extension\ExtensionHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -44,6 +45,7 @@ final class ApplicationTest extends TestCase
             [(new Command('project:run'))->setCode(fn () => 2)],
             $eventDispatcher->reveal(),
             $this->prophesize(Logger::class)->reveal(),
+            ExtensionHandler::getInstance(__DIR__),
         );
         $this->feature->setAutoExit(false);
     }

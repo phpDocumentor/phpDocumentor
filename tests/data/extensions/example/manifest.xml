@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phar xmlns="https://phar.io/xml/manifest/1.0">
+    <contains name="phpdocumentor/directives" version="1.0" type="extension">
+        <extension for="phpdocumentor/phpdocumentor" compatible="^3.1"/>
+    </contains>
+
+    <copyright>
+        <author name="Jaap van Otterdijk" email="jaap@phpdoc.org"/>
+        <license type="MIT" url="https://github.com/phpdocumentor/phpdocumentor-example-extension/blob/1.0.0/LICENSE"/>
+    </copyright>
+
+    <requires>
+        <php version="^8.1"/>
+    </requires>
+
+    <bundles>
+        <component name="phpDocumentor\Example\Extension" version="1.0" />
+    </bundles>
+</phar>
