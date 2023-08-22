@@ -40,7 +40,7 @@ class Application extends BaseApplication
             $this->add($command);
         }
 
-        $this->setDefaultCommand('project:run', true);
+        $this->setDefaultCommand('project:run');
         $this->setDispatcher($eventDispatcher);
 
         $eventDispatcher->addListener(
