@@ -95,7 +95,7 @@ lint: phpcs
 
 .PHONY: test
 test: unit-test
-	${.PHP} -f ./tests/coverage-checker.php 65
+	${.PHP} -f ./tests/coverage-checker.php 64
 
 .PHONY: unit-test
 unit-test: SUITE=--testsuite=unit

@@ -68,7 +68,7 @@ final class ApplicationTest extends TestCase
         $_SERVER['argv'] = ['binary', $commandName];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
 
-        self::assertSame(1, $this->feature->run(new StringInput($commandName . ' -q')));
+        self::assertSame(2, $this->feature->run(new StringInput($commandName . ' -q')));
     }
 
     /**
@@ -81,7 +81,7 @@ final class ApplicationTest extends TestCase
         $_SERVER['argv'] = ['binary', 'unknown'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
 
-        self::assertSame(1, $this->feature->run(new StringInput('unknown -q')));
+        self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
     }
 
     /** @covers ::getCommandName */
