@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a913a46dc2f75b858abc64e4ede711d8",
+    "content-hash": "dcc63ca6a92a7819718759325af729d6",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -541,6 +541,94 @@
                 }
             ],
             "time": "2022-12-11T20:36:23+00:00"
+        },
+        {
+            "name": "league/csv",
+            "version": "9.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/csv.git",
+                "reference": "d24b0d484812313b07ab74b0fe4db9661606df6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/d24b0d484812313b07ab74b0fe4db9661606df6c",
+                "reference": "d24b0d484812313b07ab74b0fe4db9661606df6c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^8.1.2"
+            },
+            "require-dev": {
+                "doctrine/collections": "^2.1.3",
+                "ext-dom": "*",
+                "ext-xdebug": "*",
+                "friendsofphp/php-cs-fixer": "^v3.22.0",
+                "phpbench/phpbench": "^1.2.14",
+                "phpstan/phpstan": "^1.10.26",
+                "phpstan/phpstan-deprecation-rules": "^1.1.3",
+                "phpstan/phpstan-phpunit": "^1.3.13",
+                "phpstan/phpstan-strict-rules": "^1.5.1",
+                "phpunit/phpunit": "^10.3.1",
+                "symfony/var-dumper": "^6.3.3"
+            },
+            "suggest": {
+                "ext-dom": "Required to use the XMLConverter and the HTMLConverter classes",
+                "ext-iconv": "Needed to ease transcoding CSV using iconv stream filters"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "9.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "League\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://github.com/nyamsprod/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CSV data manipulation made easy in PHP",
+            "homepage": "https://csv.thephpleague.com",
+            "keywords": [
+                "convert",
+                "csv",
+                "export",
+                "filter",
+                "import",
+                "read",
+                "transform",
+                "write"
+            ],
+            "support": {
+                "docs": "https://csv.thephpleague.com",
+                "issues": "https://github.com/thephpleague/csv/issues",
+                "rss": "https://github.com/thephpleague/csv/releases.atom",
+                "source": "https://github.com/thephpleague/csv"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-08-04T15:12:48+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1537,16 +1625,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "82921cc85515a807c292aeb437547b083c3d777d"
+                "reference": "d8e21919ad3723c57059b038716ac68592cfec31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/82921cc85515a807c292aeb437547b083c3d777d",
-                "reference": "82921cc85515a807c292aeb437547b083c3d777d",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/d8e21919ad3723c57059b038716ac68592cfec31",
+                "reference": "d8e21919ad3723c57059b038716ac68592cfec31",
                 "shasum": ""
             },
             "require": {
@@ -1566,6 +1654,7 @@
             "require-dev": {
                 "psr/log": "^2.0 || ^3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1580,22 +1669,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/0.1.0"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-08-12T13:42:49+00:00"
+            "time": "2023-08-21T19:37:07+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
-            "version": "0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
-                "reference": "c3cf34680849674fa555ca63c12f06efc92d8beb"
+                "reference": "efccd8c3682657826de9d17009207a4b12cbe7ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/c3cf34680849674fa555ca63c12f06efc92d8beb",
-                "reference": "c3cf34680849674fa555ca63c12f06efc92d8beb",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/efccd8c3682657826de9d17009207a4b12cbe7ee",
+                "reference": "efccd8c3682657826de9d17009207a4b12cbe7ee",
                 "shasum": ""
             },
             "require": {
@@ -1605,6 +1694,7 @@
                 "symfony/process": "^5.4 || ^6.3",
                 "twig/twig": "~2.0 || ^3.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1619,13 +1709,13 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
-                "source": "https://github.com/phpDocumentor/guides-graphs/tree/0.1.0"
+                "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
             },
-            "time": "2023-07-19T20:05:13+00:00"
+            "time": "2023-08-21T19:25:40+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
@@ -1642,6 +1732,7 @@
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1662,24 +1753,26 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "77da04eeee2dd2cdc3e3a60608e923940761baa9"
+                "reference": "07a3be24e11fdca67e2b1184c9b1403e732c1ce1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/77da04eeee2dd2cdc3e3a60608e923940761baa9",
-                "reference": "77da04eeee2dd2cdc3e3a60608e923940761baa9",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/07a3be24e11fdca67e2b1184c9b1403e732c1ce1",
+                "reference": "07a3be24e11fdca67e2b1184c9b1403e732c1ce1",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^3.0",
+                "league/csv": "^9.10.0",
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version",
                 "webmozart/assert": "^1.11"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1693,9 +1786,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/0.1.0"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-08-12T11:30:27+00:00"
+            "time": "2023-08-21T19:37:07+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
@@ -7153,6 +7246,10 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phpdocumentor/guides": 20,
+        "phpdocumentor/guides-graphs": 20,
+        "phpdocumentor/guides-markdown": 20,
+        "phpdocumentor/guides-restructured-text": 20,
         "phpdocumentor/json-path": 20
     },
     "prefer-stable": false,
@@ -7169,7 +7266,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "8.1.0"
+        "php": "8.1.2"
     },
     "plugin-api-version": "2.3.0"
 }
