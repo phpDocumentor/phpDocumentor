@@ -19,7 +19,7 @@ and can directly skip to the chapter `Stand-alone, using Docker`_.
 phpDocumentor has several dependencies on other software packages. Please make sure that you have these
 available before installing phpDocumentor.
 
-- `PHP 7.4.0`_ or higher
+- `PHP 8.1.2`_ or higher
 - The mbstring_ php extension
 - Graphviz_ (optional)
 - PlantUML_ (optional)
@@ -80,11 +80,11 @@ And next
 
 .. _Docker image:           https://hub.docker.com/r/phpdoc/phpdoc
 .. _Composer:               https://getcomposer.org
-.. _`PHP 7.4.0`:            https://www.php.net
+.. _`PHP 8.1.2`:            https://www.php.net
 .. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.symfony.com/
 .. _Phive website:          https://phar.io/
 .. _phive:                  https://phar.io/
-.. alias:                   https://linuxize.com/post/how-to-create-bash-aliases/
+.. _alias:                   https://linuxize.com/post/how-to-create-bash-aliases/
 .. _mbstring:               https://www.php.net/manual/en/book.mbstring.php
