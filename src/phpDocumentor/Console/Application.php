@@ -43,9 +43,11 @@ class Application extends BaseApplication
 
     public function doRun(InputInterface $input, OutputInterface $output): int
     {
-        $extensionHandler = ExtensionHandler::getInstance(
-            $input->hasOption('extensions-dir') ? $input->getOption('extensions-dir') : [],
+        $extensionsDirs = $input->getParameterOption(
+            '--extensions-dir',
+            $this->getDefinition()->getOption('extensions-dir')->getDefault(),
         );
+        $extensionHandler = ExtensionHandler::getInstance($extensionsDirs);
         $containerFactory = new ContainerFactory();
         $container = $containerFactory->create(
             AutoloaderLocator::findVendorPath(),

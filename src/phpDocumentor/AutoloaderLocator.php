@@ -28,9 +28,27 @@ final class AutoloaderLocator
 {
     private static ClassLoader|null $classLoader;
 
+    /**
+     * Fallback classloader for extensions.
+     *
+     * When running with an authoritative classmap, the classloader will not be able to load classes from extensions.
+     * This classloader will be used as a fallback to load classes from extensions. This is a security flaw, but
+     * phpDocumentor should never be installed in production.
+     */
+    private static ClassLoader|null $fallbackClassLoader;
+
     public static function loader(): ClassLoader
     {
-        return self::autoload();
+        if (isset(self::$classLoader) === false || self::$classLoader->isClassMapAuthoritative() === false) {
+            return self::autoload();
+        }
+
+        if (isset(self::$fallbackClassLoader) === false) {
+            self::$fallbackClassLoader = new ClassLoader();
+            self::$fallbackClassLoader->register();
+        }
+
+        return self::$fallbackClassLoader;
     }
 
     public static function autoload(): ClassLoader

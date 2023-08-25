@@ -18,7 +18,7 @@ use function iterator_to_array;
  */
 final class ExtensionHandlerTest extends TestCase
 {
-    protected function tearDown(): void
+    protected function setUp(): void
     {
         $class = new ReflectionClass(ExtensionHandler::getInstance(
             [
