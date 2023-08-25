@@ -23,6 +23,7 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function array_filter;
+use function array_merge;
 use function count;
 use function file_exists;
 
@@ -33,11 +34,8 @@ final class ExtensionHandler
     /** @var ExtensionInfo[] */
     private array|null $extensions = null;
 
-    /** @var string */
-    private $extensionsDir;
-
     /** @var ExtensionLoader[] */
-    private $loaders = [];
+    private array $loaders = [];
 
     /** @var ExtensionInfo[] */
     private array $invalidExtensions =  [];
@@ -45,9 +43,9 @@ final class ExtensionHandler
     /** @var Validator */
     private $validator;
 
-    private function __construct(string $extensionsDir)
+    /** @param string[] $extensionsDirs */
+    private function __construct(private array $extensionsDirs = [])
     {
-        $this->extensionsDir = $extensionsDir;
         $this->loaders[] = new DirectoryLoader();
         $this->validator = new Validator(
             new ApplicationName(PrettyVersions::getRootPackageName()),
@@ -55,10 +53,11 @@ final class ExtensionHandler
         );
     }
 
-    public static function getInstance(string $extensionsDir = ''): self
+    /** @param string[] $extensionsDirs */
+    public static function getInstance(array $extensionsDirs = []): self
     {
         if (isset(self::$instance) === false) {
-            self::$instance = new self($extensionsDir);
+            self::$instance = new self($extensionsDirs);
         }
 
         return self::$instance;
@@ -71,29 +70,11 @@ final class ExtensionHandler
             return $this->extensions;
         }
 
-        if (file_exists($this->extensionsDir) === false) {
-            $this->extensions = [];
-
-            return $this->extensions;
-        }
-
         $extensions = [];
-        $iterator = new DirectoryIterator($this->extensionsDir);
-        foreach ($iterator as $dir) {
-            if ($dir->isDot()) {
-                continue;
-            }
-
-            foreach ($this->loaders as $loader) {
-                if (! $loader->supports($dir)) {
-                    continue;
-                }
-
-                $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
-            }
+        foreach ($this->extensionsDirs as $extensionsDir) {
+            $extensions = array_merge($this->collectExtensionsFromDir($extensionsDir), $extensions);
         }
 
-        $extensions = array_filter($extensions);
         $this->extensions = array_filter($extensions, function (ExtensionInfo $extension) {
             return $this->validator->isValid($extension);
         });
@@ -135,5 +116,31 @@ final class ExtensionHandler
         foreach ($this->invalidExtensions as $extension) {
             $io->warning($extension->getName() . ':' . $extension->getVersion());
         }
+    }
+
+    /** @return ExtensionInfo[] */
+    private function collectExtensionsFromDir(string $extensionsDir): array
+    {
+        if (file_exists($extensionsDir) === false) {
+            return [];
+        }
+
+        $extensions = [];
+        $iterator = new DirectoryIterator($extensionsDir);
+        foreach ($iterator as $dir) {
+            if ($dir->isDot()) {
+                continue;
+            }
+
+            foreach ($this->loaders as $loader) {
+                if (! $loader->supports($dir)) {
+                    continue;
+                }
+
+                $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
+            }
+        }
+
+        return array_filter($extensions);
     }
 }

@@ -21,8 +21,10 @@ final class ExtensionHandlerTest extends TestCase
     protected function tearDown(): void
     {
         $class = new ReflectionClass(ExtensionHandler::getInstance(
-            'foo',
-            'bar',
+            [
+                'foo',
+                'bar',
+            ],
         ));
 
         $instance = $class->getProperty('instance');
@@ -39,7 +41,7 @@ final class ExtensionHandlerTest extends TestCase
 
         $extensionsDir = $root->url() . '/extensions';
 
-        $extensionHandler = ExtensionHandler::getInstance($extensionsDir);
+        $extensionHandler = ExtensionHandler::getInstance([$extensionsDir]);
 
         $manifests = iterator_to_array($extensionHandler->loadExtensions());
         self::assertCount(0, $manifests);
@@ -53,7 +55,7 @@ final class ExtensionHandlerTest extends TestCase
 
         $extensionsDir = $root->url() . '/extensions';
 
-        $extensionHandler = ExtensionHandler::getInstance($extensionsDir . '/notExisting');
+        $extensionHandler = ExtensionHandler::getInstance([$extensionsDir . '/notExisting']);
         $manifests = iterator_to_array($extensionHandler->loadExtensions());
         self::assertCount(0, $manifests);
     }
@@ -66,7 +68,7 @@ final class ExtensionHandlerTest extends TestCase
         $extensionsDir->addChild(vfsStream::newFile('somefile.txt')->withContent('ignore'));
         $root->addChild($extensionsDir);
 
-        $extensionHandler = ExtensionHandler::getInstance($extensionsDir->url());
+        $extensionHandler = ExtensionHandler::getInstance([$extensionsDir->url()]);
         $manifests = iterator_to_array($extensionHandler->loadExtensions());
         self::assertCount(0, $manifests);
     }
@@ -79,7 +81,7 @@ final class ExtensionHandlerTest extends TestCase
         vfsStream::copyFromFileSystem(__DIR__ . '/../../../data/extensions', $extensionsDir);
         $root->addChild($extensionsDir);
 
-        $extensionHandler = ExtensionHandler::getInstance($extensionsDir->url());
+        $extensionHandler = ExtensionHandler::getInstance([$extensionsDir->url()]);
         $manifests = iterator_to_array($extensionHandler->loadExtensions());
         self::assertCount(1, $manifests);
     }

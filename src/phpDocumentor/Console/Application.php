@@ -14,39 +14,51 @@ declare(strict_types=1);
 namespace phpDocumentor\Console;
 
 use Monolog\Handler\PsrHandler;
-use Monolog\Logger;
+use phpDocumentor\AutoloaderLocator;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Version;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleEvent;
-use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use function getcwd;
 use function sprintf;
-use function strlen;
 
 class Application extends BaseApplication
 {
-    /** @param iterable<Command> $commands */
-    public function __construct(
-        iterable $commands,
-        EventDispatcher $eventDispatcher,
-        Logger $logger,
-        ExtensionHandler $extensionHandler,
-    ) {
+    public function __construct()
+    {
         parent::__construct('phpDocumentor', (new Version())->getVersion());
 
-        foreach ($commands as $command) {
-            $this->add($command);
+        $this->setDefaultCommand('project:run');
+    }
+
+    public function doRun(InputInterface $input, OutputInterface $output): int
+    {
+        $extensionHandler = ExtensionHandler::getInstance(
+            $input->hasOption('extensions-dir') ? $input->getOption('extensions-dir') : [],
+        );
+        $containerFactory = new ContainerFactory();
+        $container = $containerFactory->create(
+            AutoloaderLocator::findVendorPath(),
+            $extensionHandler,
+        );
+
+        $commands = $container->findTaggedServiceIds('console.command');
+        foreach ($commands as $id => $_command) {
+            $this->add($container->get($id));
         }
 
-        $this->setDefaultCommand('project:run');
+        $eventDispatcher = $container->get(EventDispatcher::class);
+        $logger = $container->get(LoggerInterface::class);
         $this->setDispatcher($eventDispatcher);
 
         $eventDispatcher->addListener(
@@ -60,43 +72,42 @@ class Application extends BaseApplication
             ConsoleEvents::COMMAND,
             [$extensionHandler, 'onBoot'],
         );
-    }
 
-    protected function getCommandName(InputInterface $input): string|null
-    {
-        try {
-            if ($this->looksLikeACommandName($input->getFirstArgument())) {
-                $this->find($input->getFirstArgument());
-
-                return $input->getFirstArgument();
-            }
-        } catch (CommandNotFoundException) {
-            //Empty by purpose
-        }
-
-        // the regular setDefaultCommand option does not allow for options and arguments; with this workaround
-        // we can have options and arguments when the first element in the argv options is not a recognized
-        // command name.
-        return 'project:run';
+        return parent::doRun($input, $output);
     }
 
     protected function getDefaultInputDefinition(): InputDefinition
     {
         $inputDefinition = parent::getDefaultInputDefinition();
 
-        $inputDefinition->addOption(
-            new InputOption(
-                'config',
-                'c',
-                InputOption::VALUE_OPTIONAL,
-                'Location of a custom configuration file',
-            ),
+        // We are replacing the default command argument with a custom one that allows for a default value.
+        return new InputDefinition(
+            $inputDefinition->getOptions() +
+            [
+                new InputArgument(
+                    'command',
+                    InputArgument::OPTIONAL,
+                    'The command to execute',
+                    'project:run',
+                ),
+                new InputOption(
+                    'config',
+                    'c',
+                    InputOption::VALUE_OPTIONAL,
+                    'Location of a custom configuration file',
+                ),
+                new InputOption(
+                    'extensions-dir',
+                    null,
+                    InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                    'extensions directory to load extensions from',
+                    [
+                        getcwd() . '/.phpdoc/extensions',
+                    ],
+                ),
+                new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
+            ],
         );
-        $inputDefinition->addOption(
-            new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
-        );
-
-        return $inputDefinition;
     }
 
     /**
@@ -107,18 +118,5 @@ class Application extends BaseApplication
     public function getLongVersion(): string
     {
         return sprintf('%s <info>v%s</info>', $this->getName(), $this->getVersion());
-    }
-
-    /**
-     * Only interpret the first argument as a potential command name if it is set and less than 100 characters.
-     *
-     * Anything above 255 characters will cause PHP warnings; and 100  should never occur anyway as a single
-     * command name.
-     *
-     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
-     */
-    private function looksLikeACommandName(string|null $argument): bool
-    {
-        return $argument !== null && strlen($argument) < 100;
     }
 }

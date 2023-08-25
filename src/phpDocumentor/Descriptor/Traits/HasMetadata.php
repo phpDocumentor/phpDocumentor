@@ -17,6 +17,7 @@ trait HasMetadata
         $this->metadata = $metadata;
     }
 
+    /** @return Metadata[] */
     public function getMetadata(): array
     {
         return $this->metadata;

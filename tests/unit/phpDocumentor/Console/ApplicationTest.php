@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
-use Monolog\Logger;
-use phpDocumentor\Extension\ExtensionHandler;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 use function str_repeat;
 
@@ -37,16 +35,7 @@ final class ApplicationTest extends TestCase
 
     public function setUp(): void
     {
-        $eventDispatcher = $this->prophesize(EventDispatcher::class);
-        $eventDispatcher->addListener(Argument::cetera(), Argument::cetera())->willReturn(null);
-        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
-
-        $this->feature = new Application(
-            [(new Command('project:run'))->setCode(fn () => 2)],
-            $eventDispatcher->reveal(),
-            $this->prophesize(Logger::class)->reveal(),
-            ExtensionHandler::getInstance(__DIR__),
-        );
+        $this->feature = new Application();
         $this->feature->setAutoExit(false);
     }
 
@@ -70,7 +59,10 @@ final class ApplicationTest extends TestCase
         $_SERVER['argv'] = ['binary', $commandName];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
 
-        self::assertSame(2, $this->feature->run(new StringInput($commandName . ' -q')));
+        self::assertSame(
+            1,
+            $this->feature->run(new ArrayInput(['command_name' => $commandName]), new BufferedOutput()),
+        );
     }
 
     /**
@@ -83,16 +75,7 @@ final class ApplicationTest extends TestCase
         $_SERVER['argv'] = ['binary', 'unknown'];
         $this->feature->add((new Command('my:command'))->setCode(fn () => 1));
 
-        self::assertSame(2, $this->feature->run(new StringInput('unknown -q')));
-    }
-
-    /** @covers ::getCommandName */
-    public function testWhetherTheRunCommandIsUsedWhenNoCommandNameIsGiven(): void
-    {
-        $_SERVER['argv'] = ['binary', 'something else'];
-        $this->feature->add((new Command('MyCommand'))->setCode(fn () => 1));
-
-        self::assertSame(2, $this->feature->run(new StringInput('-q')));
+        self::assertSame(1, $this->feature->run(new StringInput('unknown -q'), new BufferedOutput()));
     }
 
     /** @covers ::getDefaultInputDefinition */
