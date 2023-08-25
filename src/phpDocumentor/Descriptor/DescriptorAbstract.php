@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Filter\Filterable;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
+use phpDocumentor\Descriptor\Interfaces\MetadataAwareInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use Stringable;
 use Webmozart\Assert\Assert;
@@ -27,9 +28,15 @@ use function substr;
 /**
  * Base class for descriptors containing the most used options.
  */
-abstract class DescriptorAbstract implements Filterable, ElementInterface, InheritsFromElement, Stringable
+abstract class DescriptorAbstract implements
+    Filterable,
+    ElementInterface,
+    InheritsFromElement,
+    Stringable,
+    MetadataAwareInterface
 {
     use Traits\HasFqsen;
+    use Traits\HasMetadata;
     use Traits\HasName;
     use Traits\HasNamespace;
     use Traits\HasPackage;

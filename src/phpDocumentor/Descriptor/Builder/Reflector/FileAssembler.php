@@ -49,7 +49,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param File $data
      */
-    public function create(object $data): FileInterface
+    public function buildDescriptor(object $data): FileInterface
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
