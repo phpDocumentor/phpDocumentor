@@ -61,7 +61,7 @@ https://github.com/phpDocumentor/phpDocumentor/releases.
 
 The phar file can be used by invoking PHP directly and providing the phar file as a parameter::
 
-   $ php phpDocumentor.phar -d . -t docs/api
+   $ php phpDocumentor.phar run -d . -t docs/api
 
 or, on Mac and Linux, you can mark it as executable and move it to your bin folder::
 
@@ -70,7 +70,7 @@ or, on Mac and Linux, you can mark it as executable and move it to your bin fold
 
 After that you can run it globally::
 
-  $ phpDocumentor -d . -t docs/api
+  $ phpDocumentor run -d . -t docs/api
 
 And next
 --------
