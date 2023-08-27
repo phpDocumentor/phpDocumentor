@@ -237,6 +237,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           set-safe-directory: '/github/workspace'
+          fetch-depth: 0
+
       - uses: ./.github/workflows/phar
         with:
           php-version: ${{ env.defaultPHPVersion }}

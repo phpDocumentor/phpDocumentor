@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\NamespaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Reducer\MetadataReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler;
@@ -144,8 +145,9 @@ class AssemblerFactory
         $argumentAssembler = new ArgumentAssembler();
 
         $descriptionReducer = new DescriptionAssemblerReducer();
+        $metadataReducer = new MetadataReducer();
 
-        $factory->register(Matcher::forType(File::class), new FileAssembler());
+        $factory->register(Matcher::forType(File::class), new FileAssembler($metadataReducer));
         $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
         $factory->register(Matcher::forType(Trait_::class), new TraitAssembler());
         $factory->register(Matcher::forType(Class_::class), new ClassAssembler());

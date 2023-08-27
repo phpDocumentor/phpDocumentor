@@ -26,13 +26,42 @@ use const JSON_THROW_ON_ERROR;
 
 final class AutoloaderLocator
 {
-    public static function autoload(): ClassLoader
+    private static ClassLoader|null $classLoader;
+
+    /**
+     * Fallback classloader for extensions.
+     *
+     * When running with an authoritative classmap, the classloader will not be able to load classes from extensions.
+     * This classloader will be used as a fallback to load classes from extensions. This is a security flaw, but
+     * phpDocumentor should never be installed in production.
+     */
+    private static ClassLoader|null $fallbackClassLoader;
+
+    public static function loader(): ClassLoader
     {
-        if (Phar::running(false)) {
-            return require 'phar://' . Phar::running(false) . '/vendor/autoload.php';
+        if (isset(self::$classLoader) === false || self::$classLoader->isClassMapAuthoritative() === false) {
+            return self::autoload();
         }
 
-        return require self::findVendorPath() . '/autoload.php';
+        if (isset(self::$fallbackClassLoader) === false) {
+            self::$fallbackClassLoader = new ClassLoader();
+            self::$fallbackClassLoader->register();
+        }
+
+        return self::$fallbackClassLoader;
+    }
+
+    public static function autoload(): ClassLoader
+    {
+        if (isset(self::$classLoader) === false) {
+            if (Phar::running(false)) {
+                self::$classLoader = require 'phar://' . Phar::running(false) . '/vendor/autoload.php';
+            } else {
+                self::$classLoader = require self::findVendorPath() . '/autoload.php';
+            }
+        }
+
+        return self::$classLoader;
     }
 
     /**

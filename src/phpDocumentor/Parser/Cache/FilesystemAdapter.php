@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Cache;
 
-use phpDocumentor\Application;
+use phpDocumentor\Version;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\PruneableInterface;
@@ -71,6 +71,6 @@ final class FilesystemAdapter extends AbstractAdapter implements PruneableInterf
 
     private function prefixNamespaceWithVersion(string $namespace): string
     {
-        return sprintf('%s-%s', md5(Application::VERSION()), $namespace);
+        return sprintf('%s-%s', md5((new Version())->getVersion()), $namespace);
     }
 }

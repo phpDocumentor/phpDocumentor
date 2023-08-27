@@ -71,16 +71,12 @@ services:
     phpDocumentor\Application:
       public: true
 
-    phpDocumentor\Console\Application:
-      public: true
-      arguments:
-        $commands: !tagged_iterator { tag: 'console.command' }
-
     phpDocumentor\Console\Command\Project\RunCommand:
         arguments:
           - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
           - '@phpdoc.pipeline.complete'
         tags: [ { name: 'console.command' } ]
+        public: true
 
     phpDocumentor\Console\Command\Project\ListSettingsCommand:
         tags: [ { name: 'console.command' } ]
@@ -154,6 +150,9 @@ services:
         $files: '@files'
         $descriptors: '@descriptors'
 
+    phpDocumentor\Extension\ExtensionHandler:
+      factory: [ '\phpDocumentor\Extension\ExtensionHandler', 'getInstance' ]
+
     ###################################################################################
     ## Autoloading definitions for external services ##################################
     ###################################################################################
@@ -165,11 +164,16 @@ services:
       class: phpDocumentor\Parser\Cache\FilesystemAdapter
 
     Monolog\Logger:
+      public: true
       arguments:
         - 'app'
 
-    Psr\Log\LoggerInterface: '@Monolog\Logger'
-    Symfony\Component\EventDispatcher\EventDispatcher: ~
+    Psr\Log\LoggerInterface:
+      alias: 'Monolog\Logger'
+      public: true
+
+    Symfony\Component\EventDispatcher\EventDispatcher:
+      public: true
     Symfony\Contracts\EventDispatcher\EventDispatcherInterface: '@Symfony\Component\EventDispatcher\EventDispatcher'
     Psr\EventDispatcher\EventDispatcherInterface: '@Symfony\Contracts\EventDispatcher\EventDispatcherInterface'
 
