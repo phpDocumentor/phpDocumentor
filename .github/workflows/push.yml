@@ -360,7 +360,7 @@ jobs:
         run: ./bin/phpdoc --template=${{ matrix.template }} -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/${{ matrix.template }} --setting="guides.enabled=false"
 
       - name: Test template using Cypress
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           record: true
           group: 'template/${{ matrix.template }}'
@@ -481,7 +481,7 @@ jobs:
         run: php ./build/phpDocumentor.phar --template=${{ matrix.template }} --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/${{ matrix.template }} --setting="guides.enabled=false"
 
       - name: Test template using Cypress
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           record: true
           group: 'template/${{ matrix.template }}/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
