@@ -15,6 +15,8 @@ namespace phpDocumentor\Transformer\Writer;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Memory\MemoryAdapter;
 use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -66,15 +68,11 @@ final class TwigTest extends TestCase
         $root->addChild($this->templatesFolder);
         $this->sourceFolder = vfsStream::newDirectory('source');
         $root->addChild($this->sourceFolder);
-        $this->destinationFolder = vfsStream::newDirectory('destination');
-        $root->addChild($this->destinationFolder);
 
         $mountManager = new MountManager(
             [
                 'templates' => new Filesystem(new Local($this->templatesFolder->url())),
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
-                // VFS does not support locking, hence the 0
-                'destination' => new Filesystem(new Local($this->destinationFolder->url(), 0)),
             ],
         );
         $this->template = new Template('My Template', $mountManager);
@@ -98,8 +96,10 @@ final class TwigTest extends TestCase
     /** @covers ::transform */
     public function testRendersTwigTemplateToDestination(): void
     {
-        $targetDir = $this->destinationFolder->url();
-        $transformer = $this->givenTransformerWithTarget($targetDir);
+        $targetDir = 'foo';
+        $destination = new Filesystem(new MemoryAdapter());
+
+        $transformer = $this->givenTransformerWithTarget($targetDir, $destination);
 
         $this->givenATwigEnvironmentFactoryWithTemplates(
             ['/index.html.twig' => 'This is a twig file'],
@@ -110,20 +110,20 @@ final class TwigTest extends TestCase
             '',
             'twig',
             'templates/templateName/index.html.twig',
-            'index.html',
+            'foo/index.html',
         );
         $transformation->setTransformer($transformer->reveal());
 
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
         $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSetDescriptor])]);
         $project->getSettings()->setCustom($this->writer->getDefaultSettings());
-        $this->pathGenerator->generate($apiSetDescriptor, $transformation)->willReturn('index.html');
+        $this->pathGenerator->generate($apiSetDescriptor, $transformation)->willReturn('foo/index.html');
 
         $this->writer->initialize($project, $apiSetDescriptor, $this->faker()->template());
         $this->writer->transform($transformation, $project, $apiSetDescriptor);
 
-        $this->assertFileExists($targetDir . '/index.html');
-        $this->assertStringEqualsFile($targetDir . '/index.html', 'This is a twig file');
+        $this->assertTrue($destination->has($targetDir . '/index.html'));
+        $this->assertEquals($destination->read($targetDir . '/index.html'), 'This is a twig file');
     }
 
     private function givenATwigEnvironmentFactoryWithTemplates(array $templates): void
@@ -135,10 +135,11 @@ final class TwigTest extends TestCase
         );
     }
 
-    private function givenTransformerWithTarget(string $targetDir): ObjectProphecy
+    private function givenTransformerWithTarget(string $targetDir, FilesystemInterface $filesystem): ObjectProphecy
     {
         $transformer = $this->prophesize(Transformer::class);
         $transformer->getTarget()->willReturn($targetDir);
+        $transformer->destination()->willReturn($filesystem);
 
         return $transformer;
     }

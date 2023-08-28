@@ -23,10 +23,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
 
-use function getcwd;
-
-use const DIRECTORY_SEPARATOR;
-
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform
  * @covers ::__construct
@@ -63,7 +59,7 @@ final class TransformTest extends TestCase
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
         $this->transformer = $this->prophesize(Transformer::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
-        $this->transformer->execute($projectDescriptor, $documentationSet, [])->shouldBeCalled();
+        $this->transformer->execute($projectDescriptor, $documentationSet, [], Argument::type(FilesystemInterface::class))->shouldBeCalled();
         $templateFactory = $this->prophesize(Factory::class);
         $templateFactory->getTemplates(Argument::any(), Argument::any())->willReturn(new Collection());
 
@@ -84,9 +80,6 @@ final class TransformTest extends TestCase
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
-        $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
-
         ($this->transform)($payload);
     }
 
@@ -98,21 +91,6 @@ final class TransformTest extends TestCase
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
-
-        $this->transformer->setTarget('/my/absolute/folder')->shouldBeCalled();
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
-
-        ($this->transform)($payload);
-    }
-
-    /** @covers ::__invoke */
-    public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
-    {
-        $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
-        $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
-
-        $this->transformer->setTarget(Argument::any());
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class));
 
         ($this->transform)($payload);
     }

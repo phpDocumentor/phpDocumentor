@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
+use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
@@ -40,9 +40,6 @@ final class TransformerTest extends TestCase
 
     private Transformer|null $fixture = null;
 
-    /** @var ObjectProphecy|FlySystemFactory */
-    private $flySystemFactory;
-
     /** @var WriterAbstract&ObjectProphecy */
     private $writer;
 
@@ -54,15 +51,12 @@ final class TransformerTest extends TestCase
         $this->writer = $this->prophesize(WriterAbstract::class);
         $this->writer->getName()->willReturn('myTestWriter');
         $this->writer->__toString()->willReturn('myTestWriter');
-        $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
-        $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument(0);
 
         $this->fixture = new Transformer(
             new Collection(['myTestWriter' => $this->writer->reveal()]),
             new NullLogger(),
-            $this->flySystemFactory->reveal(),
             $eventDispatcher->reveal(),
         );
     }
@@ -70,12 +64,9 @@ final class TransformerTest extends TestCase
     /** @covers ::__construct */
     public function testInitialization(): void
     {
-        $flySystemFactory = $this->prophesize(FlySystemFactory::class);
-
         $fixture = new Transformer(
             new Collection([]),
             new NullLogger(),
-            $flySystemFactory->reveal(),
             $this->prophesize(EventDispatcherInterface::class)->reveal(),
         );
 
@@ -85,19 +76,14 @@ final class TransformerTest extends TestCase
     /**
      * @covers ::getTarget
      * @covers ::setTarget
-     * @covers ::destination
      */
     public function testSettingAndGettingATarget(): void
     {
-        $filesystem = $this->faker()->fileSystem();
-        $this->flySystemFactory->create(Argument::any())->willReturn($filesystem);
-
         $this->assertEquals('', $this->fixture->getTarget());
 
         $this->fixture->setTarget(__DIR__);
 
         $this->assertEquals(__DIR__, $this->fixture->getTarget());
-        $this->assertEquals($filesystem, $this->fixture->destination());
     }
 
     /** @covers ::execute */
@@ -115,7 +101,12 @@ final class TransformerTest extends TestCase
 
         $this->writer->transform($transformation, $project, $apiSet)->shouldBeCalled();
 
-        $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
+        $this->fixture->execute(
+            $project,
+            $apiSet,
+            [$transformation->reveal()],
+            $this->prophesize(FilesystemInterface::class)->reveal(),
+        );
     }
 
     /** @covers ::getDescription */

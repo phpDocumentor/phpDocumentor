@@ -16,12 +16,11 @@ namespace phpDocumentor\Transformer;
 use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
+use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
@@ -52,13 +51,12 @@ class Transformer
     final public const COMPILER_PRIORITY = 5000;
 
     /** @var string|null $target Target location where to output the artifacts */
-    protected $target = null;
+    protected string|null $target = null;
 
     /** @var FilesystemInterface|null $destination The destination filesystem to write to */
     private FilesystemInterface|null $destination = null;
 
-    /** @var Writer\Collection $writers */
-    protected $writers;
+    protected Collection $writers;
 
     /**
      * Wires the template collection and writer collection to this transformer.
@@ -66,7 +64,6 @@ class Transformer
     public function __construct(
         Writer\Collection $writerCollection,
         private readonly LoggerInterface $logger,
-        private readonly FlySystemFactory $flySystemFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         $this->writers = $writerCollection;
@@ -85,7 +82,6 @@ class Transformer
     public function setTarget(string $target): void
     {
         $this->target = $target;
-        $this->destination = $this->flySystemFactory->create(Dsn::createFromString($target));
     }
 
     /**
@@ -119,7 +115,9 @@ class Transformer
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
         array $transformations,
+        FilesystemInterface $destination,
     ): void {
+        $this->destination = $destination;
         $this->initializeWriters($project, $documentationSet, $transformations);
         $this->transform($project, $documentationSet, $transformations);
 

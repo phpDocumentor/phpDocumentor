@@ -80,6 +80,11 @@ services:
 
     phpDocumentor\Console\Command\Project\ListSettingsCommand:
         tags: [ { name: 'console.command' } ]
+        public: true
+
+    phpDocumentor\Console\Command\Project\TemplateListCommand:
+        tags: [ { name: 'console.command' } ]
+        public: true
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
         class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
@@ -204,10 +209,6 @@ services:
 
     phpDocumentor\Transformer\Writer\Collection:
         arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
-
-    phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
-      arguments:
-        $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
 
     ###################################################################################
     ## Guides  ########################################################################

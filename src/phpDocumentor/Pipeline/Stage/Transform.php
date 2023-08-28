@@ -72,10 +72,7 @@ class Transform
 
         Assert::keyExists($configuration['phpdocumentor'], 'paths');
 
-        $templates = $this->templateFactory->getTemplates(
-            $configuration['phpdocumentor']['templates'],
-            $this->createFileSystem($configuration['phpdocumentor']['paths']['output']),
-        );
+        $templates = $this->templateFactory->getTemplates($configuration['phpdocumentor']['templates']);
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
 
@@ -95,6 +92,7 @@ class Transform
                     $project,
                     $documentationSet,
                     $transformations,
+                    $this->createFileSystem($configuration['phpdocumentor']['paths']['output']),
                 );
 
                 /** @var PostTransformEvent $postTransformEvent */
@@ -150,12 +148,6 @@ class Transform
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
 
-        $destination = $this->flySystemFactory->create(Dsn::createFromString((string) $target));
-
-        //TODO: the guides to need this, can we get rid of these lines?
-        $this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($destination);
-
-        return $destination;
+        return $this->flySystemFactory->create(Dsn::createFromString((string) $target));
     }
 }

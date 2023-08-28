@@ -24,7 +24,11 @@ use org\bovigo\vfs\vfsStreamFile;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\NullLogger;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\FileIo
@@ -34,11 +38,14 @@ use PHPUnit\Framework\TestCase;
 final class FileIoTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     private vfsStreamDirectory $templatesFolder;
     private vfsStreamDirectory $sourceFolder;
     private vfsStreamDirectory $destinationFolder;
     private Template $template;
+
+    private Transformer $transformer;
 
     protected function setUp(): void
     {
@@ -54,10 +61,15 @@ final class FileIoTest extends TestCase
             [
                 'templates' => new Filesystem(new Local($this->templatesFolder->url())),
                 'template' => new Filesystem(new Local($this->sourceFolder->url())),
-                'destination' => new Filesystem(new Local($this->destinationFolder->url())),
             ],
         );
         $this->template = new Template('My Template', $mountManager);
+        $this->transformer = new Transformer(
+            new Collection([]),
+            new NullLogger(),
+            $this->prophesize(EventDispatcherInterface::class)->reveal(),
+        );
+        $this->transformer->setDestination(new Filesystem(new Local($this->destinationFolder->url())));
     }
 
     /** @covers ::transform */
@@ -72,13 +84,13 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('index.html'));
         $writer->transform(
-            new Transformation(
+            (new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'index.html.twig',
                 'index.html',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -97,13 +109,14 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images/destination.png'));
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'templates/templateName/images/image.png',
                 'images/destination.png',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -121,13 +134,14 @@ final class FileIoTest extends TestCase
         $writer = new FileIo();
 
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'index.html.twig',
                 'index.html',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -148,13 +162,14 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'images',
                 'images',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -177,13 +192,14 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'templates/templateName/images',
                 'images',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -206,13 +222,14 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'images',
                 'images',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -237,13 +254,14 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
+            (
             new Transformation(
                 $this->template,
                 'copy',
                 'fileio',
                 'templates/templateName/images',
                 'images',
-            ),
+            ))->setTransformer($this->transformer),
             $project,
             $apiSet,
         );
@@ -282,13 +300,13 @@ final class FileIoTest extends TestCase
         $projectDescriptor = $this->faker()->projectDescriptor(
             [$this->faker()->versionDescriptor([$apiSetDescriptor])],
         );
-        $transformation = new Transformation(
+        $transformation = (new Transformation(
             $this->template,
             'not-a-copy',
             'fileio',
             'unknown_file',
             'nah.png',
-        );
+        ))->setTransformer($this->transformer);
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
     }

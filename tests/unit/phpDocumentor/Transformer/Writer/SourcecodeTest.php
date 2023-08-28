@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\Memory\MemoryAdapter;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
@@ -21,8 +23,11 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\NullLogger;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode
@@ -34,7 +39,6 @@ final class SourcecodeTest extends MockeryTestCase
     use Faker;
     use ProphecyTrait;
 
-    /** @var Graph */
     private Sourcecode $sourceCode;
 
     protected function setUp(): void
@@ -47,13 +51,19 @@ final class SourcecodeTest extends MockeryTestCase
         $this->sourceCode = new Sourcecode(
             $pathGenerator->reveal(),
         );
+        $this->transformer = new Transformer(
+            new Collection([]),
+            new NullLogger(),
+            $this->prophesize(EventDispatcherInterface::class)->reveal(),
+        );
+        $this->transformer->setDestination(new Filesystem(new MemoryAdapter()));
     }
 
     /** @covers ::transform */
     public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);
-        $transformation->template()->shouldBeCalled()->willReturn($this->faker()->template());
+        $transformation->getTransformer()->willReturn($this->transformer)->shouldBeCalled();
 
         $api = $this->faker()->apiSetDescriptor();
         $projectDescriptor = $this->giveProjectDescriptor($api);

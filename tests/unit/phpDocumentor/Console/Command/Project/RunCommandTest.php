@@ -92,6 +92,7 @@ class RunCommandTest extends TestCase
                 'examples-dir',
                 'setting',
                 'list-settings',
+                'list-templates',
                 'parseprivate',
             ],
             array_keys($options),

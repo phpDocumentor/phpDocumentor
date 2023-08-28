@@ -59,7 +59,7 @@ class Factory
      *
      * @param array<int, array{name:string, location: ?Path, parameters:array<string, string>}> $templates
      */
-    public function getTemplates(array $templates, FilesystemInterface $output): Collection
+    public function getTemplates(array $templates): Collection
     {
         $stopWatch = new Stopwatch();
         $loadedTemplates = [];
@@ -73,7 +73,6 @@ class Factory
                 : $template['name'];
 
             $loadedTemplates[$template['name']] = $this->loadTemplate(
-                $output,
                 $templateNameOrLocation,
                 $template['parameters'] ?? [],
             );
@@ -84,9 +83,9 @@ class Factory
     }
 
     /** @param array<string, string> $parameters */
-    private function loadTemplate(FilesystemInterface $output, string $template, array $parameters): Template
+    private function loadTemplate(string $template, array $parameters): Template
     {
-        $template = $this->createTemplateFromXml($output, $template, $parameters);
+        $template = $this->createTemplateFromXml($template, $parameters);
 
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
@@ -138,7 +137,6 @@ class Factory
      * @param array<string, string> $templateParams
      */
     private function createTemplateFromXml(
-        FilesystemInterface $filesystem,
         string $nameOrPath,
         array $templateParams,
     ): Template {
@@ -149,7 +147,6 @@ class Factory
             [
                 'templates' => $this->getTemplatesDirectory(),
                 'template' => $this->resolve($nameOrPath),
-                'destination' => $filesystem,
             ],
         );
 

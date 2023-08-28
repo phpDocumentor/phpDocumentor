@@ -154,9 +154,11 @@ class Transformation
     /**
      * Sets the transformer on this transformation.
      */
-    public function setTransformer(Transformer $transformer): void
+    public function setTransformer(Transformer $transformer): self
     {
         $this->transformer = $transformer;
+
+        return $this;
     }
 
     /**

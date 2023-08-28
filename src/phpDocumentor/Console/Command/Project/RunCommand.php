@@ -242,6 +242,12 @@ HELP,
                 'Returns a list of available settings',
             )
             ->addOption(
+                'list-templates',
+                null,
+                InputOption::VALUE_NONE,
+                'Returns a list of available templates',
+            )
+            ->addOption(
                 'parseprivate',
                 null,
                 InputOption::VALUE_NONE,
@@ -264,6 +270,11 @@ HELP,
 
         if ($input->getOption('list-settings')) {
             return ($this->getApplication()->find('settings:list'))
+                ->run(new ArrayInput([]), $output);
+        }
+
+        if ($input->getOption('list-templates')) {
+            return ($this->getApplication()->find('templates:list'))
                 ->run(new ArrayInput([]), $output);
         }
 
