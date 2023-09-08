@@ -163,6 +163,9 @@ route
     **type**: ``string``
     **default**: ``normal``
 
+.. docblock:: \phpDocumentor\Transformer\Writer\Twig\Extension::route()
+
+
 Renders a link to the generated page for the node. ``presentation`` can be set to ``'url'`` to render only the URL.
 
 sort_asc

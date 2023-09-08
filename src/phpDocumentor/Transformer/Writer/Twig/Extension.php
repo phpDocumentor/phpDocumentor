@@ -359,11 +359,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'route' => new TwigFilter(
                 'route',
-                fn (
-                    $value,
-                    string $presentation = LinkRenderer::PRESENTATION_NORMAL,
-                ) => $this->routeRenderer->render($value, $presentation),
-                ['is_safe' => ['all']],
+                $this->route(...),
+                [
+                    'needs_context' => true,
+                    'is_safe' => ['all']
+                ],
             ),
             'sort' => new TwigFilter('sort_*', $this->sort(...)),
             'sortByVisibility' => new TwigFilter('sortByVisibility', $this->sortByVisibility(...)),
@@ -506,5 +506,21 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         );
 
         return $iterator;
+    }
+
+    /**
+     * Renders an url for a node or type.
+     *
+     * ```twig
+     * {{ node|route('class') }}
+     * ```
+     * @param mixed[] $context
+     * @param DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $element
+     *
+     * @return string|list<string>
+     */
+    public function route($context, $element, string $presentation = LinkRenderer::PRESENTATION_NORMAL)
+    {
+        return $this->renderRoute($context, $element, $presentation);
     }
 }
