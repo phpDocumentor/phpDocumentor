@@ -31,7 +31,7 @@ final class GraphTest extends MockeryTestCase
     protected function setUp(): void
     {
         $this->graph = new Graph(
-            new PlantumlClassDiagram(new NullLogger(), m::mock(PlantumlRenderer::class)),
+            new PlantumlClassDiagram(m::mock(PlantumlRenderer::class)),
         );
     }
 

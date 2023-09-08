@@ -139,6 +139,29 @@ final class FactoryTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
+    /**
+     * @covers ::registerTemplate
+     * @covers ::getAllNames
+     */
+    public function testRegisteredTemplatesAreListed(): void
+    {
+        // Arrange
+        $expected = ['my-extension', 'template1', 'template2', 'myTemplate'];
+        $this->globalTemplates->addChild(vfsStream::newDirectory($expected[1]));
+        $this->globalTemplates->addChild(vfsStream::newFile('aFile.txt'));
+        $this->globalTemplates->addChild(vfsStream::newDirectory($expected[2]));
+
+        $extensionFileSystem = vfsStream::newDirectory('my-extension');
+        $extensionFileSystem->addChild(vfsStream::newDirectory('myTemplate'));
+        $this->globalTemplates->addChild($extensionFileSystem);
+
+        // Act
+        $this->fixture->registerTemplate('my-extension', Dsn::createFromString($extensionFileSystem->url()));
+
+        // Assert
+        $this->assertSame($expected, $this->fixture->getAllNames());
+    }
+
     private function givenAnExampleTemplateInDirectoryCalled(string $templateName): vfsStreamDirectory
     {
         $xml = <<<XML

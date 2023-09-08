@@ -39,9 +39,17 @@ use function rtrim;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * @todo:
+ * - add logic to load templates from the global templates folder (create template objects)
+ * - add logic to load template from a path
+ * - add logic to register a template from a DNS and load it.
+ */
 class Factory
 {
     final public const TEMPLATE_DEFINITION_FILENAME = 'template.xml';
+    private array $templateFileSystemPrefixes = ['templates'];
+    private MountManager $templateFileSystems;
 
     /**
      * Constructs a new template factory with its dependencies.
@@ -51,6 +59,9 @@ class Factory
         private readonly FlySystemFactory $flySystemFactory,
         private readonly string $globalTemplatesPath,
     ) {
+        $this->templateFileSystems = new MountManager([
+            'templates' => $this->getTemplatesDirectory(),
+        ]);
     }
 
     /**
@@ -103,24 +114,41 @@ class Factory
      */
     public function getAllNames(): array
     {
-        /** @var RecursiveDirectoryIterator $files */
-        $files = new DirectoryIterator($this->getTemplatesPath());
-
         $templateNames = [];
-        while ($files->valid()) {
-            $name = $files->getBasename();
+        foreach ($this->templateFileSystemPrefixes as $prefix) {
+            foreach ($this->templateFileSystems->listContents($prefix . '://') as $file) {
+                if ($file['type'] !== 'dir') {
+                    continue;
+                }
 
-            // skip abstract files
-            if (! $files->isDir() || in_array($name, ['.', '..'], true)) {
-                $files->next();
-                continue;
+                $templateNames[] = $file['basename'];
             }
-
-            $templateNames[] = $name;
-            $files->next();
         }
 
         return $templateNames;
+    }
+
+    /** @return Template[] */
+    private function getAllTemplates(): array
+    {
+        $templates = [];
+        foreach ($this->templateFileSystemPrefixes as $prefix) {
+            foreach ($this->templateFileSystems->listContents($prefix . '://') as $file) {
+                if ($file['type'] !== 'dir') {
+                    continue;
+                }
+
+                $templates[] = $file['basename'];
+            }
+        }
+
+        return $templates;
+    }
+
+    public function registerTemplate(string $prefix, Dsn $dsn): void
+    {
+        $this->templateFileSystemPrefixes[] = $prefix;
+        $this->templateFileSystems->mountFilesystem($prefix, $this->flySystemFactory->create($dsn));
     }
 
     /**
@@ -140,61 +168,12 @@ class Factory
         string $nameOrPath,
         array $templateParams,
     ): Template {
-        // create the filesystems that a template needs to be able to manipulate, the source folder containing this
-        // template its files; the destination to where it can write its files and a global templates folder where to
-        // get global template files from
-        $files = new MountManager(
-            [
-                'templates' => $this->getTemplatesDirectory(),
-                'template' => $this->resolve($nameOrPath),
-            ],
-        );
+        $this->templateFileSystems->mountFilesystem('template', $this->resolve($nameOrPath));
 
-        $xml = $files->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
+        $xml = $this->templateFileSystems->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
         Assert::string($xml);
 
-        $xml = new SimpleXMLElement($xml);
-        $template = new Template((string) $xml->name, $files);
-        $template->setAuthor((string) $xml->author . ((string) $xml->email ? ' <' . $xml->email . '>' : ''));
-        $template->setVersion((string) $xml->version);
-        $template->setCopyright((string) $xml->copyright);
-        $template->setDescription((string) $xml->description);
-
-        if ($xml->parameters) {
-            foreach ($xml->parameters->children() as $parameter) {
-                $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
-                $template->setParameter($parameterObject->key(), $parameterObject);
-            }
-        }
-
-        foreach ($templateParams as $key => $value) {
-            $parameterObject = new Parameter($key, $value);
-            $template->setParameter($parameterObject->key(), $parameterObject);
-        }
-
-        $i = 0;
-        foreach ($xml->transformations->transformation as $transformation) {
-            $transformationObject = new Transformation(
-                $template,
-                (string) $transformation->attributes()->query,
-                (string) $transformation->attributes()->writer,
-                (string) $transformation->attributes()->source,
-                (string) $transformation->attributes()->artifact,
-            );
-            $parameters = [];
-            foreach ($transformation->parameter as $parameter) {
-                $parameterObject = new Parameter((string) $parameter->attributes()->key, (string) $parameter);
-                $parameters[$parameterObject->key()] = $parameterObject;
-            }
-
-            $transformationObject->setParameters(array_merge($parameters, $template->getParameters()));
-
-            $template[$i++] = $transformationObject;
-        }
-
-        $template->propagateParameters();
-
-        return $template;
+        return $this->createTemplateFromString($xml, $templateParams);
     }
 
     private function resolve(string $nameOrPath): FilesystemInterface
@@ -250,5 +229,51 @@ class Factory
         $templateAdapter->setPathPrefix($globalRoot . $subfolder);
 
         return new Filesystem($templateAdapter);
+    }
+
+    private function createTemplateFromString(bool|string $xml, array $templateParams): Template
+    {
+        $xml = new SimpleXMLElement($xml);
+        $template = new Template((string)$xml->name, $this->templateFileSystems);
+        $template->setAuthor((string)$xml->author . ((string)$xml->email ? ' <' . $xml->email . '>' : ''));
+        $template->setVersion((string)$xml->version);
+        $template->setCopyright((string)$xml->copyright);
+        $template->setDescription((string)$xml->description);
+
+        if ($xml->parameters) {
+            foreach ($xml->parameters->children() as $parameter) {
+                $parameterObject = new Parameter((string)$parameter->attributes()->key, (string)$parameter);
+                $template->setParameter($parameterObject->key(), $parameterObject);
+            }
+        }
+
+        foreach ($templateParams as $key => $value) {
+            $parameterObject = new Parameter($key, $value);
+            $template->setParameter($parameterObject->key(), $parameterObject);
+        }
+
+        $i = 0;
+        foreach ($xml->transformations->transformation as $transformation) {
+            $transformationObject = new Transformation(
+                $template,
+                (string)$transformation->attributes()->query,
+                (string)$transformation->attributes()->writer,
+                (string)$transformation->attributes()->source,
+                (string)$transformation->attributes()->artifact,
+            );
+            $parameters = [];
+            foreach ($transformation->parameter as $parameter) {
+                $parameterObject = new Parameter((string)$parameter->attributes()->key, (string)$parameter);
+                $parameters[$parameterObject->key()] = $parameterObject;
+            }
+
+            $transformationObject->setParameters(array_merge($parameters, $template->getParameters()));
+
+            $template[$i++] = $transformationObject;
+        }
+
+        $template->propagateParameters();
+
+        return $template;
     }
 }

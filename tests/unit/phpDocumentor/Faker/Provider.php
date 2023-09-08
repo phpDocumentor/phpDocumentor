@@ -45,6 +45,7 @@ use phpDocumentor\Transformer\Writer\Collection;
 use Psr\Log\NullLogger;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use function array_pop;
 use function implode;
 
@@ -70,26 +71,7 @@ final class Provider extends Base
         return new Transformation($template ?? $this->template(), '', '', '', '');
     }
 
-    public function transformer(Template\Collection|null $templateCollection = null): Transformer
-    {
-        if ($templateCollection === null) {
-            $templateCollection = m::mock(Template\Collection::class);
-            $templateCollection->shouldIgnoreMissing();
-        }
-
-        $writerCollectionMock = m::mock(Collection::class);
-        $writerCollectionMock->shouldIgnoreMissing();
-
-        return new Transformer(
-            $templateCollection,
-            $writerCollectionMock,
-            new NullLogger(),
-            $this->flySystemFactory(),
-        );
-    }
-
-    /** @return m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
-    public function flySystemFactory()
+    public function flySystemFactory(): FlySystemFactory
     {
         return new FlySystemFactory(new MountManager());
     }
