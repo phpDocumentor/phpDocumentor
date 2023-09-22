@@ -72,7 +72,6 @@
         "symfony/expression-language": "^6.0",
         "symfony/filesystem": "^6.0",
         "symfony/finder": "^6.0",
-        "symfony/flex": "^1.17",
         "symfony/polyfill-intl-idn": "^1.22",
         "symfony/process": "^6.0",
         "symfony/routing": "^6.0",
@@ -107,7 +106,6 @@
             "php": "8.1.2"
         },
         "allow-plugins": {
-            "symfony/flex": true,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
