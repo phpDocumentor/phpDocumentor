@@ -45,6 +45,7 @@ help:
 	@echo "";
 	@echo "== Release tools ==";
 	@echo "composer-mirror  - Runs a production-version of composer install for, i.e., the phar building";
+	@echo "composer-pre-release - Update guides for next release";
 	@echo "phar             - Creates the PHAR file";
 	@echo "docs             - Creates local docs docker image";
 	@echo "";
@@ -134,6 +135,13 @@ composer:
 composer-mirror:
 	rm -rf vendor/phpdocumentor/*
 	COMPOSER_MIRROR_PATH_REPOS=1 composer install --optimize-autoloader
+
+composer-guides-dev:
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project composer:2 require phpdocumentor/guides:dev-main@dev phpdocumentor/guides-graphs:dev-main@dev phpdocumentor/guides-markdown:dev-main@dev phpdocumentor/guides-restructured-text:dev-main@dev
+
+composer-pre-release:
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project composer:2 require phpdocumentor/guides phpdocumentor/guides-graphs phpdocumentor/guides-markdown phpdocumentor/guides-restructured-text
+
 
 .PHONY: shell
 shell:

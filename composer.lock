@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e79ffce7e03918d9caa803313a7029f0",
+    "content-hash": "ff7cb55ee37c6ca8843faa705ce96ec9",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -294,6 +294,59 @@
                 "source": "https://github.com/jawira/plantuml/tree/v1.2023.7"
             },
             "time": "2023-05-19T13:00:44+00:00"
+        },
+        {
+            "name": "jawira/plantuml-encoding",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jawira/plantuml-encoding.git",
+                "reference": "cec097dfc062e7e13655d9594eacce5f9df639ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jawira/plantuml-encoding/zipball/cec097dfc062e7e13655d9594eacce5f9df639ad",
+                "reference": "cec097dfc062e7e13655d9594eacce5f9df639ad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "jawira/skeleton": "^2.14",
+                "phpstan/phpstan": "^1.0",
+                "vimeo/psalm": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/plantuml_functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jawira Portugal",
+                    "homepage": "https://jawira.com"
+                }
+            ],
+            "description": "PlantUML encoding functions",
+            "keywords": [
+                "encodep",
+                "encoding",
+                "functions",
+                "plantuml",
+                "uml"
+            ],
+            "support": {
+                "issues": "https://github.com/jawira/plantuml-encoding/issues",
+                "source": "https://github.com/jawira/plantuml-encoding/tree/v1.1.0"
+            },
+            "time": "2022-05-31T18:58:21+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -1736,16 +1789,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "d8e21919ad3723c57059b038716ac68592cfec31"
+                "reference": "8916a4f6f24251902b60739fef9e19d3c521d1bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/d8e21919ad3723c57059b038716ac68592cfec31",
-                "reference": "d8e21919ad3723c57059b038716ac68592cfec31",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/8916a4f6f24251902b60739fef9e19d3c521d1bb",
+                "reference": "8916a4f6f24251902b60739fef9e19d3c521d1bb",
                 "shasum": ""
             },
             "require": {
@@ -1765,7 +1818,6 @@
             "require-dev": {
                 "psr/log": "^2.0 || ^3.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1780,32 +1832,35 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/0.2.0"
             },
-            "time": "2023-08-21T19:37:07+00:00"
+            "time": "2023-10-03T18:07:51+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
-                "reference": "efccd8c3682657826de9d17009207a4b12cbe7ee"
+                "reference": "29cb1663f2a70e52d5aa65443a37c1ad1c2e1133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/efccd8c3682657826de9d17009207a4b12cbe7ee",
-                "reference": "efccd8c3682657826de9d17009207a4b12cbe7ee",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/29cb1663f2a70e52d5aa65443a37c1ad1c2e1133",
+                "reference": "29cb1663f2a70e52d5aa65443a37c1ad1c2e1133",
                 "shasum": ""
             },
             "require": {
+                "jawira/plantuml-encoding": "^1.0",
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version",
                 "phpdocumentor/guides-restructured-text": "self.version",
                 "symfony/process": "^5.4 || ^6.3",
                 "twig/twig": "~2.0 || ^3.0"
             },
-            "default-branch": true,
+            "suggest": {
+                "jawira/plantuml": "To render graphs locally using plant uml"
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1820,22 +1875,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
-                "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-graphs/tree/0.2.0"
             },
-            "time": "2023-08-21T19:25:40+00:00"
+            "time": "2023-10-03T18:07:51+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "25611abc5bd0cd5cf45de3a7d2455d1bf4c4e90c"
+                "reference": "6aa3e2f89ce57f4b19f93f471d08683891699806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/25611abc5bd0cd5cf45de3a7d2455d1bf4c4e90c",
-                "reference": "25611abc5bd0cd5cf45de3a7d2455d1bf4c4e90c",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/6aa3e2f89ce57f4b19f93f471d08683891699806",
+                "reference": "6aa3e2f89ce57f4b19f93f471d08683891699806",
                 "shasum": ""
             },
             "require": {
@@ -1843,7 +1898,6 @@
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1858,22 +1912,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/0.1.0"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/0.2.0"
             },
-            "time": "2023-07-05T15:16:20+00:00"
+            "time": "2023-09-26T19:01:09+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-main",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "07a3be24e11fdca67e2b1184c9b1403e732c1ce1"
+                "reference": "e1388c9bfbccdfbf67a302d128debb689b3ea98a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/07a3be24e11fdca67e2b1184c9b1403e732c1ce1",
-                "reference": "07a3be24e11fdca67e2b1184c9b1403e732c1ce1",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/e1388c9bfbccdfbf67a302d128debb689b3ea98a",
+                "reference": "e1388c9bfbccdfbf67a302d128debb689b3ea98a",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1937,6 @@
                 "phpdocumentor/guides": "self.version",
                 "webmozart/assert": "^1.11"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1897,9 +1950,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/0.2.0"
             },
-            "time": "2023-08-21T19:37:07+00:00"
+            "time": "2023-10-01T09:05:49+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
@@ -7189,10 +7242,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpdocumentor/guides": 20,
-        "phpdocumentor/guides-graphs": 20,
-        "phpdocumentor/guides-markdown": 20,
-        "phpdocumentor/guides-restructured-text": 20,
         "phpdocumentor/json-path": 20
     },
     "prefer-stable": false,
