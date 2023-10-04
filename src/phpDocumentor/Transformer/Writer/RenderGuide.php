@@ -94,12 +94,16 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
 
         $filesystem = $this->flySystemFactory->create($dsn);
         $destination = $transformation->getTransformer()->destination();
+
+        $documents = array_map(
+            static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
+            $documentationSet->getDocuments()->getAll(),
+        );
+
         $this->commandBus->handle(new RenderCommand(
             $documentationSet->getOutputFormat(),
-            array_map(
-                static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
-                $documentationSet->getDocuments()->getAll(),
-            ),
+            $documents,
+            new \ArrayIterator($documents),
             $filesystem,
             $destination,
             $documentationSet->getGuidesProjectNode(),
