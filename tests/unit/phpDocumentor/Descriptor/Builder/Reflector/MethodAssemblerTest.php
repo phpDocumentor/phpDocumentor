@@ -49,8 +49,8 @@ class MethodAssemblerTest extends TestCase
         $this->builderMock->buildDescriptor(ProphecyArgument::any(), ProphecyArgument::any())->willReturn(null);
 
         $this->argumentAssemblerMock = $this->prophesize(ArgumentAssembler::class);
-        $this->argumentAssemblerMock->getBuilder()->shouldBeCalledOnce()->willReturn(null);
-        $this->argumentAssemblerMock->setBuilder(ProphecyArgument::any())->shouldBeCalledOnce();
+        $this->argumentAssemblerMock->getBuilder()->willReturn(null);
+        $this->argumentAssemblerMock->setBuilder(ProphecyArgument::any())->hasReturnVoid();
 
         $this->fixture = new MethodAssembler($this->argumentAssemblerMock->reveal());
         $this->fixture->setBuilder($this->builderMock->reveal());
@@ -62,7 +62,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
      */
     public function testCreateMethodDescriptorFromReflector(): void
     {
@@ -76,8 +76,8 @@ class MethodAssemblerTest extends TestCase
         $column = 25;
         $endLine = 264;
         $endColumn = 9950;
-        $startLocation = $this->givenALocation(10, 25);
-        $endLocation = $this->givenALocation(264, 9950);
+        $startLocation = $this->givenALocation($line, $column);
+        $endLocation = $this->givenALocation($endLine, $endColumn);
         $methodReflectorMock = $this->givenAMethodReflector(
             $namespace,
             $methodName,
@@ -122,7 +122,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
      */
     public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent(): void
     {
@@ -160,7 +160,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
      */
     public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent(): void
     {
@@ -199,7 +199,7 @@ class MethodAssemblerTest extends TestCase
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
      * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVariadicArgument
+     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
      */
     public function testCreateMethodDescriptorFromReflectorWithReturnByReference(): void
     {
@@ -232,13 +232,43 @@ class MethodAssemblerTest extends TestCase
         $this->assertTrue($descriptor->getHasReturnByReference());
     }
 
+    public function testMethodWillContainArgumentCreatedFromVaridictParamInDocblock(): void
+    {
+        // Arrange
+        $namespace = 'Namespace';
+        $methodName = 'goodbyeWorld';
+        $argumentName = 'variableName';
+
+        $methodReflectorMock = $this->givenAMethodReflector(
+            $namespace,
+            $methodName,
+            null,
+            $this->givenADocBlockObject(true),
+            false,
+        );
+
+        $argumentDescriptor = new ArgumentDescriptor();
+        $argumentDescriptor->setName($argumentName);
+
+        $this->argumentAssemblerMock
+            ->create(ProphecyArgument::any(), ProphecyArgument::any())
+            ->shouldBeCalled()
+            ->willReturn($argumentDescriptor);
+
+        // Act
+        $descriptor = $this->fixture->create($methodReflectorMock);
+
+        // Assert
+        $this->assertArrayHasKey($argumentName, $descriptor->getArguments()->getAll());
+    }
+
     /**
      * Creates a sample method reflector for the tests with the given data.
      */
     protected function givenAMethodReflector(
         string $namespace,
         string $methodName,
-        Argument $argumentMock,
+        Argument|null $argumentMock,
         DocBlock|null $docBlockMock = null,
         bool $hasReturnByReference = false,
         Location|null $location = null,
@@ -257,7 +287,9 @@ class MethodAssemblerTest extends TestCase
             $hasReturnByReference,
         );
 
-        $method->addArgument($argumentMock);
+        if ($argumentMock !== null) {
+            $method->addArgument($argumentMock);
+        }
 
         return $method;
     }
