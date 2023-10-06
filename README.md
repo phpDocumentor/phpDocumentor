@@ -63,7 +63,7 @@ There are 4 ways to install phpDocumentor:
 
 ### Using Phive
 
-`$ phive install --force-accept-unsigned phpDocumentor`
+`$ phive install phpDocumentor`
 
 For more information about phive have a look at their [website](https://phar.io/).
 Now you have phpDocumentor installed, it can be executed like this:
