@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "720191b0f625190e6333418595edb1bf",
+    "content-hash": "1b2332d5cff437e11e8fa5ee0b5a7040",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1956,7 +1956,7 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "incubator/json-path",
@@ -5925,16 +5925,16 @@
         },
         {
             "name": "psalm/phar",
-            "version": "4.30.0",
+            "version": "5.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "33723713902e1345904a5c9064ef7848bee0d490"
+                "reference": "19dde3eba5901ff50ca43a5e4c43540f097e0511"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/33723713902e1345904a5c9064ef7848bee0d490",
-                "reference": "33723713902e1345904a5c9064ef7848bee0d490",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/19dde3eba5901ff50ca43a5e4c43540f097e0511",
+                "reference": "19dde3eba5901ff50ca43a5e4c43540f097e0511",
                 "shasum": ""
             },
             "require": {
@@ -5954,9 +5954,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/4.30.0"
+                "source": "https://github.com/psalm/phar/tree/5.15.0"
             },
-            "time": "2022-11-06T20:41:58+00:00"
+            "time": "2023-08-21T03:20:52+00:00"
         },
         {
             "name": "rector/rector",

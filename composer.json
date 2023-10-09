@@ -92,7 +92,7 @@
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-webmozart-assert": "^1.2",
         "phpunit/phpunit": "^9.5",
-        "psalm/phar": "^4.17",
+        "psalm/phar": "^5.15",
         "rector/rector": "^0.17.6",
         "symfony/var-dumper": "^6.0"
     },
