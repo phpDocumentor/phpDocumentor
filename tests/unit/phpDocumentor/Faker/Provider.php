@@ -26,11 +26,22 @@ use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
+use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Parser\FlySystemFactory;
@@ -217,13 +228,57 @@ final class Provider extends Base
         return $rootNamespace;
     }
 
-    public function classDescriptor(Fqsen $fqsen): ClassDescriptor
+    public function classDescriptor(Fqsen $fqsen): ClassInterface
     {
         $classDescriptor = new ClassDescriptor();
         $classDescriptor->setName($fqsen->getName());
         $classDescriptor->setFullyQualifiedStructuralElementName($fqsen);
 
         return $classDescriptor;
+    }
+
+    public function enumDescriptor(Fqsen $fqsen): EnumInterface
+    {
+        $enumDescriptor = new EnumDescriptor();
+        $enumDescriptor->setName($fqsen->getName());
+        $enumDescriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $enumDescriptor;
+    }
+
+    public function traitDescriptor(Fqsen $fqsen): TraitInterface
+    {
+        $traitDescriptor = new TraitDescriptor();
+        $traitDescriptor->setName($fqsen->getName());
+        $traitDescriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $traitDescriptor;
+    }
+
+    public function constantDescriptor(Fqsen $fqsen): ConstantInterface
+    {
+        $constantDescriptor = new ConstantDescriptor();
+        $constantDescriptor->setName($fqsen->getName());
+        $constantDescriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $constantDescriptor;
+    }
+
+    public function propertyDescriptor(Fqsen $param): PropertyInterface
+    {
+        $propertyDescriptor = new PropertyDescriptor();
+        $propertyDescriptor->setName($param->getName());
+        $propertyDescriptor->setFullyQualifiedStructuralElementName($param);
+
+        return $propertyDescriptor;
+    }
+
+    public function varTagDescriptor(string $variableName = ''): TagDescriptor
+    {
+        $varTag = new VarDescriptor('var');
+        $varTag->setVariableName($variableName);
+
+        return $varTag;
     }
 
     public function fqsen($maxDepth = 3): Fqsen

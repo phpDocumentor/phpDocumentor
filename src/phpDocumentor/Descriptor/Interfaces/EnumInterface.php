@@ -65,4 +65,10 @@ interface EnumInterface extends ElementInterface, TypeInterface
      * @return Collection<TraitInterface|Fqsen>
      */
     public function getUsedTraits(): Collection;
+
+    /** @param Collection<ConstantInterface> $constants */
+    public function setConstants(Collection $constants): void;
+
+    /** @return Collection<ConstantInterface> */
+    public function getConstants(): Collection;
 }
