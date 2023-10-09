@@ -30,6 +30,7 @@ use phpDocumentor\Reflection\Type;
 final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
 {
     use Traits\ImplementsInterfaces;
+    use Traits\HasConstants;
     use Traits\HasMethods;
     use Traits\UsesTraits;
 
