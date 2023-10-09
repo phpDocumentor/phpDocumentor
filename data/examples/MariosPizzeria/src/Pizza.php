@@ -56,6 +56,12 @@ final readonly class Pizza implements Product
      */
     private bool $alwaysTrue = true;
 
+    /**
+     * Properties for NewTest.
+     *
+     * @var float $property1 OneProp
+     * @var float $property2 TwoProp
+     */
     private float $property1, $property2, $property3;
 
     public function getName(): string
