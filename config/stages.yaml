@@ -182,6 +182,10 @@ services:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
 
+  phpDocumentor\Compiler\ApiDocumentation\Pass\VarTagModifier:
+    tags:
+      - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 9000 }
+
   phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.compile', priority: 2000 }
