@@ -13,7 +13,7 @@ writer as supporting custom settings and will allows the ``./bin/phpdoc list:set
 of its custom settings.
 
 The WithCustomSettings interface will request the Writer to provide all supported settings, with their default values,
-using the ``getDefaultSettings`` method.
+using the :php:method:`\phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings::getDefaultSettings()`  method.
 
 Usage
 -----
