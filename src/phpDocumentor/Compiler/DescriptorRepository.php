@@ -39,6 +39,7 @@ final class DescriptorRepository
         foreach ($apis as $api) {
             $descriptor = match ($type) {
                 'class' => $api->getIndex('classes')->fetch((string) $fqsen),
+                'method', 'property' => $api->getIndex('elements')->fetch((string) $fqsen),
                 default => $api->getIndex($type . 's')->fetch((string) $fqsen)
             };
 
