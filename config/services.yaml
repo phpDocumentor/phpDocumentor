@@ -213,7 +213,6 @@ services:
     ## Guides  ########################################################################
     ###################################################################################
 
-
     phpDocumentor\Guides\RestructuredText\TextRoles\PHPReference:
       tags:
         - { name: 'phpdoc.guides.parser.rst.text_role', 'domain': 'php'}

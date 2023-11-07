@@ -19,11 +19,11 @@ final class DescriptionDescriptor implements Stringable
     /** @var array<int, TagDescriptor|null> */
     private $inlineTags;
 
-    /** @param array<int, TagDescriptor|null> $inlineTags */
-    public function __construct(Description|null $description, array $inlineTags)
+    /** @param array<int, TagDescriptor|null> $tags */
+    public function __construct(Description|null $description, array $tags)
     {
         $this->description = $description ?? new Description('');
-        $this->inlineTags = $inlineTags;
+        $this->inlineTags = $tags;
     }
 
     public static function createEmpty(): self

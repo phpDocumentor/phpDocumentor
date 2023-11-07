@@ -18,8 +18,9 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\ReferenceResolvers\DocumentNameResolverInterface;
+use phpDocumentor\Guides\Renderer\UrlGenerator\UrlGeneratorInterface;
 use phpDocumentor\Guides\Twig\AssetsExtension;
-use phpDocumentor\Guides\UrlGenerator;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
@@ -57,7 +58,8 @@ final class EnvironmentFactoryTest extends TestCase
             new AssetsExtension(
                 new TestLogger(),
                 $this->prophesize(NodeRenderer::class)->reveal(),
-                new UrlGenerator(),
+                $this->prophesize(DocumentNameResolverInterface::class)->reveal(),
+                $this->prophesize(UrlGeneratorInterface::class)->reveal(),
             ),
             new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal()),
             $relativePathToRootConverter,
