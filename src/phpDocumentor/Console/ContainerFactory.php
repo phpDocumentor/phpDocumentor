@@ -9,6 +9,7 @@ use phpDocumentor\DependencyInjection\GuidesCommandsPass;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
+use phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension;
 use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -33,6 +34,7 @@ final class ContainerFactory
                     new ApplicationExtension(),
                     new GuidesExtension(),
                     new ReStructuredTextExtension(),
+                    new MarkdownExtension(),
                 ],
                 $defaultExtensions,
             ) as $extension

@@ -21,33 +21,48 @@ use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Dsn;
 use phpDocumentor\Guides\Handlers\RenderCommand;
-use phpDocumentor\Guides\Twig\EnvironmentBuilder;
+use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\TemplateRenderer;
 use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Twig\Environment;
+use Twig\Error\LoaderError;
 
 use function array_map;
 use function sprintf;
 
 /** @experimental this feature is in alpha stages and can have unresolved issues or missing features. */
-final class RenderGuide extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
+final class RenderGuide extends WriterAbstract implements
+    ProjectDescriptor\WithCustomSettings,
+    Initializable,
+    TemplateRenderer
 {
     public const FEATURE_FLAG = 'guides.enabled';
+    private Environment $environment;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly CommandBus $commandBus,
         private readonly FlySystemFactory $flySystemFactory,
         private readonly EnvironmentFactory $environmentFactory,
-        private readonly EnvironmentBuilder $environmentBuilder,
     ) {
     }
 
     public function getName(): string
     {
         return 'RenderGuide';
+    }
+
+    public function initialize(
+        ProjectDescriptor $project,
+        DocumentationSetDescriptor $documentationSet,
+        Template $template,
+    ): void {
+        $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
     }
 
     public function transform(
@@ -68,16 +83,6 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             'Generating guides is experimental, no BC guarantees are given, use at your own risk',
         );
 
-        //TODO Extract this, as this code is duplicated
-        $this->environmentBuilder->setEnvironmentFactory(
-            function () use ($transformation, $project, $documentationSet) {
-                $twig = $this->environmentFactory->create($project, $documentationSet, $transformation->template());
-                $twig->addGlobal('destinationPath', null);
-
-                return $twig;
-            },
-        );
-
         $this->renderDocumentationSet($documentationSet, $transformation);
     }
 
@@ -92,8 +97,6 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
-
-        $filesystem = $this->flySystemFactory->create($dsn);
         $destination = $transformation->getTransformer()->destination();
 
         $documents = array_map(
@@ -101,15 +104,17 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
             $documentationSet->getDocuments()->getAll(),
         );
 
-        $this->commandBus->handle(new RenderCommand(
+        $command = new RenderCommand(
             $documentationSet->getOutputFormat(),
             $documents,
             new ArrayIterator($documents),
-            $filesystem,
+            $this->flySystemFactory->create($dsn),
             $destination,
             $documentationSet->getGuidesProjectNode(),
             $documentationSet->getOutputLocation(),
-        ));
+        );
+
+        $this->commandBus->handle($command);
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
@@ -134,5 +139,28 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
                 $stopwatchEvent->getMemory() / 1024 / 1024,
             ),
         );
+    }
+
+    public function renderTemplate(RenderContext $context, string $template, array $params = []): string
+    {
+        $this->environment->addGlobal(
+            'destinationPath',
+            $context->getDestinationPath() . '/' . $context->getCurrentFileName(),
+        );
+        $this->environment->addGlobal('env', $context);
+
+        return $this->environment->render($template, $params);
+    }
+
+    public function isTemplateFound(RenderContext $context, string $template): bool
+    {
+        try {
+            $this->environment->load($template);
+
+            return true;
+        } catch (LoaderError) {
+        }
+
+        return false;
     }
 }
