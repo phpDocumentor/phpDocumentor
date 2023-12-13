@@ -88,6 +88,13 @@ class Factory
     {
         $template = $this->createTemplateFromXml($output, $template, $parameters);
 
+        if ($template->getExtends() !== null) {
+            $parentTemplate = $this->loadTemplate($output, $template->getExtends(), $parameters);
+            $template->merge($parentTemplate);
+        }
+
+        $template->propagateParameters();
+
         /** @var Transformation $transformation */
         foreach ($template as $transformation) {
             $writer = $this->writerCollection->get($transformation->getWriter());
@@ -162,6 +169,7 @@ class Factory
         $template->setVersion((string) $xml->version);
         $template->setCopyright((string) $xml->copyright);
         $template->setDescription((string) $xml->description);
+        $template->setExtends(isset($xml->extends) ? (string) $xml->extends : null);
 
         if ($xml->parameters) {
             foreach ($xml->parameters->children() as $parameter) {
@@ -194,8 +202,6 @@ class Factory
 
             $template[$i++] = $transformationObject;
         }
-
-        $template->propagateParameters();
 
         return $template;
     }

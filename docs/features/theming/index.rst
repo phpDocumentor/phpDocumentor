@@ -16,3 +16,4 @@ several configuration options and -for advanced use- you can even override piece
     changing-the-color
     adding-your-own-navigation
     custom-styling
+    extending-a-template
