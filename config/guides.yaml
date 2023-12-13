@@ -8,13 +8,6 @@ services:
     autoconfigure: true
     public: false
 
-  phpDocumentor\Guides\Graphs\Twig\UmlExtension: ~
-  phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer: '@phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer'
-
-  phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer:
-    arguments:
-      $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
-
   phpDocumentor\Pipeline\Stage\Parser\ParseGuides:
     tags:
       - { name: 'phpdoc.pipeline.api_documentation.parse', priority: 0 }
@@ -25,15 +18,6 @@ services:
         $renderer: '@phpDocumentor\Guides\TemplateRenderer'
         $template: 'inline/phpreference.html.twig'
         $nodeClass: 'phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode'
-    tags:
-      - 'phpdoc.guides.noderenderer.html'
-
-  phpdoc.guides.noderenderer.html.uml:
-    class: phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer
-    arguments:
-      $renderer: '@phpDocumentor\Guides\TemplateRenderer'
-      $template: 'body/uml.html.twig'
-      $nodeClass: 'phpDocumentor\Guides\Graphs\Nodes\UmlNode'
     tags:
       - 'phpdoc.guides.noderenderer.html'
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use ArrayIterator;
 use League\Tactician\CommandBus;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
@@ -107,7 +106,6 @@ final class RenderGuide extends WriterAbstract implements
         $command = new RenderCommand(
             $documentationSet->getOutputFormat(),
             $documents,
-            new ArrayIterator($documents),
             $this->flySystemFactory->create($dsn),
             $destination,
             $documentationSet->getGuidesProjectNode(),
