@@ -59,6 +59,7 @@ final class TemplateTest extends TestCase
         $template->setDescription('description');
         $template->setParameter('key', $parameter);
         $template->setVersion('1.0.0');
+        $template->setExtends('parent');
 
         $transformation = new Transformation($template, '', '', '', '');
         $template['key'] = $transformation;
@@ -71,6 +72,7 @@ final class TemplateTest extends TestCase
         $this->assertSame('1.0.0', $template->getVersion());
         $this->assertSame($files, $template->files());
         $this->assertSame($transformation, $template['key']);
+        $this->assertSame('parent', $template->getExtends());
     }
 
     /** @covers ::offsetSet */
@@ -153,6 +155,21 @@ final class TemplateTest extends TestCase
         $template->propagateParameters();
 
         $this->assertSame(['key' => $parameter], $transformation->getParameters());
+    }
+
+    public function testMergeMergesTransformations(): void
+    {
+        $template = new Template('name', $this->givenExampleMountManager());
+        $transformation = new Transformation($template, '', '', '', '');
+        $template['key'] = $transformation;
+
+        $parentTemplate = new Template('name', $this->givenExampleMountManager());
+        $parentTransformation = new Transformation($parentTemplate, '', '', '', '');
+        $parentTemplate['parent'] = $parentTransformation;
+
+        $template->merge($parentTemplate);
+
+        $this->assertSame($parentTransformation, $template['parent']);
     }
 
     private function givenExampleMountManager(): MountManager

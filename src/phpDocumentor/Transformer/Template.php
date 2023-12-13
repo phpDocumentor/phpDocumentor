@@ -51,6 +51,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
 
     /** @var Parameter[] Global parameters that are passed to each transformation. */
     private array $parameters = [];
+    private string|null $extends = null;
 
     /**
      * Initializes this object with a name and optionally with contents.
@@ -124,6 +125,16 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
         }
 
         $this->version = $version;
+    }
+
+    public function setExtends(string|null $template): void
+    {
+        $this->extends = $template;
+    }
+
+    public function getExtends(): string|null
+    {
+        return $this->extends;
     }
 
     /**
@@ -279,5 +290,11 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->transformations);
+    }
+
+    public function merge(Template $parentTemplate): void
+    {
+        $this->transformations = array_merge($parentTemplate->transformations, $this->transformations);
+        $this->parameters = array_merge($parentTemplate->parameters, $this->parameters);
     }
 }
