@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Guides\Graphs\Renderer\DiagramRenderer;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\ReferenceResolvers\DocumentNameResolverInterface;
@@ -61,7 +60,7 @@ final class EnvironmentFactoryTest extends TestCase
                 $this->prophesize(DocumentNameResolverInterface::class)->reveal(),
                 $this->prophesize(UrlGeneratorInterface::class)->reveal(),
             ),
-            new UmlExtension($this->prophesize(DiagramRenderer::class)->reveal()),
+            new UmlExtension([], 'plantuml'),
             $relativePathToRootConverter,
             new PathBuilder($this->router->reveal(), $relativePathToRootConverter),
             ['./data/templates'],

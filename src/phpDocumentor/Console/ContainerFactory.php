@@ -9,6 +9,7 @@ use phpDocumentor\DependencyInjection\GuidesCommandsPass;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
+use phpDocumentor\Guides\Graphs\DependencyInjection\GraphsExtension;
 use phpDocumentor\Guides\Markdown\DependencyInjection\MarkdownExtension;
 use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,6 +36,7 @@ final class ContainerFactory
                     new GuidesExtension(),
                     new ReStructuredTextExtension(),
                     new MarkdownExtension(),
+                    new GraphsExtension(),
                 ],
                 $defaultExtensions,
             ) as $extension
@@ -55,6 +57,8 @@ final class ContainerFactory
     ): ContainerBuilder {
         $this->container->setParameter('vendor_dir', $vendorDir);
         $this->container->setParameter('kernel.project_dir', dirname(__DIR__, 3));
+        $this->container->setParameter('guides.graphs.renderer', 'plantuml');
+        $this->container->setParameter('guides.graphs.plantuml_binary', '%kernel.project_dir%/bin/plantuml');
 
         foreach ($extensionHandler->loadExtensions() as $extension) {
             $this->registerExtension(new $extension());
