@@ -40,6 +40,14 @@ final class ClassDescriptorTest extends MockeryTestCase
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
     }
 
+    private function getParent(): ClassDescriptor
+    {
+        $parent = new ClassDescriptor();
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Parent'));
+
+        return $parent;
+    }
+
     /**
      * @covers ::setParent
      * @covers ::getParent

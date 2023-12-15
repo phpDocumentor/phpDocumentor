@@ -31,4 +31,15 @@ trait HasAttributes
 
         return $this->attributes;
     }
+
+    public function getInheritedAttributes(): Collection
+    {
+        $parent = $this->getParent();
+
+        return $this->getAttributes()->merge(
+            $parent?->getInheritedAttributes() ?? Collection::fromInterfaceString(
+                AttributeInterface::class,
+            ),
+        );
+    }
 }

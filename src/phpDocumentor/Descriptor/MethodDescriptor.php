@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Traits\CanBeAbstract;
 use phpDocumentor\Descriptor\Traits\CanBeFinal;
+use phpDocumentor\Descriptor\Traits\HasAttributes;
 use phpDocumentor\Descriptor\Traits\HasVisibility;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
@@ -38,11 +39,15 @@ use function current;
  * @api
  * @package phpDocumentor\AST
  */
-class MethodDescriptor extends DescriptorAbstract implements Interfaces\MethodInterface, Interfaces\VisibilityInterface
+class MethodDescriptor extends DescriptorAbstract implements
+    Interfaces\MethodInterface,
+    Interfaces\VisibilityInterface,
+    Interfaces\AttributedInterface
 {
     use CanBeFinal;
     use CanBeAbstract;
     use HasVisibility;
+    use HasAttributes;
 
     /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null $parent */
     protected ElementInterface|null $parent = null;

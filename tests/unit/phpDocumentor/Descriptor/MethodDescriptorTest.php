@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
@@ -32,6 +33,8 @@ use function iterator_to_array;
  */
 final class MethodDescriptorTest extends MockeryTestCase
 {
+    use AttributedTest;
+
     private MethodDescriptor $fixture;
 
     /**
@@ -41,6 +44,11 @@ final class MethodDescriptorTest extends MockeryTestCase
     {
         $this->fixture = new MethodDescriptor();
         $this->fixture->setName('method');
+    }
+
+    private function getParent(): ChildInterface|null
+    {
+        return null;
     }
 
     /**
