@@ -11,5 +11,8 @@ interface AttributedInterface
     /** @return Collection<AttributeInterface> */
     public function getAttributes(): Collection;
 
+    /** @return Collection<AttributeInterface> */
+    public function getInheritedAttributes(): Collection;
+
     public function addAttribute(AttributeInterface $attribute): void;
 }

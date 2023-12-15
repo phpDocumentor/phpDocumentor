@@ -42,5 +42,6 @@
         </guide>
     </version>
     <setting name="guides.enabled" value="true"/>
+    <setting name="graphs.enabled" value="true"/>
     <template name=".phpdoc/template" />
 </phpdocumentor>

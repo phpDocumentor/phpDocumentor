@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer;
 use Psr\Log\LoggerInterface;
 
 use function addslashes;

@@ -13,28 +13,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Transformer\Writer\Graph\GraphVizClassDiagram;
-use phpDocumentor\Transformer\Writer\Graph\PlantumlClassDiagram;
-use phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer;
-use Psr\Log\NullLogger;
+use phpDocumentor\Transformer\Writer\Graph\Generator;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph
  * @covers ::__construct
  * @covers ::<private>
  */
-final class GraphTest extends MockeryTestCase
+final class GraphTest extends TestCase
 {
+    use ProphecyTrait;
+
     private Graph $graph;
 
     protected function setUp(): void
     {
-        $this->graph = new Graph(
-            new GraphVizClassDiagram(),
-            new PlantumlClassDiagram(new NullLogger(), m::mock(PlantumlRenderer::class)),
-        );
+        $this->graph = new Graph($this->prophesize(Generator::class)->reveal());
     }
 
     /** @covers ::getDefaultSettings */
