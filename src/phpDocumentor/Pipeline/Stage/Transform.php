@@ -79,32 +79,28 @@ class Transform
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
 
+        /** @var PreTransformEvent $preTransformEvent */
+        $preTransformEvent = PreTransformEvent::createInstance($this);
+        $preTransformEvent->setProject($project);
+        $preTransformEvent->setTransformations($transformations);
+        Dispatcher::getInstance()->dispatch(
+            $preTransformEvent,
+            Transformer::EVENT_PRE_TRANSFORM,
+        );
+
         foreach ($project->getVersions() as $version) {
             $documentationSets = $version->getDocumentationSets();
             foreach ($documentationSets as $documentationSet) {
-                /** @var PreTransformEvent $preTransformEvent */
-                $preTransformEvent = PreTransformEvent::createInstance($this);
-                $preTransformEvent->setProject($project);
-                $preTransformEvent->setTransformations($transformations);
-                Dispatcher::getInstance()->dispatch(
-                    $preTransformEvent,
-                    Transformer::EVENT_PRE_TRANSFORM,
-                );
-
-                $this->transformer->execute(
-                    $project,
-                    $documentationSet,
-                    $transformations,
-                );
-
-                /** @var PostTransformEvent $postTransformEvent */
-                $postTransformEvent = PostTransformEvent::createInstance($this);
-                $postTransformEvent->setProject($project);
-                $postTransformEvent->setTransformations($transformations);
-
-                Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
+                $this->transformer->execute($project, $documentationSet, $transformations);
             }
         }
+
+        /** @var PostTransformEvent $postTransformEvent */
+        $postTransformEvent = PostTransformEvent::createInstance($this);
+        $postTransformEvent->setProject($project);
+        $postTransformEvent->setTransformations($transformations);
+
+        Dispatcher::getInstance()->dispatch($postTransformEvent, Transformer::EVENT_POST_TRANSFORM);
 
         return $payload;
     }
