@@ -23,6 +23,7 @@ use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Parser\Parser;
+use phpDocumentor\Pipeline\Attribute\Stage;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
@@ -42,17 +43,15 @@ use function ucfirst;
  * If the package tree were to be persisted then both locations needed to be
  * invalidated if a file were to change.
  */
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9001,
+    'Build "packages" index',
+)]
 final class PackageTreeBuilder extends ApiDocumentationPass
 {
     public function __construct(private readonly Parser $parser)
     {
-    }
-
-    public const COMPILER_PRIORITY = 9001;
-
-    public function getDescription(): string
-    {
-        return 'Build "packages" index';
     }
 
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor

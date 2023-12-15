@@ -19,20 +19,19 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 use UnexpectedValueException;
 
 /**
  * This index builder collects all markers from tags and inserts them into the marker index.
  */
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9000,
+    'Collect all markers embedded in tags',
+)]
 final class MarkerFromTagsExtractor extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 9000;
-
-    public function getDescription(): string
-    {
-        return 'Collect all markers embedded in tags';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         /** @var DescriptorAbstract $element */

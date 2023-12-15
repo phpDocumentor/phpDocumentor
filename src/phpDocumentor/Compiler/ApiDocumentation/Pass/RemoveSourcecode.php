@@ -15,16 +15,15 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    2000,
+    'Removing sourcecode from file descriptors',
+)]
 final class RemoveSourcecode extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 2000;
-
-    public function getDescription(): string
-    {
-        return 'Removing sourcecode from file descriptors';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         if ($subject->getSettings()['include-source']) {

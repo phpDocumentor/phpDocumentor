@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
+use phpDocumentor\Pipeline\Attribute\Stage;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -24,10 +25,13 @@ use Psr\Log\LoggerInterface;
  * For debugging purposes it can be convenient to send statistical information about the
  * ProjectDescriptor to the log of phpDocumentor.
  */
-class Debug extends ApiDocumentationPass
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    1000,
+    'Analyze results and write report to log',
+)]
+final class Debug extends ApiDocumentationPass
 {
-    final public const COMPILER_PRIORITY = 1000;
-
     /** @var LoggerInterface $log the logger to write the debug results to */
     protected $log;
 
@@ -41,11 +45,6 @@ class Debug extends ApiDocumentationPass
     {
         $this->log      = $log;
         $this->analyzer = $analyzer;
-    }
-
-    public function getDescription(): string
-    {
-        return 'Analyze results and write report to log';
     }
 
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor

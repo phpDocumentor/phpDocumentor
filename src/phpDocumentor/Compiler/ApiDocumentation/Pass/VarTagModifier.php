@@ -14,16 +14,17 @@ use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 
 use function array_values;
 
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9000,
+    'Filter named var tags for property and constant groups',
+)]
 final class VarTagModifier extends ApiDocumentationPass
 {
-    public function getDescription(): string
-    {
-        return 'Filter named var tags for property and constant groups';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         foreach ($subject->getIndex('classes')->filter(ClassDescriptor::class) as $class) {

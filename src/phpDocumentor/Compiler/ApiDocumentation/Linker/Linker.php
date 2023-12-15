@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
@@ -52,17 +53,15 @@ use function ucfirst;
  * As can be seen in the above example is it possible to analyse a tree structure and substitute FQSENs where
  * encountered.
  */
-class Linker extends ApiDocumentationPass
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    10000,
+    'Replace textual FQCNs with object aliases',
+)]
+final class Linker extends ApiDocumentationPass
 {
-    final public const COMPILER_PRIORITY = 10000;
-
     /** @var string[] Prevent cycles by tracking which objects have been analyzed */
     private array $processedObjects = [];
-
-    public function getDescription(): string
-    {
-        return 'Replace textual FQCNs with object aliases';
-    }
 
     /**
      * Initializes the linker with a series of Descriptors to link to.

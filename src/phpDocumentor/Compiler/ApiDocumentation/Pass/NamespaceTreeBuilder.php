@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 use phpDocumentor\Reflection\Fqsen;
 use Webmozart\Assert\Assert;
 
@@ -38,15 +39,13 @@ use function ucfirst;
  * If the namespace tree were to be persisted then both locations needed to be
  * invalidated if a file were to change.
  */
-class NamespaceTreeBuilder extends ApiDocumentationPass
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9000,
+    'Build "namespaces" index and add namespaces to "elements"',
+)]
+final class NamespaceTreeBuilder extends ApiDocumentationPass
 {
-    final public const COMPILER_PRIORITY = 9000;
-
-    public function getDescription(): string
-    {
-        return 'Build "namespaces" index and add namespaces to "elements"';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         $subject->getIndexes()

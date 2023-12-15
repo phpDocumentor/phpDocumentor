@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
+use phpDocumentor\Pipeline\Attribute\Stage;
 
 use function array_merge;
 use function is_array;
@@ -31,15 +32,13 @@ use function is_array;
  * Please note that due to a conflict between namespace FQSEN's and that of classes, interfaces, traits and functions
  * will the namespace FQSEN be prefixed with a tilde (~).
  */
-class ElementsIndexBuilder extends ApiDocumentationPass
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    15000,
+    'Build "elements" index',
+)]
+final class ElementsIndexBuilder extends ApiDocumentationPass
 {
-    final public const COMPILER_PRIORITY = 15000;
-
-    public function getDescription(): string
-    {
-        return 'Build "elements" index';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         $elementCollection = new Collection();

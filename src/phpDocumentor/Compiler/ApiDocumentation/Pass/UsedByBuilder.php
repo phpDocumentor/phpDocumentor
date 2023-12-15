@@ -20,14 +20,15 @@ use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9000,
+    'Creates a link for uses tags on the counter side',
+)]
 final class UsedByBuilder extends ApiDocumentationPass
 {
-    public function getDescription(): string
-    {
-        return 'Creates a link for uses tags on the counter side';
-    }
-
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
         foreach ($subject->getIndexes()->get('elements') as $element) {

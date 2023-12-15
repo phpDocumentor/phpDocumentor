@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Pipeline\Attribute\Stage;
 
 use function implode;
 use function preg_match_all;
@@ -27,15 +28,13 @@ use function trim;
 use const PREG_OFFSET_CAPTURE;
 use const PREG_SET_ORDER;
 
+#[Stage(
+    'phpdoc.pipeline.api_documentation.compile',
+    9000,
+    'Collect all markers in a file',
+)]
 final class ResolveInlineMarkers extends ApiDocumentationPass
 {
-    public const COMPILER_PRIORITY = 9000;
-
-    public function getDescription(): string
-    {
-        return 'Collect all markers in a file';
-    }
-
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
