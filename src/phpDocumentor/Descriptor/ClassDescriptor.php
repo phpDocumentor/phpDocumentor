@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use InvalidArgumentException;
+use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
@@ -30,7 +31,7 @@ use function sprintf;
  * @api
  * @package phpDocumentor\AST
  */
-class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface
+class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInterface, AttributedInterface
 {
     use Traits\CanBeFinal;
     use Traits\CanBeAbstract;
@@ -40,6 +41,7 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     use Traits\ExtendsClass;
     use Traits\ImplementsInterfaces;
     use Traits\UsesTraits;
+    use Traits\HasAttributes;
 
     /** @var bool $readOnly Whether this class is marked as readonly. */
     protected bool $readOnly = false;

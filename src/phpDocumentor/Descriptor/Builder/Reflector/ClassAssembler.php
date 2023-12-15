@@ -34,14 +34,14 @@ use function substr;
  *
  * @extends AssemblerAbstract<ClassInterface, Class_>
  */
-class ClassAssembler extends AssemblerAbstract
+final class ClassAssembler extends AssemblerAbstract
 {
     /**
      * Creates a Descriptor from the provided data.
      *
      * @param Class_ $data
      */
-    public function create(object $data): ClassInterface
+    public function buildDescriptor(object $data): ClassInterface
     {
         $classDescriptor = new ClassDescriptor();
 

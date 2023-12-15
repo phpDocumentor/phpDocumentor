@@ -29,6 +29,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;
     use TraitUsageTests;
+    use AttributedTest;
 
     /**
      * Creates a new (emoty) fixture object.

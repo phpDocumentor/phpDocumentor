@@ -28,7 +28,7 @@ final class NamespaceAssembler extends AssemblerAbstract
      *
      * @param Namespace_ $data
      */
-    public function create(object $data): NamespaceInterface
+    public function buildDescriptor(object $data): NamespaceInterface
     {
         $descriptor = new NamespaceDescriptor();
         $descriptor->setName($data->getName());

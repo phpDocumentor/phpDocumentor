@@ -36,7 +36,7 @@ class InterfaceAssembler extends AssemblerAbstract
      *
      * @param Interface_ $data
      */
-    public function create(object $data): InterfaceInterface
+    public function buildDescriptor(object $data): InterfaceInterface
     {
         $interfaceDescriptor = new InterfaceDescriptor();
 

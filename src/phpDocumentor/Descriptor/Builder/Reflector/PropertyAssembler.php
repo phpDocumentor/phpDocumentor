@@ -34,7 +34,7 @@ class PropertyAssembler extends AssemblerAbstract
      *
      * @param Property $data
      */
-    public function create(object $data): PropertyInterface
+    public function buildDescriptor(object $data): PropertyInterface
     {
         $propertyDescriptor = new PropertyDescriptor();
         $propertyDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 3));

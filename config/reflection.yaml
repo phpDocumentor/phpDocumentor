@@ -2,9 +2,14 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    bind:
+      $reducers: !tagged_iterator phpdoc.reflection.reducer
+
   _instanceof:
     phpDocumentor\Reflection\Php\ProjectFactoryStrategy:
       tags: ['phpdoc.reflection.strategy']
+    phpDocumentor\Reflection\Php\Factory\Reducer\Reducer:
+      tags: ['phpdoc.reflection.reducer']
 
   phpDocumentor\Reflection\Php\:
     resource: '%kernel.project_dir%/vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'

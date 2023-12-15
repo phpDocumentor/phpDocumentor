@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\NamespaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\Reducer\AttributeReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Reducer\MetadataReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Tags\DeprecatedAssembler;
@@ -142,22 +143,30 @@ class AssemblerFactory
     public static function createDefault(ExampleFinder $exampleFinder): self
     {
         $factory = new self();
-        $argumentAssembler = new ArgumentAssembler();
 
         $descriptionReducer = new DescriptionAssemblerReducer();
         $metadataReducer = new MetadataReducer();
+        $attributeReducer = new AttributeReducer();
+
+        $argumentAssembler = new ArgumentAssembler();
 
         $factory->register(Matcher::forType(File::class), new FileAssembler($metadataReducer));
-        $factory->register(Matcher::forType(Constant::class), new ConstantAssembler());
-        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler());
-        $factory->register(Matcher::forType(Class_::class), new ClassAssembler());
-        $factory->register(Matcher::forType(Enum_::class), new EnumAssembler());
-        $factory->register(Matcher::forType(EnumCase::class), new EnumCaseAssembler());
-        $factory->register(Matcher::forType(Interface_::class), new InterfaceAssembler());
-        $factory->register(Matcher::forType(Property::class), new PropertyAssembler());
+        $factory->register(Matcher::forType(Constant::class), new ConstantAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Class_::class), new ClassAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Enum_::class), new EnumAssembler($attributeReducer));
+        $factory->register(Matcher::forType(EnumCase::class), new EnumCaseAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Interface_::class), new InterfaceAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Property::class), new PropertyAssembler($attributeReducer));
         $factory->register(Matcher::forType(Argument::class), $argumentAssembler);
-        $factory->register(Matcher::forType(Method::class), new MethodAssembler($argumentAssembler));
-        $factory->register(Matcher::forType(Function_::class), new FunctionAssembler($argumentAssembler));
+        $factory->register(Matcher::forType(Method::class), new MethodAssembler(
+            $argumentAssembler,
+            $attributeReducer,
+        ));
+        $factory->register(Matcher::forType(Function_::class), new FunctionAssembler(
+            $argumentAssembler,
+            $attributeReducer,
+        ));
         $factory->register(Matcher::forType(Namespace_::class), new NamespaceAssembler());
 
         $factory->register(Matcher::forType(Author::class), new AuthorAssembler());

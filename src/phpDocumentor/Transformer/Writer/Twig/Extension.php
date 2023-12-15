@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
@@ -149,6 +150,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigTest('property', static fn (Descriptor $el) => $el instanceof PropertyInterface),
             new TwigTest('method', static fn (Descriptor $el) => $el instanceof MethodInterface),
             new TwigTest('argument', static fn (Descriptor $el) => $el instanceof ArgumentInterface),
+            new TwigTest('attribute', static fn (Descriptor $el) => $el instanceof AttributeInterface),
             new TwigTest('function', static fn (Descriptor $el) => $el instanceof FunctionInterface),
             new TwigTest('constant', static fn (Descriptor $el) => $el instanceof ConstantInterface),
         ];
@@ -304,6 +306,21 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return new Collection();
+                },
+            ),
+            new TwigFunction(
+                'attributes',
+                static function (DescriptorAbstract $descriptor): Collection {
+                    $attributes = new Collection();
+                    if (method_exists($descriptor, 'getInheritedAttributes')) {
+                        $attributes = $attributes->merge($descriptor->getInheritedAttributes());
+                    }
+
+                    if (method_exists($descriptor, 'getAttributes')) {
+                        $attributes = $attributes->merge($descriptor->getAttributes());
+                    }
+
+                    return $attributes;
                 },
             ),
             new TwigFunction(

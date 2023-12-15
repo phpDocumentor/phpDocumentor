@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
+use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
@@ -38,9 +39,9 @@ class FunctionAssembler extends AssemblerAbstract
     /**
      * Initializes this assembler and its dependencies.
      */
-    public function __construct(private readonly ArgumentAssembler $argumentAssembler)
+    public function __construct(private readonly ArgumentAssembler $argumentAssembler, AssemblerReducer ...$reducers)
     {
-        parent::__construct();
+        parent::__construct(...$reducers);
     }
 
     /**

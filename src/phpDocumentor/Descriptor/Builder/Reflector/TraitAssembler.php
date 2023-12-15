@@ -38,7 +38,7 @@ class TraitAssembler extends AssemblerAbstract
      *
      * @param Trait_ $data
      */
-    public function create(object $data): TraitInterface
+    public function buildDescriptor(object $data): TraitInterface
     {
         $traitDescriptor = new TraitDescriptor();
 

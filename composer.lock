@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37cfd29bd7c95805a19ce95beda34945",
+    "content-hash": "f7a67cbc6741b296d65bbad6959e4afb",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -2002,21 +2002,21 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "5.3.3",
+            "version": "6.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "99926d699634bb16acd5bbf21b4b3b543690304a"
+                "reference": "a3450fef1264f90cf95c1fa89ff99d5913a44fcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/99926d699634bb16acd5bbf21b4b3b543690304a",
-                "reference": "99926d699634bb16acd5bbf21b4b3b543690304a",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/a3450fef1264f90cf95c1fa89ff99d5913a44fcb",
+                "reference": "a3450fef1264f90cf95c1fa89ff99d5913a44fcb",
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "~4.14",
-                "php": "^7.4|8.0.*|8.1.*|8.2.*|8.3.*",
+                "php": "8.1.*|8.2.*|8.3.*",
                 "phpdocumentor/reflection-common": "^2.1",
                 "phpdocumentor/reflection-docblock": "^5",
                 "phpdocumentor/type-resolver": "^1.2",
@@ -2024,6 +2024,8 @@
                 "webmozart/assert": "^1.7"
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "doctrine/coding-standard": "^12.0",
                 "mikey179/vfsstream": "~1.2",
                 "mockery/mockery": "~1.6.0",
                 "phpspec/prophecy-phpunit": "^2.0",
@@ -2033,12 +2035,15 @@
                 "phpstan/phpstan-webmozart-assert": "^1.2",
                 "phpunit/phpunit": "^9.5",
                 "rector/rector": "^0.18.0",
+                "squizlabs/php_codesniffer": "^3.8",
                 "vimeo/psalm": "^5.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-5.x": "5.3.x-dev"
+                    "dev-5.x": "5.3.x-dev",
+                    "dev-6.x": "6.0.x-dev"
                 }
             },
             "autoload": {
@@ -2060,9 +2065,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
-                "source": "https://github.com/phpDocumentor/Reflection/tree/5.3.3"
+                "source": "https://github.com/phpDocumentor/Reflection/tree/6.x"
             },
-            "time": "2023-10-09T18:24:07+00:00"
+            "time": "2023-12-15T12:54:33+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -7456,7 +7461,8 @@
         "phpdocumentor/guides-graphs": 20,
         "phpdocumentor/guides-markdown": 20,
         "phpdocumentor/guides-restructured-text": 20,
-        "phpdocumentor/json-path": 20
+        "phpdocumentor/json-path": 20,
+        "phpdocumentor/reflection": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
