@@ -221,3 +221,15 @@ services:
     phpDocumentor\Guides\Compiler\NodeTransformer\PHPReferenceNodeTransformer:
       tags:
         - { name: 'phpdoc.guides.compiler.nodeTransformers'}
+
+    phpDocumentor\Guides\Compiler\NodeTransformer\DocblockNodeTransformer:
+      tags:
+        - { name: 'phpdoc.guides.compiler.nodeTransformers' }
+
+    phpDocumentor\Guides\RestructuredText\Directives\Docblock:
+      tags:
+        - { name: 'phpdoc.guides.directive'}
+
+    phpDocumentor\Guides\NodeRenderer\DocblockRenderer:
+      tags:
+        - { name: 'phpdoc.guides.noderenderer.html' }
