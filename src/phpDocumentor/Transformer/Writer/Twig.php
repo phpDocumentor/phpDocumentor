@@ -31,6 +31,7 @@ use Webmozart\Assert\Assert;
 use function array_merge;
 use function count;
 use function is_countable;
+use function iterator_to_array;
 use function ltrim;
 use function preg_split;
 use function str_starts_with;
@@ -146,7 +147,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
 
         $nodes = [$documentationSet];
         if ($transformation->getQuery()) {
-            $nodes = $this->queryEngine->perform($documentationSet, $transformation->getQuery());
+            $nodes = iterator_to_array($this->queryEngine->perform($documentationSet, $transformation->getQuery()));
         }
 
         $extraParameters = [];

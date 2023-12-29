@@ -205,10 +205,6 @@ services:
     phpDocumentor\Transformer\Writer\Collection:
         arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]
 
-    phpDocumentor\Transformer\Writer\Graph\PlantumlRenderer:
-      arguments:
-        $plantUmlBinaryPath: '%kernel.project_dir%/bin/plantuml'
-
     ###################################################################################
     ## Guides  ########################################################################
     ###################################################################################
@@ -221,3 +217,11 @@ services:
     phpDocumentor\Guides\Compiler\NodeTransformer\PHPReferenceNodeTransformer:
       tags:
         - { name: 'phpdoc.guides.compiler.nodeTransformers'}
+
+    phpDocumentor\Guides\Compiler\NodeTransformer\ClassListNodeTransformer:
+      tags:
+        - { name: 'phpdoc.guides.compiler.nodeTransformers'}
+
+    phpDocumentor\Guides\RestructuredText\Directives\PHPClassList:
+      tags:
+        - { name: 'phpdoc.guides.directive' }

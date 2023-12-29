@@ -13,4 +13,9 @@ final class Wildcard implements Expression
     {
         return true;
     }
+
+    public function getName(): string
+    {
+        return '*';
+    }
 }

@@ -6,17 +6,20 @@ namespace phpDocumentor\Compiler\Guides\Pass;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Compiler\DescriptorRepository;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Compiler\Compiler;
-use phpDocumentor\Guides\Compiler\CompilerContext;
+use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 
 use function array_map;
 
 final class GuidesCompiler implements CompilerPassInterface
 {
-    public function __construct(private readonly Compiler $compiler)
-    {
+    public function __construct(
+        private readonly Compiler $compiler,
+        private readonly DescriptorRepository $descriptorRepository,
+    ) {
     }
 
     public function getDescription(): string
@@ -35,7 +38,10 @@ final class GuidesCompiler implements CompilerPassInterface
                 static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
                 $subject->getDocuments()->getAll(),
             ),
-            new CompilerContext($subject->getGuidesProjectNode()),
+            new DescriptorAwareCompilerContext(
+                $subject->getGuidesProjectNode(),
+                $this->descriptorRepository->getVersionDescriptor(),
+            ),
         );
         foreach ($documents as $document) {
             $subject->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
