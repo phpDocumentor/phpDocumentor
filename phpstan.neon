@@ -5,6 +5,9 @@ parameters:
   level: 6
   inferPrivatePropertyTypeFromConstructor: true
   treatPhpDocTypesAsCertain: false
+  scanFiles:
+    - vendor/phpdocumentor/guides/src/DependencyInjection/GuidesExtension.php
+
   ignoreErrors:
 
     # PHPStan does not play nice with Symfony Config's fluid interface

@@ -8,13 +8,15 @@ use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Compiler\NodeTransformer;
+use phpDocumentor\Guides\Nodes\CollectionNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\PHPClassList;
+use phpDocumentor\Guides\Nodes\PHP\ClassList;
+use phpDocumentor\Guides\Nodes\PHP\DescriptorNode;
 use Webmozart\Assert\Assert;
 
 use function iterator_to_array;
 
-/** @implements NodeTransformer<PHPClassList> */
+/** @implements NodeTransformer<ClassList> */
 final class ClassListNodeTransformer implements NodeTransformer
 {
     public function __construct(private readonly Engine $queryEngine)
@@ -30,7 +32,7 @@ final class ClassListNodeTransformer implements NodeTransformer
     {
         Assert::isInstanceOf($compilerContext, DescriptorAwareCompilerContext::class);
 
-        if ($node instanceof PHPClassList === false) {
+        if ($node instanceof ClassList === false) {
             return $node;
         }
 
@@ -39,18 +41,30 @@ final class ClassListNodeTransformer implements NodeTransformer
             $node->getQuery(),
         ));
 
-        $node->setValue($result);
+        foreach ($result as $element) {
+            $descriptor = new CollectionNode();
+            foreach ($node->getBlueprint() as $bluePrintNode) {
+                if ($bluePrintNode instanceof DescriptorNode) {
+                    $descriptor->addChildNode($bluePrintNode->withDescriptor($element));
+                    continue;
+                }
+
+                $descriptor->addChildNode($bluePrintNode);
+            }
+
+            $node->addChildNode($descriptor);
+        }
 
         return $node;
     }
 
     public function supports(Node $node): bool
     {
-        return $node instanceof PHPClassList;
+        return $node instanceof ClassList;
     }
 
     public function getPriority(): int
     {
-        return 3000;
+        return 4000;
     }
 }

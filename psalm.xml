@@ -15,6 +15,9 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <stubs>
+        <file name="vendor/phpdocumentor/guides/src/DependencyInjection/GuidesExtension.php"/>
+    </stubs>
 
     <issueHandlers>
         <!-- User Defined -->

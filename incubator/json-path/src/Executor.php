@@ -29,6 +29,7 @@ use function current;
 use function is_array;
 use function is_iterable;
 use function is_object;
+use function is_string;
 use function iterator_to_array;
 use function strrpos;
 use function substr;
@@ -52,6 +53,10 @@ final class Executor
     {
         $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
         $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
+
+        if (is_string($rightValue)) {
+            return ((string) $leftValue) === $rightValue;
+        }
 
         return $leftValue === $rightValue;
     }
