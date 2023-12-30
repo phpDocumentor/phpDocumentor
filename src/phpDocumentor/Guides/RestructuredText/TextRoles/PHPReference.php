@@ -58,12 +58,12 @@ final class PHPReference implements TextRole
         $this->lexer->moveNext();
         while ($this->lexer->token !== null) {
             $token = $this->lexer->token;
-            switch ($token->type) {
-                case InlineLexer::EMBEDED_URL_START:
+            switch ($token->value) {
+                case '<':
                     $text = trim($part);
                     $part = '';
                     break;
-                case InlineLexer::EMBEDED_URL_END:
+                case '>':
                     if ($this->lexer->peek() !== null) {
                         $this->logger->warning(
                             sprintf(
