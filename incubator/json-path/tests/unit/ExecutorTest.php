@@ -83,6 +83,7 @@ final class ExecutorTest extends TestCase
                     new RootNode(),
                     new FieldAccess(new FieldName('store')),
                     new FieldAccess(new FieldName('books')),
+                    new FieldAccess(new Wildcard()),
                 ],
             ),
             $root,
@@ -108,6 +109,7 @@ final class ExecutorTest extends TestCase
                     new RootNode(),
                     new FieldAccess(new FieldName('store')),
                     new FieldAccess(new FieldName('books')),
+                    new FieldAccess(new Wildcard()),
                     new FilterNode(
                         new Comparison(
                             new Path([
@@ -148,6 +150,9 @@ final class ExecutorTest extends TestCase
                     ),
                     new FieldAccess(
                         new FieldName('books'),
+                    ),
+                    new FieldAccess(
+                        new Wildcard(),
                     ),
                     new FilterNode(
                         new Comparison(

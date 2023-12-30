@@ -26,14 +26,15 @@ use phpDocumentor\JsonPath\AST\Value;
 use phpDocumentor\JsonPath\AST\Wildcard;
 
 use function is_array;
-use function Parsica\Parsica\alphaChar;
 use function Parsica\Parsica\alphaNumChar;
+use function Parsica\Parsica\any;
 use function Parsica\Parsica\atLeastOne;
 use function Parsica\Parsica\between;
 use function Parsica\Parsica\char;
 use function Parsica\Parsica\choice;
 use function Parsica\Parsica\collect;
 use function Parsica\Parsica\keepSecond;
+use function Parsica\Parsica\noneOfS;
 use function Parsica\Parsica\optional;
 use function Parsica\Parsica\recursive;
 use function Parsica\Parsica\sepBy;
@@ -47,7 +48,7 @@ final class ParserBuilder
     /** @return Parser<RootNode> */
     private static function rootNode(): Parser
     {
-        return char('$')->map(static fn () => new RootNode());
+        return char('$')->map(static fn () => new RootNode())->label('$');
     }
 
     /** @return Parser<CurrentNode> */
@@ -62,16 +63,26 @@ final class ParserBuilder
         $fieldName = self::fieldName();
 
         return choice(
-            keepSecond(char('.'), $fieldName),
+            keepSecond(char('.'), any($fieldName, self::wildcard())),
             between(string("['"), string("']"), $fieldName),
         )->map(static fn ($args) => new FieldAccess($args));
+    }
+
+    /** @return Parser<Wildcard> */
+    private static function wildcard(): Parser
+    {
+        return string('*')->label('Wildcard')->map(static fn () => new Wildcard());
     }
 
     /** @return Parser<FilterNode> */
     private static function filter(): Parser
     {
         return choice(
-            string('[*]')->map(static fn () => new FilterNode(new Wildcard())),
+            between(
+                string('['),
+                string(']'),
+                self::wildcard(),
+            )->map(static fn ($wildcard) => new FilterNode($wildcard)),
             between(
                 string('[?('),
                 string(')]'),
@@ -88,9 +99,11 @@ final class ParserBuilder
         );
 
         $value = choice(
-            between(char('"'), char('"'), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value)),
-            between(char("'"), char("'"), atLeastOne(alphaChar()))->map(static fn ($value) => new Value($value)),
-        );
+            between(char('"'), char('"'), atLeastOne(noneOfS('"')))
+                ->map(static fn ($value) => new Value($value)),
+            between(char("'"), char("'"), atLeastOne(noneOfS("'")))
+                ->map(static fn ($value) => new Value($value)),
+        )->label('VALUE');
 
         return collect(
             choice(
@@ -109,15 +122,9 @@ final class ParserBuilder
             self::fieldAccess(),
         );
 
-        $path = recursive();
-        $path->recurse(collect($inner, $path));
-
-        return collect(
-            self::currentNode(),
-            some($inner)->optional()->map(static fn ($args) => is_array($args) ? $args : []),
-        )->map(
-            static fn ($args) => new Path([$args[0], ...$args[1]])
-        );
+        return self::currentNode()->followedBy(
+            some($inner)->map(static fn ($args) => is_array($args) ? $args : []),
+        )->map(static fn ($args) => new Path([new CurrentNode(), ...$args]));
     }
 
     /** @return Parser<FunctionCall> */
@@ -135,10 +142,13 @@ final class ParserBuilder
         )->map(static fn ($a) => new FunctionCall($a[0], ...$a[1]));
     }
 
-    /** @return Parser<list<Path>> */
+    /** @return Parser<list<mixed>> */
     private static function arguments(): Parser
     {
-        return sepBy(char(','), self::currentNodeFollowUp());
+        return sepBy(
+            char(','),
+            choice(self::currentNodeFollowUp(), self::currentNode()),
+        );
     }
 
     /** @return Parser<FieldName> */
@@ -173,8 +183,9 @@ final class ParserBuilder
     {
         return choice(
             self::rootFollowUp(),
+            self::currentNodeFollowUp(),
             self::rootNode(),
             self::currentNode(),
-        )->thenEof();
+        )->thenEof()->label('End of Query');
     }
 }

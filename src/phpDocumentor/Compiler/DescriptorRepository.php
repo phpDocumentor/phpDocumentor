@@ -18,6 +18,11 @@ final class DescriptorRepository
         $this->versionDescriptor = $versionDescriptor;
     }
 
+    public function getVersionDescriptor(): VersionDescriptor
+    {
+        return $this->versionDescriptor;
+    }
+
     public function findDescriptorByFqsen(Fqsen $fqsen): Descriptor|null
     {
         $apis = $this->versionDescriptor->getDocumentationSets()->filter(ApiSetDescriptor::class);

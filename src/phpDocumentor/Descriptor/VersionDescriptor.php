@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Compiler\CompilableSubject;
+use phpDocumentor\Descriptor\Traits\HasDescription;
+use phpDocumentor\Descriptor\Traits\HasName;
 
-final class VersionDescriptor implements CompilableSubject
+final class VersionDescriptor implements CompilableSubject, Descriptor
 {
+    use HasName;
+    use HasDescription;
+
     /** @param Collection<DocumentationSetDescriptor> $documentationSets */
     public function __construct(private readonly string $number, private readonly Collection $documentationSets)
     {

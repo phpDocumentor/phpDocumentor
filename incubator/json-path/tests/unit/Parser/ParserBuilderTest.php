@@ -47,6 +47,12 @@ class ParserBuilderTest extends TestCase
         self::assertEquals(new CurrentNode(), $result->output());
     }
 
+    public function testCurrentNodeChildren(): void
+    {
+        $result = $this->parser->tryString('@.*');
+        self::assertEquals(new Path([new CurrentNode(), new FieldAccess(new Wildcard())]), $result->output());
+    }
+
     public function testRootFieldAccess(): void
     {
         $result = $this->parser->tryString('$.store');
@@ -124,6 +130,35 @@ class ParserBuilderTest extends TestCase
         );
     }
 
+    public function testFilterExpressionCurrentObjectProperyWildCard(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.* == "phpDoc")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new Path([
+                            new CurrentNode(),
+                            new FieldAccess(new Wildcard()),
+                        ]),
+                        '==',
+                        new Value(
+                            'phpDoc',
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
     public function testFilterExpressionCurrentObjectTypeEquals(): void
     {
         $result = $this->parser->tryString('$.store.books[?(type(@) == "api")]');
@@ -140,8 +175,38 @@ class ParserBuilderTest extends TestCase
                     new Comparison(
                         new FunctionCall(
                             'type',
+                            new CurrentNode(),
+                        ),
+                        '==',
+                        new Value(
+                            'api',
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionCurrentObjectChildrenTypeEquals(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(type(@.*) == "api")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new FunctionCall(
+                            'type',
                             new Path([
                                 new CurrentNode(),
+                                new FieldAccess(new Wildcard()),
                             ]),
                         ),
                         '==',
@@ -166,6 +231,29 @@ class ParserBuilderTest extends TestCase
                 ),
                 new FieldAccess(
                     new FieldName('books_title'),
+                ),
+                new FilterNode(
+                    new Wildcard(),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWildcardNested(): void
+    {
+        $result = $this->parser->tryString('$.store.books_title.*[*]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books_title'),
+                ),
+                new FieldAccess(
+                    new Wildcard(),
                 ),
                 new FilterNode(
                     new Wildcard(),
