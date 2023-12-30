@@ -12,13 +12,13 @@ more and more options but you can safely ignore those and just use what we descr
 
 When running phpDocumentor there are three command-line options that are essential:
 
-**``-d``**
+**-d**
     specifies the directory, or directories, of your project that you want to document.
 
-**``-f``**
+**-f**
     specifies a specific file, or files, in your project that you want to document.
 
-**``-t``**
+**-t**
     specifies the location where your documentation will be written (also called 'target folder').
 
 The above options are all you need to generate your documentation as demonstrated in this example:
@@ -34,7 +34,7 @@ The above options are all you need to generate your documentation as demonstrate
     directory from where you run the command.
 
 The target folder is optional but if you omit it then your documentation will be generated in a subfolder, of
-your current working directory, called **``output``**.
+your current working directory, called **output**.
 
 Configuration
 -------------
@@ -54,7 +54,7 @@ recommended to prevent committing that file to your code repository using, for e
 
     When present, the file 'phpdoc.xml' is used instead of 'phpdoc.dist.xml' and thus does not supplement it.
 
-**``--config``**
+**--config**
     You can even specify an alternate location for your 'phpdoc.xml' using the '--config' command-line option.
 
 For more information on the options and format supported by the configuration it is best to consult the
@@ -63,12 +63,12 @@ For more information on the options and format supported by the configuration it
 Influencing the List of Project Files
 -------------------------------------
 
-**``-d`` or ``-f``**
+**-d or -f**
     As mentioned in the Quickstart above you can select which directories and files to document using the ``-d`` (for
     directories and their files) or the ``-f`` (for just single files). You can even provide those options multiple times
     if you need multiple files or directories.
 
-**``--ignore``**
+**--ignore**
     Sometimes you may want to exclude entire directories, or files from your documentation build because they contain
     unwanted third-party documentation, or because you just don't need to transform documentation content for certain
     files in your project. The ``--ignore`` option lets you specify what directories and files to exclude from your
@@ -94,10 +94,10 @@ Influencing the List of Project Files
 
     When you want to provide a relative path, keep in mind that this is relative to the Project Root Folder.
     The project's root folder is the first folder that the provided folders have in common, so for
-    ``-d "src/phpDocumentor,src/SomethingElse" this is the directory "src" and not the current working directory. When
+    ``-d`` "src/phpDocumentor,src/SomethingElse" this is the directory "src" and not the current working directory. When
     in doubt, check the output of phpDocumentor, it mentions the project's root folder after all files are collected.
 
-**``--hidden`` and ``--ignore-symlinks``**
+**--hidden and --ignore-symlinks**
     By default phpDocumentor will ignore hidden files and will not follow symlinks. This will prevent unwanted
     documentables and loops in paths. Should you want to document hidden files you can do so by supplying the option
     ``--hidden=off``, for traversing symlinks you can provide the option ``--no-ignore-symlinks``.
@@ -109,7 +109,7 @@ phpDocumentor offers a wide range of options for changing the look and feel of y
 them are captured in a template (believe me, you do not want to configure this on the command-line). So, the easiest way
 is to pick a template using the option ``--template``.
 
-**``--template``**
+**--template**
     It is possible to generate output using two templates at once. This can be convenient for generating HTML documentation
     and Checkstyle XML output at the same time. Generating output for two templates can be accomplished by providing the
     ``--template`` option twice or by using a comma-separated list:
@@ -122,11 +122,11 @@ is to pick a template using the option ``--template``.
 In addition to the options offered by the templates themselves, there are two command-line options to influence the
 output of your documentation:
 
-**``--defaultpackagename``**
+**--defaultpackagename**
     This option changes the name of your 'default', or nameless, package to that of your preference. This way you can,
     for example, change the default package name to the name of your application.
 
-**``--title``**
+**--title**
     This option will change the title in your browser's titlebar and, for some templates, the title text of the template
     itself. This is a small convenience to personalize the template for your application.
 
@@ -136,7 +136,7 @@ chapter on :doc:`templates` for more information on this subject.
 File Encoding
 -------------
 
-**``--encoding``**
+**--encoding**
     phpDocumentor assumes that your project's files are encoded using **UTF-8**. If your encoding differs you can use the
     ``--encoding`` command line option to instruct phpDocumentor to expect that.
 
@@ -149,7 +149,7 @@ the documentation, either by providing functionality or in the list of meta-data
 It is possible to influence this behaviour using a series of options that affect the amount of information that is
 provided in the documentation.
 
-**``--visibility`` and ``--parseprivate``**
+**--visibility and --parseprivate**
     To change which elements are shown in the documentation based on their visibility you can use the ``--visibility``
     option. This option accepts a comma-separated list of the visibilities supported by PHP (public, protected or private),
     the value 'api' to only document items that have the :doc:`../references/phpdoc/tags/api` tag associated with them or
@@ -157,7 +157,7 @@ provided in the documentation.
     This latter option (``--visibility=internal``) is deprecates the ``--parseprivate`` option as it is superseded by this
     option.
 
-**``--ignore-tags``**
+**--ignore-tags**
     Now that you know how to change the list of elements that can be displayed, you can even influence which tags are
     shown in your documentation. Contrary to phpDocumentor 1, version 2 will now display all tags by default; if you
     want to omit specific tags from the documentation you can do that using the ``--ignore-tags`` option. By providing a
@@ -181,7 +181,7 @@ As you can see here, we indicate that a specific piece of code on the following 
 collects these markers and generates a report that shows which and where these markers are placed. In the example above
 you may notice that there is a colon (``:``) after the marker text; this is optional and will be ignored when present.
 
-**``--markers``**
+**--markers**
     By default, phpDocumentor only collects markers that start with TODO or FIXME, as these are the most common, but you can
     provide an alternative list using the ``--markers`` command line option.
 
