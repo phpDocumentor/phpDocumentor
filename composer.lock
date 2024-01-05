@@ -1793,12 +1793,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "30f080237bc9e11a3f8e362f98d419ed368ef390"
+                "reference": "806ae4c1fe130ad68017488538cd35bb0b0ac8f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/30f080237bc9e11a3f8e362f98d419ed368ef390",
-                "reference": "30f080237bc9e11a3f8e362f98d419ed368ef390",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/806ae4c1fe130ad68017488538cd35bb0b0ac8f5",
+                "reference": "806ae4c1fe130ad68017488538cd35bb0b0ac8f5",
                 "shasum": ""
             },
             "require": {
@@ -1809,9 +1809,9 @@
                 "php": "^8.1",
                 "phpdocumentor/flyfinder": "^1.1",
                 "psr/event-dispatcher": "^1.0",
-                "symfony/clock": "^6.4",
-                "symfony/http-client": "^6.4.0",
-                "symfony/string": "^5.4 || ^6.3",
+                "symfony/clock": "^6.4.2",
+                "symfony/http-client": "^6.4.2",
+                "symfony/string": "^5.4 || ^6.3 || ^7.0",
                 "symfony/translation-contracts": "^3.4.1",
                 "twig/twig": "~2.15 || ^3.0",
                 "webmozart/assert": "^1.11"
@@ -1836,7 +1836,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
                 "source": "https://github.com/phpDocumentor/guides-core/tree/main"
             },
-            "time": "2023-12-29T08:37:42+00:00"
+            "time": "2024-01-04T12:11:38+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1844,12 +1844,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
-                "reference": "39112a70385b555a98b47a0aeee3a433ced7b3ff"
+                "reference": "c4258a04e37c7440ceec5d2cf42ab7b0750a0a90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/39112a70385b555a98b47a0aeee3a433ced7b3ff",
-                "reference": "39112a70385b555a98b47a0aeee3a433ced7b3ff",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/c4258a04e37c7440ceec5d2cf42ab7b0750a0a90",
+                "reference": "c4258a04e37c7440ceec5d2cf42ab7b0750a0a90",
                 "shasum": ""
             },
             "require": {
@@ -1857,7 +1857,7 @@
                 "php": "^8.1",
                 "phpdocumentor/guides": "self.version",
                 "phpdocumentor/guides-restructured-text": "self.version",
-                "symfony/process": "^5.4 || ^6.3",
+                "symfony/process": "^5.4 || ^6.3 || ^7.0",
                 "twig/twig": "~2.0 || ^3.0"
             },
             "suggest": {
@@ -1880,7 +1880,7 @@
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
                 "source": "https://github.com/phpDocumentor/guides-graphs/tree/main"
             },
-            "time": "2023-11-30T06:53:27+00:00"
+            "time": "2023-12-31T12:08:28+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
@@ -1926,12 +1926,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "be15eb2bd49e262aa95c5e8405fd141e33909ed2"
+                "reference": "88a5d4bb9bea8547bbccfea3c8a22a18c1a63825"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/be15eb2bd49e262aa95c5e8405fd141e33909ed2",
-                "reference": "be15eb2bd49e262aa95c5e8405fd141e33909ed2",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/88a5d4bb9bea8547bbccfea3c8a22a18c1a63825",
+                "reference": "88a5d4bb9bea8547bbccfea3c8a22a18c1a63825",
                 "shasum": ""
             },
             "require": {
@@ -1957,7 +1957,7 @@
             "support": {
                 "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/main"
             },
-            "time": "2023-12-27T21:30:49+00:00"
+            "time": "2024-01-04T09:58:07+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
@@ -2006,12 +2006,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "3009075a14cf4be5a5a12db5c5f09dcbbfa65571"
+                "reference": "aee9e26834c520eb53644f77015cd4d37df2d358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/3009075a14cf4be5a5a12db5c5f09dcbbfa65571",
-                "reference": "3009075a14cf4be5a5a12db5c5f09dcbbfa65571",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/aee9e26834c520eb53644f77015cd4d37df2d358",
+                "reference": "aee9e26834c520eb53644f77015cd4d37df2d358",
                 "shasum": ""
             },
             "require": {
@@ -2067,7 +2067,7 @@
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
                 "source": "https://github.com/phpDocumentor/Reflection/tree/6.x"
             },
-            "time": "2023-12-18T08:14:48+00:00"
+            "time": "2024-01-05T08:10:26+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

@@ -18,10 +18,6 @@ final class DocumentCollector
 
     public function __invoke(PostParseDocument $event): void
     {
-        if (! ($event->getDocumentNode()->getTitle() instanceof TitleNode)) {
-            return;
-        }
-
         $this->addDocumentToDocumentationSet($event->getFileName(), $event->getDocumentNode());
     }
 
@@ -35,7 +31,7 @@ final class DocumentCollector
                 $document,
                 $document->getHash(),
                 $file,
-                $document->getTitle()->getId(),
+                $document->getTitle()?->getId() ?? '',
             ),
         );
     }
