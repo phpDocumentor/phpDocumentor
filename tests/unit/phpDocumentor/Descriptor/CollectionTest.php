@@ -193,7 +193,7 @@ final class CollectionTest extends TestCase
     /** @covers ::merge */
     public function testIfAfterMergeCollectionContainsAllItems(): void
     {
-        $expected = [0 => 'a', 1 => 'b', 2 => 'c'];
+        $expected = [0 => 'c', 1 => 'a', 2 => 'b'];
         $this->fixture[1] = 'a';
         $this->fixture[2] = 'b';
 

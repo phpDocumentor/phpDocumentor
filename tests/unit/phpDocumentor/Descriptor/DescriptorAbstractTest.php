@@ -322,7 +322,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         $this->fixture->setErrors(new Collection([$descriptorError]));
         $this->fixture->setTags(new Collection([new Collection([$tagDescriptor->reveal()])]));
 
-        self::assertSame([$descriptorError, $tagError], $this->fixture->getErrors()->getAll());
+        self::assertSame([$tagError, $descriptorError], $this->fixture->getErrors()->getAll());
     }
 
     /**

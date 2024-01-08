@@ -363,18 +363,18 @@ final class FileDescriptorTest extends MockeryTestCase
 
         // final merge and check
         $expectedErrors = [
-            ...$errorGlobal,
-            ...$errorClasses,
-            ...$errorInterfaces,
-            ...$errorTraits,
-            ...$errorFunctions,
-            ...$errorClassMethods,
-            ...$errorClassConstants,
-            ...$errorClassProperties,
-            ...$errorInterfacesMethods,
-            ...$errorInterfacesConstants,
-            ...$errorTraitsMethods,
             ...$errorTraitsProperties,
+            ...$errorTraitsMethods,
+            ...$errorInterfacesConstants,
+            ...$errorInterfacesMethods,
+            ...$errorClassProperties,
+            ...$errorClassConstants,
+            ...$errorClassMethods,
+            ...$errorFunctions,
+            ...$errorTraits,
+            ...$errorInterfaces,
+            ...$errorClasses,
+            ...$errorGlobal,
         ];
 
         self::assertSame($expectedErrors, $this->fixture->getAllErrors()->getAll());

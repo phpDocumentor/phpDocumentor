@@ -235,7 +235,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      */
     public function merge(self $collection): Collection
     {
-        return new self(array_merge($this->items, $collection->getAll()));
+        return new self(array_merge($collection->getAll(), $this->items));
     }
 
     /**

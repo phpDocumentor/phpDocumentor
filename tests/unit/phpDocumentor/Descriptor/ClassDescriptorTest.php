@@ -144,16 +144,20 @@ final class ClassDescriptorTest extends MockeryTestCase
     /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsCollectionWithParent(): void
     {
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getMethods')->andReturn(new Collection(['methods']));
-        $mock->shouldReceive('getInheritedMethods')->andReturn(new Collection(['inherited']));
+        $grandParent = new ClassDescriptor();
+        $grandParent->getMethods()->set('construct', new MethodDescriptor());
 
-        $this->fixture->setParent($mock);
+        $parent = new ClassDescriptor();
+        $parent->getMethods()->set('construct', new MethodDescriptor());
+        $parent->getMethods()->set('otherMethod', new MethodDescriptor());
+        $parent->setParent($grandParent);
+        $this->fixture->setParent($parent);
+
+        $expected = [];
+        $expected['construct'] = $parent->getMethods()->get('construct');
+        $expected['otherMethod'] = $parent->getMethods()->get('otherMethod');
+
         $result = $this->fixture->getInheritedMethods();
-
-        self::assertInstanceOf(Collection::class, $result);
-
-        $expected = ['methods', 'inherited'];
         self::assertSame($expected, $result->getAll());
     }
 
@@ -220,7 +224,7 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         self::assertInstanceOf(Collection::class, $result);
 
-        $expected = ['constants', 'inherited'];
+        $expected = ['inherited', 'constants'];
         self::assertSame($expected, $result->getAll());
     }
 
@@ -248,7 +252,7 @@ final class ClassDescriptorTest extends MockeryTestCase
 
         self::assertInstanceOf(Collection::class, $result);
 
-        $expected = ['properties', 'inherited'];
+        $expected = ['inherited', 'properties'];
         self::assertSame($expected, $result->getAll());
     }
 

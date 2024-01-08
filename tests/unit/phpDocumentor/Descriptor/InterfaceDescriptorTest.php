@@ -179,7 +179,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $result = $this->fixture->getInheritedConstants();
 
         $this->assertInstanceOf(Collection::class, $result);
-        $this->assertSame([$constantInParent, $constantInGrandParent], $result->getAll());
+        $this->assertSame([$constantInGrandParent, $constantInParent], $result->getAll());
     }
 
     /** @covers ::getInheritedMethods */
@@ -218,7 +218,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
 
         $this->assertInstanceOf(Collection::class, $result);
 
-        $this->assertSame([$parentDescriptor, $grandParentDescriptor], $result->getAll());
+        $this->assertSame([$grandParentDescriptor, $parentDescriptor], $result->getAll());
     }
 
     private function whenFixtureHasParentInterface(): InterfaceDescriptor
