@@ -37,8 +37,6 @@ class Application extends BaseApplication
     public function __construct()
     {
         parent::__construct('phpDocumentor', (new Version())->getVersion());
-
-        $this->setDefaultCommand('project:run');
     }
 
     public function doRun(InputInterface $input, OutputInterface $output): int
@@ -58,6 +56,8 @@ class Application extends BaseApplication
         foreach ($commands as $id => $_command) {
             $this->add($container->get($id));
         }
+
+        $this->setDefaultCommand('project:run', true);
 
         $eventDispatcher = $container->get(EventDispatcher::class);
         $logger = $container->get(LoggerInterface::class);
