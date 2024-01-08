@@ -34,7 +34,13 @@ The above options are all you need to generate your documentation as demonstrate
     directory from where you run the command.
 
 The target folder is optional but if you omit it then your documentation will be generated in a subfolder, of
-your current working directory, called **output**.
+your current working directory, called **.phpdoc/build/**.
+
+.. note::
+
+    The target directory is not cleared before generating documentation. This allows you to add additional files to the
+    target directory that are not part of your project and have them included in the documentation.
+    If you rerun phpDocumentor you will have to manually remove the old documentation files.
 
 Configuration
 -------------

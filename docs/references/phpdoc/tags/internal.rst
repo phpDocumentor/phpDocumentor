@@ -56,7 +56,7 @@ Any consumer of this file is responsible for filtering the information correctly
 Examples
 --------
 
-Normal tag:: Mark the ``count()`` function as being internal to this project:
+Normal tag: Mark the ``count()`` function as being internal to this project:
 
 .. code-block:: php
    :linenos:
@@ -71,7 +71,7 @@ Normal tag:: Mark the ``count()`` function as being internal to this project:
         <...>
     }
 
-Inline tag:: Include a note in the Description that would only show in Developer Docs:
+Inline tag: Include a note in the Description that would only show in Developer Docs:
 
 .. code-block:: php
    :linenos:
