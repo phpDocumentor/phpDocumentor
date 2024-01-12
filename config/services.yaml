@@ -235,3 +235,7 @@ services:
     phpDocumentor\Guides\RestructuredText\Directives\PHPElementSummary:
       tags:
         - { name: 'phpdoc.guides.directive' }
+
+    phpDocumentor\Guides\RestructuredText\Directives\PHPElementDescription:
+      tags:
+        - { name: 'phpdoc.guides.directive' }

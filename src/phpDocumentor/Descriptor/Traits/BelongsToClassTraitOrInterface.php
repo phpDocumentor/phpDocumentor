@@ -29,9 +29,9 @@ trait BelongsToClassTraitOrInterface
     /**
      * Registers a parent class, interface or trait.
      *
-     * @throws InvalidArgumentException If anything other than a class, interface or trait was passed.
+     * @param ClassInterface|InterfaceInterface|TraitInterface $parent
      *
-     * @inheritDoc
+     * @throws InvalidArgumentException If anything other than a class, interface or trait was passed.
      */
     public function setParent($parent): void
     {

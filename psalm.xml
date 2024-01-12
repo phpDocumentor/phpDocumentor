@@ -120,6 +120,7 @@
                 <directory name="src/phpDocumentor/Descriptor/Builder/Reflector/"/>
                 <file name="src/phpDocumentor/Configuration/Definition/Version2.php"/>
                 <file name="src/phpDocumentor/Configuration/Definition/Version3.php"/>
+                <file name="src/phpDocumentor/Descriptor/Traits/BelongsToClassTraitOrInterface.php"/>
             </errorLevel>
         </MoreSpecificImplementedParamType>
 
