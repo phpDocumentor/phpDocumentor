@@ -33,9 +33,7 @@ final class PHPReferenceNodeTransformer implements NodeTransformer
             $node->getFqsen(),
         );
 
-        $node->setDescriptor($descriptor);
-
-        return $node;
+        return $node->withDescriptor($descriptor);
     }
 
     public function supports(Node $node): bool

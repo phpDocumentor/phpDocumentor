@@ -35,9 +35,12 @@ final class PHPReferenceNode extends InlineNode
         return $this->fqsen;
     }
 
-    public function setDescriptor(Descriptor|null $descriptor): void
+    public function withDescriptor(Descriptor|null $descriptor): self
     {
-        $this->descriptor = $descriptor;
+        $that = clone $this;
+        $that->descriptor = $descriptor;
+
+        return $that;
     }
 
     public function getDescriptor(): Descriptor|null

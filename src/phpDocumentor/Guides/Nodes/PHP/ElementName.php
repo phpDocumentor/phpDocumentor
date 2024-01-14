@@ -28,7 +28,7 @@ final class ElementName extends DescriptorNode
             $that->descriptor->getFullyQualifiedStructuralElementName(),
         );
 
-        $refrence->setDescriptor($descriptor);
+        $refrence = $refrence->withDescriptor($descriptor);
 
         if ((bool) ($that->getOption('title', false))) {
             return new TitleNode(
