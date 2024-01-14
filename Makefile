@@ -168,8 +168,8 @@ build-website: demo docs
 
 .PHONY: demo
 demo:
-	${.DOCKER_COMPOSE_RUN} phpdoc run --template=default -t ./build/website/demo/default
-	${.DOCKER_COMPOSE_RUN} phpdoc run --template=clean -t ./build/website/demo/clean
+	${.DOCKER_COMPOSE_RUN} phpdoc --template=default -t ./build/website/demo/default
+	${.DOCKER_COMPOSE_RUN} phpdoc --template=clean -t ./build/website/demo/clean
 
 .PHONY: .RUN_ALWAYS
 .RUN_ALWAYS:
