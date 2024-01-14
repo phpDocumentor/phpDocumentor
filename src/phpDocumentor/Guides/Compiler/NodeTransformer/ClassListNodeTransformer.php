@@ -12,6 +12,8 @@ use phpDocumentor\Guides\Nodes\CollectionNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\PHP\ClassList;
 use phpDocumentor\Guides\Nodes\PHP\DescriptorNode;
+use phpDocumentor\Guides\Nodes\SectionNode;
+use phpDocumentor\Guides\Nodes\TitleNode;
 use Webmozart\Assert\Assert;
 
 use function iterator_to_array;
@@ -52,6 +54,15 @@ final class ClassListNodeTransformer implements NodeTransformer
                 $descriptor->addChildNode($bluePrintNode);
             }
 
+            if ($descriptor->getChildren()[0] instanceof TitleNode) {
+                $children = $descriptor->getChildren();
+                $descriptor = new SectionNode($children[0]);
+                unset($children[0]);
+                foreach ($children as $childNode) {
+                    $descriptor->addChildNode($childNode);
+                }
+            }
+
             $node->addChildNode($descriptor);
         }
 
@@ -65,6 +76,6 @@ final class ClassListNodeTransformer implements NodeTransformer
 
     public function getPriority(): int
     {
-        return 4000;
+        return 6000;
     }
 }

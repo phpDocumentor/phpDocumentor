@@ -32,7 +32,7 @@ abstract class DescriptorNode extends CompoundNode
      *
      * @return self<TDescriptor>
      */
-    public function withDescriptor(Descriptor $descriptor): self
+    public function withDescriptor(Descriptor $descriptor): Node
     {
         $clone = clone $this;
         $clone->descriptor = $descriptor;
