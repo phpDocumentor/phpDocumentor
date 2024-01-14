@@ -40,7 +40,6 @@ final class RenderGuide extends WriterAbstract implements
     Initializable,
     TemplateRenderer
 {
-    public const FEATURE_FLAG = 'guides.enabled';
     private Environment $environment;
 
     public function __construct(
@@ -69,25 +68,16 @@ final class RenderGuide extends WriterAbstract implements
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
     ): void {
-        // Feature flag: Guides are disabled by default since this is an experimental feature
-        if (! ($project->getSettings()->getCustom()['guides.enabled'] ?? false)) {
-            return;
-        }
-
         if ($documentationSet instanceof GuideSetDescriptor === false) {
             return;
         }
-
-        $this->logger->warning(
-            'Generating guides is experimental, no BC guarantees are given, use at your own risk',
-        );
 
         $this->renderDocumentationSet($documentationSet, $transformation);
     }
 
     public function getDefaultSettings(): array
     {
-        return ['guides.enabled' => false];
+        return [];
     }
 
     private function renderDocumentationSet(

@@ -28,18 +28,16 @@ final class StoreGuidesToCache
     {
         $configuration = $payload->getConfig();
 
-        if (($configuration['phpdocumentor']['settings']['guides.enabled'] ?? false) === true) {
-            $this->logger->info('Storing cache .. ');
+        $this->logger->info('Storing cache .. ');
 
-            $this->commandBus->handle(
-                new PersistCacheCommand(
-                    ((string) $configuration['phpdocumentor']['paths']['cache']) . '/guides',
-                    $configuration['phpdocumentor']['use-cache'],
-                ),
-            );
+        $this->commandBus->handle(
+            new PersistCacheCommand(
+                ((string) $configuration['phpdocumentor']['paths']['cache']) . '/guides',
+                $configuration['phpdocumentor']['use-cache'],
+            ),
+        );
 
-            $this->logger->info('OK');
-        }
+        $this->logger->info('OK');
 
         return $payload;
     }
