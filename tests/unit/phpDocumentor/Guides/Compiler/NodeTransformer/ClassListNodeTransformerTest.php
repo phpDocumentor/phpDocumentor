@@ -132,7 +132,7 @@ final class ClassListNodeTransformerTest extends TestCase
                     ],
                 ),
                 2,
-                '',
+                $descriptor->getName(),
             ),
         );
     }

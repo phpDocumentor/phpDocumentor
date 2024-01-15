@@ -10,6 +10,7 @@ use phpDocumentor\Guides\Nodes\InlineCompoundNode;
 use phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\TitleNode;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /** @extends DescriptorNode<ElementInterface> */
 final class ElementName extends DescriptorNode
@@ -30,11 +31,12 @@ final class ElementName extends DescriptorNode
 
         $refrence = $refrence->withDescriptor($descriptor);
 
+        $slugger = new AsciiSlugger();
         if ((bool) ($that->getOption('title', false))) {
             return new TitleNode(
                 new InlineCompoundNode([$refrence]),
                 (int) $that->getOption('level', 2),
-                '',
+                $slugger->slug((string) $that->descriptor->getFullyQualifiedStructuralElementName())->toString(),
             );
         }
 

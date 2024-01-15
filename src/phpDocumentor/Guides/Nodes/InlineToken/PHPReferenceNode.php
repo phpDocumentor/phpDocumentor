@@ -47,4 +47,9 @@ final class PHPReferenceNode extends InlineNode
     {
         return $this->descriptor;
     }
+
+    public function toString(): string
+    {
+        return $this->fqsen->getName();
+    }
 }
