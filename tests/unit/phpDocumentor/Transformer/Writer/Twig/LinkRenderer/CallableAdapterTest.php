@@ -10,10 +10,13 @@ use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class CallableAdapterTest extends TestCase
 {
+    use ProphecyTrait;
+
     private CallableAdapter $adapter;
     private ObjectProphecy|LinkRendererInterface $linkRenderer;
 
