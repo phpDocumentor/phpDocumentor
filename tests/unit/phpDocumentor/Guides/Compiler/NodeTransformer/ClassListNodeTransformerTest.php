@@ -115,8 +115,10 @@ final class ClassListNodeTransformerTest extends TestCase
 
     private function createDescriptor(string $className): ElementInterface
     {
+        $fqsen = new Fqsen($className);
         $descriptor1 = $this->prophesize(ElementInterface::class);
-        $descriptor1->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen($className));
+        $descriptor1->getFullyQualifiedStructuralElementName()->willReturn($fqsen);
+        $descriptor1->getName()->willReturn($fqsen->getName());
 
         return $descriptor1->reveal();
     }
