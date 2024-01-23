@@ -54,7 +54,7 @@ final class ClassListNodeTransformer implements NodeTransformer
                 $descriptor->addChildNode($bluePrintNode);
             }
 
-            if ($descriptor->getChildren()[0] instanceof TitleNode) {
+            if (($descriptor->getChildren()[0] ?? null) instanceof TitleNode) {
                 $children = $descriptor->getChildren();
                 $descriptor = new SectionNode($children[0]);
                 unset($children[0]);

@@ -23,6 +23,9 @@
         <testsuite name="functional">
             <directory>./tests/functional/</directory>
         </testsuite>
+        <testsuite name="incubator">
+            <directory>./incubator/*/tests/unit/</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>

@@ -96,6 +96,8 @@ final class ParserBuilder
     {
         $operator = choice(
             string('=='),
+            string('!='),
+            string('starts_with'),
         );
 
         $value = choice(

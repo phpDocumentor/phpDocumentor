@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\DependencyInjection;
 
+use phpDocumentor\Guides\Nodes\PHP\ClassDiagram;
 use phpDocumentor\Guides\Nodes\PHP\ClassList;
 use phpDocumentor\Guides\Nodes\PHP\ElementDescription;
 use phpDocumentor\Guides\Nodes\PHP\ElementName;
@@ -44,6 +45,7 @@ final class ApplicationExtension extends Extension implements PrependExtensionIn
             [
                 'templates' => [
                     template(ClassList::class, 'body/php/class-list.html.twig'),
+                    template(ClassDiagram::class, 'body/uml.html.twig'),
                     template(ElementName::class, 'body/php/element-name.html.twig'),
                     template(ElementDescription::class, 'body/php/element-description.html.twig'),
                 ],

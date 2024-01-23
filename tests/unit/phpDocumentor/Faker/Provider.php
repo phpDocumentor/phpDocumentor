@@ -31,9 +31,11 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
@@ -226,6 +228,15 @@ final class Provider extends Base
         }
 
         return $rootNamespace;
+    }
+
+    public function interfaceDescriptor(Fqsen $fqsen): InterfaceInterface
+    {
+        $descriptor = new InterfaceDescriptor();
+        $descriptor->setName($fqsen->getName());
+        $descriptor->setFullyQualifiedStructuralElementName($fqsen);
+
+        return $descriptor;
     }
 
     public function classDescriptor(Fqsen $fqsen): ClassInterface

@@ -31,6 +31,7 @@ use function is_iterable;
 use function is_object;
 use function is_string;
 use function iterator_to_array;
+use function str_starts_with;
 use function strrpos;
 use function substr;
 
@@ -49,8 +50,12 @@ final class Executor
         return $query->visit($this, $currentElement, $rootElement);
     }
 
-    public function evaluateEqualsComparison(mixed $root, mixed $currentObject, QueryNode $left, QueryNode $right): bool
-    {
+    public function evaluateEqualsComparison(
+        mixed $root,
+        mixed $currentObject,
+        QueryNode $left,
+        QueryNode $right,
+    ): bool {
         $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
         $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
 
@@ -59,6 +64,27 @@ final class Executor
         }
 
         return $leftValue === $rightValue;
+    }
+
+    public function evaluateNotEqualsComparison(
+        mixed $root,
+        mixed $currentObject,
+        QueryNode $left,
+        QueryNode $right,
+    ): bool {
+        return ! $this->evaluateEqualsComparison($root, $currentObject, $left, $right);
+    }
+
+    public function evaluateStartsWithComparison(
+        mixed $root,
+        mixed $currentObject,
+        QueryNode $left,
+        QueryNode $right,
+    ): bool {
+        $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
+        $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
+
+        return str_starts_with((string) $leftValue, (string) $rightValue);
     }
 
     /**

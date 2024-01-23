@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\JsonPath\Parser;
 
+use Generator;
 use Parsica\Parsica\Parser;
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
@@ -101,9 +102,10 @@ class ParserBuilderTest extends TestCase
         );
     }
 
-    public function testFilterExpressionCurrentObjectPropertyEquals(): void
+    /** @dataProvider operatorProvider */
+    public function testFilterExpression(string $operator): void
     {
-        $result = $this->parser->tryString('$.store.books[?(@.title == "phpDoc")]');
+        $result = $this->parser->tryString('$.store.books[?(@.title ' . $operator . ' "phpDoc")]');
         self::assertEquals(
             new Path([
                 new RootNode(),
@@ -119,7 +121,7 @@ class ParserBuilderTest extends TestCase
                             new CurrentNode(),
                             new FieldAccess(new FieldName('title')),
                         ]),
-                        '==',
+                        $operator,
                         new Value(
                             'phpDoc',
                         ),
@@ -128,6 +130,20 @@ class ParserBuilderTest extends TestCase
             ]),
             $result->output(),
         );
+    }
+
+    /** @return Generator<string, string> */
+    public static function operatorProvider(): Generator
+    {
+        $operators = [
+            '==',
+            '!=',
+            'starts_with',
+        ];
+
+        foreach ($operators as $operator) {
+            yield $operator => [$operator];
+        }
     }
 
     public function testFilterExpressionCurrentObjectProperyWildCard(): void
