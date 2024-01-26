@@ -26,17 +26,31 @@ document your code and leverage phpDocumentor to generate an extensive set of do
 What does it do?
 ----------------
 
-phpDocumentor analyzes the code of your application and generates a set of documentation that describes what each
-element in your code does, what it expects and what it returns. With it, you can easily navigate through your codebase
-and see how it works without having to read the actual code.
+By analyzing your PHP source code and DocBlock comments, phpDocumentor generates a complete set of API documentation,
+making it an indispensable tool for developers striving for clear and well-documented codebases.
 
-For an example on how that would look like, check the sidebar in
-`our own documentation <https://docs.phpdoc.org/latest/>`_.
+Beyond its prowess in API documentation, phpDocumentor goes further by providing additional features.
+It is equipped with the ability to create UML diagrams, making it a versatile tool for visualizing code structure.
+Additionally, phpDocumentor offers a full-featured markup language parser, supporting both RestructuredText
+and Markdown syntax. This flexibility allows you to document your project using the markup language that best suits
+your preferences.
+
+A notable feature of phpDocumentor is its capability to include parts of your API documentation directly into your
+RestructuredText documentation. This integration ensures that your documentation and code remain in sync, saving you
+time and effort in maintaining accurate and up-to-date project documentation.
+
+Inspired by its predecessors, phpDocumentor 1 and JavaDoc, phpDocumentor continues to innovate, staying up-to-date with
+the latest technologies and PHP language features. This commitment ensures that developers have access to the best
+possible documentation experience, aligning with modern development practices.
+
+In this guide, we will explore the various features of phpDocumentor, from its core functionality in generating
+API documentation to its advanced capabilities in parsing markup languages. Whether you're a beginner or an
+experienced developer, phpDocumentor is your ally in creating well-documented, maintainable,
+and understandable PHP projects.
 
 .. hint::
 
-   There is a new feature underway to render handwritten documentation, like the one you are reading now. Check this
-   space for updates in the coming months.
+   The documentation pages you are currently reading are an example of the output of phpDocumentor.
 
 Where to start?
 ---------------

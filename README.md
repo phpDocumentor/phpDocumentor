@@ -11,10 +11,29 @@ phpDocumentor
 What is phpDocumentor?
 ----------------------
 
-phpDocumentor is an application that is capable of analyzing your PHP source code and
-DocBlock comments to generate a complete set of API Documentation.
+phpDocumentor stands as the de-facto documentation tool for PHP projects, offering a robust solution for generating
+comprehensive documentation effortlessly. By analyzing your PHP source code and DocBlock comments, phpDocumentor
+generates a complete set of API documentation, making it an indispensable tool for developers striving
+for clear and well-documented codebases.
 
-Inspired by phpDocumentor 1 and JavaDoc, it continues to innovate and is up to date with the latest technologies and PHP language features.
+Beyond its prowess in API documentation, phpDocumentor goes further by providing additional features.
+It is equipped with the ability to create UML diagrams, making it a versatile tool for visualizing code structure.
+Additionally, phpDocumentor offers a full-featured markup language parser, supporting both RestructuredText
+and Markdown syntax. This flexibility allows you to document your project using the markup language that best suits
+your preferences.
+
+A notable feature of phpDocumentor is its capability to include parts of your API documentation directly into your
+RestructuredText documentation. This integration ensures that your documentation and code remain in sync, saving you
+time and effort in maintaining accurate and up-to-date project documentation.
+
+Inspired by its predecessors, phpDocumentor 1 and JavaDoc, phpDocumentor continues to innovate, staying up-to-date with
+the latest technologies and PHP language features. This commitment ensures that developers have access to the best
+possible documentation experience, aligning with modern development practices.
+
+In this guide, we will explore the various features of phpDocumentor, from its core functionality in generating
+API documentation to its advanced capabilities in parsing markup languages. Whether you're a beginner or an
+experienced developer, phpDocumentor is your ally in creating well-documented, maintainable,
+and understandable PHP projects.
 
 phpDocumentor v3 (Stable)
 ------------------------------------
@@ -50,9 +69,10 @@ PhpDocumentor requires PHP 8.1 or higher to run.
 However, code of earlier PHP versions can be analyzed.
 
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base.
-This will require the application [Graphviz] to be installed on the machine running phpDocumentor.
-Rendering the class diagrams using [Graphviz] is optional, and warnings about missing [Graphviz] can be ignored.
-However, your documentation will contain some dead links in this case. Class diagram will be created with option `--setting=graphs.enabled=true`.
+This will require the application [PlantUml] to be installed on the machine running phpDocumentor.
+Rendering the class diagrams using [PlantUml] is optional, and warnings about missing [PlantUml] can be ignored.
+However, your documentation will contain some dead links in this case. 
+Class diagram will be created with option `--setting=graphs.enabled=true`.
 
 There are 4 ways to install phpDocumentor:
 
@@ -89,10 +109,6 @@ Ah, you discovered our secret. There is a phpdocumentor composer package that yo
 However: phpDocumentor is a complex application, and its libraries are used in countless other libraries and applications (2 of our libraries have more than 150 million downloads each); and this means that the chances for a conflict between one of our dependencies and yours is high. And when I say high, it is really high.
 
 So, because of the above: we do not endorse nor actively support installing phpDocumentor using Composer.
-
-### PEAR
-
-Starting from phpDocumentor v3 we decided to drop PEAR support due to declining use.
 
 How to use phpDocumentor?
 -------------------------

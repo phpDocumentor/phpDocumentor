@@ -2,8 +2,6 @@
 References
 ##########
 
-.. include:: ../includes/guides-disclaimer.rst
-
 One of the key features of a well written documentation set are links to navigate between sections in your documentation.
 This page describes the by phpDocumentor supported references. Those references allow you to link to different parts of
 your documentation set or even between documentation sets when you have multiple sets.

@@ -17,6 +17,7 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    pipeline
    caching
    rendering/index
+   templates/index
    guides/index
    file-access
    custom-settings

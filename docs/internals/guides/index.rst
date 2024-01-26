@@ -1,8 +1,6 @@
 Guide generation
 ================
 
-.. include:: ../../includes/guides-disclaimer.rst
-
 Guide generation is phpDocumentor's implementation for converting hand-written documentation into a static page
 integrated with the API Documentation. These share each other's Table of Contents in order for them to link to one
 another.
