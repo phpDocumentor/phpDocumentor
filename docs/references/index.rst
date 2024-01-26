@@ -6,3 +6,4 @@ References
 
    phpdoc/index
    configuration
+   query-language/index
