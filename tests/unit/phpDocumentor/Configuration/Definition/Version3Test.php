@@ -145,6 +145,25 @@ final class Version3Test extends TestCase
                 ],
                 $this->defaultConfigurationOutput(),
             ],
+            'check version respresentation' => [
+                [
+                    'paths' => ['output' => '/tmp'],
+                    'version' => [
+                        [
+                            'number' => '3.10',
+                            'api' => [
+                                [
+                                    'examples' => [
+                                        'dsn' => 'file:///tmp',
+                                        'path' => ['src'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                $this->defaultConfigurationWithOneApiWithOverriddenExamples('3.10', 'file:///tmp', ['src']),
+            ],
         ];
     }
 
