@@ -30,6 +30,9 @@ interface ClassInterface extends ElementInterface, ChildInterface, TypeInterface
     /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfaces(): Collection;
 
+    /** @return Collection<InterfaceInterface|Fqsen> */
+    public function getInterfacesIncludingInherited(): Collection;
+
     public function setFinal(bool $final): void;
 
     public function isFinal(): bool;

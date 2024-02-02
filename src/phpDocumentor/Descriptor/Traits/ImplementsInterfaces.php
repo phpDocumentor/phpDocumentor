@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -44,5 +47,19 @@ trait ImplementsInterfaces
         }
 
         return $this->implements;
+    }
+
+    public function getInterfacesIncludingInherited(): Collection
+    {
+        $interfaces = $this->getInterfaces();
+        if ($this instanceof InheritsFromElement) {
+            $inheritedElement = $this->getInheritedElement();
+
+            if ($inheritedElement instanceof ClassInterface || $inheritedElement instanceof EnumInterface) {
+                $interfaces = $interfaces->merge($inheritedElement->getInterfacesIncludingInherited());
+            }
+        }
+
+        return $interfaces;
     }
 }

@@ -31,6 +31,9 @@ interface EnumInterface extends ElementInterface, TypeInterface
     /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfaces(): Collection;
 
+    /** @return Collection<InterfaceInterface|Fqsen> */
+    public function getInterfacesIncludingInherited(): Collection;
+
     /** @param Collection<MethodInterface> $methods */
     public function setMethods(Collection $methods): void;
 

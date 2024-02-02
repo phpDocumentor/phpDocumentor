@@ -98,6 +98,7 @@ final class ParserBuilder
             string('=='),
             string('!='),
             string('starts_with'),
+            string('contains'),
         );
 
         $value = choice(

@@ -32,6 +32,7 @@ final class Comparison implements Expression
             '==' => $param->evaluateEqualsComparison($root, $currentObject, $this->left, $this->right),
             '!=' => $param->evaluateNotEqualsComparison($root, $currentObject, $this->left, $this->right),
             'starts_with' => $param->evaluateStartsWithComparison($root, $currentObject, $this->left, $this->right),
+            'contains' => $param->evaluateContainsComparison($root, $currentObject, $this->left, $this->right),
             default => throw new InvalidArgumentException(),
         };
     }

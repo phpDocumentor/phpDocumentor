@@ -87,6 +87,32 @@ final class Executor
         return str_starts_with((string) $leftValue, (string) $rightValue);
     }
 
+    public function evaluateContainsComparison(
+        mixed $root,
+        mixed $currentObject,
+        QueryNode $left,
+        QueryNode $right,
+    ): bool {
+        $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
+        $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
+
+        if (is_iterable($leftValue)) {
+            foreach ($leftValue as $value) {
+                if (is_string($rightValue) && ((string) $value) === $rightValue) {
+                    return true;
+                }
+
+                if ($value === $rightValue) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+
     /**
      * @param Generator<mixed>|mixed $value
      *
