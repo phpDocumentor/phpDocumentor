@@ -28,7 +28,7 @@
             <xs:enumeration value="public"/>
             <xs:enumeration value="protected"/>
             <xs:enumeration value="private"/>
-            <xs:enumeration value="hidden"/>
+            <xs:enumeration value="internal"/>
         </xs:restriction>
     </xs:simpleType>
 
