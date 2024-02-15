@@ -2,7 +2,7 @@
     {{ node.name }}
     {% if node.usedTraits is not empty %}
         <span class="phpdocumentor-trait__extends">
-            Uses
+            uses
             {% for trait in node.usedTraits %}
                 {{ trait|route('trait:short') }}{% if not loop.last %}, {% endif %}
             {% endfor %}
