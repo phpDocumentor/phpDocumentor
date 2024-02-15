@@ -49,6 +49,7 @@ trait ImplementsInterfaces
         return $this->implements;
     }
 
+    /** @return Collection<InterfaceInterface|Fqsen> */
     public function getInterfacesIncludingInherited(): Collection
     {
         $interfaces = $this->getInterfaces();
