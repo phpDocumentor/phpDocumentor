@@ -5,8 +5,8 @@
 <aside class="phpdocumentor-column -three phpdocumentor-sidebar">
     {% for version in project.versions %}
         {% for toc in version.tableOfContents %}
-        <section class="phpdocumentor-sidebar__category">
-            <h2 class="phpdocumentor-sidebar__category-header">{{ toc.name }}</h2>
+        <section class="phpdocumentor-sidebar__category -{{ toc.name|lower }}">
+            <h2 class="phpdocumentor-sidebar__category-header">{{ toc.name|title }}</h2>
                 {% for root in toc.roots %}
                     {{ toc(root, 'components/menu.html.twig', 1) }}
                 {% endfor %}
@@ -14,7 +14,7 @@
         {% endfor %}
     {% endfor %}
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -reports">
         <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
         {% if project.settings.custom['graphs.enabled'] %}
         <h3 class="phpdocumentor-sidebar__root-package"><a href="graphs/classes.html">Class Diagram</a></h3>
@@ -24,7 +24,7 @@
         <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
     </section>
 
-    <section class="phpdocumentor-sidebar__category">
+    <section class="phpdocumentor-sidebar__category -indices">
         <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
         <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
     </section>
