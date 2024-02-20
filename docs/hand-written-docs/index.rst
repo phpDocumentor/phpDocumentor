@@ -23,4 +23,5 @@ for your non-tech readers.
 .. toctree::
    :maxdepth: 2
 
+   directives
    references

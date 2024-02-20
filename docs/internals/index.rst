@@ -16,6 +16,7 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
    flow
    pipeline
    caching
+   compiler
    rendering/index
    templates/index
    guides/index
