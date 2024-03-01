@@ -42,6 +42,13 @@ final class ApiSetBuilderTest extends TestCase
         $this->builder = new ApiSetBuilder($this->router->reveal());
     }
 
+    /** @covers ::supports */
+    public function testItSupportsApiSetDescriptors(): void
+    {
+        self::assertTrue($this->builder->supports($this->faker()->apiSetDescriptor()));
+        self::assertFalse($this->builder->supports($this->faker()->guideSetDescriptor()));
+    }
+
     /** @covers ::build */
     public function testApiDocumentationSetNamespacesAreAddedToTOC(): void
     {
