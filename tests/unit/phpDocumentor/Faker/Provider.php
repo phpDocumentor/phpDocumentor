@@ -46,6 +46,7 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Nodes\ProjectNode;
 use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
@@ -183,6 +184,7 @@ final class Provider extends Base
             $this->source(),
             (string) $this->path(),
             'rst',
+            new ProjectNode(),
         );
     }
 
