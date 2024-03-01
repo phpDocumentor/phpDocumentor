@@ -15,23 +15,13 @@ namespace phpDocumentor\Compiler\Version\Pass;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\ApiSetBuilder;
-use phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\DocumentationSetBuilder;
-use phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\GuideSetBuilder;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Transformer\Router\Router;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
-    /** @var array<array-key, DocumentationSetBuilder[]> */
-    private array $builders;
-
-    public function __construct(private readonly Router $router)
+    /** @param iterable<array-key, TableOfContentsBuilder\DocumentationSetBuilder> $builders */
+    public function __construct(private readonly iterable $builders)
     {
-        $this->builders = [
-            new ApiSetBuilder($this->router),
-            new GuideSetBuilder($this->router),
-        ];
     }
 
     public function getDescription(): string

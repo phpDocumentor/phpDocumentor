@@ -16,7 +16,6 @@ namespace phpDocumentor\Compiler\Version\Pass;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -35,8 +34,11 @@ final class TableOfContentsBuilderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->router = $this->givenARouterThatAlwaysReturnsTheFqsen();
-        $this->builder = new TableOfContentsBuilder($this->router->reveal());
+        $this->builderAdapter = $this->prophesize(TableOfContentsBuilder\DocumentationSetBuilder::class);
+
+        $this->builder = new TableOfContentsBuilder([
+            $this->builderAdapter->reveal()
+        ]);
     }
 
     /** @covers ::getDescription */
@@ -55,14 +57,5 @@ final class TableOfContentsBuilderTest extends TestCase
         $this->builder->__invoke($apiDocumentationSet);
 
         self::assertEmpty($apiDocumentationSet->getTableOfContents());
-    }
-
-    private function givenARouterThatAlwaysReturnsTheFqsen(): Router|ObjectProphecy
-    {
-        $router = $this->prophesize(Router::class);
-        $router->generate(Argument::any())
-            ->will(static fn ($args) => (string) $args[0]->getFullyQualifiedStructuralElementName());
-
-        return $router;
     }
 }

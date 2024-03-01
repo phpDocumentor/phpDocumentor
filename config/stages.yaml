@@ -58,6 +58,9 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+  _instanceof:
+    phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\DocumentationSetBuilder:
+      tags: ['app.toc.documentation_set_builder']
 
   phpDocumentor\Compiler\:
     resource: '../src/phpDocumentor/Compiler'
@@ -146,6 +149,8 @@ services:
       - { name: 'phpdoc.pipeline.compile', priority: 2000 }
 
   phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder:
+    arguments:
+      $builders: !tagged_iterator 'app.toc.documentation_set_builder'
     tags:
       - { name: 'phpdoc.pipeline.compile', priority: 1000 }
 
