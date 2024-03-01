@@ -15,7 +15,11 @@ namespace phpDocumentor\Descriptor\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass IsApplicable */
+/**
+ * @coversDefaultClass \phpDocumentor\Descriptor\ValueObjects\IsApplicable
+ * @covers ::<private>
+ * @covers ::__construct
+ */
 final class IsApplicableTest extends TestCase
 {
     /**
