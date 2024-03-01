@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Compiler\Guides\Pass;
 
 use phpDocumentor\Compiler\CompilableSubject;
@@ -33,16 +42,18 @@ final class GuidesCompiler implements CompilerPassInterface
             return $subject;
         }
 
-        $documents = $this->compiler->run(
-            array_map(
-                static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
-                $subject->getDocuments()->getAll(),
-            ),
-            new DescriptorAwareCompilerContext(
-                $subject->getGuidesProjectNode(),
-                $this->descriptorRepository->getVersionDescriptor(),
-            ),
+        $documentNodes = array_map(
+            static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
+            $subject->getDocuments()->getAll(),
         );
+
+        $compilerContext = new DescriptorAwareCompilerContext(
+            $subject->getGuidesProjectNode(),
+            $this->descriptorRepository->getVersionDescriptor(),
+        );
+
+        $documents = $this->compiler->run($documentNodes, $compilerContext);
+
         foreach ($documents as $document) {
             $subject->getDocuments()->get($document->getFilePath())->setDocumentNode($document);
         }
