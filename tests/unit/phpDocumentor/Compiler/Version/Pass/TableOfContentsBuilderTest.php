@@ -39,10 +39,29 @@ final class TableOfContentsBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->router = $this->givenARouterThatAlwaysReturnsTheFqsen();
-
         $this->pass = new TableOfContentsBuilder($this->router->reveal());
     }
 
+    /** @covers ::getDescription */
+    public function testGetDescription(): void
+    {
+        $description = $this->pass->getDescription();
+
+        $this->assertSame('Builds table of contents for documentation sets', $description);
+    }
+
+    /** @covers ::__invoke */
+    public function testPassingAnythingElseThanAVersionDescriptorIsPassedThroughTransparently(): void
+    {
+        $apiDocumentationSet = $this->givenAnApiDocumentationSetWithNamespaces();
+
+        $result = $this->pass->__invoke($apiDocumentationSet);
+
+        self::assertSame($apiDocumentationSet, $result);
+        self::assertEmpty($apiDocumentationSet->getTableOfContents());
+    }
+
+    /** @covers ::__invoke */
     public function testApiDocumentationSetNamespacesAreAddedToTOC(): void
     {
         $apiDocumentationSet = $this->givenAnApiDocumentationSetWithNamespaces();
@@ -62,6 +81,7 @@ final class TableOfContentsBuilderTest extends TestCase
         }
     }
 
+    /** @covers ::__invoke */
     public function testApiDocumentationSetPackagesAreAddedToTOC(): void
     {
         $apiDocumentationSet = $this->givenAnApiDocumentationSetWithPackages();
