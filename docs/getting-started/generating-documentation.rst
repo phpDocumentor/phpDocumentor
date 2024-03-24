@@ -34,7 +34,7 @@ For example:
 
 .. code-block:: shell-session
 
-    $ phpdoc -d ./src -t ./docs/api
+    $ phpdoc run -d ./src -t ./docs/api
 
 What the above example does, is scan all files in the ``src`` directory and its subdirectories, perform
 an analysis and generate a website containing the documentation in the folder ``docs/api``. If you want,
