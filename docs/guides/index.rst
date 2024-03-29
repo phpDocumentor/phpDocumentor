@@ -8,4 +8,4 @@ Guides
    docblocks
    types
    inheritance
-   continues-integration
+   continuous-integration
