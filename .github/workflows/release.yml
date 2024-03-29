@@ -32,7 +32,7 @@ jobs:
           build/phpDocumentor.phar.asc
           build/phpDocumentor.phar
     - name: release shim
-      uses: benc-uk/workflow-dispatch@v121
+      uses: benc-uk/workflow-dispatch@v1.2.3
       with:
         workflow: Release
         repo: phpDocumentor/shim
@@ -53,7 +53,7 @@ jobs:
             tag_semver: true
             buildoptions: "--target=prod"
         - name: Trigger
-          uses: benc-uk/workflow-dispatch@v121
+          uses: benc-uk/workflow-dispatch@v1.2.3
           with:
             workflow: Docker build
             token: ${{ secrets.BOT_TOKEN }}
