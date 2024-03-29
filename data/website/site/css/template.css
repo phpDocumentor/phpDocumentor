@@ -24,6 +24,11 @@
     }
 }
 
+.phpdocumentor-button__disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .phpdocumentor-hero {
     display: flex;
     align-items: center;
@@ -130,6 +135,63 @@
     font-size: 1rem;
 }
 
+.phpdocumentor-component__list {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 1rem;
+    justify-content: center;
+}
+
+.phpdocumentor-component {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 3px var(--dark-gray);
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    width: 25rem;
+}
+
+.phpdocumentor-component h3 {
+    margin-top: -1.25rem;
+}
+
+.phpdocumentor-component .phpdocumentor-button {
+    padding: .125rem 1.5rem;
+}
+
+.phpdocumentor-component footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+.phpdocumentor-component__name {
+    background-color: var(--button-color);
+    border: 1px solid var(--button-border-color);
+    border-radius: var(--border-radius-base-size);
+    box-sizing: border-box;
+    color: var(--button-text-color);
+    display: inline-block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    height: 38px;
+    letter-spacing: .1rem;
+    line-height: 38px;
+    padding: 0.25rem var(--spacing-xl);
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-bottom: var(--spacing-md);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.phpdocumentor-component__active .phpdocumentor-component__name {
+    background-color: var(--button-color-primary);
+    border-color: var(--button-color-primary);
+    color: var(--button-text-color-primary);
+}
+
 @media (max-width: 1023px) {
     .phpdocumentor-hero__illustration {
         position: absolute;
@@ -181,6 +243,7 @@
     .phpdocumentor-side-by-side {
         display: flex;
         gap: 2rem;
+        flex-wrap: wrap;
     }
 
     .phpdocumentor-side-by-side > * {
