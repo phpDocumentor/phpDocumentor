@@ -3,7 +3,7 @@ Continuous Integration
 =====================
 
 Just like any other application component your documentation can be build automatically using a continuous
-continuous service. This is a great way to ensure that your documentation is always up to date and that
+service. This is a great way to ensure that your documentation is always up to date and that
 it is build correctly. This chapter will show you how to use phpDocumentor in combination with different
 continuous integration services.
 
