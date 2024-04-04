@@ -1,0 +1,78 @@
+name: "Documentation"
+
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - "master"
+  pull_request: null
+
+jobs:
+  documentation:
+    name: "Documentation"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Build"
+        uses: "phpDocumentor/phpDocumentor@master"
+
+      - name: "Upload documentation artifacts"
+        if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
+        uses: "actions/upload-artifact@v4"
+        with:
+          name: "documentation"
+          path: "build/docs"
+          retention-days: 1
+
+      - name: "Upload website artifacts"
+        if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
+        uses: "actions/upload-artifact@v4"
+        with:
+          name: "website"
+          path: "data/website"
+          retention-days: 1
+
+  deploy:
+    name: "Deploy"
+    if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
+    runs-on: "ubuntu-latest"
+    needs: "documentation"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+        with:
+          repository: "phpDocumentor/docs"
+          token: "${{ secrets.BOT_TOKEN }}"
+          path: "docs"
+
+      - name: "Download docs"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "documentation"
+          path: "build/docs"
+
+      - name: "Download website"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "website"
+          path: "build/website"
+
+      - name: "Copy files"
+        run: "rsync -r --delete build/docs/* docs/docs/ --exclude docs/docs/components/*"
+
+      - name: "Copy website files"
+        run: "rsync -r --delete build/website/* docs/website"
+
+      - name: "Commit"
+        uses: "stefanzweifel/git-auto-commit-action@v5"
+        with:
+          repository: "docs"
+          commit_message: "Update main documentation"
+
+      - name: "Push"
+        uses: "ad-m/github-push-action@master"
+        with:
+          directory: "docs"
+          github_token: "${{ secrets.BOT_TOKEN }}"
+          repository: "phpDocumentor/docs"
