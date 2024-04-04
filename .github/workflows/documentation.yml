@@ -71,7 +71,7 @@ jobs:
         run: "rsync -r --delete build/docs/* docs/docs/ --exclude docs/docs/components/*"
 
       - name: "Copy website files"
-        run: "rsync -r --delete data/website/* docs/website"
+        run: "rsync -r --delete data/website/site/* docs/site"
 
       - name: "Commit"
         uses: "stefanzweifel/git-auto-commit-action@v5"
