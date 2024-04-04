@@ -68,7 +68,7 @@ jobs:
           path: "data/website"
 
       - name: "Copy files"
-        run: "rsync -r --delete build/docs/* docs/docs/ --exclude docs/docs/components/*"
+        run: "rsync -r --delete build/docs/ docs/docs/ --exclude components/"
 
       - name: "Copy website files"
         run: "rsync -r --delete data/website/site/* docs/site"
