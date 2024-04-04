@@ -16,6 +16,8 @@ jobs:
 
       - name: "Build"
         uses: "phpDocumentor/phpDocumentor@master"
+        with:
+          target: "build/docs"
 
       - name: "Upload documentation artifacts"
         if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
@@ -28,11 +30,12 @@ jobs:
   website:
     name: "Website"
     runs-on: "ubuntu-latest"
+    if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
       - name: "Upload website artifacts"
-        if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
+
         uses: "actions/upload-artifact@v4"
         with:
           name: "website"
