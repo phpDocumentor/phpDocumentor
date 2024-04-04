@@ -25,6 +25,12 @@ jobs:
           path: "build/docs"
           retention-days: 1
 
+  website:
+    name: "Website"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
       - name: "Upload website artifacts"
         if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
         uses: "actions/upload-artifact@v4"
@@ -37,7 +43,7 @@ jobs:
     name: "Deploy"
     if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
     runs-on: "ubuntu-latest"
-    needs: "documentation"
+    needs: ["documentation", "website"]
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v4"
@@ -56,13 +62,13 @@ jobs:
         uses: "actions/download-artifact@v4"
         with:
           name: "website"
-          path: "build/website"
+          path: "data/website"
 
       - name: "Copy files"
         run: "rsync -r --delete build/docs/* docs/docs/ --exclude docs/docs/components/*"
 
       - name: "Copy website files"
-        run: "rsync -r --delete build/website/* docs/website"
+        run: "rsync -r --delete data/website/* docs/website"
 
       - name: "Commit"
         uses: "stefanzweifel/git-auto-commit-action@v5"
