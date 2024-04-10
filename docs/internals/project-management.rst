@@ -13,9 +13,7 @@ Project Management
 Release schedule
 ----------------
 
-While writing this document, the team has no set release schedule as it is focusing on getting phpDocumentor 3 released.
-This version includes significant architectural changes; meaning that it is highly unpredictable when it can be
-released. As soon as phpDocumentor 3 is released, the team can review and change how they can setup a release schedule.
+TODO: The team can review and change how they can setup a release schedule.
 
 Workflows
 ---------
