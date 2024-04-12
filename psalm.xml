@@ -74,6 +74,24 @@
             </errorLevel>
         </InvalidThrow>
 
+        <InvalidExtendClass>
+            <errorLevel type="suppress">
+                <referencedClass name="phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext" />
+            </errorLevel>
+        </InvalidExtendClass>
+
+        <MethodSignatureMismatch>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Guides/Compiler/DescriptorAwareCompilerContext.php" />
+            </errorLevel>
+        </MethodSignatureMismatch>
+
+        <ConstructorSignatureMismatch>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Guides/Compiler/DescriptorAwareCompilerContext.php" />
+            </errorLevel>
+        </ConstructorSignatureMismatch>
+
         <DeprecatedClass>
             <errorLevel type="suppress">
                 <!-- MountManager will be removed in Flysystem V2 -->

@@ -18,9 +18,6 @@ use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
-use phpDocumentor\Reflection\Type;
-
-use function array_key_exists;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@method` tag.
@@ -59,18 +56,5 @@ class MethodAssembler extends BaseTagAssembler
         }
 
         return $descriptor;
-    }
-
-    /**
-     * Construct an argument descriptor given the array representing an argument with a Method Tag in the Reflection
-     * component.
-     */
-    private function createArgumentDescriptorForMagicMethod(string $name, Type $type): ArgumentDescriptor
-    {
-        $argumentDescriptor = new ArgumentDescriptor();
-        $argumentDescriptor->setType($type);
-        $argumentDescriptor->setName($name);
-
-        return $argumentDescriptor;
     }
 }
