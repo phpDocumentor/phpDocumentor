@@ -18,7 +18,9 @@ use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Compiler\Compiler;
+use phpDocumentor\Guides\Compiler\CompilerPass;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
+use phpDocumentor\Guides\Compiler\NodeTransformers\NodeTransformerFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -36,16 +38,23 @@ final class GuidesCompilerTest extends TestCase
     use Faker;
 
     private GuidesCompiler $guidesCompiler;
-    private ObjectProphecy|Compiler $compiler;
+    private Compiler $compiler;
     private DescriptorRepository $descriptorRepository;
+
+    private ObjectProphecy $testPass;
 
     protected function setUp(): void
     {
-        $this->compiler = $this->prophesize(Compiler::class);
+        $this->testPass = $this->prophesize(CompilerPass::class);
+        $this->testPass->getPriority()->willReturn(1000);
+        $factory = $this->prophesize(NodeTransformerFactory::class);
+        $factory->getTransformers()->willReturn([]);
+        $factory->getPriorities()->willReturn([1000]);
+        $this->compiler = new Compiler([$this->testPass->reveal()], $factory->reveal());
         $this->descriptorRepository = new DescriptorRepository();
 
         $this->guidesCompiler = new GuidesCompiler(
-            $this->compiler->reveal(),
+            $this->compiler,
             $this->descriptorRepository,
         );
     }
@@ -134,8 +143,7 @@ final class GuidesCompilerTest extends TestCase
         array $originalDocumentNodes,
         array $compiledDocumentNodes,
     ): void {
-        $this->compiler->run($originalDocumentNodes, Argument::type(DescriptorAwareCompilerContext::class))
-            ->willReturn($compiledDocumentNodes)
-            ->shouldBeCalled();
+        $this->testPass->run($originalDocumentNodes, Argument::type(DescriptorAwareCompilerContext::class))
+            ->willReturn($compiledDocumentNodes);
     }
 }

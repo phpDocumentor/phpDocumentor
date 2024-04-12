@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\ArgumentDescriptor;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use phpDocumentor\Reflection\Type;
 
@@ -41,24 +42,19 @@ class MethodAssembler extends BaseTagAssembler
         $descriptor = new MethodDescriptor($data->getName());
         $descriptor->setMethodName($data->getMethodName());
         $descriptor->setStatic($data->isStatic());
-
-        // TODO: Uncomment this line as soon as DocBlockReflection 5.4 is released and included
-        // $descriptor->setHasReturnByReference($data->returnsReference());
+        $descriptor->setHasReturnByReference($data->returnsReference());
 
         $response = new ReturnDescriptor('return');
         $response->setType($data->getReturnType());
         $descriptor->setResponse($response);
 
-        /** @var array<string|Type> $argument */
-        foreach ($data->getArguments() as $argument) {
-            if (! array_key_exists('name', $argument) || ! array_key_exists('type', $argument)) {
-                continue;
-            }
-
-            $argumentDescriptor = $this->createArgumentDescriptorForMagicMethod(
-                $argument['name'],
-                $argument['type'],
-            );
+        foreach ($data->getParameters() as $argument) {
+            $argumentDescriptor = new ArgumentDescriptor();
+            $argumentDescriptor->setName($argument->getName());
+            $argumentDescriptor->setType($argument->getType());
+            $argumentDescriptor->setVariadic(IsApplicable::fromBoolean($argument->isVariadic()));
+            $argumentDescriptor->setByReference(IsApplicable::fromBoolean($argument->isReference()));
+            $argumentDescriptor->setDefault($argument->getDefaultValue());
             $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 

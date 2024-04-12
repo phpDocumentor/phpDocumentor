@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\DocBlock\Tags\MethodParameter;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Integer;
@@ -52,7 +53,7 @@ final class MethodAssemblerTest extends TestCase
     }
 
     /**
-     * @param string[] $arguments
+     * @param MethodParameter[] $arguments
      * @param string $description
      *
      * @dataProvider provideNotations
@@ -66,7 +67,7 @@ final class MethodAssemblerTest extends TestCase
         array $arguments = [],
         Description|null $description = null,
     ): void {
-        $tag = new Method($name, $arguments, $returnType, false, $description);
+        $tag = new Method($name, [], $returnType, false, $description, false, $arguments);
 
         $descriptor = $this->fixture->create($tag);
 
@@ -75,8 +76,8 @@ final class MethodAssemblerTest extends TestCase
         $this->assertEquals($description ?? '', (string) $descriptor->getDescription());
         $this->assertSame(count($arguments), $descriptor->getArguments()->count());
         foreach ($arguments as $argument) {
-            $this->assertSame($argument['type'], $descriptor->getArguments()->get($argument['name'])->getType());
-            $this->assertSame($argument['name'], $descriptor->getArguments()->get($argument['name'])->getName());
+            $this->assertSame($argument->getType(), $descriptor->getArguments()->get($argument->getName())->getType());
+            $this->assertSame($argument->getName(), $descriptor->getArguments()->get($argument->getName())->getName());
         }
     }
 
@@ -96,8 +97,8 @@ final class MethodAssemblerTest extends TestCase
                 new Void_(),
                 'myMethod',
                 [
-                    ['name' => '$argument1', 'type' => new Mixed_()],
-                    ['name' => '$argument2', 'type' => new Mixed_()],
+                    new MethodParameter('$argument1', new Mixed_()),
+                    new MethodParameter('$argument2', new Mixed_()),
                 ],
             ],
 
@@ -106,8 +107,8 @@ final class MethodAssemblerTest extends TestCase
                 new Void_(),
                 'myMethod',
                 [
-                    ['name' => '$argument1', 'type' => new Mixed_()],
-                    ['name' => '$argument2', 'type' => new Mixed_()],
+                    new MethodParameter('$argument1', new Mixed_()),
+                    new MethodParameter('$argument2', new Mixed_()),
                 ],
             ],
 
@@ -116,8 +117,8 @@ final class MethodAssemblerTest extends TestCase
                 new Void_(),
                 'myMethod',
                 [
-                    ['name' => '$argument1', 'type' => new Mixed_()],
-                    ['name' => '$argument2', 'type' => new Mixed_()],
+                    new MethodParameter('$argument1', new Mixed_()),
+                    new MethodParameter('$argument2', new Mixed_()),
                 ],
                 new Description('This is a description.'),
             ],
@@ -127,8 +128,8 @@ final class MethodAssemblerTest extends TestCase
                 new Void_(),
                 'myMethod',
                 [
-                    ['name' => '$argument1', 'type' => new Boolean()],
-                    ['name' => '$argument2', 'type' => new String_()],
+                    new MethodParameter('$argument1', new Boolean()),
+                    new MethodParameter('$argument2', new String_()),
                 ],
                 new Description('This is a description.'),
             ],
@@ -138,8 +139,8 @@ final class MethodAssemblerTest extends TestCase
                 new Integer(),
                 'myMethod',
                 [
-                    ['name' => '$argument1', 'type' => new Boolean()],
-                    ['name' => '$argument2', 'type' => new String_()],
+                    new MethodParameter('$argument1', new Boolean()),
+                    new MethodParameter('$argument2', new String_()),
                 ],
                 new Description('This is a description.'),
             ],
