@@ -24,19 +24,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\String\Exception\InvalidArgumentException;
 use Symfony\Component\String\UnicodeString;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware */
 final class ReEncodingMiddlewareTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::withEncoding
-     * @covers ::execute
-     */
     public function testItReencodesFileContentsUsingTheGivenEncoding(): void
     {
         $contents = new UnicodeString('äNDERUNGEN');
@@ -61,7 +54,6 @@ final class ReEncodingMiddlewareTest extends TestCase
         $this->assertInstanceOf(PhpFile::class, $result);
     }
 
-    /** @covers ::execute */
     public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong(): void
     {
         $this->expectException(InvalidArgumentException::class);

@@ -20,16 +20,12 @@ use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode
- 
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode */
 final class RemoveSourcecodeTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function testRemovesSourceWhenDisabled(): void
     {
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
@@ -58,7 +54,6 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    /** @covers ::__invoke */
     public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
@@ -120,7 +115,6 @@ final class RemoveSourcecodeTest extends TestCase
         return $apiDescriptor;
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $pass = new RemoveSourcecode();

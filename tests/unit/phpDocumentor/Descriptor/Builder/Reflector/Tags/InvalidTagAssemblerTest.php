@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\InvalidTagAssembler */
 final class InvalidTagAssemblerTest extends TestCase
 {
-    /** @covers ::create */
     public function testCreateWithError(): void
     {
         $assembler = new InvalidTagAssembler();

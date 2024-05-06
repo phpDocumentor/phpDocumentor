@@ -24,15 +24,11 @@ use PHPUnit\Framework\TestCase;
 
 use function md5;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware */
 final class EmittingMiddlewareTest extends TestCase
 {
     use Faker;
 
-    /** @covers ::execute */
     public function testEmitsPreParsingEvent(): void
     {
         // start with a clean dispatcher

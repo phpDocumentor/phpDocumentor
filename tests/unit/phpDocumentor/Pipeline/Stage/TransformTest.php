@@ -27,10 +27,7 @@ use function getcwd;
 
 use const DIRECTORY_SEPARATOR;
 
-/**
- * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform */
 final class TransformTest extends TestCase
 {
     use ProphecyTrait;
@@ -75,10 +72,6 @@ final class TransformTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::createFileSystem
-     */
     public function test_if_target_location_for_output_is_set_with_a_relative_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
@@ -90,10 +83,6 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::createFileSystem
-     */
     public function test_if_target_location_for_output_is_set_with_an_absolute_path(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
@@ -105,7 +94,6 @@ final class TransformTest extends TestCase
         ($this->transform)($payload);
     }
 
-    /** @covers ::__invoke */
     public function test_transforming_the_project_will_invoke_all_compiler_passes(): void
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');

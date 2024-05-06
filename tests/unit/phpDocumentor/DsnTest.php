@@ -15,26 +15,11 @@ namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Dsn
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Dsn */
 class DsnTest extends TestCase
 {
     /**
      * @uses         \phpDocumentor\Path
-     *
-     * @covers ::getScheme
-     * @covers ::getUsername
-     * @covers ::getPassword
-     * @covers ::getPort
-     * @covers ::getHost
-     * @covers ::getPath
-     * @covers ::getQuery
-     * @covers ::getParameters
-     * @covers ::__toString
-     * @covers ::createFromString
      *
      * @dataProvider provideDsnsToTestAgainst
      */
@@ -63,11 +48,6 @@ class DsnTest extends TestCase
         $this->assertSame($parameters, $fixture->getParameters(), 'Parameters do not match');
     }
 
-    /**
-     * @covers ::createFromString
-     * @covers ::withPath
-     * @covers ::getPath
-     */
     public function testPathNotStartingWithSlash(): void
     {
         $dns = Dsn::createFromString('file://test');
@@ -179,10 +159,7 @@ class DsnTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::resolve
-     * @dataProvider resolveDsnProvider
-     */
+    /** @dataProvider resolveDsnProvider */
     public function testResolve(string $baseDsn, string $srcDsn, string $expected, string|null $scheme): void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);

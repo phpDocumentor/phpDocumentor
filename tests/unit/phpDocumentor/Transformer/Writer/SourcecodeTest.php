@@ -24,11 +24,7 @@ use phpDocumentor\Transformer\Transformation;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode */
 final class SourcecodeTest extends MockeryTestCase
 {
     use Faker;
@@ -49,7 +45,6 @@ final class SourcecodeTest extends MockeryTestCase
         );
     }
 
-    /** @covers ::transform */
     public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);

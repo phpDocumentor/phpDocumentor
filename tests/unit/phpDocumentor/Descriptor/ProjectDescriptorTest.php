@@ -21,8 +21,6 @@ use PHPUnit\Framework\TestCase;
  * Tests the functionality for the ProjectDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
- * @covers ::__construct
- 
  */
 final class ProjectDescriptorTest extends TestCase
 {
@@ -40,10 +38,6 @@ final class ProjectDescriptorTest extends TestCase
         $this->fixture = new ProjectDescriptor(self::EXAMPLE_NAME);
     }
 
-    /**
-     * @covers ::setName
-     * @covers ::getName
-     */
     public function testGetSetName(): void
     {
         $this->assertEquals(self::EXAMPLE_NAME, $this->fixture->getName());
@@ -54,10 +48,6 @@ final class ProjectDescriptorTest extends TestCase
         $this->assertEquals($newProjectName, $this->fixture->getName());
     }
 
-    /**
-     * @covers ::setNamespace
-     * @covers ::getNamespace
-     */
     public function testGetSetNamespace(): void
     {
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
@@ -71,10 +61,6 @@ final class ProjectDescriptorTest extends TestCase
         $this->assertSame($namespaceDescriptor, $this->fixture->getNamespace());
     }
 
-    /**
-     * @covers ::setNamespace
-     * @covers ::getNamespace
-     */
     public function testRootPackageIsSetForProject(): void
     {
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
@@ -85,10 +71,6 @@ final class ProjectDescriptorTest extends TestCase
         $this->assertSame('\\', (string) $this->fixture->getPackage()->getFullyQualifiedStructuralElementName());
     }
 
-    /**
-     * @covers ::setSettings
-     * @covers ::getSettings
-     */
     public function testGetSetSettings(): void
     {
         $this->assertInstanceOf(Settings::class, $this->fixture->getSettings());
@@ -99,10 +81,6 @@ final class ProjectDescriptorTest extends TestCase
         $this->assertSame($settings, $this->fixture->getSettings());
     }
 
-    /**
-     * @covers ::setPartials
-     * @covers ::getPartials
-     */
     public function testGetSetPartials(): void
     {
         $result = $this->fixture->getPartials();

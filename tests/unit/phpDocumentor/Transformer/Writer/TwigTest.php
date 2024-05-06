@@ -33,8 +33,6 @@ use Twig\Loader\ArrayLoader;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig
- * @covers ::__construct
- 
  * @covers \phpDocumentor\Transformer\Writer\IoTrait
  * @covers \phpDocumentor\Transformer\Writer\WriterAbstract
  */
@@ -95,7 +93,6 @@ final class TwigTest extends TestCase
         $this->assertSame(Twig::class, (string) $this->writer);
     }
 
-    /** @covers ::transform */
     public function testRendersTwigTemplateToDestination(): void
     {
         $targetDir = $this->destinationFolder->url();

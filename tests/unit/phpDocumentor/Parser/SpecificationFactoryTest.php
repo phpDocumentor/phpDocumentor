@@ -21,11 +21,7 @@ use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\SpecificationFactory
- * @covers ::create
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\SpecificationFactory */
 final class SpecificationFactoryTest extends TestCase
 {
     private SpecificationFactory $fixture;

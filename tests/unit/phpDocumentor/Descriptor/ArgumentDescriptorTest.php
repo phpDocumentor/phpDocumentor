@@ -22,17 +22,9 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor */
 final class ArgumentDescriptorTest extends TestCase
 {
-    /**
-     * @covers ::setName
-     * @covers ::getName
-     */
     public function testCanHaveAName(): void
     {
         $argument = new ArgumentDescriptor();
@@ -42,10 +34,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame('name', $argument->getName());
     }
 
-    /**
-     * @covers ::getMethod
-     * @covers ::setMethod
-     */
     public function testCanBelongToAMethod(): void
     {
         $method = $this->givenAnExampleMethod();
@@ -57,10 +45,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame($method, $argument->getMethod());
     }
 
-    /**
-     * @covers ::setSummary
-     * @covers ::getSummary
-     */
     public function testArgumentsCanHaveASummary(): void
     {
         $argument = new ArgumentDescriptor();
@@ -71,10 +55,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame('summary', $argument->getSummary());
     }
 
-    /**
-     * @covers ::getSummary
-     * @covers ::getInheritedElement
-     */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         $parentSummary = 'This is a summary';
@@ -89,10 +69,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame($parentSummary, $argument->getSummary());
     }
 
-    /**
-     * @covers ::setDescription
-     * @covers ::getDescription
-     */
     public function testArgumentsCanHaveADescription(): void
     {
         $argument = new ArgumentDescriptor();
@@ -106,10 +82,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame($description, $argument->getDescription());
     }
 
-    /**
-     * @covers ::getDescription
-     * @covers ::getInheritedElement
-     */
     public function testWhenDescriptionIsNullParentDescriptionIsInherited(): void
     {
         $parentDescription = new DescriptionDescriptor(new Description('description'), []);
@@ -123,10 +95,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame($parentDescription, $argument->getDescription());
     }
 
-    /**
-     * @covers ::getDefault
-     * @covers ::setDefault
-     */
     public function testArgumentsCanHaveADefaultValue(): void
     {
         $argument = new ArgumentDescriptor();
@@ -137,10 +105,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame('a', $argument->getDefault());
     }
 
-    /**
-     * @covers ::isByReference
-     * @covers ::setByReference
-     */
     public function testWhetherAnArgumentCouldBePassedByReference(): void
     {
         $argument = new ArgumentDescriptor();
@@ -151,10 +115,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertTrue($argument->isByReference());
     }
 
-    /**
-     * @covers ::isVariadic
-     * @covers ::setVariadic
-     */
     public function testArgumentCanBeAVariadic(): void
     {
         $argument = new ArgumentDescriptor();
@@ -165,10 +125,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertTrue($argument->isVariadic());
     }
 
-    /**
-     * @covers ::getType
-     * @covers ::setType
-     */
     public function testCanBeAssociatedWithAType(): void
     {
         $argument = new ArgumentDescriptor();
@@ -183,10 +139,6 @@ final class ArgumentDescriptorTest extends TestCase
         $this->thenArgumentHasType($type, $argument);
     }
 
-    /**
-     * @covers ::getType
-     * @covers ::getInheritedElement
-     */
     public function testTypeIsInheritedWhenNoneIsPresent(): void
     {
         $types = new String_();
@@ -203,10 +155,6 @@ final class ArgumentDescriptorTest extends TestCase
         self::assertSame($types, $result);
     }
 
-    /**
-     * @covers ::setMethod
-     * @covers ::getInheritedElement
-     */
     public function testGetTheArgumentFromWhichThisArgumentInherits(): void
     {
         $argument = new ArgumentDescriptor();

@@ -25,7 +25,6 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
- 
  */
 class SeeAssemblerTest extends TestCase
 {
@@ -47,10 +46,6 @@ class SeeAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers ::create
-     * @covers ::buildDescriptor
-     */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsRelativeClassnameNotInNamespaceAliasses(): void
     {
         // Arrange
@@ -70,11 +65,7 @@ class SeeAssemblerTest extends TestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    /**
-     * @covers ::create
-     * @covers ::buildDescriptor
-     * @dataProvider provideReferences
-     */
+    /** @dataProvider provideReferences */
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference): void
     {
         // Arrange

@@ -14,12 +14,7 @@ final class SourceTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testSourceReturnsDsn(): void
     {
         $dsn = self::faker()->dsn();
@@ -28,13 +23,7 @@ final class SourceTest extends TestCase
         self::assertSame($dsn, $source->dsn());
     }
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     * @covers ::withDsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testWithDsnReturnsNewInstanceOfSource(): void
     {
         $dsn = self::faker()->dsn();
@@ -46,13 +35,7 @@ final class SourceTest extends TestCase
         self::assertNotSame($newSource, $source);
     }
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     * @covers ::withDsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testWithDsnReturnsSetsNewDsn(): void
     {
         $dsn = self::faker()->dsn();
@@ -65,10 +48,6 @@ final class SourceTest extends TestCase
         self::assertSame($dsn, $source->dsn());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetGet
-     */
     public function testSourceImplementsArrayAccess(): void
     {
         $dsn = self::faker()->dsn();
@@ -83,10 +62,6 @@ final class SourceTest extends TestCase
         self::assertSame($paths, $source['paths']);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetSet
-     */
     public function testSourceArrayAccessIsImmutableCannotSet(): void
     {
         $this->expectException(BadMethodCallException::class);
@@ -101,10 +76,6 @@ final class SourceTest extends TestCase
         $source['paths'] = [];
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetUnset
-     */
     public function testSourceArrayAccessIsImmutableCannotUnset(): void
     {
         $this->expectException(BadMethodCallException::class);
@@ -119,12 +90,7 @@ final class SourceTest extends TestCase
         unset($source['paths']);
     }
 
-    /**
-     * @dataProvider pathProvider
-     * @covers ::__construct
-     * @covers ::globPatterns
-     
-     */
+    /** @dataProvider pathProvider */
     public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
     {
         $source = new Source(self::faker()->dsn(), [$input]);

@@ -27,11 +27,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\Guides\Pass\GuidesCompiler
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\Guides\Pass\GuidesCompiler */
 final class GuidesCompilerTest extends TestCase
 {
     use ProphecyTrait;
@@ -59,7 +55,6 @@ final class GuidesCompilerTest extends TestCase
         );
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $description = $this->guidesCompiler->getDescription();
@@ -67,7 +62,6 @@ final class GuidesCompilerTest extends TestCase
         $this->assertSame('Compiling guides', $description);
     }
 
-    /** @covers ::__invoke */
     public function testInvokeReturnsUnmodifiedWhenSubjectIsNotAGuideSetDescriptor(): void
     {
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
@@ -77,7 +71,6 @@ final class GuidesCompilerTest extends TestCase
         $this->assertSame($apiSetDescriptor, $result);
     }
 
-    /** @covers ::__invoke */
     public function testCompilerReplacesDocumentNodesWithNewlyCompiledOnes(): void
     {
         $guideSetDescriptor = self::faker()->guideSetDescriptor();

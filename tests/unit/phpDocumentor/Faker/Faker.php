@@ -12,9 +12,6 @@ trait Faker
     /** @var Generator */
     private static $faker = null;
 
-    /**
-     * @return Generator
-     */
     public static function faker(): Generator
     {
         if (self::$faker === null) {

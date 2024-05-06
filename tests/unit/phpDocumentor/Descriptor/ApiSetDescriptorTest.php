@@ -18,19 +18,11 @@ use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor
- 
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor */
 final class ApiSetDescriptorTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::setFiles
-     * @covers ::getFiles
-     */
     public function testContainsAListingOfFilesInThisSet(): void
     {
         $source = self::faker()->source();
@@ -44,10 +36,6 @@ final class ApiSetDescriptorTest extends TestCase
         self::assertSame($files, $set->getFiles());
     }
 
-    /**
-     * @covers ::setIndexes
-     * @covers ::getIndexes
-     */
     public function testCanHaveASeriesOfIndexes(): void
     {
         $source = self::faker()->source();
@@ -73,7 +61,6 @@ final class ApiSetDescriptorTest extends TestCase
         self::assertSame($indexes, $set->getIndexes());
     }
 
-    /** @covers ::findElement */
     public function testCanFetchAnElementBasedOnItsFqsen(): void
     {
         $source = self::faker()->source();

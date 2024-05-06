@@ -24,11 +24,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Template\Factory
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Template\Factory */
 final class FactoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -61,10 +57,6 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::getTemplates
-     * @covers ::createTemplateFromXml
-     */
     public function testThatATemplateCanBeLoaded(): void
     {
         // Arrange
@@ -96,7 +88,6 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /** @covers ::getTemplates */
     public function testThatAnErrorOccuredWhenATemplateCannotBeFound(): void
     {
         $this->expectException(TemplateNotFound::class);
@@ -113,7 +104,6 @@ final class FactoryTest extends TestCase
         );
     }
 
-    /** @covers ::getTemplatesPath */
     public function testReturnTemplatePathFromConstructor(): void
     {
         // Act
@@ -123,7 +113,6 @@ final class FactoryTest extends TestCase
         $this->assertSame(vfsStream::url('root'), $result);
     }
 
-    /** @covers ::getAllNames */
     public function testRetrieveAllTemplateNames(): void
     {
         // Arrange

@@ -26,11 +26,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter
- 
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter */
 final class NullableAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -55,14 +51,12 @@ final class NullableAdapterTest extends TestCase
         );
     }
 
-    /** @covers ::supports */
     public function testItSupportsNullableTypes(): void
     {
         self::assertTrue($this->adapter->supports(new Nullable(new String_())));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /** @covers ::render */
     public function testRenderOnlyAcceptsNullableElements(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -70,10 +64,7 @@ final class NullableAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /**
-     * @covers ::render
-     * @dataProvider renderingVariations
-     */
+    /** @dataProvider renderingVariations */
     public function testRenderProducesExpectedOutputBasedOn(Nullable $value, iterable $expected): void
     {
         self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));

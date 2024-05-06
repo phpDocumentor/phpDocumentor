@@ -32,11 +32,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->fixture = new NamespaceDescriptor();
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getParent
-     * @covers ::setParent
-     */
     public function testSetAndGetParent(): void
     {
         $parent = new NamespaceDescriptor();
@@ -48,11 +43,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($parent, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getClasses
-     * @covers ::setClasses
-     */
     public function testSetAndGetClasses(): void
     {
         $collection = new Collection();
@@ -64,11 +54,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($collection, $this->fixture->getClasses());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getConstants
-     * @covers ::setConstants
-     */
     public function testSetAndGetConstants(): void
     {
         $collection = new Collection();
@@ -80,11 +65,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($collection, $this->fixture->getConstants());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getFunctions
-     * @covers ::setFunctions
-     */
     public function testSetAndGetFunctions(): void
     {
         $collection = new Collection();
@@ -96,11 +76,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($collection, $this->fixture->getFunctions());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getInterfaces
-     * @covers ::setInterfaces
-     */
     public function testSetAndGetInterfaces(): void
     {
         $collection = new Collection();
@@ -112,11 +87,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($collection, $this->fixture->getInterfaces());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getChildren
-     * @covers ::setChildren
-     */
     public function testSetAndGetChildren(): void
     {
         $collection = new Collection();
@@ -128,11 +98,6 @@ final class NamespaceDescriptorTest extends TestCase
         $this->assertSame($collection, $this->fixture->getChildren());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getTraits
-     * @covers ::setTraits
-     */
     public function testSetAndGetTraits(): void
     {
         $collection = new Collection();

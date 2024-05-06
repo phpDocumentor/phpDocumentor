@@ -11,10 +11,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Extension\DirectoryLoader */
 final class DirectoryLoaderTest extends TestCase
 {
-    /**
-     * @covers ::supports
-     * @covers ::findManifestFile
-     */
     public function testSupportsReturnsFalseWhenNoManifestFileFoundInEmptyDir(): void
     {
         $fileSystem = vfsStream::setup('extensions');
@@ -24,10 +20,6 @@ final class DirectoryLoaderTest extends TestCase
         self::assertFalse($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::findManifestFile
-     */
     public function testSupportsReturnsFalseWhenNoManifestFileFound(): void
     {
         $fileSystem = vfsStream::setup('extensions');
@@ -37,10 +29,6 @@ final class DirectoryLoaderTest extends TestCase
         self::assertFalse($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
-    /**
-     * @covers ::supports
-     * @covers ::findManifestFile
-     */
     public function testSupportsReturnsTrueWhenManifestFileFound(): void
     {
         $fileSystem = vfsStream::setup('extensions');
@@ -50,10 +38,6 @@ final class DirectoryLoaderTest extends TestCase
         self::assertTrue($loader->supports(new DirectoryIterator($fileSystem->url())));
     }
 
-    /**
-     * @covers ::load
-     * @covers ::findManifestFile
-     */
     public function testNotSupportedDirectoryReturnsNullOnLoad(): void
     {
         $fileSystem = vfsStream::setup('extensions');
@@ -63,10 +47,6 @@ final class DirectoryLoaderTest extends TestCase
         self::assertNull($loader->load(new DirectoryIterator($fileSystem->url())));
     }
 
-    /**
-     * @covers ::load
-     * @covers ::findManifestFile
-     */
     public function testExtensionIsCreatedWhenExtensionDirValid(): void
     {
         $fileSystem = vfsStream::copyFromFileSystem(__DIR__ . '/../../../data/extensions/example');

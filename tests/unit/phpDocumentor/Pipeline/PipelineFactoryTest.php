@@ -16,14 +16,9 @@ namespace phpDocumentor\Pipeline;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
 
-/**
- * @coversDefaultClass \phpDocumentor\Pipeline\PipelineFactory
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Pipeline\PipelineFactory */
 final class PipelineFactoryTest extends TestCase
 {
-    /** @covers ::create */
     public function test_creates_a_pipeline_with_the_given_series_of_stages(): void
     {
         $pipelineFactory = new PipelineFactory(new TestLogger());

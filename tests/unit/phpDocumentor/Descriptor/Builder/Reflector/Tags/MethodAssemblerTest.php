@@ -29,10 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 use function count;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler
-
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler */
 final class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;

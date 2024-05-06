@@ -68,7 +68,6 @@ final class LinkAdapterTest extends TestCase
         );
     }
 
-    /** @covers ::supports() */
     public function testItSupportsAnyType(): void
     {
         self::assertTrue($this->adapter->supports('http://example.org'));
@@ -84,7 +83,6 @@ final class LinkAdapterTest extends TestCase
     /**
      * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
-     * @covers ::render()
      * @dataProvider renderingVariations
      */
     public function testRenderProducesExpectedOutputBasedOn($value, Target $expectedTarget): void

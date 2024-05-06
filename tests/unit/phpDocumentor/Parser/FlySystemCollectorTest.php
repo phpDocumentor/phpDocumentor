@@ -22,18 +22,12 @@ use function stripos;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector */
 final class FlySystemCollectorTest extends TestCase
 {
     /**
      * @uses \phpDocumentor\Parser\SpecificationFactory
      * @uses \phpDocumentor\Parser\FlySystemFactory
-     *
-     * @covers ::getFiles()
      */
     public function testSingleSourceDir(): void
     {

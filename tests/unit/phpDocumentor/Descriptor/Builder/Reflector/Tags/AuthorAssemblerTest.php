@@ -20,10 +20,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler */
 class AuthorAssemblerTest extends TestCase
 {
-    /**
-     * @covers ::create
-     * @covers ::buildDescriptor
-     */
     public function testCreate(): void
     {
         $feature = new AuthorAssembler();

@@ -29,19 +29,12 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Router\Router
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Router\Router */
 final class RouterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::generate
-     * @dataProvider provideNodesWithExpectedUrls
-     */
+    /** @dataProvider provideNodesWithExpectedUrls */
     public function testItCanGenerateUrlsForAGivenNode(
         $node,
         string $expected,
@@ -52,15 +45,13 @@ final class RouterTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    /** @covers ::generate */
     public function testItCanGenerateUriWhenGivenAUri(): void
     {
         $router = new Router();
 
-        $this->assertSame('https://my/uri', $router->generate(RouterTest::givenAUri()));
+        $this->assertSame('https://my/uri', $router->generate(self::givenAUri()));
     }
 
-    /** @covers ::generate */
     public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl(): void
     {
         $router = new Router();
@@ -72,27 +63,27 @@ final class RouterTest extends TestCase
     public static function provideNodesWithExpectedUrls(): array
     {
         return [
-            'for a file' => [RouterTest::givenAFileDescriptor(), '/files/my-file.html'],
-            'for a package' => [RouterTest::givenAPackageDescriptor(), '/packages/My-Package.html'],
-            'for a namespace' => [RouterTest::givenANamespaceDescriptor(), '/namespaces/my-namespace.html'],
+            'for a file' => [self::givenAFileDescriptor(), '/files/my-file.html'],
+            'for a package' => [self::givenAPackageDescriptor(), '/packages/My-Package.html'],
+            'for a namespace' => [self::givenANamespaceDescriptor(), '/namespaces/my-namespace.html'],
             'for a function' => [
-                RouterTest::givenAFunctionDescriptor(),
+                self::givenAFunctionDescriptor(),
                 '/namespaces/my-namespace.html#function_myFunction',
             ],
             'for a global constant' => [
-                RouterTest::givenAGlobalConstantDescriptor(),
+                self::givenAGlobalConstantDescriptor(),
                 '/namespaces/my-namespace.html#constant_MY_CONSTANT',
             ],
-            'for a trait' => [RouterTest::givenATraitDescriptor(), '/classes/My-Trait.html'],
-            'for an interface' => [RouterTest::givenAnInterfaceDescriptor(), '/classes/My-Interface.html'],
-            'for a class' => [RouterTest::givenAClassDescriptor(), '/classes/My-Class.html'],
-            'for a method' => [RouterTest::givenAMethodDescriptor(), '/classes/My-Class.html#method_myMethod'],
-            'for a property' => [RouterTest::givenAPropertyDescriptor(), '/classes/My-Class.html#property_myProperty'],
+            'for a trait' => [self::givenATraitDescriptor(), '/classes/My-Trait.html'],
+            'for an interface' => [self::givenAnInterfaceDescriptor(), '/classes/My-Interface.html'],
+            'for a class' => [self::givenAClassDescriptor(), '/classes/My-Class.html'],
+            'for a method' => [self::givenAMethodDescriptor(), '/classes/My-Class.html#method_myMethod'],
+            'for a property' => [self::givenAPropertyDescriptor(), '/classes/My-Class.html#property_myProperty'],
             'for a class constant' => [
-                RouterTest::givenAClassConstantDescriptor(),
+                self::givenAClassConstantDescriptor(),
                 '/classes/My-Class.html#constant_MY_CONSTANT',
             ],
-            'for an fqsen' => [RouterTest::givenAnFqsen(), '/classes/My-Class.html#method_myMethod'],
+            'for an fqsen' => [self::givenAnFqsen(), '/classes/My-Class.html#method_myMethod'],
         ];
     }
 
@@ -124,7 +115,7 @@ final class RouterTest extends TestCase
     {
         $descriptor = new FunctionDescriptor();
         $descriptor->setName('myFunction');
-        $descriptor->setNamespace(RouterTest::givenANamespaceDescriptor());
+        $descriptor->setNamespace(self::givenANamespaceDescriptor());
 
         return $descriptor;
     }
@@ -133,7 +124,7 @@ final class RouterTest extends TestCase
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
-        $descriptor->setNamespace(RouterTest::givenANamespaceDescriptor());
+        $descriptor->setNamespace(self::givenANamespaceDescriptor());
 
         return $descriptor;
     }
@@ -166,7 +157,7 @@ final class RouterTest extends TestCase
     {
         $descriptor = new MethodDescriptor();
         $descriptor->setName('myMethod');
-        $descriptor->setParent(RouterTest::givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }
@@ -175,7 +166,7 @@ final class RouterTest extends TestCase
     {
         $descriptor = new PropertyDescriptor();
         $descriptor->setName('myProperty');
-        $descriptor->setParent(RouterTest::givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }
@@ -184,7 +175,7 @@ final class RouterTest extends TestCase
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
-        $descriptor->setParent(RouterTest::givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }

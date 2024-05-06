@@ -22,11 +22,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 use function str_repeat;
 
-/**
- * @coversDefaultClass \phpDocumentor\Console\Application
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Console\Application */
 final class ApplicationTest extends TestCase
 {
     use ProphecyTrait;
@@ -39,7 +35,6 @@ final class ApplicationTest extends TestCase
         $this->feature->setAutoExit(false);
     }
 
-    /** @covers ::getCommandName */
     public function testWhetherTheNameOfTheCommandCanBeRetrieved(): void
     {
         $_SERVER['argv'] = ['binary', 'my:command'];
@@ -48,11 +43,7 @@ final class ApplicationTest extends TestCase
         self::assertSame(1, $this->feature->run(new StringInput('my:command -q')));
     }
 
-    /**
-     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
-     *
-     * @covers ::getCommandName
-     */
+    /** @link https://github.com/phpDocumentor/phpDocumentor/issues/3215 */
     public function testCommandNamesLongerThanHundredCharactersAreIgnored(): void
     {
         $commandName = str_repeat('a', 101);
@@ -65,11 +56,7 @@ final class ApplicationTest extends TestCase
         );
     }
 
-    /**
-     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3215
-     *
-     * @covers ::getCommandName
-     */
+    /** @link https://github.com/phpDocumentor/phpDocumentor/issues/3215 */
     public function testUnknownCommandNamesAreIgnored(): void
     {
         $_SERVER['argv'] = ['binary', 'unknown'];
@@ -78,7 +65,6 @@ final class ApplicationTest extends TestCase
         self::assertSame(1, $this->feature->run(new StringInput('unknown -q'), new BufferedOutput()));
     }
 
-    /** @covers ::getDefaultInputDefinition */
     public function testWhetherTheConfigurationAndLogIsADefaultInput(): void
     {
         $definition = $this->feature->getDefinition();
@@ -87,7 +73,6 @@ final class ApplicationTest extends TestCase
         self::assertTrue($definition->hasOption('log'));
     }
 
-    /** @covers ::getLongVersion */
     public function testGetLongVersion(): void
     {
         self::assertMatchesRegularExpression(

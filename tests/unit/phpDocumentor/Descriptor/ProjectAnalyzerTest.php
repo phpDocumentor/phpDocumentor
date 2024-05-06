@@ -24,7 +24,6 @@ final class ProjectAnalyzerTest extends MockeryTestCase
         $this->fixture = new ProjectAnalyzer();
     }
 
-    /** @covers ::__toString */
     public function testIfStringOutputContainsAllCounters(): void
     {
         // Arrange

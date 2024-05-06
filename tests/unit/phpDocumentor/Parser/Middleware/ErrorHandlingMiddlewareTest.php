@@ -26,17 +26,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware
- 
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware */
 final class ErrorHandlingMiddlewareTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::execute */
     public function testThatParsingStartIsLogged(): void
     {
         $filename = __FILE__;
@@ -63,7 +58,6 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    /** @covers ::execute */
     public function testThatAnErrorIsLogged(): void
     {
         $filename = __FILE__;

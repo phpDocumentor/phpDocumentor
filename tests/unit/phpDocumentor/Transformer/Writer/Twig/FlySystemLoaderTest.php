@@ -11,19 +11,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Error\LoaderError;
 use Twig\Source;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FlySystemLoader
- 
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FlySystemLoader */
 final class FlySystemLoaderTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::exists
-     * @dataProvider fileProvider
-     */
+    /** @dataProvider fileProvider */
     public function testExists(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
@@ -34,10 +27,7 @@ final class FlySystemLoaderTest extends TestCase
         $this->assertTrue($loader->exists($fileName));
     }
 
-    /**
-     * @covers ::getSourceContext
-     * @dataProvider fileProvider
-     */
+    /** @dataProvider fileProvider */
     public function testGetSourceContext(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
@@ -56,10 +46,7 @@ final class FlySystemLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::getCacheKey
-     * @dataProvider fileProvider
-     */
+    /** @dataProvider fileProvider */
     public function testGetCacheKey(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
@@ -70,10 +57,7 @@ final class FlySystemLoaderTest extends TestCase
         $this->assertSame($fileName, $loader->getCacheKey($fileName));
     }
 
-    /**
-     * @covers ::isFresh
-     * @dataProvider fileProvider
-     */
+    /** @dataProvider fileProvider */
     public function testIsFresh(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);

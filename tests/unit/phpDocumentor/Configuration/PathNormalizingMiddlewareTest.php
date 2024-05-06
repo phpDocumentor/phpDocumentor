@@ -19,11 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 use function dirname;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware
- * @covers ::__invoke
- 
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware */
 final class PathNormalizingMiddlewareTest extends TestCase
 {
     private ConfigurationFactory $configurationFactory;

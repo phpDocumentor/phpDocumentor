@@ -16,11 +16,7 @@ namespace phpDocumentor\Parser\Event;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Event\PreFileEvent
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Event\PreFileEvent */
 class PreFileEventTest extends TestCase
 {
     /** @var PreFileEvent $fixture */
@@ -34,10 +30,6 @@ class PreFileEventTest extends TestCase
         $this->fixture = new PreFileEvent(new stdClass());
     }
 
-    /**
-     * @covers ::createInstance
-     * @covers ::getSubject
-     */
     public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();

@@ -19,7 +19,6 @@ use phpDocumentor\Descriptor\Validation\Error;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\FileDescriptor
- * @covers ::__construct
  * @covers \phpDocumentor\Descriptor\DescriptorAbstract
  */
 final class FileDescriptorTest extends MockeryTestCase
@@ -42,8 +41,6 @@ final class FileDescriptorTest extends MockeryTestCase
 
     /**
      * Tests whether all collection objects and hash are properly initialized
-     *
-     * @covers ::__construct
      */
     public function testInitializesWithEmptyCollections(): void
     {
@@ -60,19 +57,11 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $this->fixture->getMarkers());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getHash
-     */
     public function testGetHash(): void
     {
         self::assertSame(self::EXAMPLE_HASH, $this->fixture->getHash());
     }
 
-    /**
-     * @covers ::setPath
-     * @covers ::getPath
-     */
     public function testSetAndGetPath(): void
     {
         self::assertSame('', $this->fixture->getPath());
@@ -82,10 +71,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame(self::EXAMPLE_PATH, $this->fixture->getPath());
     }
 
-    /**
-     * @covers ::setSource
-     * @covers ::getSource
-     */
     public function testSetAndGetSource(): void
     {
         self::assertNull($this->fixture->getSource());
@@ -95,10 +80,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame(self::EXAMPLE_SOURCE, $this->fixture->getSource());
     }
 
-    /**
-     * @covers ::setNamespaceAliases
-     * @covers ::getNamespaceAliases
-     */
     public function testSetAndGetNamespaceAliases(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
@@ -111,10 +92,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getNamespaceAliases());
     }
 
-    /**
-     * @covers ::setIncludes
-     * @covers ::getIncludes
-     */
     public function testSetAndGetIncludes(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getIncludes());
@@ -127,10 +104,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getIncludes());
     }
 
-    /**
-     * @covers ::setConstants
-     * @covers ::getConstants
-     */
     public function testSetAndGetConstants(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
@@ -143,10 +116,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getConstants());
     }
 
-    /**
-     * @covers ::setFunctions
-     * @covers ::getFunctions
-     */
     public function testSetAndGetFunctions(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getFunctions());
@@ -159,10 +128,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getFunctions());
     }
 
-    /**
-     * @covers ::setClasses
-     * @covers ::getClasses
-     */
     public function testSetAndGetClasses(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getClasses());
@@ -175,10 +140,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getClasses());
     }
 
-    /**
-     * @covers ::setInterfaces
-     * @covers ::getInterfaces
-     */
     public function testSetAndGetInterfaces(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
@@ -191,10 +152,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getInterfaces());
     }
 
-    /**
-     * @covers ::setTraits
-     * @covers ::getTraits
-     */
     public function testSetAndGetTraits(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getTraits());
@@ -207,10 +164,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getTraits());
     }
 
-    /**
-     * @covers ::setEnums
-     * @covers ::getEnums
-     */
     public function testSetAndGetEnums(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getEnums());
@@ -223,10 +176,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getEnums());
     }
 
-    /**
-     * @covers ::setMarkers
-     * @covers ::getMarkers
-     */
     public function testSetAndGetMarkers(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getMarkers());
@@ -239,10 +188,6 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertSame($mockInstance, $this->fixture->getMarkers());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getAllErrors
-     */
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation(): void
     {
         // construct
@@ -255,11 +200,7 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertEmpty($items);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getAllErrors
-     * @todo Split this test into its various scenario's instead of one big lump
-     */
+    /** @todo Split this test into its various scenario's instead of one big lump */
     public function testGetAllErrors(): void
     {
         /*

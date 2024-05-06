@@ -27,8 +27,6 @@ use phpDocumentor\Reflection\Types\String_;
  * Tests the functionality for the ConstantDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ConstantDescriptor
- * @covers ::__construct
- 
  */
 final class ConstantDescriptorTest extends MockeryTestCase
 {
@@ -44,10 +42,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         $this->fixture->setName('CONSTANT');
     }
 
-    /**
-     * @covers ::getParent
-     * @covers ::setParent
-     */
     public function testSetAndGetParentClass(): void
     {
         self::assertNull($this->fixture->getParent());
@@ -61,10 +55,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($parentMock, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::getParent
-     * @covers ::setParent
-     */
     public function testSetAndGetParentInterface(): void
     {
         self::assertNull($this->fixture->getParent());
@@ -77,11 +67,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($parentMock, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::getType
-     * @covers ::getTypes
-     * @covers ::setType
-     */
     public function testSetAndGetTypes(): void
     {
         self::assertEquals(null, $this->fixture->getType());
@@ -92,11 +77,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $this->fixture->getType());
     }
 
-    /**
-     * @covers ::getType
-     * @covers ::getTypes
-     * @covers ::getVar
-     */
     public function testDeterminingTypeDerivedFromVarTag(): void
     {
         $expected = new String_();
@@ -109,17 +89,11 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertEquals($expected, $this->fixture->getType());
     }
 
-    /** @covers ::getVar */
     public function testEmptyCollectionIsReturnedWhenNoVarTagsPresent(): void
     {
         self::assertEquals(new Collection(), $this->fixture->getVar());
     }
 
-    /**
-     * @covers ::getInheritedElement
-     * @covers ::getTypes
-     * @covers ::getVar
-     */
     public function testGetTypesUsingInheritanceOfVarTag(): void
     {
         $expected = new String_();
@@ -135,10 +109,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $types);
     }
 
-    /**
-     * @covers ::getValue
-     * @covers ::setValue
-     */
     public function testSetAndGetValue(): void
     {
         self::assertEmpty($this->fixture->getValue());
@@ -148,7 +118,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame('a', $this->fixture->getValue());
     }
 
-    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAGlobalConstant(): void
     {
         // Arrange
@@ -161,7 +130,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($file, $result);
     }
 
-    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAClassConstant(): void
     {
         // Arrange
@@ -190,7 +158,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($summary, $result);
     }
 
-    /** @covers ::getVar */
     public function testVarTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -361,10 +328,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         return $result;
     }
 
-    /**
-     * @covers ::getVisibility
-     * @covers ::setVisibility
-     */
     public function testSettingAndGettingVisibility(): void
     {
         self::assertEquals('public', $this->fixture->getVisibility());

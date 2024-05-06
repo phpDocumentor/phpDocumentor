@@ -12,10 +12,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor */
 final class DescriptionDescriptorTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getBodyTemplate
-     */
     public function testBodyTemplateIsProxiedToDescription(): void
     {
         $bodyTemplate = 'my template';
@@ -26,10 +22,6 @@ final class DescriptionDescriptorTest extends TestCase
         self::assertSame($bodyTemplate, $descriptor->getBodyTemplate());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::__toString
-     */
     public function testToStringRendersDescription(): void
     {
         $bodyTemplate = 'my template %s';

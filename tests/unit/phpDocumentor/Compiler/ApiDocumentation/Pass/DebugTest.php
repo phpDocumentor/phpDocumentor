@@ -21,17 +21,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\Debug
- * @covers ::__construct
- 
- */
+/** @covers \phpDocumentor\Compiler\ApiDocumentation\Pass\Debug */
 final class DebugTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
@@ -50,7 +45,6 @@ final class DebugTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $analyzerMock = $this->prophesize(ProjectAnalyzer::class);

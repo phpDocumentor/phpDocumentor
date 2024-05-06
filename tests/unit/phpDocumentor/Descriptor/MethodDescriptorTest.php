@@ -28,8 +28,6 @@ use function iterator_to_array;
  * Tests the functionality for the MethodDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
- 
- 
  */
 final class MethodDescriptorTest extends MockeryTestCase
 {
@@ -51,10 +49,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         return null;
     }
 
-    /**
-     * @covers ::setParent
-     * @covers ::getParent
-     */
     public function testSettingAndGettingAParent(): void
     {
         $parent = new ClassDescriptor();
@@ -67,10 +61,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($parent, $this->fixture->getParent());
     }
 
-    /**
-     * @covers ::setArguments
-     * @covers ::getArguments
-     */
     public function testSettingAndGettingArguments(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
@@ -89,7 +79,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($argument->getMethod(), $this->fixture);
     }
 
-    /** @covers ::addArgument */
     public function testAddingAnArgument(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
@@ -107,10 +96,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($argument->getMethod(), $this->fixture);
     }
 
-    /**
-     * @covers ::isAbstract
-     * @covers ::setAbstract
-     */
     public function testSettingAndGettingWhetherMethodIsAbstract(): void
     {
         $this->assertFalse($this->fixture->isAbstract());
@@ -120,10 +105,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertTrue($this->fixture->isAbstract());
     }
 
-    /**
-     * @covers ::isFinal
-     * @covers ::setFinal
-     */
     public function testSettingAndGettingWhetherMethodIsFinal(): void
     {
         $this->assertFalse($this->fixture->isFinal());
@@ -133,10 +114,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertTrue($this->fixture->isFinal());
     }
 
-    /**
-     * @covers ::isStatic
-     * @covers ::setStatic
-     */
     public function testSettingAndGettingWhetherMethodIsStatic(): void
     {
         $this->assertFalse($this->fixture->isStatic());
@@ -146,10 +123,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertTrue($this->fixture->isStatic());
     }
 
-    /**
-     * @covers ::getVisibility
-     * @covers ::setVisibility
-     */
     public function testSettingAndGettingVisibility(): void
     {
         $this->assertEquals('public', $this->fixture->getVisibility());
@@ -159,7 +132,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertEquals('private', $this->fixture->getVisibility());
     }
 
-    /** @covers ::getResponse */
     public function testRetrieveReturnTagForResponse(): void
     {
         $returnDescriptor = new ReturnDescriptor('return');
@@ -172,10 +144,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($returnDescriptor, $this->fixture->getResponse());
     }
 
-    /**
-     * @covers ::setReturnType
-     * @covers ::getResponse
-     */
     public function testGetResponseReturnsReturnType(): void
     {
         $returnType = new String_();
@@ -184,7 +152,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($returnType, $this->fixture->getResponse()->getType());
     }
 
-    /** @covers ::getFile */
     public function testRetrieveFileAssociatedWithAMethod(): void
     {
         // Arrange
@@ -197,7 +164,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($file, $result);
     }
 
-    /** @covers ::getReturn */
     public function testReturnTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getReturn());
@@ -214,7 +180,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertEquals($returnCollection, $result);
     }
 
-    /** @covers ::getParam */
     public function testParamTagsInheritWhenNoneArePresent(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getParam());
@@ -231,10 +196,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($paramCollection, $result);
     }
 
-    /**
-     * @covers ::getAuthor
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -251,10 +213,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($authorCollection, $result);
     }
 
-    /**
-     * @covers ::getVersion
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -271,10 +230,7 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($versionCollection, $result);
     }
 
-    /**
-     * @covers ::getCopyright
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright
-     */
+    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange

@@ -18,10 +18,7 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Template\Collection
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Template\Collection */
 final class CollectionTest extends MockeryTestCase
 {
     use Faker;
@@ -36,7 +33,6 @@ final class CollectionTest extends MockeryTestCase
         $this->fixture = new Collection([]);
     }
 
-    /** @covers ::getTransformations */
     public function testIfAllTransformationsCanBeRetrieved(): void
     {
         $transformation1 = $this->givenAnEmptyTransformation();

@@ -35,7 +35,6 @@ final class EnumAssemblerTest extends TestCase
         $this->assembler->setBuilder($this->builder->reveal());
     }
 
-    /** @covers ::buildDescriptor */
     public function testAssembleBasicDescriptor(): void
     {
         $fqsen = new Fqsen('\MyNamespace\Enum');
@@ -49,7 +48,6 @@ final class EnumAssemblerTest extends TestCase
         self::assertCount(0, $descriptor->getCases());
     }
 
-    /** @covers ::buildDescriptor */
     public function testEnumsCanHaveCases(): void
     {
         $caseFqsen = new Fqsen('\MyNamespace\Enum\Case');

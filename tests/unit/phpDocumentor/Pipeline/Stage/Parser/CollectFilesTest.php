@@ -23,17 +23,12 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 
-/**
- * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Parser\CollectFiles
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Parser\CollectFiles */
 final class CollectFilesTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function testFilesAreCollectedAndAddedToPayload(): void
     {
         $fileCollector = $this->prophesize(FileCollector::class);

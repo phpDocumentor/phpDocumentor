@@ -34,10 +34,6 @@ final class DeprecatedDescriptorTest extends TestCase
         $this->fixture = new DeprecatedDescriptor('name');
     }
 
-    /**
-     * @covers ::setVersion
-     * @covers ::getVersion
-     */
     public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());

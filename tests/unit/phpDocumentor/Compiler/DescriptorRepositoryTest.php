@@ -13,18 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\DescriptorRepository
-
- */
+/** @covers \phpDocumentor\Compiler\DescriptorRepository */
 final class DescriptorRepositoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -42,8 +36,6 @@ final class DescriptorRepositoryTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\VersionDescriptor
      * @uses \phpDocumentor\Descriptor\Collection
-     *
-     * @covers ::setVersionDescriptor
      */
     public function testSetVersionDescriptorMethod(): void
     {
@@ -61,8 +53,6 @@ final class DescriptorRepositoryTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\VersionDescriptor
      * @uses \phpDocumentor\Descriptor\Collection
-     *
-     * @covers ::getVersionDescriptor
      */
     public function testGetVersionDescriptorMethod(): void
     {
@@ -79,8 +69,6 @@ final class DescriptorRepositoryTest extends TestCase
     /**
      * @uses phpDocumentor\Descriptor\VersionDescriptor
      * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     *
-     * @covers ::findDescriptorByFqsen
      */
     public function testItCanFindDescriptorByFqsen(): void
     {
@@ -100,8 +88,6 @@ final class DescriptorRepositoryTest extends TestCase
     /**
      * @uses phpDocumentor\Descriptor\VersionDescriptor
      * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     *
-     * @covers ::findDescriptorByFqsen
      */
     public function testItReturnsNullWhenNoDescriptorIsFoundByFqsen(): void
     {
@@ -115,8 +101,6 @@ final class DescriptorRepositoryTest extends TestCase
     /**
      * @uses phpDocumentor\Descriptor\VersionDescriptor
      * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     *
-     * @covers ::findDescriptorByTypeAndFqsen
      */
     public function testItCanFindDescriptorByTypeAndFqsen(): void
     {

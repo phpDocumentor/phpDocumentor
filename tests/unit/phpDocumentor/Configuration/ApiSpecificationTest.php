@@ -9,12 +9,7 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Configuration\ApiSpecification */
 final class ApiSpecificationTest extends TestCase
 {
-    /**
-     * @dataProvider visibilityProvider
-     * @covers ::offsetSet
-     * @covers ::isVisibilityAllowed
-     * @covers ::calculateVisiblity
-     */
+    /** @dataProvider visibilityProvider */
     public function testVisibility(array $settings, array $expected)
     {
         $apiSpec = ApiSpecification::createDefault();

@@ -18,11 +18,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Descriptor\ValueObjects\IsApplicable */
 final class IsApplicableTest extends TestCase
 {
-    /**
-     * @covers ::true()
-     * @covers ::isTrue()
-     * @covers ::isFalse()
-     */
     public function testIndicatingPresenceOfFeature(): void
     {
         $featureToggle = IsApplicable::true();
@@ -30,11 +25,6 @@ final class IsApplicableTest extends TestCase
         self::assertFalse($featureToggle->isFalse());
     }
 
-    /**
-     * @covers ::false()
-     * @covers ::isTrue()
-     * @covers ::isFalse()
-     */
     public function testIndicatingAbsenceOfFeature(): void
     {
         $featureToggle = IsApplicable::false();
@@ -42,11 +32,6 @@ final class IsApplicableTest extends TestCase
         self::assertTrue($featureToggle->isFalse());
     }
 
-    /**
-     * @covers ::inverse()
-     * @covers ::isTrue()
-     * @covers ::isFalse()
-     */
     public function testValueCanBeInvertedAndIsImmutable(): void
     {
         $original = IsApplicable::false();
@@ -57,14 +42,12 @@ final class IsApplicableTest extends TestCase
         self::assertTrue($changed->isTrue());
     }
 
-    /** @covers ::fromBoolean */
     public function testCanBeInstantiatedFromBoolean(): void
     {
         self::assertTrue(IsApplicable::fromBoolean(true)->isTrue());
         self::assertTrue(IsApplicable::fromBoolean(false)->isFalse());
     }
 
-    /** @covers ::equals */
     public function testCanBeComparedToAnother(): void
     {
         self::assertTrue(IsApplicable::true()->equals(IsApplicable::true()));

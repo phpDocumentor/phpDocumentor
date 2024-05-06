@@ -21,18 +21,11 @@ use stdClass;
  * Tests the functionality for the PreTransformationEvent class.
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformationEvent
- * @covers ::__construct
- 
  */
 final class PreTransformationEventTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::getTransformation
-     * @covers ::getSubject
-     * @covers ::create
-     */
     public function testSetAndGetTransformation(): void
     {
         $transformation = self::faker()->transformation();

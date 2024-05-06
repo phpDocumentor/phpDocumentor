@@ -28,11 +28,7 @@ use PHPUnit\Framework\TestCase;
 use function array_keys;
 use function sort;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder
- 
- 
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder */
 final class NamespaceTreeBuilderTest extends TestCase
 {
     use Faker;
@@ -48,7 +44,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         $this->apiSet->getFiles()->add(new FileDescriptor('hash'));
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame(
@@ -57,10 +52,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testNamespaceStringIsConvertedToTreeAndAddedToElements(): void
     {
         $class = new ClassDescriptor();
@@ -94,10 +85,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         $this->assertSame($elements['~\\My'], $this->apiSet->getNamespace()->getChildren()->get('My'));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testAddClassToNamespace(): void
     {
         $class = new ClassDescriptor();
@@ -122,10 +109,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testAddInterfaceToNamespace(): void
     {
         $interface = new InterfaceDescriptor();
@@ -150,10 +133,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testAddTraitToNamespace(): void
     {
         $trait = new TraitDescriptor();
@@ -178,10 +157,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testAddConstantToNamespace(): void
     {
         $constant = new ConstantDescriptor();
@@ -206,10 +181,6 @@ final class NamespaceTreeBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsOfTypeToNamespace
-     */
     public function testAddFunctionToNamespace(): void
     {
         $function = new FunctionDescriptor();

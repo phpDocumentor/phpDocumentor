@@ -21,19 +21,12 @@ use PHPUnit\Framework\TestCase;
 use function array_merge;
 use function array_replace_recursive;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\Definition\Version3
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\Definition\Version3 */
 final class Version3Test extends TestCase
 {
     private const DEFAULT_TEMPLATE_NAME = 'default';
 
-    /**
-     * @dataProvider provideTestConfiguration
-     * @covers ::getConfigTreeBuilder
-     */
+    /** @dataProvider provideTestConfiguration */
     public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig): void
     {
         $configuration = new Version3(self::DEFAULT_TEMPLATE_NAME);
@@ -44,12 +37,11 @@ final class Version3Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
-    /** @covers ::normalize */
     public function testNormalizingTheOutputTransformsTheConfig(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = Version3Test::defaultConfigurationOutput();
-        $expected = Version3Test::defaultConfigurationOutput();
+        $configuration = self::defaultConfigurationOutput();
+        $expected = self::defaultConfigurationOutput();
         $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
@@ -70,11 +62,10 @@ final class Version3Test extends TestCase
         self::assertEquals($expected, $configuration);
     }
 
-    /** @covers ::normalize */
     public function testNormalizingAPopulatedTemplateLocationGivesAPath(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = Version3Test::defaultConfigurationOutput();
+        $configuration = self::defaultConfigurationOutput();
         $configuration['templates'][0]['location'] = 'data/templates';
 
         $result = $definition->normalize($configuration);
@@ -86,14 +77,14 @@ final class Version3Test extends TestCase
     public static function provideTestConfiguration(): array
     {
         return [
-            'default configuration' => [[], Version3Test::defaultConfigurationOutput()],
+            'default configuration' => [[], self::defaultConfigurationOutput()],
             'configuration with title' => [
                 ['title' => 'My project'],
-                array_merge(Version3Test::defaultConfigurationOutput(), ['title' => 'My project']),
+                array_merge(self::defaultConfigurationOutput(), ['title' => 'My project']),
             ],
             'configuration with other destination' => [
                 ['paths' => ['output' => '/tmp']],
-                array_replace_recursive(Version3Test::defaultConfigurationOutput(), ['paths' => ['output' => '/tmp']]),
+                array_replace_recursive(self::defaultConfigurationOutput(), ['paths' => ['output' => '/tmp']]),
             ],
             'configuration with provided source' => [
                 [
@@ -112,7 +103,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                Version3Test::defaultConfigurationWithOneApiWithOverriddenSource('latest', 'file:///tmp', ['src']),
+                self::defaultConfigurationWithOneApiWithOverriddenSource('latest', 'file:///tmp', ['src']),
             ],
             'configuration with example' => [
                 [
@@ -131,7 +122,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                Version3Test::defaultConfigurationWithOneApiWithOverriddenExamples('latest', 'file:///tmp', ['src']),
+                self::defaultConfigurationWithOneApiWithOverriddenExamples('latest', 'file:///tmp', ['src']),
             ],
             'minimal configuration' => [
                 [
@@ -143,7 +134,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                Version3Test::defaultConfigurationOutput(),
+                self::defaultConfigurationOutput(),
             ],
             'check version respresentation' => [
                 [
@@ -162,7 +153,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                Version3Test::defaultConfigurationWithOneApiWithOverriddenExamples('3.10', 'file:///tmp', ['src']),
+                self::defaultConfigurationWithOneApiWithOverriddenExamples('3.10', 'file:///tmp', ['src']),
             ],
         ];
     }
@@ -225,7 +216,7 @@ final class Version3Test extends TestCase
         array $paths,
     ): array {
         $configuration = array_replace_recursive(
-            Version3Test::defaultConfigurationOutput(),
+            self::defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
             ],
@@ -252,7 +243,7 @@ final class Version3Test extends TestCase
         array $paths,
     ): array {
         $configuration = array_replace_recursive(
-            Version3Test::defaultConfigurationOutput(),
+            self::defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
             ],

@@ -30,16 +30,11 @@ final class FunctionDescriptorTest extends MockeryTestCase
         $this->fixture = new FunctionDescriptor();
     }
 
-    /** @covers ::__construct */
     public function testInitializesWithEmptyCollection(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
     }
 
-    /**
-     * @covers ::setArguments
-     * @covers ::getArguments
-     */
     public function testSettingAndGettingArguments(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
@@ -52,10 +47,6 @@ final class FunctionDescriptorTest extends MockeryTestCase
         $this->assertSame($mockInstance, $this->fixture->getArguments());
     }
 
-    /**
-     * @covers ::getResponse
-     * @covers ::setReturnType
-     */
     public function testSettingAndGettingReturnType(): void
     {
         $stringType = new String_();

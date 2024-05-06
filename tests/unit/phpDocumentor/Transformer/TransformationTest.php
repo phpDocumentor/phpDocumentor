@@ -17,11 +17,7 @@ use Mockery as m;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template\Parameter;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Transformation
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Transformation */
 final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     use Faker;
@@ -54,40 +50,31 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
         );
     }
 
-    /** @covers ::template */
     public function testGetTemplate(): void
     {
         $this->assertSame($this->template, $this->fixture->template());
     }
 
-    /** @covers ::getQuery */
     public function testGetQuery(): void
     {
         $this->assertSame('$.' . $this->query, $this->fixture->getQuery());
     }
 
-    /** @covers ::getWriter */
     public function testGetWriter(): void
     {
         $this->assertSame($this->writer, $this->fixture->getWriter());
     }
 
-    /** @covers ::getSource */
     public function testGetSource(): void
     {
         $this->assertSame($this->source, $this->fixture->getSource());
     }
 
-    /** @covers ::getArtifact */
     public function testGetArtifact(): void
     {
         $this->assertSame($this->artifact, $this->fixture->getArtifact());
     }
 
-    /**
-     * @covers ::getParameters
-     * @covers ::setParameters
-     */
     public function testSetAndGetParameters(): void
     {
         $this->assertSame([], $this->fixture->getParameters());
@@ -97,37 +84,29 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
         $this->assertSame($parameters, $this->fixture->getParameters());
     }
 
-    /** @covers ::getParameter */
     public function testGetParameterWithExistingName(): void
     {
         $parameters = $this->givenAParameter();
         $this->assertSame($parameters['firstKey'], $this->fixture->getParameter('firstKey'));
     }
 
-    /** @covers ::getParameter */
     public function testGetParameterWithNonExistingName(): void
     {
         $this->assertNull($this->fixture->getParameter('somethingElse'));
     }
 
-    /** @covers ::getParametersWithKey */
     public function testGetParametersWithKeyWithExistingName(): void
     {
         $parameters = $this->givenAParameter();
         $this->assertEquals([$parameters['firstKey']], $this->fixture->getParametersWithKey('firstKey'));
     }
 
-    /** @covers ::getParametersWithKey */
     public function testGetParametersWithKeyWithNonExistingName(): void
     {
         $parameters = $this->givenAParameter();
         $this->assertSame([], $this->fixture->getParametersWithKey('somethingElse'));
     }
 
-    /**
-     * @covers ::getTransformer
-     * @covers ::setTransformer
-     */
     public function testSetAndGetTransformer(): void
     {
         $transformer = m::mock(Transformer::class);

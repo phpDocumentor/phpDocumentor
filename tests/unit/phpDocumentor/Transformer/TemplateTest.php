@@ -23,31 +23,11 @@ use PHPUnit\Framework\TestCase;
 use function count;
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Template
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Template */
 final class TemplateTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::getName
-     * @covers ::getAuthor
-     * @covers ::setAuthor
-     * @covers ::getDescription
-     * @covers ::setDescription
-     * @covers ::getCopyright
-     * @covers ::setCopyright
-     * @covers ::getParameters
-     * @covers ::setParameter
-     * @covers ::getVersion
-     * @covers ::setVersion
-     * @covers ::offsetSet
-     * @covers ::offsetGet
-     * @covers ::files
-     */
     public function testConstructingATemplateWithAllProperties(): void
     {
         $parameter = new Parameter('key', 'value');
@@ -75,7 +55,6 @@ final class TemplateTest extends TestCase
         $this->assertSame('parent', $template->getExtends());
     }
 
-    /** @covers ::offsetSet */
     public function testThatArrayElementsMayOnlyBeTransformations(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -84,7 +63,6 @@ final class TemplateTest extends TestCase
         $template['key'] = 'value';
     }
 
-    /** @covers ::setVersion */
     public function testThatVersionsAreRejectedIfTheyDontMatchNumbersSeparatedByDots(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -93,7 +71,6 @@ final class TemplateTest extends TestCase
         $template->setVersion('abc');
     }
 
-    /** @covers ::offsetGet */
     public function testThatWeCanCheckIfATransformationIsRegistered(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -104,10 +81,6 @@ final class TemplateTest extends TestCase
         $this->assertFalse(isset($template['not_key']));
     }
 
-    /**
-     * @covers ::offsetExists
-     * @covers ::offsetUnset
-     */
     public function testThatWeCanUnsetATransformation(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -121,7 +94,6 @@ final class TemplateTest extends TestCase
         $this->assertFalse(isset($template['key']));
     }
 
-    /** @covers ::count */
     public function testThatWeCanCountTheNumberOfTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -131,7 +103,6 @@ final class TemplateTest extends TestCase
         $this->assertSame(1, count($template));
     }
 
-    /** @covers ::getIterator */
     public function testThatWeCanIterateOnTheTransformations(): void
     {
         $template = new Template('name', $this->givenExampleMountManager());
@@ -142,7 +113,6 @@ final class TemplateTest extends TestCase
         $this->assertSame(['key' => $transformation], iterator_to_array($template));
     }
 
-    /** @covers ::propagateParameters */
     public function testThatAllParametersArePropagatedToTheTransformationsWhenNeeded(): void
     {
         $parameter = new Parameter('key', 'value');

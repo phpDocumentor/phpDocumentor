@@ -31,10 +31,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter */
 final class AbstractListAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -66,14 +63,12 @@ final class AbstractListAdapterTest extends TestCase
         );
     }
 
-    /** @covers ::supports */
     public function testItSupportsAbstractLists(): void
     {
         self::assertTrue($this->adapter->supports(new Array_()));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /** @covers ::render */
     public function testRenderOnlyAcceptsAbstractLists(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -81,10 +76,7 @@ final class AbstractListAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /**
-     * @covers ::render
-     * @dataProvider renderingVariations
-     */
+    /** @dataProvider renderingVariations */
     public function testRenderProducesExpectedOutputBasedOn(AbstractList $list, string $expected): void
     {
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
@@ -123,7 +115,8 @@ final class AbstractListAdapterTest extends TestCase
                 'object&lt;string|int, string&gt;',
             ],
             'Unknown AbstractList with string key and int value' => [
-                new class(new Integer(), new String_()) extends AbstractList {},
+                new class (new Integer(), new String_()) extends AbstractList {
+                },
                 'mixed&lt;string, int&gt;',
             ],
         ];

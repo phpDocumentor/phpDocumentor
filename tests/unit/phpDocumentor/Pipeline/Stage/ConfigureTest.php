@@ -28,12 +28,7 @@ use Psr\Log\LoggerInterface;
 use function getcwd;
 use function sys_get_temp_dir;
 
-/**
- * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Configure
- 
- * @covers ::__construct
- * @covers ::__invoke
- */
+/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Configure */
 final class ConfigureTest extends TestCase
 {
     use ProphecyTrait;

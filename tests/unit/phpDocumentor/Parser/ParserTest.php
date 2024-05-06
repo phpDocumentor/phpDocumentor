@@ -35,8 +35,6 @@ use function sys_get_temp_dir;
  * Test class for \phpDocumentor\Parser\Parser.
  *
  * @coversDefaultClass \phpDocumentor\Parser\Parser
- * @covers ::__construct
- 
  */
 final class ParserTest extends TestCase
 {
@@ -63,10 +61,6 @@ final class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::setEncoding
-     * @covers ::getEncoding
-     */
     public function testSettingAndRetrievingTheEncodingOfTheProvidedFiles(): void
     {
         $this->assertEquals('utf-8', $this->fixture->getEncoding());
@@ -75,10 +69,6 @@ final class ParserTest extends TestCase
         $this->assertEquals('iso-8859-1', $this->fixture->getEncoding());
     }
 
-    /**
-     * @covers ::setPath
-     * @covers ::getPath
-     */
     public function testSettingAndRetrievingTheBasePath(): void
     {
         // Arrange
@@ -94,9 +84,6 @@ final class ParserTest extends TestCase
     /**
      * Tests whether the doValidation() and setValidate methods function
      * properly.
-     *
-     * @covers ::setValidate
-     * @covers ::doValidation
      */
     public function testValidate(): void
     {
@@ -113,9 +100,6 @@ final class ParserTest extends TestCase
     /**
      * Tests whether the getMarker() and setMarkers methods function
      * properly.
-     *
-     * @covers ::setMarkers
-     * @covers ::getMarkers
      */
     public function testMarkers(): void
     {
@@ -128,10 +112,6 @@ final class ParserTest extends TestCase
         $this->assertEquals($fixtureData, $this->fixture->getMarkers());
     }
 
-    /**
-     * @covers ::setDefaultPackageName
-     * @covers ::getDefaultPackageName
-     */
     public function testSetAndGetDefaultPackageName(): void
     {
         $parser = new Parser(
@@ -147,7 +127,6 @@ final class ParserTest extends TestCase
         $this->assertSame('test', $parser->getDefaultPackageName());
     }
 
-    /** @covers ::parse */
     public function testFilesAreParsedByProjectFactory(): void
     {
         $file = new vfsStreamFile('my-file.php');
@@ -168,7 +147,6 @@ final class ParserTest extends TestCase
         $this->assertSame($expectedProject, $project);
     }
 
-    /** @covers ::parse */
     public function testWhenParsingAnnounceWhenYouAreStarting(): void
     {
         $file = new vfsStreamFile('my-file.php');

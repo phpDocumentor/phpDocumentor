@@ -14,10 +14,6 @@ final class ValidatorTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::__construct
-     * @covers ::isValid
-     */
     public function testValidatesExtensionFor(): void
     {
         $application = new ApplicationName('phpDocumentor/other');

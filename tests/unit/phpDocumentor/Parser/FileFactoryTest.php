@@ -23,10 +23,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\FileFactory
- 
- */
+/** @coversDefaultClass \phpDocumentor\Parser\FileFactory */
 final class FileFactoryTest extends TestCase
 {
     use ProphecyTrait;

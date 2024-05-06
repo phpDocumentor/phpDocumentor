@@ -24,17 +24,12 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  * Test for the MethodDescriptor URL Generator with the Standard Router
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Router\ClassBasedFqsenUrlGenerator
- * @covers ::__construct
- 
  */
 class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::__invoke
-     * @dataProvider provideFqsens
-     */
+    /** @dataProvider provideFqsens */
     public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);

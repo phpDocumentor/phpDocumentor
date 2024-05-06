@@ -25,7 +25,6 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
- 
  */
 final class SinceAssemblerTest extends TestCase
 {
@@ -43,10 +42,6 @@ final class SinceAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers ::create
-     * @covers ::buildDescriptor
-     */
     public function testCreateSinceDescriptorFromSinceTag(): void
     {
         $name = 'since';
@@ -64,10 +59,6 @@ final class SinceAssemblerTest extends TestCase
         self::assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    /**
-     * @covers ::create
-     * @covers ::buildDescriptor
-     */
     public function testCreateSinceDescriptorFromSinceTagWithEmptyVersion(): void
     {
         $name = 'since';

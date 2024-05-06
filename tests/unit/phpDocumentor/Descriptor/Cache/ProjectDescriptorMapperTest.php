@@ -28,7 +28,6 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * @uses \phpDocumentor\Descriptor\ProjectDescriptor\Settings
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
- * @covers ::__construct
  */
 final class ProjectDescriptorMapperTest extends TestCase
 {
@@ -43,10 +42,6 @@ final class ProjectDescriptorMapperTest extends TestCase
         $this->mapper = new ProjectDescriptorMapper($this->cachePool);
     }
 
-    /**
-     * @covers ::save
-     * @covers ::populate
-     */
     public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache(): void
     {
         $versionNumber = self::faker()->numerify('v#.#.#');

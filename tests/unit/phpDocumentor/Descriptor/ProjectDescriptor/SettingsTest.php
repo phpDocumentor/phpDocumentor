@@ -16,17 +16,9 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Configuration\ApiSpecification;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor\Settings
- 
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor\Settings */
 final class SettingsTest extends TestCase
 {
-    /**
-     * @covers ::shouldIncludeSource
-     * @covers ::includeSource
-     * @covers ::excludeSource
-     */
     public function testItCanKeepTrackWhetherSourceIsIncluded(): void
     {
         $settings = new Settings();
@@ -42,7 +34,6 @@ final class SettingsTest extends TestCase
         $this->assertFalse($settings->shouldIncludeSource());
     }
 
-    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenChangingInclusionOfSource(): void
     {
         $settings = new Settings();
@@ -54,10 +45,6 @@ final class SettingsTest extends TestCase
         $this->assertTrue($settings->isModified());
     }
 
-    /**
-     * @covers ::getVisibility
-     * @covers ::setVisibility
-     */
     public function testItCanKeepTrackWhetherVisibilityIsSpecified(): void
     {
         $settings = new Settings();
@@ -69,7 +56,6 @@ final class SettingsTest extends TestCase
         $this->assertSame(ApiSpecification::VISIBILITY_PUBLIC, $settings->getVisibility());
     }
 
-    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenChangingVisibility(): void
     {
         $settings = new Settings();
@@ -81,10 +67,6 @@ final class SettingsTest extends TestCase
         $this->assertTrue($settings->isModified());
     }
 
-    /**
-     * @covers ::getCustom
-     * @covers ::setCustom
-     */
     public function testItCanStoreCustomSettings(): void
     {
         $settings = new Settings();
@@ -96,7 +78,6 @@ final class SettingsTest extends TestCase
         $this->assertSame(['key' => 'value'], $settings->getCustom());
     }
 
-    /** @covers ::isModified */
     public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings(): void
     {
         $settings = new Settings();
@@ -108,7 +89,6 @@ final class SettingsTest extends TestCase
         $this->assertTrue($settings->isModified());
     }
 
-    /** @covers ::clearModifiedFlag */
     public function testThatTheModifiedFlagCanBeReset(): void
     {
         $settings = new Settings();

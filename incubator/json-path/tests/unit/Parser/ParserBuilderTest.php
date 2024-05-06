@@ -25,6 +25,7 @@ use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
 use phpDocumentor\JsonPath\AST\Wildcard;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ParserBuilderTest extends TestCase
@@ -102,7 +103,7 @@ class ParserBuilderTest extends TestCase
         );
     }
 
-    /** @dataProvider operatorProvider */
+    #[DataProvider('operatorProvider')]
     public function testFilterExpression(string $operator): void
     {
         $result = $this->parser->tryString('$.store.books[?(@.title ' . $operator . ' "phpDoc")]');

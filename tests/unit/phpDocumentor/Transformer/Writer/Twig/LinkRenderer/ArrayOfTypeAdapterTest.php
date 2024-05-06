@@ -20,10 +20,7 @@ use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter */
 final class ArrayOfTypeAdapterTest extends TestCase
 {
     private ArrayOfTypeAdapter $adapter;
@@ -33,14 +30,12 @@ final class ArrayOfTypeAdapterTest extends TestCase
         $this->adapter = new ArrayOfTypeAdapter();
     }
 
-    /** @covers ::supports */
     public function testItSupportsArraysOfType(): void
     {
         self::assertTrue($this->adapter->supports([new String_()]));
         self::assertFalse($this->adapter->supports(new Fqsen('\MyAwesome\Object')));
     }
 
-    /** @covers ::render */
     public function testRenderOnlyAcceptsArraysOfType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -51,10 +46,7 @@ final class ArrayOfTypeAdapterTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::render
-     * @dataProvider renderingVariations
-     */
+    /** @dataProvider renderingVariations */
     public function testRenderProducesExpectedOutputBasedOn(array $value, iterable $expected): void
     {
         self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));

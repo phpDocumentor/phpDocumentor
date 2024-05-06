@@ -38,7 +38,6 @@ final class StripIgnoreTest extends TestCase
         $this->fixture = new StripIgnore();
     }
 
-    /** @covers ::__invoke */
     public function testStripsIgnoreTagFromDescription(): void
     {
         $collection = $this->prophesize(Collection::class);
@@ -54,7 +53,6 @@ final class StripIgnoreTest extends TestCase
         );
     }
 
-    /** @covers ::__invoke */
     public function testDescriptorIsUnmodifiedIfThereIsNoIgnoreTag(): void
     {
         $collection = $this->prophesize(Collection::class);

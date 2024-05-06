@@ -26,11 +26,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 use function strlen;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Transformer
- * @covers ::__construct
- 
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Transformer */
 final class TransformerTest extends TestCase
 {
     use ProphecyTrait;
@@ -67,7 +63,6 @@ final class TransformerTest extends TestCase
         );
     }
 
-    /** @covers ::__construct */
     public function testInitialization(): void
     {
         $flySystemFactory = $this->prophesize(FlySystemFactory::class);
@@ -82,11 +77,6 @@ final class TransformerTest extends TestCase
         self::assertSame('Transform analyzed project into artifacts', $fixture->getDescription());
     }
 
-    /**
-     * @covers ::getTarget
-     * @covers ::setTarget
-     * @covers ::destination
-     */
     public function testSettingAndGettingATarget(): void
     {
         $filesystem = self::faker()->fileSystem();
@@ -100,7 +90,6 @@ final class TransformerTest extends TestCase
         $this->assertEquals($filesystem, $this->fixture->destination());
     }
 
-    /** @covers ::execute */
     public function testExecute(): void
     {
         $apiSet = self::faker()->apiSetDescriptor();
@@ -118,7 +107,6 @@ final class TransformerTest extends TestCase
         $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $description = $this->fixture->getDescription();

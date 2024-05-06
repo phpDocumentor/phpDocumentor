@@ -21,7 +21,6 @@ use phpDocumentor\Reflection\Fqsen;
  * Tests the functionality for the ClassDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\EnumDescriptor
- * @covers ::__construct
  */
 final class EnumDescriptorTest extends MockeryTestCase
 {
@@ -39,10 +38,6 @@ final class EnumDescriptorTest extends MockeryTestCase
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Enum'));
     }
 
-    /**
-     * @covers ::setInterfaces
-     * @covers ::getInterfaces
-     */
     public function testSettingAndGettingInterfaces(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
@@ -54,10 +49,6 @@ final class EnumDescriptorTest extends MockeryTestCase
         $this->assertSame($mock, $this->fixture->getInterfaces());
     }
 
-    /**
-     * @covers ::setMethods
-     * @covers ::getMethods
-     */
     public function testSettingAndGettingMethods(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
