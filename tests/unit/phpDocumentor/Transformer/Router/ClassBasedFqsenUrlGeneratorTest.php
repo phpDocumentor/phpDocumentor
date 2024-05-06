@@ -48,7 +48,7 @@ class ClassBasedFqsenUrlGeneratorTest extends TestCase
         $this->assertSame($toPath, $result);
     }
 
-    public function provideFqsens(): array
+    public static function provideFqsens(): array
     {
         return [
             ['\\My\\Space\\Class', '/classes/My-Space-Class-html'],

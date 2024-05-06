@@ -110,7 +110,7 @@ final class PathGeneratorTest extends TestCase
         );
     }
 
-    public function providePathsToUrlEncode(): array
+    public static function providePathsToUrlEncode(): array
     {
         return [
             'without variables' => [

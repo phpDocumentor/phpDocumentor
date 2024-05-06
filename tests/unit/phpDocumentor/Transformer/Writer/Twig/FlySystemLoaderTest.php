@@ -85,7 +85,7 @@ final class FlySystemLoaderTest extends TestCase
         $this->assertTrue($loader->isFresh($fileName, 10));
     }
 
-    public function fileProvider(): array
+    public static function fileProvider(): array
     {
         return [
             'normal file' => [

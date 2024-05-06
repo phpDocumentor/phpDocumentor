@@ -48,8 +48,8 @@ final class Version3Test extends TestCase
     public function testNormalizingTheOutputTransformsTheConfig(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = $this->defaultConfigurationOutput();
-        $expected = $this->defaultConfigurationOutput();
+        $configuration = Version3Test::defaultConfigurationOutput();
+        $expected = Version3Test::defaultConfigurationOutput();
         $expected['paths']['output'] = Dsn::createFromString($expected['paths']['output']);
         $expected['paths']['cache'] = new Path($expected['paths']['cache']);
         $expected['versions']['1.0.0']['api'] = $expected['versions']['1.0.0']['apis'];
@@ -74,7 +74,7 @@ final class Version3Test extends TestCase
     public function testNormalizingAPopulatedTemplateLocationGivesAPath(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
-        $configuration = $this->defaultConfigurationOutput();
+        $configuration = Version3Test::defaultConfigurationOutput();
         $configuration['templates'][0]['location'] = 'data/templates';
 
         $result = $definition->normalize($configuration);
@@ -83,17 +83,17 @@ final class Version3Test extends TestCase
         self::assertSame('data/templates', (string) $result['templates'][0]['location']);
     }
 
-    public function provideTestConfiguration(): array
+    public static function provideTestConfiguration(): array
     {
         return [
-            'default configuration' => [[], $this->defaultConfigurationOutput()],
+            'default configuration' => [[], Version3Test::defaultConfigurationOutput()],
             'configuration with title' => [
                 ['title' => 'My project'],
-                array_merge($this->defaultConfigurationOutput(), ['title' => 'My project']),
+                array_merge(Version3Test::defaultConfigurationOutput(), ['title' => 'My project']),
             ],
             'configuration with other destination' => [
                 ['paths' => ['output' => '/tmp']],
-                array_replace_recursive($this->defaultConfigurationOutput(), ['paths' => ['output' => '/tmp']]),
+                array_replace_recursive(Version3Test::defaultConfigurationOutput(), ['paths' => ['output' => '/tmp']]),
             ],
             'configuration with provided source' => [
                 [
@@ -112,7 +112,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                $this->defaultConfigurationWithOneApiWithOverriddenSource('latest', 'file:///tmp', ['src']),
+                Version3Test::defaultConfigurationWithOneApiWithOverriddenSource('latest', 'file:///tmp', ['src']),
             ],
             'configuration with example' => [
                 [
@@ -131,7 +131,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                $this->defaultConfigurationWithOneApiWithOverriddenExamples('latest', 'file:///tmp', ['src']),
+                Version3Test::defaultConfigurationWithOneApiWithOverriddenExamples('latest', 'file:///tmp', ['src']),
             ],
             'minimal configuration' => [
                 [
@@ -143,7 +143,7 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                $this->defaultConfigurationOutput(),
+                Version3Test::defaultConfigurationOutput(),
             ],
             'check version respresentation' => [
                 [
@@ -162,12 +162,12 @@ final class Version3Test extends TestCase
                         ],
                     ],
                 ],
-                $this->defaultConfigurationWithOneApiWithOverriddenExamples('3.10', 'file:///tmp', ['src']),
+                Version3Test::defaultConfigurationWithOneApiWithOverriddenExamples('3.10', 'file:///tmp', ['src']),
             ],
         ];
     }
 
-    private function defaultConfigurationOutput(): array
+    private static function defaultConfigurationOutput(): array
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
@@ -219,13 +219,13 @@ final class Version3Test extends TestCase
         ];
     }
 
-    private function defaultConfigurationWithOneApiWithOverriddenSource(
+    private static function defaultConfigurationWithOneApiWithOverriddenSource(
         string $versionString,
         string $dsn,
         array $paths,
     ): array {
         $configuration = array_replace_recursive(
-            $this->defaultConfigurationOutput(),
+            Version3Test::defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
             ],
@@ -246,13 +246,13 @@ final class Version3Test extends TestCase
         return $configuration;
     }
 
-    private function defaultConfigurationWithOneApiWithOverriddenExamples(
+    private static function defaultConfigurationWithOneApiWithOverriddenExamples(
         string $versionString,
         string $dsn,
         array $paths,
     ): array {
         $configuration = array_replace_recursive(
-            $this->defaultConfigurationOutput(),
+            Version3Test::defaultConfigurationOutput(),
             [
                 'paths' => ['output' => '/tmp'],
             ],

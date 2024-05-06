@@ -106,7 +106,7 @@ class SeeAssemblerTest extends TestCase
         return new DocBlock('', null, [], $context);
     }
 
-    public function provideReferences(): array
+    public static function provideReferences(): array
     {
         return [
             [new DocBlock\Tags\Reference\Url('http://phpdoc.org')],

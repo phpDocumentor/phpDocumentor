@@ -39,7 +39,7 @@ class ConfigurationLoadingTest extends TestCase
         }
     }
 
-    public function configProvider(): iterable
+    public static function configProvider(): iterable
     {
         $directoryIterator = new \DirectoryIterator(__DIR__ . '/data');
 

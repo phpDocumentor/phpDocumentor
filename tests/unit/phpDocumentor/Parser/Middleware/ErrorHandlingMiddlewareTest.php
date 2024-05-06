@@ -42,7 +42,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $filename = __FILE__;
         $expected = new File('abc', $filename);
         $command = new CreateCommand(
-            $this->faker()->phpParserContext(),
+            self::faker()->phpParserContext(),
             new LocalFile($filename),
             new ProjectFactoryStrategies([]),
         );
@@ -68,7 +68,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
     {
         $filename = __FILE__;
         $command = new CreateCommand(
-            $this->faker()->phpParserContext(),
+            self::faker()->phpParserContext(),
             new LocalFile($filename),
             new ProjectFactoryStrategies([]),
         );

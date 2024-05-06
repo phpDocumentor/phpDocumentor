@@ -70,7 +70,7 @@ final class GuidesCompilerTest extends TestCase
     /** @covers ::__invoke */
     public function testInvokeReturnsUnmodifiedWhenSubjectIsNotAGuideSetDescriptor(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
 
         $result = ($this->guidesCompiler)($apiSetDescriptor);
 
@@ -80,8 +80,8 @@ final class GuidesCompilerTest extends TestCase
     /** @covers ::__invoke */
     public function testCompilerReplacesDocumentNodesWithNewlyCompiledOnes(): void
     {
-        $guideSetDescriptor = $this->faker()->guideSetDescriptor();
-        $this->descriptorRepository->setVersionDescriptor($this->faker()->versionDescriptor([$guideSetDescriptor]));
+        $guideSetDescriptor = self::faker()->guideSetDescriptor();
+        $this->descriptorRepository->setVersionDescriptor(self::faker()->versionDescriptor([$guideSetDescriptor]));
 
         $originalDocumentNodes = $this->givenASeriesOfDocumentNodes($guideSetDescriptor);
         $compiledDocumentNodes = $this->expectingASeriesOfCompiledDocumentNodes($originalDocumentNodes);
@@ -105,10 +105,10 @@ final class GuidesCompilerTest extends TestCase
     {
         $originalDocumentNodes = [];
         for ($i = 1; $i <= 3; $i++) {
-            $md5 = $this->faker()->md5();
-            $filePath = $this->faker()->filePath();
+            $md5 = self::faker()->md5();
+            $filePath = self::faker()->filePath();
             $documentNode = new DocumentNode($md5, $filePath);
-            $document = new DocumentDescriptor($documentNode, $md5, $filePath, $this->faker()->word());
+            $document = new DocumentDescriptor($documentNode, $md5, $filePath, self::faker()->word());
 
             $originalDocumentNodes[$filePath] = $documentNode;
             $guideSetDescriptor->getDocuments()->set($filePath, $document);
@@ -126,7 +126,7 @@ final class GuidesCompilerTest extends TestCase
     {
         $compiledDocumentNodes = [];
         foreach ($originalDocumentNodes as $documentNode) {
-            $md5 = $this->faker()->md5();
+            $md5 = self::faker()->md5();
             $compiledDocumentNode = new DocumentNode($md5, $documentNode->getFilePath());
 
             $compiledDocumentNodes[$compiledDocumentNode->getFilePath()] = $compiledDocumentNode;

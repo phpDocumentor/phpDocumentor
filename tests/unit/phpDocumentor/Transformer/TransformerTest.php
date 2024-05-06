@@ -55,7 +55,7 @@ final class TransformerTest extends TestCase
         $this->writer->getName()->willReturn('myTestWriter');
         $this->writer->__toString()->willReturn('myTestWriter');
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
-        $this->flySystemFactory->create(Argument::any())->willReturn($this->faker()->fileSystem());
+        $this->flySystemFactory->create(Argument::any())->willReturn(self::faker()->fileSystem());
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument(0);
 
@@ -89,7 +89,7 @@ final class TransformerTest extends TestCase
      */
     public function testSettingAndGettingATarget(): void
     {
-        $filesystem = $this->faker()->fileSystem();
+        $filesystem = self::faker()->fileSystem();
         $this->flySystemFactory->create(Argument::any())->willReturn($filesystem);
 
         $this->assertEquals('', $this->fixture->getTarget());
@@ -103,12 +103,12 @@ final class TransformerTest extends TestCase
     /** @covers ::execute */
     public function testExecute(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
 
         $transformation = $this->prophesize(Transformation::class);
         $transformation->getQuery()->shouldBeCalled()->willReturn('');
-        $transformation->template()->willReturn($this->faker()->template());
+        $transformation->template()->willReturn(self::faker()->template());
         $transformation->getWriter()->shouldBeCalled()->willReturn($this->writer);
         $transformation->getArtifact()->shouldBeCalled()->willReturn('');
         $transformation->setTransformer(Argument::exact($this->fixture))->shouldBeCalled();

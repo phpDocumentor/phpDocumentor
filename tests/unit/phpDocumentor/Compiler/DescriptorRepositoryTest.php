@@ -35,7 +35,7 @@ final class DescriptorRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->fqsen = $this->faker()->fqsen();
+        $this->fqsen = self::faker()->fqsen();
         $this->descriptorRepository = new DescriptorRepository();
     }
 
@@ -47,7 +47,7 @@ final class DescriptorRepositoryTest extends TestCase
      */
     public function testSetVersionDescriptorMethod(): void
     {
-        $versionDescriptor = $this->faker()->versionDescriptor([]);
+        $versionDescriptor = self::faker()->versionDescriptor([]);
 
         $this->descriptorRepository->setVersionDescriptor($versionDescriptor);
 
@@ -66,7 +66,7 @@ final class DescriptorRepositoryTest extends TestCase
      */
     public function testGetVersionDescriptorMethod(): void
     {
-        $versionDescriptor = $this->faker()->versionDescriptor([]);
+        $versionDescriptor = self::faker()->versionDescriptor([]);
 
         $this->descriptorRepository->setVersionDescriptor($versionDescriptor);
 
@@ -84,12 +84,12 @@ final class DescriptorRepositoryTest extends TestCase
      */
     public function testItCanFindDescriptorByFqsen(): void
     {
-        $classDescriptor = $this->faker()->classDescriptor($this->fqsen);
+        $classDescriptor = self::faker()->classDescriptor($this->fqsen);
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('elements')->set((string) $this->fqsen, $classDescriptor);
 
-        $this->descriptorRepository->setVersionDescriptor($this->faker()->versionDescriptor([$apiSetDescriptor]));
+        $this->descriptorRepository->setVersionDescriptor(self::faker()->versionDescriptor([$apiSetDescriptor]));
 
         $this->assertSame(
             $classDescriptor,
@@ -106,7 +106,7 @@ final class DescriptorRepositoryTest extends TestCase
     public function testItReturnsNullWhenNoDescriptorIsFoundByFqsen(): void
     {
         $this->descriptorRepository->setVersionDescriptor(
-            $this->faker()->versionDescriptor([$this->faker()->apiSetDescriptor()]),
+            self::faker()->versionDescriptor([self::faker()->apiSetDescriptor()]),
         );
 
         $this->assertNull($this->descriptorRepository->findDescriptorByFqsen($this->fqsen));
@@ -120,15 +120,15 @@ final class DescriptorRepositoryTest extends TestCase
      */
     public function testItCanFindDescriptorByTypeAndFqsen(): void
     {
-        $classDescriptor = $this->faker()->classDescriptor($this->fqsen);
+        $classDescriptor = self::faker()->classDescriptor($this->fqsen);
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor
             ->getIndex('classes')
             ->set((string) $this->fqsen, $classDescriptor);
 
         $this->descriptorRepository
-            ->setVersionDescriptor($this->faker()->versionDescriptor([$apiSetDescriptor]));
+            ->setVersionDescriptor(self::faker()->versionDescriptor([$apiSetDescriptor]));
 
         $this->assertSame(
             $classDescriptor,

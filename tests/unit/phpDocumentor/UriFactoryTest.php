@@ -34,7 +34,7 @@ final class UriFactoryTest extends TestCase
         self::assertEquals($path, $uri->getPath());
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             'absolute windows path without scheme ' => [

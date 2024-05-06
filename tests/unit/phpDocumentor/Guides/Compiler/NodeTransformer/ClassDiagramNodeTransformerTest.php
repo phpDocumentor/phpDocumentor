@@ -50,11 +50,11 @@ final class ClassDiagramNodeTransformerTest extends TestCase
         );
     }
 
-    public function simpleClassProvider(): Generator
+    public static function simpleClassProvider(): Generator
     {
         yield 'simple class' => [
             'queryResult' => [
-                $this->faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass')),
+                self::faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass')),
             ],
             'uml' =>             <<<'UML'
 skinparam shadowing false
@@ -71,11 +71,11 @@ namespace phpDocumentor {
 UML,
         ];
 
-        $class = $this->faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass'));
+        $class = self::faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass'));
         $class->setInterfaces(Collection::fromClassString(
             InterfaceDescriptor::class,
             [
-                $this->faker()->interfaceDescriptor(new Fqsen('\phpDocumentor\MyInterface')),
+                self::faker()->interfaceDescriptor(new Fqsen('\phpDocumentor\MyInterface')),
             ],
         ));
 
@@ -96,8 +96,8 @@ namespace phpDocumentor {
 UML,
         ];
 
-        $class = $this->faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass'));
-        $class->setParent($this->faker()->classDescriptor(new Fqsen('\phpDocumentor\SubNamespace\MyParent')));
+        $class = self::faker()->classDescriptor(new Fqsen('\phpDocumentor\MyClass'));
+        $class->setParent(self::faker()->classDescriptor(new Fqsen('\phpDocumentor\SubNamespace\MyParent')));
 
         yield 'simple class with parent' => [
             'queryResult' => [$class],

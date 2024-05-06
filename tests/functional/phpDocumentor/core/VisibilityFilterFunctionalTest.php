@@ -57,7 +57,7 @@ final class VisibilityFilterFunctionalTest extends FunctionalTestCase
         $this->assertCount($expectedCount, $classDescriptor->getConstants());
     }
 
-    public function visibilityProvider() : array
+    public static function visibilityProvider() : array
     {
         return [
             [

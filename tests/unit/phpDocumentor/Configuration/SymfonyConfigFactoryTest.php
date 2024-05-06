@@ -47,7 +47,7 @@ final class SymfonyConfigFactoryTest extends TestCase
 
         $configMock = $this->prophesize(ConfigurationInterface::class);
         $configMock->willImplement(Upgradable::class);
-        $configMock->getConfigTreeBuilder()->willReturn($this->faker()->configTreeBuilder('test'));
+        $configMock->getConfigTreeBuilder()->willReturn(self::faker()->configTreeBuilder('test'));
         $configMock->upgrade(Argument::any())->willReturn([]);
 
         $this->fixture = new SymfonyConfigFactory(['test' => $configMock->reveal()]);
@@ -83,7 +83,7 @@ XML,
     private function createConfigFactoryWithTestDefinition(): SymfonyConfigFactory
     {
         $configMock = $this->prophesize(ConfigurationInterface::class);
-        $configMock->getConfigTreeBuilder()->willReturn($this->faker()->configTreeBuilder('test'));
+        $configMock->getConfigTreeBuilder()->willReturn(self::faker()->configTreeBuilder('test'));
 
         return new SymfonyConfigFactory(['test' => $configMock->reveal()]);
     }

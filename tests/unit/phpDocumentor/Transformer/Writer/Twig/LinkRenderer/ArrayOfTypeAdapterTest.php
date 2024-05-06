@@ -61,7 +61,7 @@ final class ArrayOfTypeAdapterTest extends TestCase
     }
 
     /** @return array<string, list<iterable>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
         return [
             'Converts arrays of types to their string version' => [

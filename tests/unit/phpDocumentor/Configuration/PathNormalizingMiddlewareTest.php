@@ -110,7 +110,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         );
     }
 
-    public function templateLocationProvider(): array
+    public static function templateLocationProvider(): array
     {
         $configLocation = '/data/phpdocumentor/config.xml';
 
@@ -129,7 +129,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         ];
     }
 
-    public function cachePathProvider(): array
+    public static function cachePathProvider(): array
     {
         return [
             'Absolute paths are not normalized' => [
@@ -155,7 +155,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         ];
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             [

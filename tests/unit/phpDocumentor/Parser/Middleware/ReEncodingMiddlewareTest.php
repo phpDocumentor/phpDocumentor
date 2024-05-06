@@ -45,7 +45,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware = new ReEncodingMiddleware();
         $middleware->withEncoding('iso-8859-1');
         $result = $middleware->execute(
-            new CreateCommand($this->faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
+            new CreateCommand(self::faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
             function (CreateCommand $command) use ($contents): PhpFile {
                 $reEncodedFile = $command->getFile();
                 $this->assertInstanceOf(ReEncodedFile::class, $reEncodedFile);
@@ -74,7 +74,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware->withEncoding('utf-8');
         $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 $file,
                 new ProjectFactoryStrategies([]),
             ),

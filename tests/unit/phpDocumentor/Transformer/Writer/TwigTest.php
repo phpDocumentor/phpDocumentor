@@ -114,12 +114,12 @@ final class TwigTest extends TestCase
         );
         $transformation->setTransformer($transformer->reveal());
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSetDescriptor])]);
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSetDescriptor])]);
         $project->getSettings()->setCustom($this->writer->getDefaultSettings());
         $this->pathGenerator->generate($apiSetDescriptor, $transformation)->willReturn('index.html');
 
-        $this->writer->initialize($project, $apiSetDescriptor, $this->faker()->template());
+        $this->writer->initialize($project, $apiSetDescriptor, self::faker()->template());
         $this->writer->transform($transformation, $project, $apiSetDescriptor);
 
         $this->assertFileExists($targetDir . '/index.html');

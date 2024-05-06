@@ -347,7 +347,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         return $this->configurationFactory->createDefault();
     }
 
-    public function targetPathProvider(): array
+    public static function targetPathProvider(): array
     {
         return [
             'absolute path' => [

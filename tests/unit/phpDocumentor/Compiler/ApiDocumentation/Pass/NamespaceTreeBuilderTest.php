@@ -44,7 +44,7 @@ final class NamespaceTreeBuilderTest extends TestCase
     {
         $this->fixture = new NamespaceTreeBuilder();
 
-        $this->apiSet = $this->faker()->apiSetDescriptor();
+        $this->apiSet = self::faker()->apiSetDescriptor();
         $this->apiSet->getFiles()->add(new FileDescriptor('hash'));
     }
 

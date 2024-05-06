@@ -44,7 +44,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
      */
     protected function setUp(): void
     {
-        $this->template = $this->faker()->template('My Template');
+        $this->template = self::faker()->template('My Template');
         $this->fixture = new Transformation(
             $this->template,
             $this->query,

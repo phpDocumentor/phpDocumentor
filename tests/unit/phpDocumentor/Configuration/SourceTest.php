@@ -22,7 +22,7 @@ final class SourceTest extends TestCase
      */
     public function testSourceReturnsDsn(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
         self::assertSame($dsn, $source->dsn());
@@ -37,7 +37,7 @@ final class SourceTest extends TestCase
      */
     public function testWithDsnReturnsNewInstanceOfSource(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
         $newSource = $source->withDsn($dsn);
@@ -55,10 +55,10 @@ final class SourceTest extends TestCase
      */
     public function testWithDsnReturnsSetsNewDsn(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
-        $newDsn = $this->faker()->dsn();
+        $newDsn = self::faker()->dsn();
         $newSource = $source->withDsn($newDsn);
 
         self::assertSame($newDsn, $newSource->dsn());
@@ -71,10 +71,10 @@ final class SourceTest extends TestCase
      */
     public function testSourceImplementsArrayAccess(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -90,10 +90,10 @@ final class SourceTest extends TestCase
     public function testSourceArrayAccessIsImmutableCannotSet(): void
     {
         $this->expectException(BadMethodCallException::class);
-        $dsn   = $this->faker()->dsn();
+        $dsn   = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -108,10 +108,10 @@ final class SourceTest extends TestCase
     public function testSourceArrayAccessIsImmutableCannotUnset(): void
     {
         $this->expectException(BadMethodCallException::class);
-        $dsn   = $this->faker()->dsn();
+        $dsn   = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -127,12 +127,12 @@ final class SourceTest extends TestCase
      */
     public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
     {
-        $source = new Source($this->faker()->dsn(), [$input]);
+        $source = new Source(self::faker()->dsn(), [$input]);
 
         self::assertEquals([$glob], $source->globPatterns());
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             [

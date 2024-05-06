@@ -43,7 +43,7 @@ final class EmittingMiddlewareTest extends TestCase
         $file->setPath($filename);
 
         $command = new CreateCommand(
-            $this->faker()->phpParserContext(),
+            self::faker()->phpParserContext(),
             new LocalFile($filename),
             new ProjectFactoryStrategies([]),
         );

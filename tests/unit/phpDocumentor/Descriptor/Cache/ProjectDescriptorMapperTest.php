@@ -49,15 +49,15 @@ final class ProjectDescriptorMapperTest extends TestCase
      */
     public function testThatATheSettingsForAProjectDescriptorArePersistedAndCanBeRetrievedFromCache(): void
     {
-        $versionNumber = $this->faker()->numerify('v#.#.#');
-        $apiSetName = $this->faker()->word;
+        $versionNumber = self::faker()->numerify('v#.#.#');
+        $apiSetName = self::faker()->word;
 
         $fileDescriptor = new FileDescriptor('fileHash');
         $fileDescriptor->setPath('./src/MyClass.php');
 
         $projectDescriptor = new ProjectDescriptor('project');
-        $restoredSet = $this->faker()->apiSetDescriptor($apiSetName);
-        $restoredVersion = $this->faker()->versionDescriptor([$restoredSet], $versionNumber);
+        $restoredSet = self::faker()->apiSetDescriptor($apiSetName);
+        $restoredVersion = self::faker()->versionDescriptor([$restoredSet], $versionNumber);
         $projectDescriptor->getVersions()->add($restoredVersion);
         $restoredSet->getFiles()->set('./src/MyClass.php', $fileDescriptor);
 
@@ -68,8 +68,8 @@ final class ProjectDescriptorMapperTest extends TestCase
         $this->mapper->save($projectDescriptor);
 
         $restoredProjectDescriptor = new ProjectDescriptor('project2');
-        $restoredSet = $this->faker()->apiSetDescriptor($apiSetName);
-        $restoredVersion = $this->faker()->versionDescriptor([$restoredSet], $versionNumber);
+        $restoredSet = self::faker()->apiSetDescriptor($apiSetName);
+        $restoredVersion = self::faker()->versionDescriptor([$restoredSet], $versionNumber);
         $restoredProjectDescriptor->getVersions()->add($restoredVersion);
         $this->mapper->populate($restoredProjectDescriptor);
 

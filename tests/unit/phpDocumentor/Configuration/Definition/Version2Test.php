@@ -38,7 +38,7 @@ final class Version2Test extends TestCase
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
 
-        $upgradedConfiguration = $configuration->upgrade($this->defaultConfigurationOutput());
+        $upgradedConfiguration = $configuration->upgrade(self::defaultConfigurationOutput());
 
         $this->assertSame(
             [
@@ -86,7 +86,7 @@ final class Version2Test extends TestCase
 
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);
 
-        $values = $this->defaultConfigurationOutput();
+        $values = self::defaultConfigurationOutput();
         $values['files']['ignores'] = [$oldStyleWildcard, 'vendor/**/*', 'sdk'];
         $upgradedConfiguration = $configuration->upgrade($values);
 
@@ -96,10 +96,10 @@ final class Version2Test extends TestCase
         );
     }
 
-    public function provideTestConfiguration(): array
+    public static function provideTestConfiguration(): array
     {
-        $defaultConfigurationOutput = $this->defaultConfigurationOutput();
-        $configurationOutputWithIgnore = $this->defaultConfigurationOutput();
+        $defaultConfigurationOutput = self::defaultConfigurationOutput();
+        $configurationOutputWithIgnore = self::defaultConfigurationOutput();
         $configurationOutputWithIgnore['files']['ignores'] = ['tests/*'];
 
         return [
@@ -108,7 +108,7 @@ final class Version2Test extends TestCase
         ];
     }
 
-    private function defaultConfigurationOutput(): array
+    private static function defaultConfigurationOutput(): array
     {
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '2',

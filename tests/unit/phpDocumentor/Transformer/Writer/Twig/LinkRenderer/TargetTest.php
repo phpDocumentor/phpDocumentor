@@ -78,7 +78,7 @@ final class TargetTest extends TestCase
     }
 
     /** @return array<string, list<string|null>> */
-    public function abbreviationPerTitleAndPresentationStyle(): array
+    public static function abbreviationPerTitleAndPresentationStyle(): array
     {
         return [
             'No abbreviation when there is no presentation style' => [

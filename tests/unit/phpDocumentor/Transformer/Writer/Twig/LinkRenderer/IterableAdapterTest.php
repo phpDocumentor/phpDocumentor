@@ -79,7 +79,7 @@ final class IterableAdapterTest extends TestCase
     }
 
     /** @return array<string, list<iterable>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
         return [
             'can handle empty arrays' => [[], []],

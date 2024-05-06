@@ -45,7 +45,7 @@ class ElementsIndexBuilderTest extends TestCase
     {
         $this->fixture = new ElementsIndexBuilder();
 
-        $this->apiSet = $this->faker()->apiSetDescriptor();
+        $this->apiSet = self::faker()->apiSetDescriptor();
 
         $file1 = new FileDescriptor('hash');
         $file2 = new FileDescriptor('hash2');

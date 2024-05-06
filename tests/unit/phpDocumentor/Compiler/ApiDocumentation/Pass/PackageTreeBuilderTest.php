@@ -64,7 +64,7 @@ final class PackageTreeBuilderTest extends TestCase
     /** @covers ::__invoke */
     public function testRootPackageIsSet(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
+        $apiSet = self::faker()->apiSetDescriptor();
         $this->fixture->__invoke($apiSet);
 
         $packages = $apiSet->getIndexes()->get('packages');
@@ -383,7 +383,7 @@ final class PackageTreeBuilderTest extends TestCase
 
     private function givenApiSetWithFile(FileDescriptor $file): ApiSetDescriptor
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
+        $apiSet = self::faker()->apiSetDescriptor();
         $apiSet->getFiles()->add($file);
 
         return $apiSet;
@@ -391,7 +391,7 @@ final class PackageTreeBuilderTest extends TestCase
 
     private function givenApiSetWithFiles(array $files): ApiSetDescriptor
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
+        $apiSet = self::faker()->apiSetDescriptor();
 
         foreach ($files as $file) {
             $apiSet->getFiles()->add($file);

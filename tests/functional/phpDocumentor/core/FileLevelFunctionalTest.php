@@ -40,7 +40,7 @@ final class FileLevelFunctionalTest extends FunctionalTestCase
         $this->assertFileSummary('This file is part of phpDocumentor.',  $apiSet->getFiles()['test.php']);
     }
 
-    public function emptishFileProvider() : array
+    public static function emptishFileProvider() : array
     {
         return [
             [

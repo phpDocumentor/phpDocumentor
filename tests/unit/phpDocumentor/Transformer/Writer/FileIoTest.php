@@ -67,8 +67,8 @@ final class FileIoTest extends TestCase
 
         $writer = new FileIo();
 
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
 
         $this->assertFalse($this->destinationFolder->hasChild('index.html'));
         $writer->transform(
@@ -92,8 +92,8 @@ final class FileIoTest extends TestCase
 
         $writer = new FileIo();
 
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
 
         $this->assertFalse($this->destinationFolder->hasChild('images/destination.png'));
         $writer->transform(
@@ -113,8 +113,8 @@ final class FileIoTest extends TestCase
     /** @covers ::transform */
     public function testCopiedFileOverwritesExistingFile(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
         $this->sourceFolder->addChild(vfsStream::newFile('index.html.twig')->withContent('new content'));
         $this->destinationFolder->addChild(vfsStream::newFile('index.html')->withContent('original content'));
 
@@ -138,8 +138,8 @@ final class FileIoTest extends TestCase
     /** @covers ::transform */
     public function testCopiesDirectoryFromCustomTemplateToDestination(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
         $sourceDirectory = new vfsStreamDirectory('images');
         $sourceDirectory->addChild(new vfsStreamFile('image1.png'));
         $this->sourceFolder->addChild($sourceDirectory);
@@ -165,8 +165,8 @@ final class FileIoTest extends TestCase
     /** @covers ::transform */
     public function testCopiesDirectoryFromGlobalTemplateToDestination(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
         $sourceDirectory = new vfsStreamDirectory('images');
         $sourceDirectory->addChild(new vfsStreamFile('image1.png'));
         $templateDirectory = new vfsStreamDirectory('templateName');
@@ -194,8 +194,8 @@ final class FileIoTest extends TestCase
     /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromCustomTemplateToDestination(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
         $subfolder = new vfsStreamDirectory('subfolder');
         $subfolder->addChild(new vfsStreamFile('image2.png'));
         $sourceDirectory = new vfsStreamDirectory('images');
@@ -223,8 +223,8 @@ final class FileIoTest extends TestCase
     /** @covers ::transform */
     public function testCopiesDirectoryRecursivelyFromGlobalTemplateToDestination(): void
     {
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSet])]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
         $subfolder = new vfsStreamDirectory('subfolder');
         $subfolder->addChild(new vfsStreamFile('image2.png'));
         $sourceDirectory = new vfsStreamDirectory('images');
@@ -264,9 +264,9 @@ final class FileIoTest extends TestCase
             'unknown_file',
             'nah.png',
         );
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
         );
 
         $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
@@ -278,9 +278,9 @@ final class FileIoTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $writer = new FileIo();
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $transformation = new Transformation(
             $this->template,

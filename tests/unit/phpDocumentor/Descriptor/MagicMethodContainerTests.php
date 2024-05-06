@@ -47,7 +47,7 @@ trait MagicMethodContainerTests
      *
      * @return bool[][]
      */
-    public function provideMagicMethodProperties(): array
+    public static function provideMagicMethodProperties(): array
     {
         return [
             // Instance magic method (default)

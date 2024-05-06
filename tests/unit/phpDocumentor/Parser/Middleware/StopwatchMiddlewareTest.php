@@ -42,7 +42,7 @@ final class StopwatchMiddlewareTest extends TestCase
     {
         $commandFile = new LocalFile(__FILE__);
         $command = new CreateCommand(
-            $this->faker()->phpParserContext(),
+            self::faker()->phpParserContext(),
             $commandFile,
             new ProjectFactoryStrategies([]),
         );

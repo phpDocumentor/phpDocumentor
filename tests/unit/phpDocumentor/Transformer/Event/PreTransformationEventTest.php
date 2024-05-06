@@ -35,7 +35,7 @@ final class PreTransformationEventTest extends TestCase
      */
     public function testSetAndGetTransformation(): void
     {
-        $transformation = $this->faker()->transformation();
+        $transformation = self::faker()->transformation();
         $subject = new stdClass();
 
         $fixture = PreTransformationEvent::create($subject, $transformation);

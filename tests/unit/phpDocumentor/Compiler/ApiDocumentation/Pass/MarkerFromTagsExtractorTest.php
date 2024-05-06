@@ -42,7 +42,7 @@ final class MarkerFromTagsExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
-        $this->apiSet = $this->faker()->apiSetDescriptor();
+        $this->apiSet = self::faker()->apiSetDescriptor();
     }
 
     /** @covers ::getDescription */

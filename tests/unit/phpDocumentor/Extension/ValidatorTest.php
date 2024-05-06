@@ -24,7 +24,7 @@ final class ValidatorTest extends TestCase
         $version = new Version();
         $validator = new Validator($application, $version);
 
-        $manifest = $this->faker()->extensionManifest('1.0.0');
+        $manifest = self::faker()->extensionManifest('1.0.0');
         $extension = ExtensionInfo::fromManifest($manifest, '/extension');
 
         self::assertFalse($validator->isValid($extension));

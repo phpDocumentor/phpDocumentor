@@ -80,7 +80,7 @@ final class NullableAdapterTest extends TestCase
     }
 
     /** @return array<string, list<iterable>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
         return [
             'Converts nullable to array with type and null' => [

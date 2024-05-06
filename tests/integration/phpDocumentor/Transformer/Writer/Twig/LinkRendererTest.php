@@ -56,9 +56,9 @@ final class LinkRendererTest extends TestCase
     protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
-        $this->apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor([
-            $this->faker()->versionDescriptor([$this->apiSetDescriptor]),
+        $this->apiSetDescriptor = Faker::faker()->apiSetDescriptor();
+        $projectDescriptor = Faker::faker()->projectDescriptor([
+            Faker::faker()->versionDescriptor([$this->apiSetDescriptor]),
         ]);
         $this->renderer = (new LinkRenderer($this->router->reveal(), new HtmlFormatter()))
             ->withProject($projectDescriptor)
@@ -217,7 +217,7 @@ final class LinkRendererTest extends TestCase
         self::assertSame($output, $result);
     }
 
-    public function typeRouteProvider(): array
+    public static function typeRouteProvider(): array
     {
         return [
             'collection with class' => [
@@ -283,7 +283,7 @@ final class LinkRendererTest extends TestCase
         $this->assertSame($url, $result);
     }
 
-    public function provideUrls(): array
+    public static function provideUrls(): array
     {
         return [
             ['http://phpdoc.org'],

@@ -86,7 +86,7 @@ final class MethodAssemblerTest extends TestCase
      *
      * @return string[][]
      */
-    public function provideNotations(): array
+    public static function provideNotations(): array
     {
         return [
             // just a method without a return type

@@ -249,7 +249,7 @@ final class FileDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $this->fixture->getAllErrors());
 
         // default returns empty array
-        self::assertObjectHasAttribute('items', $this->fixture->getAllErrors());
+        self::assertObjectHasProperty('items', $this->fixture->getAllErrors());
 
         $items = $this->fixture->getAllErrors()->getAll();
         self::assertEmpty($items);

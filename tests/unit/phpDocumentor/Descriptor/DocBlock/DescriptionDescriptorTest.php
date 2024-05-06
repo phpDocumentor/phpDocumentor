@@ -84,7 +84,7 @@ final class DescriptionDescriptorTest extends TestCase
         self::assertSame($expected, (string) $descriptor);
     }
 
-    public function replacementProvider(): array
+    public static function replacementProvider(): array
     {
         return [
             'replace tag' => [

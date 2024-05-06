@@ -53,9 +53,9 @@ final class TransformTest extends TestCase
 
     public function setUp(): void
     {
-        $documentationSet = $this->faker()->apiSetDescriptor();
+        $documentationSet = self::faker()->apiSetDescriptor();
         $projectDescriptor = new ProjectDescriptor('test');
-        $projectDescriptor->getVersions()->add($this->faker()->versionDescriptor([$documentationSet]));
+        $projectDescriptor->getVersions()->add(self::faker()->versionDescriptor([$documentationSet]));
 
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
         $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));

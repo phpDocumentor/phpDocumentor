@@ -49,7 +49,7 @@ final class CacheMiddlewareTest extends TestCase
 
         $response = $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
                 new ProjectFactoryStrategies([]),
             ),
@@ -73,7 +73,7 @@ final class CacheMiddlewareTest extends TestCase
 
         $response = $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
                 new ProjectFactoryStrategies([]),
             ),

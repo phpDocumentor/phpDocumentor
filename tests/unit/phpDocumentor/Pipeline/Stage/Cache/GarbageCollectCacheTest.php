@@ -40,8 +40,8 @@ final class GarbageCollectCacheTest extends TestCase
         $fixture = new GarbageCollectCache($descriptorMapper->reveal());
 
         $builder = $this->prophesize(ProjectDescriptorBuilder::class)->reveal();
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$apiSet]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $version = self::faker()->versionDescriptor([$apiSet]);
 
         $descriptorMapper->garbageCollect($version, $apiSet, $files)->shouldBeCalledOnce();
 

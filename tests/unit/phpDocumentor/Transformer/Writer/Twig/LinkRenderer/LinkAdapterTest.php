@@ -51,7 +51,7 @@ final class LinkAdapterTest extends TestCase
         $this->urlGenerator = $this->prophesize(UrlGenerator::class);
         $this->htmlFormatter = $this->prophesize(HtmlFormatter::class);
 
-        $this->linkRenderer->getDocumentationSet()->willReturn($this->faker()->apiSetDescriptor());
+        $this->linkRenderer->getDocumentationSet()->willReturn(self::faker()->apiSetDescriptor());
 
         // pre-loaded expectations for the data provider
         $this->urlGenerator
@@ -95,7 +95,7 @@ final class LinkAdapterTest extends TestCase
     }
 
     /** @return array<string, list<iterable>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
         $presentation = LinkRenderer::PRESENTATION_NORMAL;
 

@@ -35,7 +35,7 @@ final class DebugTest extends TestCase
     public function testLogDebugAnalysis(): void
     {
         $testString = 'test';
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
 
         $loggerMock = $this->prophesize(LoggerInterface::class);
         $loggerMock->debug(Argument::exact($testString))->shouldBeCalled();

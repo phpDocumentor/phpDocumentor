@@ -59,7 +59,7 @@ final class CollectionTest extends MockeryTestCase
      */
     private function givenAnEmptyTransformation(Template|null $template = null): Transformation
     {
-        return $this->faker()->transformation($template);
+        return self::faker()->transformation($template);
     }
 
     /**
@@ -69,7 +69,7 @@ final class CollectionTest extends MockeryTestCase
      */
     private function whenThereIsATemplateWithNameAndTransformations(string $name, array $transformations): void
     {
-        $template = $this->faker()->template($name);
+        $template = self::faker()->template($name);
         foreach ($transformations as $key => $transformation) {
             $template[$key] = $transformation;
         }

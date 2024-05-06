@@ -259,7 +259,7 @@ final class LinkerTest extends TestCase
         $object = $this->prophesize(ClassDescriptor::class);
         $fqsen = $object::class;
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('elements')->set($fqsen, $result);
 
         // prepare linker

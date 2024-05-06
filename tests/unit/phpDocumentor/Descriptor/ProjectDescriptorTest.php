@@ -60,8 +60,8 @@ final class ProjectDescriptorTest extends TestCase
      */
     public function testGetSetNamespace(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$apiSetDescriptor]));
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $this->fixture->getVersions()->add(self::faker()->versionDescriptor([$apiSetDescriptor]));
 
         $this->assertInstanceOf(NamespaceDescriptor::class, $this->fixture->getNamespace());
 
@@ -77,8 +77,8 @@ final class ProjectDescriptorTest extends TestCase
      */
     public function testRootPackageIsSetForProject(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $this->fixture->getVersions()->add($this->faker()->versionDescriptor([$apiSetDescriptor]));
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $this->fixture->getVersions()->add(self::faker()->versionDescriptor([$apiSetDescriptor]));
 
         $this->assertInstanceOf(PackageDescriptor::class, $this->fixture->getPackage());
         $this->assertSame('\\', (string) $this->fixture->getPackage()->getName());

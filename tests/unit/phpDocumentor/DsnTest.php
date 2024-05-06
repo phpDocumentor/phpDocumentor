@@ -75,7 +75,7 @@ class DsnTest extends TestCase
         $this->assertEquals(new Path('/PathWithoutSlash'), $dns->getPath(), 'Path does not match');
     }
 
-    public function provideDsnsToTestAgainst(): array
+    public static function provideDsnsToTestAgainst(): array
     {
         return [
             'test the most elaborate example of a DSN' => [
@@ -193,7 +193,7 @@ class DsnTest extends TestCase
         $this->assertEquals($scheme, $newSrcDns->getScheme());
     }
 
-    public function resolveDsnProvider(): array
+    public static function resolveDsnProvider(): array
     {
         return [
             'Relative src uri level up' => [

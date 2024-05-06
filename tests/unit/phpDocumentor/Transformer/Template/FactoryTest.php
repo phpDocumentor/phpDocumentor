@@ -47,7 +47,7 @@ final class FactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->globalTemplates = vfsStream::setup();
-        $this->flySystemFactory = $this->faker()->flySystemFactory();
+        $this->flySystemFactory = self::faker()->flySystemFactory();
         $this->fixture = new Factory(
             new WriterCollection(
                 [
