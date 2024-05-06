@@ -9,6 +9,7 @@ use phpDocumentor\Guides\Nodes\InlineCompoundNode;
 use phpDocumentor\Guides\Nodes\PHP\ClassList;
 use phpDocumentor\Guides\RestructuredText\Parser\BlockContext;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
+use phpDocumentor\Guides\RestructuredText\Parser\DocumentParserContext;
 use phpDocumentor\Guides\RestructuredText\Parser\Productions\Rule;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -32,7 +33,7 @@ final class PHPClassListTest extends TestCase
         $directive = new PHPClassList($rule->reveal());
 
         $node = $directive->process(
-            $this->prophesize(BlockContext::class)->reveal(),
+            new BlockContext($this->prophesize(DocumentParserContext::class)->reveal(), 'phpdoc:class-list'),
             new Directive('variable', 'phpdoc:class-list', '[*]'),
         );
 

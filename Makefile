@@ -1,7 +1,7 @@
 ARGS ?=
 
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
-.DOCKER_COMPOSE_RUN = ${.USER} docker-compose run --rm
+.DOCKER_COMPOSE_RUN = ${.USER} docker compose run --rm
 .PHP = docker run --user=$(shell id -u):$(shell id -g) -it --rm -v${CURDIR}:/data -w /data php:8.1
 
 .PHONY: help

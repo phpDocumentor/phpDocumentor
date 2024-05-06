@@ -25,7 +25,7 @@ final class DocumentCollector
         DocumentNode $document,
     ): void {
         $this->guideSetDescriptor->addDocument(
-            $file,
+            $document->getFilePath(),
             new DocumentDescriptor(
                 $document,
                 $document->getHash(),

@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer;
+use phpDocumentor\Guides\RenderContext;
 use Psr\Log\LoggerInterface;
 
 use function addslashes;
@@ -43,6 +44,16 @@ final class PlantumlClassDiagram implements Generator
         }
 
         $output = $this->plantumlRenderer->render(
+            new class extends RenderContext{
+                public function __construct()
+                {
+                }
+
+                public function getLoggerInformation(): array
+                {
+                    return [];
+                }
+            },
             <<<PUML
 skinparam shadowing false
 skinparam linetype ortho

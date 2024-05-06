@@ -28,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter */
 final class LinkAdapterTest extends TestCase
 {
     use Faker;
