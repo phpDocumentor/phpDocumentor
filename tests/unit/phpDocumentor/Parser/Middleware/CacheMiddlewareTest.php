@@ -27,16 +27,11 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use function base64_encode;
 use function serialize;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\CacheMiddleware
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\CacheMiddleware */
 final class CacheMiddlewareTest extends TestCase
 {
     use Faker;
 
-    /** @covers ::execute */
     public function testReturnsCachedResponseIfFileContentsIsTheSame(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -49,7 +44,7 @@ final class CacheMiddlewareTest extends TestCase
 
         $response = $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
                 new ProjectFactoryStrategies([]),
             ),
@@ -61,7 +56,6 @@ final class CacheMiddlewareTest extends TestCase
         $this->assertEquals($reflectedFile, $response);
     }
 
-    /** @covers ::execute */
     public function testCachesResponseWhenReturningAnUncachedFile(): void
     {
         $file = $this->givenFileWithContent('file.php', 'cached content');
@@ -73,7 +67,7 @@ final class CacheMiddlewareTest extends TestCase
 
         $response = $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 new File\LocalFile($file->url()),
                 new ProjectFactoryStrategies([]),
             ),

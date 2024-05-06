@@ -47,7 +47,7 @@ trait MagicMethodContainerTests
      *
      * @return bool[][]
      */
-    public function provideMagicMethodProperties(): array
+    public static function provideMagicMethodProperties(): array
     {
         return [
             // Instance magic method (default)
@@ -57,7 +57,6 @@ trait MagicMethodContainerTests
         ];
     }
 
-    /** @covers ::getMagicMethods */
     public function testMagicMethodsReturnsEmptyCollectionWhenNoTags(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMagicMethods());

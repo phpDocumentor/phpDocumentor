@@ -18,24 +18,16 @@ use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor */
 final class ApiSetDescriptorTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::setFiles
-     * @covers ::getFiles
-     */
     public function testContainsAListingOfFilesInThisSet(): void
     {
-        $source = $this->faker()->source();
+        $source = self::faker()->source();
         $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
-        $files = new Collection([$this->faker()->fileDescriptor()]);
+        $files = new Collection([self::faker()->fileDescriptor()]);
 
         self::assertEquals(new Collection(), $set->getFiles());
 
@@ -44,19 +36,15 @@ final class ApiSetDescriptorTest extends TestCase
         self::assertSame($files, $set->getFiles());
     }
 
-    /**
-     * @covers ::setIndexes
-     * @covers ::getIndexes
-     */
     public function testCanHaveASeriesOfIndexes(): void
     {
-        $source = $this->faker()->source();
+        $source = self::faker()->source();
         $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
         $indexes = new Collection(
             [
                 'elements' => Collection::fromInterfaceString(
                     ElementInterface::class,
-                    [$this->faker()->fileDescriptor()],
+                    [self::faker()->fileDescriptor()],
                 ),
             ],
         );
@@ -73,14 +61,13 @@ final class ApiSetDescriptorTest extends TestCase
         self::assertSame($indexes, $set->getIndexes());
     }
 
-    /** @covers ::findElement */
     public function testCanFetchAnElementBasedOnItsFqsen(): void
     {
-        $source = $this->faker()->source();
+        $source = self::faker()->source();
         $set = new ApiSetDescriptor('api', $source, 'output', ApiSpecification::createDefault());
 
-        $fqsen = $this->faker()->fqsen();
-        $descriptor = $this->faker()->classDescriptor($fqsen);
+        $fqsen = self::faker()->fqsen();
+        $descriptor = self::faker()->classDescriptor($fqsen);
 
         self::assertEquals(new Collection(), $set->getIndexes()['elements']);
 

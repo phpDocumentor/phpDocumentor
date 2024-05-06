@@ -14,17 +14,13 @@ final class ValidatorTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @covers ::__construct
-     * @covers ::isValid
-     */
     public function testValidatesExtensionFor(): void
     {
         $application = new ApplicationName('phpDocumentor/other');
         $version = new Version();
         $validator = new Validator($application, $version);
 
-        $manifest = $this->faker()->extensionManifest('1.0.0');
+        $manifest = self::faker()->extensionManifest('1.0.0');
         $extension = ExtensionInfo::fromManifest($manifest, '/extension');
 
         self::assertFalse($validator->isValid($extension));

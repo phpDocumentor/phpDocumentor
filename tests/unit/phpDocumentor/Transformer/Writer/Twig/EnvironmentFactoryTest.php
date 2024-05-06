@@ -30,11 +30,7 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory */
 final class EnvironmentFactoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -70,16 +66,14 @@ final class EnvironmentFactoryTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\ProjectDescriptor
      * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     *
-     * @covers ::create
      */
     public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension(): void
     {
-        $template = $this->faker()->template();
+        $template = self::faker()->template();
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
@@ -91,17 +85,15 @@ final class EnvironmentFactoryTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\ProjectDescriptor
      * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     *
-     * @covers ::create
      */
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders(): void
     {
-        $template = $this->faker()->template();
+        $template = self::faker()->template();
         $mountManager = $template->files();
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
@@ -124,16 +116,14 @@ final class EnvironmentFactoryTest extends TestCase
      * @uses \phpDocumentor\Descriptor\ProjectDescriptor
      * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
      * @uses \phpDocumentor\Transformer\Template\Parameter
-     *
-     * @covers ::create
      */
     public function testTheCreatedEnvironmentHasTheDebugExtension(): void
     {
-        $template = $this->faker()->template();
+        $template = self::faker()->template();
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $projectDescriptor = $this->faker()->projectDescriptor(
-            [$this->faker()->versionDescriptor([$apiSetDescriptor])],
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
         );
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 

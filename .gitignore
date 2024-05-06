@@ -18,6 +18,7 @@ var/
 cypress/screenshots
 cypress/videos
 .phpunit.result.cache
+.phpunit.cache
 
 # IDEs and editors
 .idea

@@ -14,30 +14,19 @@ final class SourceTest extends TestCase
 {
     use Faker;
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testSourceReturnsDsn(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
         self::assertSame($dsn, $source->dsn());
     }
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     * @covers ::withDsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testWithDsnReturnsNewInstanceOfSource(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
         $newSource = $source->withDsn($dsn);
@@ -46,35 +35,25 @@ final class SourceTest extends TestCase
         self::assertNotSame($newSource, $source);
     }
 
-    /**
-     * @uses \phpDocumentor\Dsn
-     *
-     * @covers ::__construct
-     * @covers ::dsn
-     * @covers ::withDsn
-     */
+    /** @uses \phpDocumentor\Dsn */
     public function testWithDsnReturnsSetsNewDsn(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $source = new Source($dsn, []);
 
-        $newDsn = $this->faker()->dsn();
+        $newDsn = self::faker()->dsn();
         $newSource = $source->withDsn($newDsn);
 
         self::assertSame($newDsn, $newSource->dsn());
         self::assertSame($dsn, $source->dsn());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetGet
-     */
     public function testSourceImplementsArrayAccess(): void
     {
-        $dsn = $this->faker()->dsn();
+        $dsn = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -83,17 +62,13 @@ final class SourceTest extends TestCase
         self::assertSame($paths, $source['paths']);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetSet
-     */
     public function testSourceArrayAccessIsImmutableCannotSet(): void
     {
         $this->expectException(BadMethodCallException::class);
-        $dsn   = $this->faker()->dsn();
+        $dsn   = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -101,17 +76,13 @@ final class SourceTest extends TestCase
         $source['paths'] = [];
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetUnset
-     */
     public function testSourceArrayAccessIsImmutableCannotUnset(): void
     {
         $this->expectException(BadMethodCallException::class);
-        $dsn   = $this->faker()->dsn();
+        $dsn   = self::faker()->dsn();
         $paths = [
-            $this->faker->path(),
-            $this->faker->path(),
+            self::faker()->path(),
+            self::faker()->path(),
         ];
 
         $source = new Source($dsn, $paths);
@@ -119,20 +90,15 @@ final class SourceTest extends TestCase
         unset($source['paths']);
     }
 
-    /**
-     * @dataProvider pathProvider
-     * @covers ::__construct
-     * @covers ::globPatterns
-     * @covers ::<private>
-     */
+    /** @dataProvider pathProvider */
     public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
     {
-        $source = new Source($this->faker()->dsn(), [$input]);
+        $source = new Source(self::faker()->dsn(), [$input]);
 
         self::assertEquals([$glob], $source->globPatterns());
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             [

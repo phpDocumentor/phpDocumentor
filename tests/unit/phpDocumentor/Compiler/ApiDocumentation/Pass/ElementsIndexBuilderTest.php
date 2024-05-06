@@ -45,7 +45,7 @@ class ElementsIndexBuilderTest extends TestCase
     {
         $this->fixture = new ElementsIndexBuilder();
 
-        $this->apiSet = $this->faker()->apiSetDescriptor();
+        $this->apiSet = self::faker()->apiSetDescriptor();
 
         $file1 = new FileDescriptor('hash');
         $file2 = new FileDescriptor('hash2');
@@ -53,17 +53,11 @@ class ElementsIndexBuilderTest extends TestCase
         $this->apiSet->getFiles()->add($file2);
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $this->assertSame('Build "elements" index', $this->fixture->getDescription());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     */
     public function testAddClassesToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -89,11 +83,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertSame([$classDescriptor1, $classDescriptor2], array_values($elements));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     */
     public function testAddInterfacesToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -119,11 +108,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertSame([$interfaceDescriptor1, $interfaceDescriptor2], array_values($elements));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     */
     public function testAddTraitsToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -149,11 +133,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertSame([$traitDescriptor1, $traitDescriptor2], array_values($elements));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     */
     public function testAddFunctionsToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -179,11 +158,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertSame([$functionDescriptor1, $functionDescriptor2], array_values($elements));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     */
     public function testAddConstantsToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -209,12 +183,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertSame([$constantDescriptor1, $constantDescriptor2], array_values($elements));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     * @covers ::getSubElements
-     */
     public function testAddClassConstantsToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -253,12 +221,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertCount(0, $elements);
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     * @covers ::getSubElements
-     */
     public function testAddPropertiesToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);
@@ -296,12 +258,6 @@ class ElementsIndexBuilderTest extends TestCase
         $this->assertNull($this->apiSet->getIndexes()->fetch('properties'));
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::addElementsToIndexes
-     * @covers ::getIndexKey
-     * @covers ::getSubElements
-     */
     public function testAddMethodsToIndex(): void
     {
         $file1 = $this->apiSet->getFiles()->get(0);

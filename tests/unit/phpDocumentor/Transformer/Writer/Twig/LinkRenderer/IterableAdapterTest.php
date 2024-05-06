@@ -25,11 +25,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter */
 final class IterableAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -53,7 +49,6 @@ final class IterableAdapterTest extends TestCase
         );
     }
 
-    /** @covers ::supports */
     public function testItSupportsIterableTypes(): void
     {
         self::assertTrue($this->adapter->supports([]));
@@ -61,7 +56,6 @@ final class IterableAdapterTest extends TestCase
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /** @covers ::render */
     public function testRenderOnlyAcceptsIterableElements(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -69,17 +63,14 @@ final class IterableAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /**
-     * @covers ::render
-     * @dataProvider renderingVariations
-     */
+    /** @dataProvider renderingVariations */
     public function testRenderProducesExpectedOutputBasedOn(iterable $list, iterable $expected): void
     {
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
     }
 
     /** @return array<string, list<iterable>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
         return [
             'can handle empty arrays' => [[], []],

@@ -10,16 +10,11 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 use function md5;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\FlySystemFile
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Parser\FlySystemFile */
 final class FlySystemFileTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::path() */
     public function testFileCanBeInstantiatedAndPathIsReturned(): void
     {
         $path = '/path/to/file';
@@ -28,7 +23,6 @@ final class FlySystemFileTest extends TestCase
         $this->assertSame($path, $file->path());
     }
 
-    /** @covers ::getContents */
     public function testContentsOfFileCanBeRetrieved(): void
     {
         $path     = '/path/to/file';
@@ -42,7 +36,6 @@ final class FlySystemFileTest extends TestCase
         $this->assertSame($contents, $file->getContents());
     }
 
-    /** @covers ::md5 */
     public function testGetHashForFile(): void
     {
         $path     = '/path/to/file';

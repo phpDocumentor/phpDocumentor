@@ -15,13 +15,9 @@ namespace phpDocumentor\Transformer\Template;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Template\Parameter */
 final class ParameterTest extends TestCase
 {
-    /** @covers ::key */
     public function testGetKey(): void
     {
         $fixture = new Parameter('key', 'value');
@@ -29,7 +25,6 @@ final class ParameterTest extends TestCase
         $this->assertSame('key', $fixture->key());
     }
 
-    /** @covers ::value */
     public function testGetValue(): void
     {
         $fixture = new Parameter('key', 'value');

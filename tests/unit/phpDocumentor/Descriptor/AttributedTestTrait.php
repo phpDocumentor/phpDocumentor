@@ -6,7 +6,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
-trait AttributedTest
+trait AttributedTestTrait
 {
     abstract private function getParent(): ChildInterface|null;
 

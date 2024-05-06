@@ -8,7 +8,6 @@ use Mockery as m;
 
 trait TraitUsageTests
 {
-    /** @covers ::getInheritedMethods */
     public function testRetrievingInheritedMethodsReturnsTraitMethods(): void
     {
         // Arrange
@@ -25,10 +24,7 @@ trait TraitUsageTests
         $this->assertSame($expected, $result->getAll());
     }
 
-    /**
-     * @covers ::getInheritedMethods
-     * @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307
-     */
+    /** @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307 */
     public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange

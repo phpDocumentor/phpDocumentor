@@ -40,7 +40,7 @@ class CallableAdapterTest extends TestCase
     }
 
     /** @return iterable<string, array{input: Callable_, output: string}> */
-    public function callableProvider(): iterable
+    public static function callableProvider(): iterable
     {
         yield
           'empty callable' => [

@@ -308,7 +308,7 @@ jobs:
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
     - name: Run PHPUnit
-      run: ./bin/phpunit --testsuite=unit,integration
+      run: ./bin/phpunit --testsuite=unit,integration --no-coverage
 
   e2e:
     runs-on: ubuntu-latest

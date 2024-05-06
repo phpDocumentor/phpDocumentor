@@ -21,13 +21,11 @@ use Prophecy\PhpUnit\ProphecyTrait;
  * Tests the functionality for the Filter class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
- * @covers ::__construct
  */
 final class FilterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::filter */
     public function testFilter(): void
     {
         $filterableMock = $this->prophesize(Filterable::class)->reveal();

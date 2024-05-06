@@ -15,16 +15,9 @@ namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Path
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Path */
 final class PathTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::__toString
-     */
     public function testItCanContainALocationOnAStorageService(): void
     {
         $path = new Path('/my/Path');
@@ -32,7 +25,6 @@ final class PathTest extends TestCase
         $this->assertSame('/my/Path', (string) $path);
     }
 
-    /** @covers ::equals */
     public function testItCanCompareItselfToAnotherPath(): void
     {
         $subject    = new Path('a');
@@ -43,7 +35,6 @@ final class PathTest extends TestCase
         $this->assertFalse($subject->equals($dissimilar));
     }
 
-    /** @covers ::isAbsolutePath */
     public function testItCanCheckWhetherTheGivenPathIsAnAbsolutePath(): void
     {
         $this->assertTrue(Path::isAbsolutePath('\\\\my\\absolute\\path'));

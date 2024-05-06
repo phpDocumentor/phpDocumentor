@@ -29,19 +29,12 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Router\Router
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Router\Router */
 final class RouterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @covers ::generate
-     * @dataProvider provideNodesWithExpectedUrls
-     */
+    /** @dataProvider provideNodesWithExpectedUrls */
     public function testItCanGenerateUrlsForAGivenNode(
         $node,
         string $expected,
@@ -52,15 +45,13 @@ final class RouterTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    /** @covers ::generate */
     public function testItCanGenerateUriWhenGivenAUri(): void
     {
         $router = new Router();
 
-        $this->assertSame('https://my/uri', $router->generate($this->givenAUri()));
+        $this->assertSame('https://my/uri', $router->generate(self::givenAUri()));
     }
 
-    /** @covers ::generate */
     public function testItReturnsAnEmptyStringWhenUnableToGenerateAUrl(): void
     {
         $router = new Router();
@@ -69,34 +60,34 @@ final class RouterTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function provideNodesWithExpectedUrls(): array
+    public static function provideNodesWithExpectedUrls(): array
     {
         return [
-            'for a file' => [$this->givenAFileDescriptor(), '/files/my-file.html'],
-            'for a package' => [$this->givenAPackageDescriptor(), '/packages/My-Package.html'],
-            'for a namespace' => [$this->givenANamespaceDescriptor(), '/namespaces/my-namespace.html'],
+            'for a file' => [self::givenAFileDescriptor(), '/files/my-file.html'],
+            'for a package' => [self::givenAPackageDescriptor(), '/packages/My-Package.html'],
+            'for a namespace' => [self::givenANamespaceDescriptor(), '/namespaces/my-namespace.html'],
             'for a function' => [
-                $this->givenAFunctionDescriptor(),
+                self::givenAFunctionDescriptor(),
                 '/namespaces/my-namespace.html#function_myFunction',
             ],
             'for a global constant' => [
-                $this->givenAGlobalConstantDescriptor(),
+                self::givenAGlobalConstantDescriptor(),
                 '/namespaces/my-namespace.html#constant_MY_CONSTANT',
             ],
-            'for a trait' => [$this->givenATraitDescriptor(), '/classes/My-Trait.html'],
-            'for an interface' => [$this->givenAnInterfaceDescriptor(), '/classes/My-Interface.html'],
-            'for a class' => [$this->givenAClassDescriptor(), '/classes/My-Class.html'],
-            'for a method' => [$this->givenAMethodDescriptor(), '/classes/My-Class.html#method_myMethod'],
-            'for a property' => [$this->givenAPropertyDescriptor(), '/classes/My-Class.html#property_myProperty'],
+            'for a trait' => [self::givenATraitDescriptor(), '/classes/My-Trait.html'],
+            'for an interface' => [self::givenAnInterfaceDescriptor(), '/classes/My-Interface.html'],
+            'for a class' => [self::givenAClassDescriptor(), '/classes/My-Class.html'],
+            'for a method' => [self::givenAMethodDescriptor(), '/classes/My-Class.html#method_myMethod'],
+            'for a property' => [self::givenAPropertyDescriptor(), '/classes/My-Class.html#property_myProperty'],
             'for a class constant' => [
-                $this->givenAClassConstantDescriptor(),
+                self::givenAClassConstantDescriptor(),
                 '/classes/My-Class.html#constant_MY_CONSTANT',
             ],
-            'for an fqsen' => [$this->givenAnFqsen(), '/classes/My-Class.html#method_myMethod'],
+            'for an fqsen' => [self::givenAnFqsen(), '/classes/My-Class.html#method_myMethod'],
         ];
     }
 
-    private function givenAFileDescriptor(): FileDescriptor
+    private static function givenAFileDescriptor(): FileDescriptor
     {
         $descriptor = new FileDescriptor('abc');
         $descriptor->setPath('My/File.php');
@@ -104,7 +95,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAPackageDescriptor(): PackageDescriptor
+    private static function givenAPackageDescriptor(): PackageDescriptor
     {
         $descriptor = new PackageDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Package'));
@@ -112,7 +103,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenANamespaceDescriptor(): NamespaceDescriptor
+    private static function givenANamespaceDescriptor(): NamespaceDescriptor
     {
         $descriptor = new NamespaceDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Namespace'));
@@ -120,25 +111,25 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAFunctionDescriptor(): FunctionDescriptor
+    private static function givenAFunctionDescriptor(): FunctionDescriptor
     {
         $descriptor = new FunctionDescriptor();
         $descriptor->setName('myFunction');
-        $descriptor->setNamespace($this->givenANamespaceDescriptor());
+        $descriptor->setNamespace(self::givenANamespaceDescriptor());
 
         return $descriptor;
     }
 
-    private function givenAGlobalConstantDescriptor(): ConstantDescriptor
+    private static function givenAGlobalConstantDescriptor(): ConstantDescriptor
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
-        $descriptor->setNamespace($this->givenANamespaceDescriptor());
+        $descriptor->setNamespace(self::givenANamespaceDescriptor());
 
         return $descriptor;
     }
 
-    private function givenATraitDescriptor(): TraitDescriptor
+    private static function givenATraitDescriptor(): TraitDescriptor
     {
         $descriptor = new TraitDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Trait'));
@@ -146,7 +137,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAnInterfaceDescriptor(): InterfaceDescriptor
+    private static function givenAnInterfaceDescriptor(): InterfaceDescriptor
     {
         $descriptor = new InterfaceDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
@@ -154,7 +145,7 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAClassDescriptor(): ClassDescriptor
+    private static function givenAClassDescriptor(): ClassDescriptor
     {
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
@@ -162,39 +153,39 @@ final class RouterTest extends TestCase
         return $descriptor;
     }
 
-    private function givenAMethodDescriptor(): MethodDescriptor
+    private static function givenAMethodDescriptor(): MethodDescriptor
     {
         $descriptor = new MethodDescriptor();
         $descriptor->setName('myMethod');
-        $descriptor->setParent($this->givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }
 
-    private function givenAPropertyDescriptor(): PropertyDescriptor
+    private static function givenAPropertyDescriptor(): PropertyDescriptor
     {
         $descriptor = new PropertyDescriptor();
         $descriptor->setName('myProperty');
-        $descriptor->setParent($this->givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }
 
-    private function givenAClassConstantDescriptor(): ConstantDescriptor
+    private static function givenAClassConstantDescriptor(): ConstantDescriptor
     {
         $descriptor = new ConstantDescriptor();
         $descriptor->setName('MY_CONSTANT');
-        $descriptor->setParent($this->givenAClassDescriptor());
+        $descriptor->setParent(self::givenAClassDescriptor());
 
         return $descriptor;
     }
 
-    private function givenAnFqsen(): Fqsen
+    private static function givenAnFqsen(): Fqsen
     {
         return new Fqsen('\My\Class::myMethod()');
     }
 
-    private function givenAUri(): Uri
+    private static function givenAUri(): Uri
     {
         return Uri::createFromString('https://my/uri');
     }

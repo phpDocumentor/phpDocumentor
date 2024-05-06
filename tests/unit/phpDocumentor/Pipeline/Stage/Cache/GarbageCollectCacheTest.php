@@ -20,17 +20,12 @@ use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache */
 final class GarbageCollectCacheTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function testItWillInstructTheDescriptorMapperToCollectGarbage(): void
     {
         $files = ['file1'];
@@ -40,8 +35,8 @@ final class GarbageCollectCacheTest extends TestCase
         $fixture = new GarbageCollectCache($descriptorMapper->reveal());
 
         $builder = $this->prophesize(ProjectDescriptorBuilder::class)->reveal();
-        $apiSet = $this->faker()->apiSetDescriptor();
-        $version = $this->faker()->versionDescriptor([$apiSet]);
+        $apiSet = self::faker()->apiSetDescriptor();
+        $version = self::faker()->versionDescriptor([$apiSet]);
 
         $descriptorMapper->garbageCollect($version, $apiSet, $files)->shouldBeCalledOnce();
 

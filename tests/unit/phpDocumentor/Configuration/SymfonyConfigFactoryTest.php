@@ -14,11 +14,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\SymfonyConfigFactory
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\SymfonyConfigFactory */
 final class SymfonyConfigFactoryTest extends TestCase
 {
     use Faker;
@@ -26,7 +22,6 @@ final class SymfonyConfigFactoryTest extends TestCase
 
     private SymfonyConfigFactory $fixture;
 
-    /** @covers ::createDefault */
     public function testGetDefaultConfig(): void
     {
         $fixture = $this->createConfigFactoryWithTestDefinition();
@@ -36,18 +31,14 @@ final class SymfonyConfigFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Configuration\Exception\UpgradeFailedException::create
-     *
-     * @covers ::createDefault
-     */
+    /** @uses \phpDocumentor\Configuration\Exception\UpgradeFailedException::create */
     public function testThrowsExceptionWhenUpgradeFails(): void
     {
         $this->expectException(UpgradeFailedException::class);
 
         $configMock = $this->prophesize(ConfigurationInterface::class);
         $configMock->willImplement(Upgradable::class);
-        $configMock->getConfigTreeBuilder()->willReturn($this->faker()->configTreeBuilder('test'));
+        $configMock->getConfigTreeBuilder()->willReturn(self::faker()->configTreeBuilder('test'));
         $configMock->upgrade(Argument::any())->willReturn([]);
 
         $this->fixture = new SymfonyConfigFactory(['test' => $configMock->reveal()]);
@@ -57,11 +48,7 @@ final class SymfonyConfigFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException::create
-     *
-     * @covers ::createFromFile
-     */
+    /** @uses \phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException::create */
     public function testThrowsExceptionWhenConfigVersionIsNotSupported(): void
     {
         $this->expectException(UnsupportedConfigVersionException::class);
@@ -83,7 +70,7 @@ XML,
     private function createConfigFactoryWithTestDefinition(): SymfonyConfigFactory
     {
         $configMock = $this->prophesize(ConfigurationInterface::class);
-        $configMock->getConfigTreeBuilder()->willReturn($this->faker()->configTreeBuilder('test'));
+        $configMock->getConfigTreeBuilder()->willReturn(self::faker()->configTreeBuilder('test'));
 
         return new SymfonyConfigFactory(['test' => $configMock->reveal()]);
     }

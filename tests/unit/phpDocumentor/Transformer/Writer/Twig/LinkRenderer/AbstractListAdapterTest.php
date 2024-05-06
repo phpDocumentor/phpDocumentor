@@ -31,11 +31,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter */
 final class AbstractListAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -67,14 +63,12 @@ final class AbstractListAdapterTest extends TestCase
         );
     }
 
-    /** @covers ::supports */
     public function testItSupportsAbstractLists(): void
     {
         self::assertTrue($this->adapter->supports(new Array_()));
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /** @covers ::render */
     public function testRenderOnlyAcceptsAbstractLists(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -82,22 +76,15 @@ final class AbstractListAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /**
-     * @covers ::render
-     * @dataProvider renderingVariations
-     */
+    /** @dataProvider renderingVariations */
     public function testRenderProducesExpectedOutputBasedOn(AbstractList $list, string $expected): void
     {
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));
     }
 
     /** @return array<string, list<AbstractList|string>> */
-    public function renderingVariations(): array
+    public static function renderingVariations(): array
     {
-        $unknownAbstractList = $this->prophesize(AbstractList::class);
-        $unknownAbstractList->getKeyType()->willReturn(new String_());
-        $unknownAbstractList->getValueType()->willReturn(new Integer());
-
         return [
             'Array with undefined key nor value' => [
                 new Array_(),
@@ -128,7 +115,8 @@ final class AbstractListAdapterTest extends TestCase
                 'object&lt;string|int, string&gt;',
             ],
             'Unknown AbstractList with string key and int value' => [
-                $unknownAbstractList->reveal(),
+                new class (new Integer(), new String_()) extends AbstractList {
+                },
                 'mixed&lt;string, int&gt;',
             ],
         ];

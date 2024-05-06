@@ -29,10 +29,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 use function count;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler */
 final class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -58,7 +55,6 @@ final class MethodAssemblerTest extends TestCase
      *
      * @dataProvider provideNotations
      * @covers       ::create
-     * @covers       ::createArgumentDescriptorForMagicMethod
      * @covers       ::buildDescriptor
      */
     public function testCreateMethodDescriptorFromVariousNotations(
@@ -86,7 +82,7 @@ final class MethodAssemblerTest extends TestCase
      *
      * @return string[][]
      */
-    public function provideNotations(): array
+    public static function provideNotations(): array
     {
         return [
             // just a method without a return type

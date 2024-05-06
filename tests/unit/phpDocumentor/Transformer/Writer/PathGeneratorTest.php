@@ -29,8 +29,6 @@ use RuntimeException;
  * @uses \phpDocumentor\Transformer\Template
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\PathGenerator
- * @covers ::__construct
- * @covers ::<private>
  */
 final class PathGeneratorTest extends TestCase
 {
@@ -60,10 +58,7 @@ final class PathGeneratorTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::generate
-     * @dataProvider providePathsToUrlEncode
-     */
+    /** @dataProvider providePathsToUrlEncode */
     public function testWhenAnArtifactIsProvidedGenerateAPathToThatLocation($artifact, $variable, $expected): void
     {
         $transformation = $this->givenATransformationWithArtifact($artifact);
@@ -75,7 +70,6 @@ final class PathGeneratorTest extends TestCase
         $this->assertSame($expected, $path);
     }
 
-    /** @covers ::generate */
     public function testAnErrorOccursWhenAnUnknownVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);
@@ -87,7 +81,6 @@ final class PathGeneratorTest extends TestCase
         $this->generator->generate(new FileDescriptor('hash'), $transformation);
     }
 
-    /** @covers ::generate */
     public function testAnErrorOccursWhenAnEmptyVariableIsAsked(): void
     {
         $this->expectException(RuntimeException::class);
@@ -110,7 +103,7 @@ final class PathGeneratorTest extends TestCase
         );
     }
 
-    public function providePathsToUrlEncode(): array
+    public static function providePathsToUrlEncode(): array
     {
         return [
             'without variables' => [

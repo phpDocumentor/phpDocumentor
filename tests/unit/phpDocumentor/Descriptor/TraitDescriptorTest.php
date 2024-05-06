@@ -20,7 +20,6 @@ use phpDocumentor\Reflection\Fqsen;
  * Tests the functionality for the TraitDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\TraitDescriptor
- * @covers ::__construct
  */
 final class TraitDescriptorTest extends MockeryTestCase
 {
@@ -38,10 +37,6 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->fixture->setFullyQualifiedStructuralElementName(new Fqsen('\My\Trait'));
     }
 
-    /**
-     * @covers ::setProperties
-     * @covers ::getProperties
-     */
     public function testSettingAndGettingConstants(): void
     {
         $collection = new Collection();
@@ -51,10 +46,6 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertSame($collection, $this->fixture->getConstants());
     }
 
-    /**
-     * @covers ::setProperties
-     * @covers ::getProperties
-     */
     public function testSettingAndGettingProperties(): void
     {
         $collection = new Collection();
@@ -64,10 +55,6 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertSame($collection, $this->fixture->getProperties());
     }
 
-    /**
-     * @covers ::setMethods
-     * @covers ::getMethods
-     */
     public function testSettingAndGettingMethods(): void
     {
         $collection = new Collection();
@@ -77,7 +64,6 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertSame($collection, $this->fixture->getMethods());
     }
 
-    /** @covers ::setPackage */
     public function testSettingAndGettingPackage(): void
     {
         $package = new PackageDescriptor();
@@ -103,10 +89,6 @@ final class TraitDescriptorTest extends MockeryTestCase
         $this->assertSame($package, $this->fixture->getMethods()->first()->getPackage());
     }
 
-    /**
-     * @covers ::getUsedTraits
-     * @covers ::setUsedTraits
-     */
     public function testSettingAndGettingUsedTraits(): void
     {
         $usedTraitsCollection = new Collection();

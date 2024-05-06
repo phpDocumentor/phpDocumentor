@@ -1,50 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<phpunit bootstrap="tests/common/bootstrap.php"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
-         executionOrder="depends,defects"
-         colors="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTestsThatDoNotTestAnything="true"
-         beStrictAboutCoversAnnotation="false"
-         convertDeprecationsToExceptions="true"
-         extensionsDirectory="./tools/phpunit.d"
->
-    <testsuites>
-        <testsuite name="unit">
-            <directory>./tests/unit/</directory>
-            <directory>./incubator/*/tests/unit/</directory>
-        </testsuite>
-        <testsuite name="integration">
-            <directory>./tests/integration/</directory>
-        </testsuite>
-        <testsuite name="functional">
-            <directory>./tests/functional/</directory>
-        </testsuite>
-        <testsuite name="incubator">
-            <directory>./incubator/*/tests/unit/</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src/incubator/json-path</directory>
-            <directory suffix=".php">src/phpDocumentor</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html"
-            target="build/coverage"
-            lowUpperBound="35"
-            highLowerBound="70"
-            showUncoveredFiles="true"
-        />
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-        <log type="junit" target="build/logs/junit.xml" />
-    </logging>
-    <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"
-            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
-    </listeners>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        bootstrap="tests/common/bootstrap.php"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+        executionOrder="depends,defects"
+        colors="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestsThatDoNotTestAnything="false"
+        extensionsDirectory="./tools/phpunit.d"
+        cacheDirectory=".phpunit.cache"
+        beStrictAboutCoverageMetadata="false">
+  <coverage>
+    <report>
+      <clover outputFile="build/logs/clover.xml"/>
+      <html outputDirectory="build/coverage" lowUpperBound="35" highLowerBound="70"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="unit">
+      <directory>./tests/unit/</directory>
+      <directory>./incubator/*/tests/unit/</directory>
+    </testsuite>
+    <testsuite name="integration">
+      <directory>./tests/integration/</directory>
+    </testsuite>
+    <testsuite name="functional">
+      <directory>./tests/functional/</directory>
+    </testsuite>
+    <testsuite name="incubator">
+      <directory>./incubator/*/tests/unit/</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <junit outputFile="build/logs/junit.xml"/>
+  </logging>
+  <source>
+    <include>
+      <directory suffix=".php">src/incubator/json-path</directory>
+      <directory suffix=".php">src/phpDocumentor</directory>
+    </include>
+  </source>
 </phpunit>

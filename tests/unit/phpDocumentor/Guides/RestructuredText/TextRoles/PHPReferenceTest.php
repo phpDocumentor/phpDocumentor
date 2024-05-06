@@ -35,7 +35,7 @@ final class PHPReferenceTest extends TestCase
         );
     }
 
-    public function phpRefrenceProvider(): iterable
+    public static function phpRefrenceProvider(): iterable
     {
         yield [
             'role' => 'php:class',

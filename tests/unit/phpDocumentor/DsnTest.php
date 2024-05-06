@@ -15,26 +15,11 @@ namespace phpDocumentor;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Dsn
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Dsn */
 class DsnTest extends TestCase
 {
     /**
      * @uses         \phpDocumentor\Path
-     *
-     * @covers ::getScheme
-     * @covers ::getUsername
-     * @covers ::getPassword
-     * @covers ::getPort
-     * @covers ::getHost
-     * @covers ::getPath
-     * @covers ::getQuery
-     * @covers ::getParameters
-     * @covers ::__toString
-     * @covers ::createFromString
      *
      * @dataProvider provideDsnsToTestAgainst
      */
@@ -63,11 +48,6 @@ class DsnTest extends TestCase
         $this->assertSame($parameters, $fixture->getParameters(), 'Parameters do not match');
     }
 
-    /**
-     * @covers ::createFromString
-     * @covers ::withPath
-     * @covers ::getPath
-     */
     public function testPathNotStartingWithSlash(): void
     {
         $dns = Dsn::createFromString('file://test');
@@ -75,7 +55,7 @@ class DsnTest extends TestCase
         $this->assertEquals(new Path('/PathWithoutSlash'), $dns->getPath(), 'Path does not match');
     }
 
-    public function provideDsnsToTestAgainst(): array
+    public static function provideDsnsToTestAgainst(): array
     {
         return [
             'test the most elaborate example of a DSN' => [
@@ -179,10 +159,7 @@ class DsnTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::resolve
-     * @dataProvider resolveDsnProvider
-     */
+    /** @dataProvider resolveDsnProvider */
     public function testResolve(string $baseDsn, string $srcDsn, string $expected, string|null $scheme): void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);
@@ -193,7 +170,7 @@ class DsnTest extends TestCase
         $this->assertEquals($scheme, $newSrcDns->getScheme());
     }
 
-    public function resolveDsnProvider(): array
+    public static function resolveDsnProvider(): array
     {
         return [
             'Relative src uri level up' => [

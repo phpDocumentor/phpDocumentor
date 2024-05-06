@@ -38,7 +38,7 @@ final class ResolveInlineMarkersTest extends TestCase
 SOURCE,
         );
 
-        $apiDescriptor = $this->faker()->apiSetDescriptor();
+        $apiDescriptor = self::faker()->apiSetDescriptor();
         $apiDescriptor->setFiles(new Collection([$fileDescriptor]));
 
         $fixture->__invoke($apiDescriptor);

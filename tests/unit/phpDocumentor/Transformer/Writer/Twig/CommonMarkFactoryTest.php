@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory */
 final class CommonMarkFactoryTest extends TestCase
 {
-    /** @covers ::createConverter */
     public function testCreateAddsExtensions(): void
     {
         $extension = new DisallowedRawHtmlExtension();

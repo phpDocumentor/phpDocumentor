@@ -8,19 +8,11 @@ use phpDocumentor\Event\EventAbstract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Event\PreParsingEvent
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Event\PreParsingEvent */
 final class PreParsingEventTest extends TestCase
 {
     private EventAbstract|null $fixture = null;
 
-    /**
-     * @covers ::createInstance
-     * @covers ::getSubject
-     */
     public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
@@ -28,10 +20,6 @@ final class PreParsingEventTest extends TestCase
         $this->assertSame($subject, $this->fixture->getSubject());
     }
 
-    /**
-     * @covers ::setFileCount
-     * @covers ::getFileCount
-     */
     public function testSettingAndGettingTheFileCount(): void
     {
         $event = new PreParsingEvent(new stdClass());

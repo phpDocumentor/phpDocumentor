@@ -15,13 +15,13 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagWithoutNameIsNotFiltered(): void
     {
-        $constantDescriptor = $this->faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
-        $constantDescriptor->getTags()->set('var', new Collection([$this->faker()->varTagDescriptor()]));
+        $constantDescriptor = self::faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
+        $constantDescriptor->getTags()->set('var', new Collection([self::faker()->varTagDescriptor()]));
 
-        $classDescriptor = $this->faker()->classDescriptor(new Fqsen('\\MyClass'));
+        $classDescriptor = self::faker()->classDescriptor(new Fqsen('\\MyClass'));
         $classDescriptor->setConstants(new Collection([$constantDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('classes')->set('\\MyClass', $classDescriptor);
 
         $subject = new VarTagModifier();
@@ -32,13 +32,13 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagWithNameIsFilteredWhenNotMatching(): void
     {
-        $constantDescriptor = $this->faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
-        $constantDescriptor->getTags()->set('var', new Collection([$this->faker()->varTagDescriptor('OTHER_CONST')]));
+        $constantDescriptor = self::faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
+        $constantDescriptor->getTags()->set('var', new Collection([self::faker()->varTagDescriptor('OTHER_CONST')]));
 
-        $classDescriptor = $this->faker()->classDescriptor(new Fqsen('\\MyClass'));
+        $classDescriptor = self::faker()->classDescriptor(new Fqsen('\\MyClass'));
         $classDescriptor->setConstants(new Collection([$constantDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('classes')->set('\\MyClass', $classDescriptor);
 
         $subject = new VarTagModifier();
@@ -49,13 +49,13 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagWithNameIsNotFilteredWhenNameMatches(): void
     {
-        $constantDescriptor = $this->faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
-        $constantDescriptor->getTags()->set('var', new Collection([$this->faker()->varTagDescriptor('MY_CONSTANT')]));
+        $constantDescriptor = self::faker()->constantDescriptor(new Fqsen('\\MyClass::MY_CONSTANT'));
+        $constantDescriptor->getTags()->set('var', new Collection([self::faker()->varTagDescriptor('MY_CONSTANT')]));
 
-        $classDescriptor = $this->faker()->classDescriptor(new Fqsen('\\MyClass'));
+        $classDescriptor = self::faker()->classDescriptor(new Fqsen('\\MyClass'));
         $classDescriptor->setConstants(new Collection([$constantDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('classes')->set('\\MyClass', $classDescriptor);
 
         $subject = new VarTagModifier();
@@ -66,16 +66,16 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagForClassPropertiesAreFiltered(): void
     {
-        $propertyDescriptor = $this->faker()->propertyDescriptor(new Fqsen('\\MyClass::$myProperty'));
+        $propertyDescriptor = self::faker()->propertyDescriptor(new Fqsen('\\MyClass::$myProperty'));
         $propertyDescriptor->getTags()->set('var', new Collection([
-            $this->faker()->varTagDescriptor('$foo'),
-            $this->faker()->varTagDescriptor('myProperty'),
+            self::faker()->varTagDescriptor('$foo'),
+            self::faker()->varTagDescriptor('myProperty'),
         ]));
 
-        $classDescriptor = $this->faker()->classDescriptor(new Fqsen('\\MyClass'));
+        $classDescriptor = self::faker()->classDescriptor(new Fqsen('\\MyClass'));
         $classDescriptor->setProperties(new Collection([$propertyDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('classes')->set('\\MyClass', $classDescriptor);
 
         $subject = new VarTagModifier();
@@ -86,16 +86,16 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagsForEnumConstantsAreFiltered(): void
     {
-        $constantDescriptor = $this->faker()->constantDescriptor(new Fqsen('\\MyEnum::MY_CONSTANT'));
+        $constantDescriptor = self::faker()->constantDescriptor(new Fqsen('\\MyEnum::MY_CONSTANT'));
         $constantDescriptor->getTags()->set('var', new Collection([
-            $this->faker()->varTagDescriptor('$foo'),
-            $this->faker()->varTagDescriptor('MY_CONSTANT'),
+            self::faker()->varTagDescriptor('$foo'),
+            self::faker()->varTagDescriptor('MY_CONSTANT'),
         ]));
 
-        $enumDescriptor = $this->faker()->enumDescriptor(new Fqsen('\\MyEnum'));
+        $enumDescriptor = self::faker()->enumDescriptor(new Fqsen('\\MyEnum'));
         $enumDescriptor->setConstants(new Collection([$constantDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('enums')->set('\\MyEnum', $enumDescriptor);
 
         $subject = new VarTagModifier();
@@ -106,16 +106,16 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagsForTraitConstantsAreFiltered(): void
     {
-        $constantDescriptor = $this->faker()->constantDescriptor(new Fqsen('\\MyTrait::MY_CONSTANT'));
+        $constantDescriptor = self::faker()->constantDescriptor(new Fqsen('\\MyTrait::MY_CONSTANT'));
         $constantDescriptor->getTags()->set('var', new Collection([
-            $this->faker()->varTagDescriptor('$foo'),
-            $this->faker()->varTagDescriptor('MY_CONSTANT'),
+            self::faker()->varTagDescriptor('$foo'),
+            self::faker()->varTagDescriptor('MY_CONSTANT'),
         ]));
 
-        $traitDescriptor = $this->faker()->traitDescriptor(new Fqsen('\\MyTrait'));
+        $traitDescriptor = self::faker()->traitDescriptor(new Fqsen('\\MyTrait'));
         $traitDescriptor->setConstants(new Collection([$constantDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('traits')->set('\\MyTrait', $traitDescriptor);
 
         $subject = new VarTagModifier();
@@ -126,16 +126,16 @@ final class VarTagModifierTest extends TestCase
 
     public function testVarTagsForTraitPropertiesAreFiltered(): void
     {
-        $propertyDescriptor = $this->faker()->propertyDescriptor(new Fqsen('\\MyTrait::$myProperty'));
+        $propertyDescriptor = self::faker()->propertyDescriptor(new Fqsen('\\MyTrait::$myProperty'));
         $propertyDescriptor->getTags()->set('var', new Collection([
-            $this->faker()->varTagDescriptor('$foo'),
-            $this->faker()->varTagDescriptor('myProperty'),
+            self::faker()->varTagDescriptor('$foo'),
+            self::faker()->varTagDescriptor('myProperty'),
         ]));
 
-        $traitDescriptor = $this->faker()->traitDescriptor(new Fqsen('\\MyTrait'));
+        $traitDescriptor = self::faker()->traitDescriptor(new Fqsen('\\MyTrait'));
         $traitDescriptor->setProperties(new Collection([$propertyDescriptor]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('traits')->set('\\MyTrait', $traitDescriptor);
 
         $subject = new VarTagModifier();

@@ -16,16 +16,11 @@ namespace phpDocumentor\Transformer\Writer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Collection
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Collection */
 final class CollectionTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::get */
     public function testOffsetGetWithNonExistingIndex(): void
     {
         $this->expectException('InvalidArgumentException');
@@ -33,10 +28,6 @@ final class CollectionTest extends TestCase
         (new Collection([]))->get('nonExistingIndex');
     }
 
-    /**
-     * @covers ::get
-     * @covers ::register
-     */
     public function testOffsetGetWithExistingIndex(): void
     {
         $writer = $this->prophesize(WriterAbstract::class);
@@ -46,7 +37,6 @@ final class CollectionTest extends TestCase
         self::assertSame($writer->reveal(), $fixture->get('key'));
     }
 
-    /** @covers ::checkRequirements */
     public function testCheckRequirements(): void
     {
         $writer = $this->prophesize(WriterAbstract::class);

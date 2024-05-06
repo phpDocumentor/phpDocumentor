@@ -42,11 +42,7 @@ final class StripInternalTest extends TestCase
         $this->fixture = new StripInternal();
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ClassDescriptor
-     *
-     * @covers ::__invoke
-     */
+    /** @uses \phpDocumentor\Descriptor\ClassDescriptor */
     public function testStripsInternalTagFromDescription(): void
     {
         $otherTag = new TagDescriptor('other');
@@ -71,11 +67,7 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ClassDescriptor
-     *
-     * @covers ::__invoke
-     */
+    /** @uses \phpDocumentor\Descriptor\ClassDescriptor */
     public function testKeepsInternalTagsInDescription(): void
     {
         $tags = [
@@ -101,7 +93,6 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /** @covers ::__invoke */
     public function testRemovesDescriptorIfTaggedAsInternal(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -119,7 +110,6 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /** @covers ::__invoke */
     public function testKeepsDescriptorIfTaggedAsInternalAndParsePrivateIsTrue(): void
     {
         $apiSpec = ApiSpecification::createDefault();
@@ -133,7 +123,6 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /** @covers ::__invoke */
     public function testDescriptorIsUnmodifiedIfThereIsNoInternalTag(): void
     {
         $apiSpec = ApiSpecification::createDefault();

@@ -18,14 +18,9 @@ use Symfony\Component\String\UnicodeString;
 
 use function md5;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\ReEncodedFile
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Parser\ReEncodedFile */
 final class ReEncodedFileTest extends TestCase
 {
-    /** @covers ::path */
     public function testReEncodedFileExposesPath(): void
     {
         $path = '/tmp/fileToBeParsed';
@@ -34,7 +29,6 @@ final class ReEncodedFileTest extends TestCase
         $this->assertSame($path, $file->path());
     }
 
-    /** @covers ::getContents */
     public function testReEncodedFileExposesContents(): void
     {
         $contents = 'Contents';
@@ -43,7 +37,6 @@ final class ReEncodedFileTest extends TestCase
         $this->assertSame($contents, $file->getContents());
     }
 
-    /** @covers ::md5 */
     public function testReEncodedFileExposesHashOfContents(): void
     {
         $contents = 'Contents';

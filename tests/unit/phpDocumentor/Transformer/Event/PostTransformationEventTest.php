@@ -17,10 +17,7 @@ use phpDocumentor\Event\EventAbstract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformationEvent
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformationEvent */
 final class PostTransformationEventTest extends TestCase
 {
     private PostTransformationEvent|EventAbstract $fixture;
@@ -33,10 +30,6 @@ final class PostTransformationEventTest extends TestCase
         $this->fixture = new PostTransformationEvent(new stdClass());
     }
 
-    /**
-     * @covers ::createInstance
-     * @covers ::getSubject
-     */
     public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();

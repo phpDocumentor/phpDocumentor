@@ -29,7 +29,7 @@ class AssemblerAbstractTest extends TestCase
         self::assertEquals($expected, (string) $type);
     }
 
-    public function typeProvider(): array
+    public static function typeProvider(): array
     {
         return [
             [

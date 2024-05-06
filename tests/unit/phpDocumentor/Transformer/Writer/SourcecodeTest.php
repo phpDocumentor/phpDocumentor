@@ -24,11 +24,7 @@ use phpDocumentor\Transformer\Transformation;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode */
 final class SourcecodeTest extends MockeryTestCase
 {
     use Faker;
@@ -43,19 +39,18 @@ final class SourcecodeTest extends MockeryTestCase
         $pathGenerator->generate(
             Argument::type(FileDescriptor::class),
             Argument::type(Transformation::class),
-        )->willReturn((string) $this->faker()->path());
+        )->willReturn((string) self::faker()->path());
         $this->sourceCode = new Sourcecode(
             $pathGenerator->reveal(),
         );
     }
 
-    /** @covers ::transform */
     public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
     {
         $transformation = $this->prophesize(Transformation::class);
-        $transformation->template()->shouldBeCalled()->willReturn($this->faker()->template());
+        $transformation->template()->shouldBeCalled()->willReturn(self::faker()->template());
 
-        $api = $this->faker()->apiSetDescriptor();
+        $api = self::faker()->apiSetDescriptor();
         $projectDescriptor = $this->giveProjectDescriptor($api);
 
         $this->sourceCode->transform($transformation->reveal(), $projectDescriptor, $api);
@@ -63,13 +58,13 @@ final class SourcecodeTest extends MockeryTestCase
 
     private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
     {
-        $projectDescriptor = $this->faker()->projectDescriptor();
-        $versionDescriptor = $this->faker()->versionDescriptor([$apiDescriptor]);
+        $projectDescriptor = self::faker()->projectDescriptor();
+        $versionDescriptor = self::faker()->versionDescriptor([$apiDescriptor]);
         $projectDescriptor->getVersions()->add($versionDescriptor);
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
-                [$this->faker()->fileDescriptor()],
+                [self::faker()->fileDescriptor()],
             ),
         );
 

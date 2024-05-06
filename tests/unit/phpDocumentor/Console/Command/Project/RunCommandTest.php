@@ -27,16 +27,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use function array_keys;
 
-/**
- * @coversDefaultClass \phpDocumentor\Console\Command\Project\RunCommand
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Console\Command\Project\RunCommand */
 class RunCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::execute */
     public function testPipelineIsInvokedWithTheNecessaryOptions(): void
     {
         $input = new StringInput('--force -f abc');
@@ -61,7 +56,6 @@ class RunCommandTest extends TestCase
         $this->assertSame(0, $command->run($input, $output));
     }
 
-    /** @covers ::configure */
     public function testCommandIsConfiguredWithTheRightOptions(): void
     {
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);

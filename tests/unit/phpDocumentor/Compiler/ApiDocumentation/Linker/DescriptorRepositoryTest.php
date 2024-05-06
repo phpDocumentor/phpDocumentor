@@ -18,16 +18,9 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\DescriptorRepository
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\DescriptorRepository */
 final class DescriptorRepositoryTest extends TestCase
 {
-    /**
-     * @covers ::setObjectAliasesList
-     * @covers ::findAlias
-     */
     public function testFindObjectUsingWithFqsen(): void
     {
         $object = new ClassDescriptor();
@@ -39,10 +32,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias((string) $fqsen));
     }
 
-    /**
-     * @covers ::setObjectAliasesList
-     * @covers ::findAlias
-     */
     public function testFindObjectUsingPseudoTypes(): void
     {
         $object = new ClassDescriptor();
@@ -58,10 +47,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias('$this::MyMethod()', $container));
     }
 
-    /**
-     * @covers ::setObjectAliasesList
-     * @covers ::findAlias
-     */
     public function testFindObjectUsingFqsenWithContextMarker(): void
     {
         $object = new ClassDescriptor();
@@ -78,10 +63,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
-    /**
-     * @covers ::setObjectAliasesList
-     * @covers ::findAlias
-     */
     public function testFindObjectUsingFqsenWhenContextRepresentsTheNamespace(): void
     {
         $object = new ClassDescriptor();
@@ -98,10 +79,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
-    /**
-     * @covers ::setObjectAliasesList
-     * @covers ::findAlias
-     */
     public function testFindObjectAliasWithFqsenAndContainerWhenContextIsGlobalNamespace(): void
     {
         $object = new ClassDescriptor();
@@ -118,7 +95,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertSame($object, $repository->findAlias($fqsenWithContextMarker, $container));
     }
 
-    /** @covers ::findAlias */
     public function testFindObjectAliasReturnsNamespaceContextWhenElementIsUndocumented(): void
     {
         $fqsenWithContextMarker = '@context::MyClass';
@@ -134,7 +110,6 @@ final class DescriptorRepositoryTest extends TestCase
         );
     }
 
-    /** @covers ::findAlias */
     public function testFindObjectAliasReturnsNothingWithUnknownFqsen(): void
     {
         $repository = new DescriptorRepository();

@@ -20,16 +20,11 @@ use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory */
 final class ConfigurationFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::createDefault */
     public function testCreatingTheDefaultConfiguration(): void
     {
         $configuration = ['exampleConfig'];
@@ -50,8 +45,6 @@ final class ConfigurationFactoryTest extends TestCase
      * If we execute a middleware as part of this step then we end up in an infinite loop.
      *
      * @uses \phpDocumentor\Configuration\ConfigurationFactory::addMiddleware
-     *
-     * @covers ::createDefault
      */
     public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware(): void
     {
@@ -76,11 +69,7 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /**
-     * @uses \phpDocumentor\Configuration\ConfigurationFactory::fromUri
-     *
-     * @covers ::fromDefaultLocations
-     */
+    /** @uses \phpDocumentor\Configuration\ConfigurationFactory::fromUri */
     public function testCreatingAConfigurationByScanningTheDefaultLocations(): void
     {
         // only create the actual configuration file phpdoc.xml, explicitly do not define phpdoc.dist.xml
@@ -110,11 +99,7 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /**
-     * @uses \phpDocumentor\Configuration\ConfigurationFactory::createDefault
-     *
-     * @covers ::fromDefaultLocations
-     */
+    /** @uses \phpDocumentor\Configuration\ConfigurationFactory::createDefault */
     public function testWhenTheDefaultLocationsAreNotFoundCreateDefaultConfiguration(): void
     {
         // explicitly create _no_ configuration file
@@ -139,7 +124,6 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /** @covers ::fromUri */
     public function testCreatingAConfigurationUsingTheGivenUri(): void
     {
         $this->markTestSkipped('Windows builds fail on this test, but we need to the build to be green now');
@@ -159,10 +143,6 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /**
-     * @covers ::fromUri
-     * @covers ::addMiddleware
-     */
     public function testCreatingAConfigurationUsingTheGivenUriAppliesAnyMiddleware(): void
     {
         $this->markTestSkipped('Windows builds fail on this test, but we need to the build to be green now');
@@ -193,7 +173,6 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration + ['newKey' => 'anotherExample'], $response->getArrayCopy());
     }
 
-    /** @covers ::fromUri */
     public function testCreatingAConfigurationUsingTheGivenUriFailsWhenFileDoesNotExist(): void
     {
         $this->expectException(InvalidConfigPathException::class);

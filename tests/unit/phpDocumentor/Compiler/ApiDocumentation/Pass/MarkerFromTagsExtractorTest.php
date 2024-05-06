@@ -25,10 +25,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\MarkerFromTagsExtractor
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\MarkerFromTagsExtractor */
 final class MarkerFromTagsExtractorTest extends TestCase
 {
     use Faker;
@@ -42,20 +39,14 @@ final class MarkerFromTagsExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->fixture = new MarkerFromTagsExtractor();
-        $this->apiSet = $this->faker()->apiSetDescriptor();
+        $this->apiSet = self::faker()->apiSetDescriptor();
     }
 
-    /** @covers ::getDescription */
     public function testDescriptionReturnsCorrectString(): void
     {
         $this->assertSame('Collect all markers embedded in tags', $this->fixture->getDescription());
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::getFileDescriptor
-     * @covers ::addTodoMarkerToFile
-     */
     public function testAddTodoMarkerForEachTodoTagInAnyElement(): void
     {
         $fileDescriptor = $this->givenApiSetHasFileDescriptor();
@@ -85,10 +76,6 @@ final class MarkerFromTagsExtractorTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::__invoke
-     * @covers ::getFileDescriptor
-     */
     public function testExceptionShouldBeThrownIfElementHasNoFileAssociated(): void
     {
         $classDescriptor = $this->givenApiSetHasClassDescriptorAssociatedWithFile(null);

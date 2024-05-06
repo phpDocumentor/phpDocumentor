@@ -21,16 +21,6 @@ use PHPUnit\Framework\TestCase;
 /** @coversDefaultClass \phpDocumentor\Extension\ExtensionInfo */
 final class ExtensionInfoTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::fromManifest
-     * @covers ::getExtensionClass
-     * @covers ::getVersion
-     * @covers ::getName
-     * @covers ::getNamespace
-     * @covers ::getPath
-     * @covers ::getManifest
-     */
     public function testExtensionIsCreatedCorrectlyFromManifest(): void
     {
         $components = new BundledComponentCollection();

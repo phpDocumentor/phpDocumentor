@@ -10,16 +10,15 @@ use Faker\Generator;
 trait Faker
 {
     /** @var Generator */
-    private $faker;
+    private static $faker = null;
 
-    /** @return Provider|Generator */
-    public function faker(): Generator
+    public static function faker(): Generator
     {
-        if ($this->faker === null) {
-            $this->faker = Factory::create();
-            $this->faker->addProvider(new Provider($this->faker));
+        if (self::$faker === null) {
+            self::$faker = Factory::create();
+            self::$faker->addProvider(new Provider(self::$faker));
         }
 
-        return $this->faker;
+        return self::$faker;
     }
 }

@@ -22,14 +22,14 @@ final class UsedByBuilderTest extends TestCase
 
     public function testCounterPartOfUsesWillGetTagUsedBy(): void
     {
-        $class = $this->faker()->classDescriptor($this->faker()->fqsen());
-        $counterClass = $this->faker()->classDescriptor($this->faker()->fqsen());
+        $class = self::faker()->classDescriptor(self::faker()->fqsen());
+        $counterClass = self::faker()->classDescriptor(self::faker()->fqsen());
 
         $usesTag = new UsesDescriptor('uses');
         $usesTag->setReference($counterClass);
         $class->getTags()->set('uses', Collection::fromClassString(UsesDescriptor::class, [$usesTag]));
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getIndex('elements')->add($class);
         $apiSetDescriptor->getIndex('elements')->add($counterClass);
 

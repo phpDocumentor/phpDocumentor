@@ -16,16 +16,10 @@ namespace phpDocumentor;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\UriFactory
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\UriFactory */
 final class UriFactoryTest extends TestCase
 {
-    /**
-     * @covers ::createUri
-     * @dataProvider pathProvider
-     */
+    /** @dataProvider pathProvider */
     public function testCreate(string $input, string|null $scheme, string $path): void
     {
         $uri = UriFactory::createUri($input);
@@ -34,7 +28,7 @@ final class UriFactoryTest extends TestCase
         self::assertEquals($path, $uri->getPath());
     }
 
-    public function pathProvider(): array
+    public static function pathProvider(): array
     {
         return [
             'absolute windows path without scheme ' => [
@@ -70,7 +64,6 @@ final class UriFactoryTest extends TestCase
         ];
     }
 
-    /** @covers ::createUri */
     public function testInvalidUriThrowsInvalidArgumentException(): void
     {
         $this->expectException(InvalidArgumentException::class);

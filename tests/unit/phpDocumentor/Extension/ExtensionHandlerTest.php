@@ -10,12 +10,7 @@ use ReflectionClass;
 
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \phpDocumentor\Extension\ExtensionHandler
- * @covers ::<private>
- * @covers ::__construct
- * @covers ::getInstance
- */
+/** @coversDefaultClass \phpDocumentor\Extension\ExtensionHandler */
 final class ExtensionHandlerTest extends TestCase
 {
     protected function setUp(): void
@@ -33,7 +28,6 @@ final class ExtensionHandlerTest extends TestCase
         $instance->setAccessible(false);
     }
 
-    /** @covers ::loadExtensions */
     public function testLoadExtensionsFromEmptyDirResultsInEmptyExtensions(): void
     {
         $root = vfsStream::setup();
@@ -47,7 +41,6 @@ final class ExtensionHandlerTest extends TestCase
         self::assertCount(0, $manifests);
     }
 
-    /** @covers ::loadExtensions */
     public function testLoadExtensionsFromNonExistingDirResultsInEmptyArray(): void
     {
         $root = vfsStream::setup();
@@ -60,7 +53,6 @@ final class ExtensionHandlerTest extends TestCase
         self::assertCount(0, $manifests);
     }
 
-    /** @covers ::loadExtensions */
     public function testLoadExtensionsIgnoresNonPharFiles(): void
     {
         $root = vfsStream::setup();
@@ -73,7 +65,6 @@ final class ExtensionHandlerTest extends TestCase
         self::assertCount(0, $manifests);
     }
 
-    /** @covers ::loadExtensions */
     public function testLoadExtensionFromDir(): void
     {
         $root = vfsStream::setup();

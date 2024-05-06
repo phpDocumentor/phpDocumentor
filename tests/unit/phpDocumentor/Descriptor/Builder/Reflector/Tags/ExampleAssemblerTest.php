@@ -56,11 +56,6 @@ class ExampleAssemblerTest extends TestCase
         $this->fixture = new ExampleAssembler($this->finderMock->reveal());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::create
-     * @covers ::buildDescriptor
-     */
     public function testCreateDescriptorFromExampleTag(): void
     {
         $exampleTagMock = $this->givenExampleTagWithTestData();
@@ -76,7 +71,6 @@ class ExampleAssemblerTest extends TestCase
         $this->assertSame(self::EXAMPLE_TEXT, $descriptor->getExample());
     }
 
-    /** @covers ::create */
     public function testExceptionIsThrownIfTheWrongObjectIsPassed(): void
     {
         $this->expectException('TypeError');

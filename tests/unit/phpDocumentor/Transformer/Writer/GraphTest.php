@@ -17,11 +17,7 @@ use phpDocumentor\Transformer\Writer\Graph\Generator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph
- * @covers ::__construct
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph */
 final class GraphTest extends TestCase
 {
     use ProphecyTrait;
@@ -33,7 +29,6 @@ final class GraphTest extends TestCase
         $this->graph = new Graph($this->prophesize(Generator::class)->reveal());
     }
 
-    /** @covers ::getDefaultSettings */
     public function testItExposesCustomSettingToEnableGraphs(): void
     {
         $this->assertSame(['graphs.enabled' => false], $this->graph->getDefaultSettings());

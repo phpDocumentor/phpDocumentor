@@ -20,19 +20,15 @@ use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode */
 final class RemoveSourcecodeTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function testRemovesSourceWhenDisabled(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $apiSetDescriptor->getSettings()['include-source'] = false;
         $fixture = new RemoveSourcecode();
@@ -46,7 +42,7 @@ final class RemoveSourcecodeTest extends TestCase
 
     public function testRemovesSourceWhenNotSet(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $apiSetDescriptor->getSettings()['include-source'] = null;
         $fixture = new RemoveSourcecode();
@@ -58,10 +54,9 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    /** @covers ::__invoke */
     public function testRemovesSourceWhenSourceShouldBeIncluded(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor->getSettings()['include-source'] = true;
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $fixture = new RemoveSourcecode();
@@ -75,11 +70,11 @@ final class RemoveSourcecodeTest extends TestCase
 
     public function testSourceIsIncludedWhenFilesourceTagIsPresent(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $apiSetDescriptor->getFiles()->first()->getTags()->set(
             'filesource',
-            $this->faker()->fileDescriptor(),
+            self::faker()->fileDescriptor(),
         );
         $fixture = new RemoveSourcecode();
 
@@ -92,12 +87,12 @@ final class RemoveSourcecodeTest extends TestCase
 
     public function testSourceIsRemovedWhenSettingDisabledExplicitly(): void
     {
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $apiSetDescriptor = $this->givenFiles($apiSetDescriptor);
         $apiSetDescriptor->getSettings()['include-source'] = false;
         $apiSetDescriptor->getFiles()->first()->getTags()->set(
             'filesource',
-            $this->faker()->fileDescriptor(),
+            self::faker()->fileDescriptor(),
         );
         $fixture = new RemoveSourcecode();
 
@@ -113,14 +108,13 @@ final class RemoveSourcecodeTest extends TestCase
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(
                 DocumentationSetDescriptor::class,
-                [$this->faker()->fileDescriptor()],
+                [self::faker()->fileDescriptor()],
             ),
         );
 
         return $apiDescriptor;
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $pass = new RemoveSourcecode();

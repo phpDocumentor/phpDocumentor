@@ -34,7 +34,6 @@ use function sprintf;
  * @uses \phpDocumentor\Descriptor\TraitDescriptor
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
- * @covers ::<private>
  */
 final class TraitAssemblerTest extends TestCase
 {
@@ -52,7 +51,6 @@ final class TraitAssemblerTest extends TestCase
         $this->assembler->setBuilder($this->builder->reveal());
     }
 
-    /** @covers ::create */
     public function testTraitWillHaveAnFqsenNameAndNamespace(): void
     {
         $fqsen = new Fqsen('\My\Space\MyTrait');
@@ -65,7 +63,6 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($fqsen, $result->getFullyQualifiedStructuralElementName());
     }
 
-    /** @covers ::create */
     public function testTraitWillHaveAnAssociatedLocationInAFile(): void
     {
         $startLocation = new Location(10);
@@ -87,8 +84,6 @@ final class TraitAssemblerTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\ConstantDescriptor
-     *
-     * @covers ::create
      */
     public function testTraitWillHaveConstants(): void
     {
@@ -105,8 +100,6 @@ final class TraitAssemblerTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\PropertyDescriptor
-     *
-     * @covers ::create
      */
     public function testTraitWillHaveProperties(): void
     {
@@ -123,8 +116,6 @@ final class TraitAssemblerTest extends TestCase
     /**
      * @uses \phpDocumentor\Descriptor\Collection
      * @uses \phpDocumentor\Descriptor\MethodDescriptor
-     *
-     * @covers ::create
      */
     public function testTraitWillHaveMethods(): void
     {

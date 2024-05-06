@@ -24,17 +24,16 @@ final class ProjectAnalyzerTest extends MockeryTestCase
         $this->fixture = new ProjectAnalyzer();
     }
 
-    /** @covers ::__toString */
     public function testIfStringOutputContainsAllCounters(): void
     {
         // Arrange
         $classDescriptor1 = $this->givenAClassWithParent(ClassDescriptor::class);
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $this->whenDescriptorHasTheFollowingFiles(
             $apiSetDescriptor,
             [
-                $this->faker()->fileDescriptor(),
-                $this->faker()->fileDescriptor(),
+                self::faker()->fileDescriptor(),
+                self::faker()->fileDescriptor(),
             ],
         );
         $this->whenDescriptorHasTheFollowingElements(

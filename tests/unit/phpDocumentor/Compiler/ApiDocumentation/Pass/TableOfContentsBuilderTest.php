@@ -33,8 +33,8 @@ final class TableOfContentsBuilderTest extends TestCase
 
     public function testApiDocumentationSetNamespacesAreAddedAsTOC(): void
     {
-        $apiDocumentationSet = $this->faker()->apiSetDescriptor();
-        $apiDocumentationSet->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
+        $apiDocumentationSet = self::faker()->apiSetDescriptor();
+        $apiDocumentationSet->getNamespace()->addChild(self::faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
         $router->generate(Argument::any())
@@ -57,8 +57,8 @@ final class TableOfContentsBuilderTest extends TestCase
 
     public function testApiDocumentationSetPackagesAreAddedAsTOC(): void
     {
-        $apiDocumentationSet = $this->faker()->apiSetDescriptor();
-        $apiDocumentationSet->getPackage()->addChild($this->faker()->namespaceDescriptorTree());
+        $apiDocumentationSet = self::faker()->apiSetDescriptor();
+        $apiDocumentationSet->getPackage()->addChild(self::faker()->namespaceDescriptorTree());
 
         $router = $this->prophesize(Router::class);
         $router->generate(Argument::any())

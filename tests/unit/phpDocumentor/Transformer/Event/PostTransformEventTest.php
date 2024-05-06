@@ -19,10 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformEvent
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformEvent */
 final class PostTransformEventTest extends TestCase
 {
     use ProphecyTrait;
@@ -37,10 +34,6 @@ final class PostTransformEventTest extends TestCase
         $this->fixture = new PostTransformEvent(new stdClass());
     }
 
-    /**
-     * @covers ::createInstance
-     * @covers ::getSubject
-     */
     public function testCreatingAnInstance(): void
     {
         $subject = new stdClass();
@@ -48,10 +41,6 @@ final class PostTransformEventTest extends TestCase
         $this->assertSame($subject, $this->fixture->getSubject());
     }
 
-    /**
-     * @covers ::getProject
-     * @covers ::setProject
-     */
     public function testSetAndGetProject(): void
     {
         $project = $this->prophesize(ProjectDescriptor::class);

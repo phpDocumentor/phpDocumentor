@@ -27,22 +27,17 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 use Symfony\Component\Stopwatch\StopwatchPeriod;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\StopwatchMiddleware
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\StopwatchMiddleware */
 final class StopwatchMiddlewareTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /** @covers ::execute */
     public function testThatMemoryUsageIsLogged(): void
     {
         $commandFile = new LocalFile(__FILE__);
         $command = new CreateCommand(
-            $this->faker()->phpParserContext(),
+            self::faker()->phpParserContext(),
             $commandFile,
             new ProjectFactoryStrategies([]),
         );

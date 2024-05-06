@@ -44,8 +44,6 @@ final class ConstantAssemblerTest extends TestCase
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @covers ::create
      */
     public function testCreateGlobalConstantDescriptorFromReflector(): void
     {
@@ -74,8 +72,6 @@ DOCBLOCK,
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @covers ::create
      */
     public function testCreateNamespacedConstantDescriptorFromReflector(): void
     {
@@ -108,8 +104,6 @@ DOCBLOCK,
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @covers ::create
      */
     public function testCreateNamespaceConstantDescriptorFromReflector(): void
     {

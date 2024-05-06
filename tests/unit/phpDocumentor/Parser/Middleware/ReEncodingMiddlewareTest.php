@@ -24,19 +24,12 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\String\Exception\InvalidArgumentException;
 use Symfony\Component\String\UnicodeString;
 
-/**
- * @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware
- * @covers ::<private>
- */
+/** @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware */
 final class ReEncodingMiddlewareTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;
 
-    /**
-     * @covers ::withEncoding
-     * @covers ::execute
-     */
     public function testItReencodesFileContentsUsingTheGivenEncoding(): void
     {
         $contents = new UnicodeString('äNDERUNGEN');
@@ -45,7 +38,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware = new ReEncodingMiddleware();
         $middleware->withEncoding('iso-8859-1');
         $result = $middleware->execute(
-            new CreateCommand($this->faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
+            new CreateCommand(self::faker()->phpParserContext(), $file, new ProjectFactoryStrategies([])),
             function (CreateCommand $command) use ($contents): PhpFile {
                 $reEncodedFile = $command->getFile();
                 $this->assertInstanceOf(ReEncodedFile::class, $reEncodedFile);
@@ -61,7 +54,6 @@ final class ReEncodingMiddlewareTest extends TestCase
         $this->assertInstanceOf(PhpFile::class, $result);
     }
 
-    /** @covers ::execute */
     public function testItFailsToReEncodeFileIfTheGivenEncodingIsWrong(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -74,7 +66,7 @@ final class ReEncodingMiddlewareTest extends TestCase
         $middleware->withEncoding('utf-8');
         $middleware->execute(
             new CreateCommand(
-                $this->faker()->phpParserContext(),
+                self::faker()->phpParserContext(),
                 $file,
                 new ProjectFactoryStrategies([]),
             ),

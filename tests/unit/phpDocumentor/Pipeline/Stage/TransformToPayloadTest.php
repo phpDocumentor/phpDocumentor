@@ -21,13 +21,11 @@ use Prophecy\PhpUnit\ProphecyTrait;
  * @uses \phpDocumentor\Pipeline\Stage\Payload
  *
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\TransformToPayload
- * @covers ::__construct
  */
 final class TransformToPayloadTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @covers ::__invoke */
     public function test_it_converts_the_configuration_to_an_payload(): void
     {
         $config = ['config' => 'yes'];

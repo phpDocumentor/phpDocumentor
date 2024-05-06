@@ -47,10 +47,6 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
         $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
     }
 
-    /**
-     * @covers ::createProjectDescriptor
-     * @covers ::getProjectDescriptor
-     */
     public function testCreatesAnEmptyProjectDescriptorWhenCalledFor(): void
     {
         $this->fixture->createProjectDescriptor();

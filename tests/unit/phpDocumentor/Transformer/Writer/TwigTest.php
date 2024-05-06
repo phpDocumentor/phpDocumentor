@@ -33,8 +33,6 @@ use Twig\Loader\ArrayLoader;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig
- * @covers ::__construct
- * @covers ::<private>
  * @covers \phpDocumentor\Transformer\Writer\IoTrait
  * @covers \phpDocumentor\Transformer\Writer\WriterAbstract
  */
@@ -95,7 +93,6 @@ final class TwigTest extends TestCase
         $this->assertSame(Twig::class, (string) $this->writer);
     }
 
-    /** @covers ::transform */
     public function testRendersTwigTemplateToDestination(): void
     {
         $targetDir = $this->destinationFolder->url();
@@ -114,12 +111,12 @@ final class TwigTest extends TestCase
         );
         $transformation->setTransformer($transformer->reveal());
 
-        $apiSetDescriptor = $this->faker()->apiSetDescriptor();
-        $project = $this->faker()->projectDescriptor([$this->faker()->versionDescriptor([$apiSetDescriptor])]);
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSetDescriptor])]);
         $project->getSettings()->setCustom($this->writer->getDefaultSettings());
         $this->pathGenerator->generate($apiSetDescriptor, $transformation)->willReturn('index.html');
 
-        $this->writer->initialize($project, $apiSetDescriptor, $this->faker()->template());
+        $this->writer->initialize($project, $apiSetDescriptor, self::faker()->template());
         $this->writer->transform($transformation, $project, $apiSetDescriptor);
 
         $this->assertFileExists($targetDir . '/index.html');
