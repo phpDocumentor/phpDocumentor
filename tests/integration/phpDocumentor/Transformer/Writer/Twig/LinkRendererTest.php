@@ -72,7 +72,7 @@ final class LinkRendererTest extends TestCase
      */
     public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
-        $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
+        $classDescriptor = LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
@@ -84,10 +84,10 @@ final class LinkRendererTest extends TestCase
     }
 
     /** @return Generator<string, mixed[]> */
-    public function descriptorLinkProvider(): Generator
+    public static function descriptorLinkProvider(): Generator
     {
         $inputs = [
-            $this->createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class')),
             new Fqsen('\My\Namespace\Class'),
             new \phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen(new Fqsen('\My\Namespace\Class')),
             '\My\Namespace\Class',
@@ -136,7 +136,7 @@ final class LinkRendererTest extends TestCase
         ];
     }
 
-    private function createClassDescriptor(Fqsen $fqsen): ClassDescriptor
+    private static function createClassDescriptor(Fqsen $fqsen): ClassDescriptor
     {
         $descriptor = new ClassDescriptor();
         $descriptor->setFullyQualifiedStructuralElementName($fqsen);
@@ -206,7 +206,7 @@ final class LinkRendererTest extends TestCase
      */
     public function testRenderType(Type $input, string $presentation, string $output): void
     {
-        $classDescriptor = $this->createClassDescriptor(new Fqsen('\My\Namespace\Class'));
+        $classDescriptor = LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
