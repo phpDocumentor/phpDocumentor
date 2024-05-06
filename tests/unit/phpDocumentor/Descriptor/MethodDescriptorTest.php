@@ -31,7 +31,7 @@ use function iterator_to_array;
  */
 final class MethodDescriptorTest extends MockeryTestCase
 {
-    use AttributedTest;
+    use AttributedTestTrait;
 
     private MethodDescriptor $fixture;
 
