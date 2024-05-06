@@ -25,7 +25,7 @@ use stdClass;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FileFactory
- * @covers ::<private>
+ 
  */
 final class FileFactoryTest extends TestCase
 {

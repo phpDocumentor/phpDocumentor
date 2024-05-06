@@ -34,7 +34,7 @@ use function sprintf;
  * @uses \phpDocumentor\Descriptor\TraitDescriptor
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
- * @covers ::<private>
+ 
  */
 final class TraitAssemblerTest extends TestCase
 {

@@ -25,7 +25,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
- * @covers ::<private>
+ 
  */
 class UsesAssemblerTest extends TestCase
 {

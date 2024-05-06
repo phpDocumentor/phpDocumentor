@@ -32,8 +32,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\PackageTreeBuilder
- * @covers ::<private>
- * @covers ::<protected>
+ 
+ 
  */
 final class PackageTreeBuilderTest extends TestCase
 {

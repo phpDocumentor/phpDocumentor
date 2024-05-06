@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\FileIo
  * @covers \phpDocumentor\Transformer\Writer\IoTrait
- * @covers ::<private>
+ 
  */
 final class FileIoTest extends TestCase
 {

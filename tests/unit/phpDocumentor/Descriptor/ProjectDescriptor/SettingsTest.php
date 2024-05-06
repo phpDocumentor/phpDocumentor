@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor\Settings
- * @covers ::<private>
+ 
  */
 final class SettingsTest extends TestCase
 {

@@ -30,7 +30,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\Guides\Pass\GuidesCompiler
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class GuidesCompilerTest extends TestCase
 {

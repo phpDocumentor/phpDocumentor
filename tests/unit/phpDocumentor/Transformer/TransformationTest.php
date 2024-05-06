@@ -20,7 +20,7 @@ use phpDocumentor\Transformer\Template\Parameter;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Transformation
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {

@@ -28,7 +28,7 @@ use Psr\Log\LogLevel;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class ErrorHandlingMiddlewareTest extends TestCase

@@ -32,7 +32,7 @@ use stdClass;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Router\Router
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class RouterTest extends TestCase
 {

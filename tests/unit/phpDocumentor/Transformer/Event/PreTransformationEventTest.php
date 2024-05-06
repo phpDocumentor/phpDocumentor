@@ -22,7 +22,7 @@ use stdClass;
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformationEvent
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class PreTransformationEventTest extends TestCase
 {

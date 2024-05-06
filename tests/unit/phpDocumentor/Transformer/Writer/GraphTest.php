@@ -20,7 +20,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class GraphTest extends TestCase
 {

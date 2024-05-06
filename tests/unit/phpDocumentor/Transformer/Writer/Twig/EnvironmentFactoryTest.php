@@ -33,7 +33,7 @@ use Twig\Loader\FilesystemLoader;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class EnvironmentFactoryTest extends TestCase
 {

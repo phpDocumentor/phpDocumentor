@@ -34,7 +34,7 @@ use const PHP_OS_FAMILY;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class FlySystemFactoryTest extends TestCase
 {

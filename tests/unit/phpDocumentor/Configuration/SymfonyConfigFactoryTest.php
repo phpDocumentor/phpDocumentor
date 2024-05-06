@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\SymfonyConfigFactory
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class SymfonyConfigFactoryTest extends TestCase

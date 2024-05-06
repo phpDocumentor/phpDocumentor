@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Dsn
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 class DsnTest extends TestCase
 {

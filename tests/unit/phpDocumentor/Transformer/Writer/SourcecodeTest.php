@@ -27,7 +27,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class SourcecodeTest extends MockeryTestCase
 {

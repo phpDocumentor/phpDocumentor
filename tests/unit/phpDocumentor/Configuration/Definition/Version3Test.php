@@ -24,7 +24,7 @@ use function array_replace_recursive;
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\Definition\Version3
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class Version3Test extends TestCase
 {

@@ -23,7 +23,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ConfigurationFactoryTest extends TestCase
 {

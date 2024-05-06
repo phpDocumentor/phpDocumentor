@@ -23,7 +23,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class GarbageCollectCacheTest extends TestCase
 {

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\Target
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class TargetTest extends TestCase

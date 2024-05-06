@@ -28,7 +28,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  *
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\Linker
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class LinkerTest extends TestCase
 {

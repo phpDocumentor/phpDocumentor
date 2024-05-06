@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Path
- * @covers ::<private>
+ 
  */
 final class PathTest extends TestCase
 {

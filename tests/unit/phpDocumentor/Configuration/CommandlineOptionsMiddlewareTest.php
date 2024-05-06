@@ -26,7 +26,7 @@ use const DIRECTORY_SEPARATOR;
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class CommandlineOptionsMiddlewareTest extends TestCase
 {

@@ -30,7 +30,7 @@ use function array_keys;
 /**
  * @coversDefaultClass \phpDocumentor\Console\Command\Project\RunCommand
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 class RunCommandTest extends TestCase
 {

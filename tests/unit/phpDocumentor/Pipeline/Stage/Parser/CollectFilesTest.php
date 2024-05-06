@@ -26,7 +26,7 @@ use Psr\Log\NullLogger;
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Parser\CollectFiles
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class CollectFilesTest extends TestCase
 {

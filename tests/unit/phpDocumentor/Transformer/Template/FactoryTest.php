@@ -27,7 +27,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template\Factory
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class FactoryTest extends TestCase
 {

@@ -28,7 +28,7 @@ use phpDocumentor\Reflection\Types\String_;
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ConstantDescriptor
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ConstantDescriptorTest extends MockeryTestCase
 {

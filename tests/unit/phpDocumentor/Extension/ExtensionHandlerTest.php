@@ -12,7 +12,7 @@ use function iterator_to_array;
 
 /**
  * @coversDefaultClass \phpDocumentor\Extension\ExtensionHandler
- * @covers ::<private>
+ 
  * @covers ::__construct
  * @covers ::getInstance
  */

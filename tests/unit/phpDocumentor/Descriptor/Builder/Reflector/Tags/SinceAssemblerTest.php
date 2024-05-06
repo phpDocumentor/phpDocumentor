@@ -25,7 +25,7 @@ use Prophecy\Prophecy\ObjectProphecy;
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
- * @covers ::<private>
+ 
  */
 final class SinceAssemblerTest extends TestCase
 {

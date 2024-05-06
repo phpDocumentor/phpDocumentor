@@ -30,7 +30,7 @@ use function sys_get_temp_dir;
 
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\Stage\Configure
- * @covers ::<private>
+ 
  * @covers ::__construct
  * @covers ::__invoke
  */

@@ -36,7 +36,7 @@ use function sys_get_temp_dir;
  *
  * @coversDefaultClass \phpDocumentor\Parser\Parser
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ParserTest extends TestCase
 {

@@ -34,7 +34,7 @@ use Twig\Loader\ArrayLoader;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig
  * @covers ::__construct
- * @covers ::<private>
+ 
  * @covers \phpDocumentor\Transformer\Writer\IoTrait
  * @covers \phpDocumentor\Transformer\Writer\WriterAbstract
  */

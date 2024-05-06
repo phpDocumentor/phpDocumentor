@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\DescriptorRepository
- * @covers ::<private>
+ 
  */
 final class DescriptorRepositoryTest extends TestCase
 {

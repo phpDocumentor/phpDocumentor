@@ -21,7 +21,7 @@ use function md5;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\ReEncodedFile
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ReEncodedFileTest extends TestCase
 {

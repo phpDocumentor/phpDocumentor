@@ -19,7 +19,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Collection
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class CollectionTest extends TestCase
 {

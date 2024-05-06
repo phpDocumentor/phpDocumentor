@@ -26,7 +26,7 @@ use Symfony\Component\String\UnicodeString;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware
- * @covers ::<private>
+ 
  */
 final class ReEncodingMiddlewareTest extends TestCase
 {

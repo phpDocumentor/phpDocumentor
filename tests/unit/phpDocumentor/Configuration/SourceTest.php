@@ -123,7 +123,7 @@ final class SourceTest extends TestCase
      * @dataProvider pathProvider
      * @covers ::__construct
      * @covers ::globPatterns
-     * @covers ::<private>
+     
      */
     public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
     {

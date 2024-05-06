@@ -29,7 +29,7 @@ use Symfony\Component\Stopwatch\StopwatchPeriod;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\StopwatchMiddleware
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class StopwatchMiddlewareTest extends TestCase

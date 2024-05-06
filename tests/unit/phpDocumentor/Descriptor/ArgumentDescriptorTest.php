@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ArgumentDescriptorTest extends TestCase
 {

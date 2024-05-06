@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ProjectDescriptorTest extends TestCase
 {

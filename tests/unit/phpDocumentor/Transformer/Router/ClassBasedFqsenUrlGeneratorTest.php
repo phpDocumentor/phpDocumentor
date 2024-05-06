@@ -25,7 +25,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Router\ClassBasedFqsenUrlGenerator
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {

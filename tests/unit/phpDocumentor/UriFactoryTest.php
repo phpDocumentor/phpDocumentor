@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\UriFactory
- * @covers ::<private>
+ 
  */
 final class UriFactoryTest extends TestCase
 {

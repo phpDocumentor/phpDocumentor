@@ -30,8 +30,8 @@ use function sort;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder
- * @covers ::<private>
- * @covers ::<protected>
+ 
+ 
  */
 final class NamespaceTreeBuilderTest extends TestCase
 {

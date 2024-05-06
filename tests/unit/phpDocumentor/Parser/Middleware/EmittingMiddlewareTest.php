@@ -26,7 +26,7 @@ use function md5;
 
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware
- * @covers ::<private>
+ 
  */
 final class EmittingMiddlewareTest extends TestCase
 {

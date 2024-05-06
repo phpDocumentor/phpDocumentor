@@ -28,7 +28,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\NullableAdapter
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class NullableAdapterTest extends TestCase

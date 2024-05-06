@@ -19,7 +19,7 @@ use Psr\Log\Test\TestLogger;
 /**
  * @coversDefaultClass \phpDocumentor\Pipeline\PipelineFactory
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class PipelineFactoryTest extends TestCase
 {

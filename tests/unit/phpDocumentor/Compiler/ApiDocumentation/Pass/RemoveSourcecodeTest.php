@@ -22,7 +22,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode
- * @covers ::<private>
+ 
  */
 final class RemoveSourcecodeTest extends TestCase
 {

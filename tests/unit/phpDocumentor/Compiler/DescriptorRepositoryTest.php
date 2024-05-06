@@ -23,7 +23,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\DescriptorRepository
- * @covers ::<private>
+
  */
 final class DescriptorRepositoryTest extends TestCase
 {
@@ -40,8 +40,8 @@ final class DescriptorRepositoryTest extends TestCase
     }
 
     /**
-     * @uses VersionDescriptor
-     * @uses Collection
+     * @uses \phpDocumentor\Descriptor\VersionDescriptor
+     * @uses \phpDocumentor\Descriptor\Collection
      *
      * @covers ::setVersionDescriptor
      */
@@ -59,8 +59,8 @@ final class DescriptorRepositoryTest extends TestCase
     }
 
     /**
-     * @uses VersionDescriptor
-     * @uses Collection
+     * @uses \phpDocumentor\Descriptor\VersionDescriptor
+     * @uses \phpDocumentor\Descriptor\Collection
      *
      * @covers ::getVersionDescriptor
      */
@@ -77,8 +77,8 @@ final class DescriptorRepositoryTest extends TestCase
     }
 
     /**
-     * @uses VersionDescriptor
-     * @uses ApiSetDescriptor
+     * @uses phpDocumentor\Descriptor\VersionDescriptor
+     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
      *
      * @covers ::findDescriptorByFqsen
      */
@@ -98,8 +98,8 @@ final class DescriptorRepositoryTest extends TestCase
     }
 
     /**
-     * @uses VersionDescriptor
-     * @uses ApiSetDescriptor
+     * @uses phpDocumentor\Descriptor\VersionDescriptor
+     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
      *
      * @covers ::findDescriptorByFqsen
      */
@@ -113,8 +113,8 @@ final class DescriptorRepositoryTest extends TestCase
     }
 
     /**
-     * @uses VersionDescriptor
-     * @uses ApiSetDescriptor
+     * @uses phpDocumentor\Descriptor\VersionDescriptor
+     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
      *
      * @covers ::findDescriptorByTypeAndFqsen
      */

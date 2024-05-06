@@ -28,8 +28,8 @@ use function iterator_to_array;
  * Tests the functionality for the MethodDescriptor class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
- * @covers ::<private>
- * @covers ::<protected>
+ 
+ 
  */
 final class MethodDescriptorTest extends MockeryTestCase
 {

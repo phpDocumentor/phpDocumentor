@@ -13,7 +13,7 @@ use function md5;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemFile
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class FlySystemFileTest extends TestCase
 {

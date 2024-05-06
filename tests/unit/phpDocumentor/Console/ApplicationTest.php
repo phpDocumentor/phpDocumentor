@@ -25,7 +25,7 @@ use function str_repeat;
 /**
  * @coversDefaultClass \phpDocumentor\Console\Application
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class ApplicationTest extends TestCase
 {

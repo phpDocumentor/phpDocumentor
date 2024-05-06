@@ -27,7 +27,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
  * Tests the functionality for the DescriptorAbstract class.
  *
  * @coversDefaultClass \phpDocumentor\Descriptor\DescriptorAbstract
- * @covers ::<private>
+ 
  */
 class DescriptorAbstractTest extends MockeryTestCase
 {

@@ -27,7 +27,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class IterableAdapterTest extends TestCase

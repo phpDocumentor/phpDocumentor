@@ -19,7 +19,7 @@ use stdClass;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Event\PreFileEvent
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 class PreFileEventTest extends TestCase
 {

@@ -25,7 +25,7 @@ use const PHP_OS;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class FlySystemCollectorTest extends TestCase
 {

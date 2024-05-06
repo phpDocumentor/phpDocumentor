@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class ApiSetDescriptorTest extends TestCase

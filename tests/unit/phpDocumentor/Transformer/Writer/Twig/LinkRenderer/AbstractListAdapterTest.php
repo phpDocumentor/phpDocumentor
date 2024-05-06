@@ -33,7 +33,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter
- * @covers ::<private>
  * @covers ::__construct
  */
 final class AbstractListAdapterTest extends TestCase

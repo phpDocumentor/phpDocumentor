@@ -24,7 +24,7 @@ use Psr\Log\NullLogger;
 /**
  * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\Debug
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class DebugTest extends TestCase
 {

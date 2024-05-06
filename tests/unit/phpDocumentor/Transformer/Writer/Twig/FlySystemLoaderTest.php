@@ -13,7 +13,7 @@ use Twig\Source;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FlySystemLoader
- * @covers ::<private>
+ 
  * @covers ::__construct
  */
 final class FlySystemLoaderTest extends TestCase

@@ -30,7 +30,7 @@ use function serialize;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Middleware\CacheMiddleware
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class CacheMiddlewareTest extends TestCase
 {

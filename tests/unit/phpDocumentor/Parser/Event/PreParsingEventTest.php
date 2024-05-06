@@ -11,7 +11,7 @@ use stdClass;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\Event\PreParsingEvent
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class PreParsingEventTest extends TestCase
 {

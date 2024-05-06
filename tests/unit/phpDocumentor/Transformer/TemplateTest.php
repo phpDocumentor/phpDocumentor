@@ -26,7 +26,7 @@ use function iterator_to_array;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Template
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class TemplateTest extends TestCase
 {

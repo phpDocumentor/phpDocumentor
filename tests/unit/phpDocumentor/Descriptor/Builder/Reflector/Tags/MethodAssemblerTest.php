@@ -31,7 +31,7 @@ use function count;
 
 /**
  * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler
- * @covers ::<private>
+
  */
 final class MethodAssemblerTest extends TestCase
 {
@@ -58,7 +58,6 @@ final class MethodAssemblerTest extends TestCase
      *
      * @dataProvider provideNotations
      * @covers       ::create
-     * @covers       ::createArgumentDescriptorForMagicMethod
      * @covers       ::buildDescriptor
      */
     public function testCreateMethodDescriptorFromVariousNotations(

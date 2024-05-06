@@ -22,7 +22,7 @@ use function dirname;
 /**
  * @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware
  * @covers ::__invoke
- * @covers ::<private>
+ 
  */
 final class PathNormalizingMiddlewareTest extends TestCase
 {

@@ -30,7 +30,7 @@ use RuntimeException;
  *
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\PathGenerator
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class PathGeneratorTest extends TestCase
 {

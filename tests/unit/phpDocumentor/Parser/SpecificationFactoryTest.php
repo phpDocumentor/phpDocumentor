@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Parser\SpecificationFactory
  * @covers ::create
- * @covers ::<private>
+ 
  */
 final class SpecificationFactoryTest extends TestCase
 {

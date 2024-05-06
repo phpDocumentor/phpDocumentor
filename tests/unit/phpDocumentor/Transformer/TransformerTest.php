@@ -29,7 +29,7 @@ use function strlen;
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Transformer
  * @covers ::__construct
- * @covers ::<private>
+ 
  */
 final class TransformerTest extends TestCase
 {
