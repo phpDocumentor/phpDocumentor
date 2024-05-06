@@ -94,11 +94,11 @@ final class LinkRendererTest extends TestCase
         ];
 
         foreach ($inputs as $input) {
-            yield from $this->baseLinkProvider($input);
+            yield from self::baseLinkProvider($input);
         }
     }
 
-    public function baseLinkProvider($input): array
+    public static function baseLinkProvider($input): array
     {
         $name = get_debug_type($input);
 
