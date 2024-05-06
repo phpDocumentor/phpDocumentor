@@ -17,56 +17,56 @@ final class FlySystemLoaderTest extends TestCase
     use ProphecyTrait;
 
     /** @dataProvider fileProvider */
-    public function testExists(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
+    public function testExists(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->has($resolvedFileName)->willReturn(true);
+        $fileSystem->has($resolvedName)->willReturn(true);
 
         $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
-        $this->assertTrue($loader->exists($fileName));
+        $this->assertTrue($loader->exists($filename));
     }
 
     /** @dataProvider fileProvider */
-    public function testGetSourceContext(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
+    public function testGetSourceContext(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
-        $fileSystem->read($resolvedFileName)->willReturn('content');
+        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
+        $fileSystem->read($resolvedName)->willReturn('content');
 
         $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
         $this->assertEquals(
             new Source(
                 'content',
-                $fileName,
-                $resolvedFileName,
+                $filename,
+                $resolvedName,
             ),
-            $loader->getSourceContext($fileName),
+            $loader->getSourceContext($filename),
         );
     }
 
     /** @dataProvider fileProvider */
-    public function testGetCacheKey(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
+    public function testGetCacheKey(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
+        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
 
         $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
-        $this->assertSame($fileName, $loader->getCacheKey($fileName));
+        $this->assertSame($filename, $loader->getCacheKey($filename));
     }
 
     /** @dataProvider fileProvider */
-    public function testIsFresh(string $fileName, string $resolvedFileName, string|null $overloadPrefix): void
+    public function testIsFresh(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedFileName)->willReturn(['type' => 'file']);
-        $fileSystem->getTimestamp($resolvedFileName)->willReturn(10);
+        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
+        $fileSystem->getTimestamp($resolvedName)->willReturn(10);
 
         $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
-        $this->assertTrue($loader->isFresh($fileName, 10));
+        $this->assertTrue($loader->isFresh($filename, 10));
     }
 
     public static function fileProvider(): array
