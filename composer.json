@@ -45,7 +45,7 @@
         "league/uri": "^6.7",
         "league/uri-interfaces": "^2.0",
         "monolog/monolog": "^2.9",
-        "nikic/php-parser": "^4.19",
+        "nikic/php-parser": "^5.0",
         "phar-io/manifest": "^2.0",
         "phar-io/version": "^3.2",
         "phpdocumentor/flyfinder": "^1.0",

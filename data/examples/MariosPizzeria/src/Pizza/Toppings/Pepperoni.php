@@ -8,5 +8,8 @@ use Marios\Pizza\Topping;
 
 final class Pepperoni extends Topping
 {
+    public function publiclyAvailable()
+    {
 
+    }
 }
