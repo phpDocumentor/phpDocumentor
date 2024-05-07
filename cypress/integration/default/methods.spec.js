@@ -319,3 +319,46 @@ describe('Showing methods for an interface', function() {
         })
     });
 });
+
+describe('Showing methods for class with parent', function() {
+    beforeEach(function () {
+        cy.visit('build/default/classes/Marios-Pizza-Toppings-Pepperoni.html');
+    });
+
+    describe('Synopsis', function() {
+        it('Show the name', function () {
+            getElementWithName('method', 'publiclyAvailable()')
+                .should('be.visible');
+        });
+
+        it('Show the file name where the method points to parent class', function () {
+            getElementWithName('method', 'availableToAll()')
+                .find('.phpdocumentor-element-found-in__file')
+                .contains('a', 'Topping.php')
+                .find('abbr')
+                .should('have.attr', 'title', 'src/Pizza/Topping.php');
+        });
+
+        it('Links to the file documentation wherein the method points to parrent class', function () {
+            getElementWithName('method', 'availableToAll()')
+                .find('.phpdocumentor-element-found-in__file')
+                .contains('a', 'Topping.php')
+                .should('have.attr', 'href', 'files/src-pizza-topping.html');
+        });
+
+        it('Show the file name where the method points to current class', function () {
+            getElementWithName('method', 'publiclyAvailable()')
+                .find('.phpdocumentor-element-found-in__file')
+                .contains('a', 'Pepperoni.php')
+                .find('abbr')
+                .should('have.attr', 'title', 'src/Pizza/Toppings/Pepperoni.php');
+        });
+
+        it('Links to the file documentation wherein the method points to current class', function () {
+            getElementWithName('method', 'publiclyAvailable()')
+                .find('.phpdocumentor-element-found-in__file')
+                .contains('a', 'Pepperoni.php')
+                .should('have.attr', 'href', 'files/src-pizza-toppings-pepperoni.html');
+        });
+    });
+});

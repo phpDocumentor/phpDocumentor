@@ -112,13 +112,13 @@ unit-test integration-test functional-test:
 
 .PHONY: e2e-test
 e2e-test: node_modules/.bin/cypress build/default/index.html build/clean/index.html
-	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:13.8.1
 
 cypress/integration/default/%.spec.js: node_modules/.bin/cypress build/default/index.html .RUN_ALWAYS
-	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0 -s $@
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:13.8.1 -s $@
 
 cypress/integration/clean/%.spec.js: node_modules/.bin/cypress build/clean/index.html .RUN_ALWAYS
-	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:10.3.0 -s $@
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:13.8.1 -s $@
 
 .PHONY: composer-require-checker
 composer-require-checker:

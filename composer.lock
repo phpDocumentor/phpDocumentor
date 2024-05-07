@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e9b29cf9c19b96388b66afd87bca339",
+    "content-hash": "963ba869144c4c36338077928f5e75fd",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1436,25 +1436,27 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.19.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "4e1b88d21c69391150ace211e9eaf05810858d0b"
+                "reference": "139676794dc1e9231bf7bcd123cfc0c99182cb13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4e1b88d21c69391150ace211e9eaf05810858d0b",
-                "reference": "4e1b88d21c69391150ace211e9eaf05810858d0b",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/139676794dc1e9231bf7bcd123cfc0c99182cb13",
+                "reference": "139676794dc1e9231bf7bcd123cfc0c99182cb13",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=7.1"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "ircmaxell/php-yacc": "^0.0.7",
-                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0 || ^9.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
             },
             "bin": [
                 "bin/php-parse"
@@ -1462,7 +1464,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.9-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -1486,9 +1488,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.19.1"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.2"
             },
-            "time": "2024-03-17T08:10:35+00:00"
+            "time": "2024-03-05T20:51:40+00:00"
         },
         {
             "name": "parsica-php/parsica",
@@ -2011,16 +2013,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/Reflection.git",
-                "reference": "aee9e26834c520eb53644f77015cd4d37df2d358"
+                "reference": "05240bf3e4786081c99d91537c8a5b8b088fcd34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/aee9e26834c520eb53644f77015cd4d37df2d358",
-                "reference": "aee9e26834c520eb53644f77015cd4d37df2d358",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/05240bf3e4786081c99d91537c8a5b8b088fcd34",
+                "reference": "05240bf3e4786081c99d91537c8a5b8b088fcd34",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "~4.14",
+                "nikic/php-parser": "~4.18 || ^5.0",
                 "php": "8.1.*|8.2.*|8.3.*",
                 "phpdocumentor/reflection-common": "^2.1",
                 "phpdocumentor/reflection-docblock": "^5",
@@ -2036,12 +2038,11 @@
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan": "^1.8",
-                "phpstan/phpstan-php-parser": "^1.1",
                 "phpstan/phpstan-webmozart-assert": "^1.2",
-                "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.18.0",
-                "squizlabs/php_codesniffer": "^3.8",
-                "vimeo/psalm": "^5.0"
+                "phpunit/phpunit": "^10.0",
+                "psalm/phar": "^5.24",
+                "rector/rector": "^1.0.0",
+                "squizlabs/php_codesniffer": "^3.8"
             },
             "default-branch": true,
             "type": "library",
@@ -2072,7 +2073,7 @@
                 "issues": "https://github.com/phpDocumentor/Reflection/issues",
                 "source": "https://github.com/phpDocumentor/Reflection/tree/6.x"
             },
-            "time": "2024-01-05T08:10:26+00:00"
+            "time": "2024-05-07T15:16:45+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
