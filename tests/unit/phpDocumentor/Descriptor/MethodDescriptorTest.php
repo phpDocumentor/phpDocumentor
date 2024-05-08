@@ -196,6 +196,156 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($paramCollection, $result);
     }
 
+    public function testElementDoesNotInheritWhenNoParents(): void
+    {
+        $this->assertNull($this->fixture->getInheritedElement());
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+
+        $this->assertNull($this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritanceCaches(): void
+    {
+        $parentClass = new ClassDescriptor();
+        $parentClass->setAbstract(true);
+        $parentClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\AbstractClass'));
+        $parentMethod = new MethodDescriptor();
+        $parentMethod->setName('myMethod');
+        $parentMethod->setParent($parentClass);
+        $parentClass->getMethods()->set($parentMethod->getName(), $parentMethod);
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setParent($parentClass);
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->fixture->getInheritedElement();
+        $this->assertSame($parentMethod, $this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritsWhenExtending(): void
+    {
+        $parentClass = new ClassDescriptor();
+        $parentClass->setAbstract(true);
+        $parentClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\AbstractClass'));
+        $parentMethod = new MethodDescriptor();
+        $parentMethod->setName('myMethod');
+        $parentMethod->setParent($parentClass);
+        $parentClass->getMethods()->set($parentMethod->getName(), $parentMethod);
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setParent($parentClass);
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->assertSame($parentMethod, $this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritsRecursivelyWhenExtending(): void
+    {
+        $parentClass1 = new ClassDescriptor();
+        $parentClass1->setAbstract(true);
+        $parentClass1->setFullyQualifiedStructuralElementName(new Fqsen('\My\AbstractClass1'));
+        $parentMethod1 = new MethodDescriptor();
+        $parentMethod1->setName('myMethod');
+        $parentMethod1->setParent($parentClass1);
+        $parentClass1->getMethods()->set($parentMethod1->getName(), $parentMethod1);
+
+        $parentClass2 = new ClassDescriptor();
+        $parentClass2->setAbstract(true);
+        $parentClass2->setFullyQualifiedStructuralElementName(new Fqsen('\My\AbstractClass2'));
+        $parentClass2->setParent($parentClass1);
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setParent($parentClass2);
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->assertSame($parentMethod1, $this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritsWhenImplementing(): void
+    {
+        $interface1 = new InterfaceDescriptor();
+        $interface1->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface1'));
+
+        $interface2 = new InterfaceDescriptor();
+        $interface2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface2'));
+        $interface2->setParent(new Collection([$interface1]));
+        $interfaceMethod2 = new MethodDescriptor();
+        $interfaceMethod2->setName('myMethod');
+        $interface2->setMethods(new Collection([$interfaceMethod2]));
+        $interface2->getMethods()->set($interfaceMethod2->getName(), $interfaceMethod2);
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setInterfaces(new Collection([$interface1, $interface2]));
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->assertSame($interfaceMethod2, $this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritsRecursivelyWhenImplementing(): void
+    {
+        $interface1 = new InterfaceDescriptor();
+        $interface1->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface1'));
+        $interfaceMethod1 = new MethodDescriptor();
+        $interfaceMethod1->setName('myMethod');
+        $interfaceMethod1->setParent($interface1);
+        $interface1->setMethods(new Collection([$interfaceMethod1]));
+        $interface1->getMethods()->set($interfaceMethod1->getName(), $interfaceMethod1);
+
+        $interface2 = new InterfaceDescriptor();
+        $interface2->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface2'));
+        $interface2->setParent(new Collection([$interface1]));
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setInterfaces(new Collection([$interface2]));
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->assertSame($interfaceMethod1, $this->fixture->getInheritedElement());
+    }
+
+    public function testElementInheritsRecursivelyWhenExtendingAndImplementing(): void
+    {
+        $interface = new InterfaceDescriptor();
+        $interface->setFullyQualifiedStructuralElementName(new Fqsen('\My\Interface'));
+        $interfaceMethod = new MethodDescriptor();
+        $interfaceMethod->setName('myMethod');
+        $interfaceMethod->setParent($interface);
+        $interface->setMethods(new Collection([$interfaceMethod]));
+        $interface->getMethods()->set($interfaceMethod->getName(), $interfaceMethod);
+
+        $parentClass = new ClassDescriptor();
+        $parentClass->setAbstract(true);
+        $parentClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\AbstractClass'));
+        $parentClass->setInterfaces(new Collection([$interface]));
+
+        $associatedClass = new ClassDescriptor();
+        $associatedClass->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class'));
+        $associatedClass->setParent($parentClass);
+        $this->fixture->setName('myMethod');
+        $this->fixture->setParent($associatedClass);
+        $associatedClass->getMethods()->set($this->fixture->getName(), $this->fixture);
+
+        $this->assertSame($interfaceMethod, $this->fixture->getInheritedElement());
+    }
+
     /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {

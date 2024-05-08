@@ -210,47 +210,23 @@ class MethodDescriptor extends DescriptorAbstract implements
             return $this->inheritedElement;
         }
 
-        /** @var ClassInterface|InterfaceInterface|null $associatedClass */
-        $associatedClass = $this->getParent();
-        if (! $associatedClass instanceof ClassInterface && ! $associatedClass instanceof InterfaceInterface) {
-            return null;
-        }
-
-        $parentClass = $associatedClass->getParent();
-        if ($parentClass instanceof ClassInterface || $parentClass instanceof Collection) {
-            // the parent of a class is always a class, but the parent of an interface is a collection of interfaces.
-            $parents = $parentClass instanceof ClassInterface ? [$parentClass] :
-                $parentClass->filter(InterfaceInterface::class);
-            foreach ($parents as $parent) {
-                /** @var MethodInterface|null $parentMethod */
-                $parentMethod = $parent->getMethods()->fetch($this->getName());
-                if ($parentMethod instanceof self) {
-                    $this->inheritedElement = $parentMethod;
-
-                    return $this->inheritedElement;
-                }
+        /** @var ClassInterface|InterfaceInterface|null $methodParent */
+        $methodParent = $this->getParent();
+        if ($methodParent instanceof ClassInterface) {
+            /** @var MethodInterface|null $parentClassMethod */
+            $parentClassMethod = $this->recurseClassInheritance($methodParent);
+            if ($parentClassMethod instanceof self) {
+                $this->inheritedElement = $parentClassMethod;
+            }
+        } elseif ($methodParent instanceof InterfaceInterface) {
+            /** @var MethodInterface|null $parentInterfaceMethod */
+            $parentInterfaceMethod = $this->recurseInterfaceInheritance($methodParent);
+            if ($parentInterfaceMethod instanceof self) {
+                $this->inheritedElement = $parentInterfaceMethod;
             }
         }
 
-        // also check all implemented interfaces next if the parent is a class and not an interface
-        if ($associatedClass instanceof ClassInterface) {
-            /** @var InterfaceInterface|Fqsen $interface */
-            foreach ($associatedClass->getInterfaces() as $interface) {
-                if ($interface instanceof Fqsen) {
-                    continue;
-                }
-
-                /** @var ?MethodInterface $parentMethod */
-                $parentMethod = $interface->getMethods()->fetch($this->getName());
-                if ($parentMethod instanceof self) {
-                    $this->inheritedElement = $parentMethod;
-
-                    return $this->inheritedElement;
-                }
-            }
-        }
-
-        return null;
+        return $this->inheritedElement;
     }
 
     /**
@@ -269,5 +245,63 @@ class MethodDescriptor extends DescriptorAbstract implements
     public function getHasReturnByReference(): bool
     {
         return $this->hasReturnByReference;
+    }
+
+    private function recurseClassInheritance(ClassInterface $currentClass): MethodInterface|null
+    {
+        /** @var ClassInterface|null $parentClass */
+        $parentClass = $currentClass->getParent();
+        if ($parentClass instanceof ClassInterface) {
+            /** @var MethodInterface|null $parentClassMethod */
+            $parentClassMethod = $parentClass->getMethods()->fetch($this->getName());
+            if ($parentClassMethod instanceof self) {
+                return $parentClassMethod;
+            }
+
+            /** @var MethodInterface|null $ancestorMethod */
+            $ancestorMethod = $this->recurseClassInheritance($parentClass);
+            if ($ancestorMethod instanceof self) {
+                return $ancestorMethod;
+            }
+        }
+
+        /** @var Collection<InterfaceInterface>|null $parentInterfaces */
+        $parentInterfaces = $currentClass->getInterfaces()->filter(InterfaceInterface::class);
+        foreach ($parentInterfaces as $parentInterface) {
+            /** @var MethodInterface|null $parentInterfaceMethod */
+            $parentInterfaceMethod = $parentInterface->getMethods()->fetch($this->getName());
+            if ($parentInterfaceMethod instanceof self) {
+                return $parentInterfaceMethod;
+            }
+
+            /** @var MethodInterface|null $ancestorMethod */
+            $ancestorMethod = $this->recurseInterfaceInheritance($parentInterface);
+            if ($ancestorMethod instanceof self) {
+                return $ancestorMethod;
+            }
+        }
+
+        return null;
+    }
+
+    private function recurseInterfaceInheritance(InterfaceInterface $currentInterface): MethodInterface|null
+    {
+        /** @var Collection<InterfaceInterface>|null $parentInterfaces */
+        $parentInterfaces = $currentInterface->getParent()->filter(InterfaceInterface::class);
+        foreach ($parentInterfaces as $parentInterface) {
+            /** @var MethodInterface|null $parentInterfaceMethod */
+            $parentInterfaceMethod = $parentInterface->getMethods()->fetch($this->getName());
+            if ($parentInterfaceMethod instanceof self) {
+                return $parentInterfaceMethod;
+            }
+
+            /** @var MethodInterface|null $ancestorMethod */
+            $ancestorMethod = $this->recurseInterfaceInheritance($parentInterface);
+            if ($ancestorMethod instanceof self) {
+                return $ancestorMethod;
+            }
+        }
+
+        return null;
     }
 }
