@@ -20,6 +20,9 @@ use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Transformer\Router\Router;
 
+use function ltrim;
+
+/** @implements DocumentationSetBuilder<ApiSetDescriptor> */
 final class ApiSetBuilder implements DocumentationSetBuilder
 {
     public function __construct(private readonly Router $router)
@@ -31,7 +34,7 @@ final class ApiSetBuilder implements DocumentationSetBuilder
         return $documentationSet instanceof ApiSetDescriptor;
     }
 
-    public function build(DocumentationSetDescriptor|ApiSetDescriptor $documentationSet): void
+    public function build(DocumentationSetDescriptor $documentationSet): void
     {
         if ($documentationSet->getNamespace()->getChildren()->count() > 0) {
             $namespacesToc = new TocDescriptor('Namespaces');
@@ -42,14 +45,16 @@ final class ApiSetBuilder implements DocumentationSetBuilder
             $documentationSet->addTableOfContents($namespacesToc);
         }
 
-        if ($documentationSet->getPackage()->getChildren()->count() > 0) {
-            $packagesToc = new TocDescriptor('Packages');
-            foreach ($documentationSet->getPackage()->getChildren() as $child) {
-                $this->createNamespaceEntries($child, $packagesToc);
-            }
-
-            $documentationSet->addTableOfContents($packagesToc);
+        if ($documentationSet->getPackage()->getChildren()->count() <= 0) {
+            return;
         }
+
+        $packagesToc = new TocDescriptor('Packages');
+        foreach ($documentationSet->getPackage()->getChildren() as $child) {
+            $this->createNamespaceEntries($child, $packagesToc);
+        }
+
+        $documentationSet->addTableOfContents($packagesToc);
     }
 
     private function createNamespaceEntries(

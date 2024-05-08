@@ -17,11 +17,7 @@ use phpDocumentor\Compiler\DescriptorRepository;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\SetVersionPass
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\SetVersionPass */
 final class SetVersionPassTest extends TestCase
 {
     use Faker;

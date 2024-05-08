@@ -15,9 +15,11 @@ namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
+/** @template TDocumentationSet of DocumentationSetDescriptor */
 interface DocumentationSetBuilder
 {
     public function supports(DocumentationSetDescriptor $documentationSet): bool;
 
+    /** @phpstan-param TDocumentationSet $documentationSet */
     public function build(DocumentationSetDescriptor $documentationSet): void;
 }

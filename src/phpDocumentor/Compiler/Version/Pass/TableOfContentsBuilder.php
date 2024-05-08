@@ -15,11 +15,12 @@ namespace phpDocumentor\Compiler\Version\Pass;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
-    /** @param iterable<array-key, TableOfContentsBuilder\DocumentationSetBuilder> $builders */
+    /** @param iterable<array-key, TableOfContentsBuilder\DocumentationSetBuilder<DocumentationSetDescriptor>> $builders */
     public function __construct(private readonly iterable $builders)
     {
     }
@@ -37,7 +38,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
 
         foreach ($subject->getDocumentationSets() as $documentationSet) {
             foreach ($this->builders as $builder) {
-                if (!$builder->supports($documentationSet)) {
+                if (! $builder->supports($documentationSet)) {
                     continue;
                 }
 

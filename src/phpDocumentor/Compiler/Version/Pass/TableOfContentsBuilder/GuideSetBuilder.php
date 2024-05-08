@@ -22,6 +22,10 @@ use phpDocumentor\Guides\Nodes\DocumentTree\DocumentEntryNode;
 use phpDocumentor\Guides\Nodes\DocumentTree\SectionEntryNode;
 use phpDocumentor\Transformer\Router\Router;
 
+use function ltrim;
+use function sprintf;
+
+/** @implements DocumentationSetBuilder<GuideSetDescriptor> */
 final class GuideSetBuilder implements DocumentationSetBuilder
 {
     public function __construct(private readonly Router $router)
@@ -33,7 +37,7 @@ final class GuideSetBuilder implements DocumentationSetBuilder
         return $documentationSet instanceof GuideSetDescriptor;
     }
 
-    public function build(DocumentationSetDescriptor|GuideSetDescriptor $documentationSet): void
+    public function build(DocumentationSetDescriptor $documentationSet): void
     {
         $documents = $documentationSet->getDocuments();
         $index = $documents->fetch('index');

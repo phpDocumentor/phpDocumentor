@@ -20,11 +20,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\GuideSetBuilder
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\GuideSetBuilder */
 final class GuideSetBuilderTest extends TestCase
 {
     use Faker;

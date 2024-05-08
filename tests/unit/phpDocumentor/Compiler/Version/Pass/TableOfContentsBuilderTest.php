@@ -19,11 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder */
 final class TableOfContentsBuilderTest extends TestCase
 {
     use Faker;
@@ -36,9 +32,7 @@ final class TableOfContentsBuilderTest extends TestCase
     {
         $this->builderAdapter = $this->prophesize(TableOfContentsBuilder\DocumentationSetBuilder::class);
 
-        $this->builder = new TableOfContentsBuilder([
-            $this->builderAdapter->reveal()
-        ]);
+        $this->builder = new TableOfContentsBuilder([$this->builderAdapter->reveal()]);
     }
 
     /** @covers ::getDescription */

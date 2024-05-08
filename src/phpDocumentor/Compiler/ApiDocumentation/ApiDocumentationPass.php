@@ -23,6 +23,11 @@ abstract class ApiDocumentationPass implements CompilerPassInterface
         return $subject;
     }
 
+    /**
+     * Actual method executed by the compiler.
+     *
+     * Processes the given ApiSetDescriptor and returns the modified {@see ApiSetDescriptor}.
+     */
     abstract protected function process(ApiSetDescriptor $subject): ApiSetDescriptor;
 
     public function getDescription(): string

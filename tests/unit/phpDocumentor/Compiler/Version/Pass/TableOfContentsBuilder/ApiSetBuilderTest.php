@@ -23,11 +23,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 use function current;
 
-/**
- * @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\ApiSetBuilder
- * @covers ::<private>
- * @covers ::__construct
- */
+/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\ApiSetBuilder */
 final class ApiSetBuilderTest extends TestCase
 {
     use Faker;
