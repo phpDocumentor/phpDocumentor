@@ -43,7 +43,7 @@ final class VersionDescriptor implements CompilableSubject, Descriptor
     {
         $tocs = Collection::fromClassString(TocDescriptor::class);
         foreach ($this->documentationSets as $documentationSet) {
-            $tocs = $tocs->merge($documentationSet->getTableOfContents());
+            $tocs = $documentationSet->getTableOfContents()->merge($tocs);
         }
 
         return $tocs;
