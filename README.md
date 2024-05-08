@@ -83,7 +83,7 @@ There are 4 ways to install phpDocumentor:
 
 ### Using Phive
 
-`$ phive install phpDocumentor`
+`$ phive install phpDocumentor --trust-gpg-keys 8AC0BAA79732DD42`
 
 For more information about phive have a look at their [website](https://phar.io/).
 Now you have phpDocumentor installed, it can be executed like this:
