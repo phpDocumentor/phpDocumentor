@@ -49,7 +49,7 @@ class FunctionAssembler extends AssemblerAbstract
      *
      * @param Function_ $data
      */
-    public function create(object $data): FunctionInterface
+    public function buildDescriptor(object $data): FunctionInterface
     {
         $functionDescriptor = new FunctionDescriptor();
 

@@ -56,7 +56,7 @@ use function ucfirst;
 #[Stage(
     'phpdoc.pipeline.api_documentation.compile',
     10000,
-    'Replace textual FQCNs with object aliases',
+    description: 'Replace textual FQCNs with object aliases',
 )]
 final class Linker extends ApiDocumentationPass
 {

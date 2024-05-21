@@ -20,7 +20,12 @@ use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 /**
  * Describes the public interface of the description for a method.
  */
-interface MethodInterface extends ElementInterface, TypeInterface, InheritsFromElement, ChildInterface
+interface MethodInterface extends
+    ElementInterface,
+    TypeInterface,
+    InheritsFromElement,
+    ChildInterface,
+    AttributedInterface
 {
     public function setAbstract(bool $abstract): void;
 

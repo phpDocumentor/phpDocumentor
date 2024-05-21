@@ -1,10 +1,10 @@
-<article
-        class="
-            phpdocumentor-element
-            -attribute
-        "
->
-    <h4 class="phpdocumentor-element__name">
-        #[{{ attribute.name }}]
-    </h4>
-</article>
+<dl class="phpdocumentor-argument-list">
+    <dt class="phpdocumentor-argument-list__entry">
+        #[{{ attribute.attribute | route('class:short') }}]
+    </dt>
+    {% for argument in attribute.arguments %}
+    <dd class="phpdocumentor-argument-list__entry">
+        {% if argument.name %}${{ argument.name }}: {% endif %}{{ argument.value }}
+    </dd>
+    {% endfor %}
+</dl>

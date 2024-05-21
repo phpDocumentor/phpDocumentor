@@ -48,7 +48,7 @@ class MethodAssembler extends AssemblerAbstract
      *
      * @param Method $data
      */
-    public function create(object $data): MethodInterface
+    public function buildDescriptor(object $data): MethodInterface
     {
         $methodDescriptor = new MethodDescriptor();
         $methodDescriptor->setNamespace(

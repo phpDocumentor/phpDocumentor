@@ -37,6 +37,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     use Traits\HasVisibility;
     use Traits\CanHaveAType;
     use Traits\CanHaveADefaultValue;
+    use Traits\HasAttributes;
 
     /** @var ClassInterface|TraitInterface|null $parent */
     protected ElementInterface|null $parent = null;

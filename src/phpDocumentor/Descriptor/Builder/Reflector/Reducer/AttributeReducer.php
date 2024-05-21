@@ -8,6 +8,7 @@ use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
+use phpDocumentor\Descriptor\ValueObjects\CallArgument;
 use phpDocumentor\Reflection\Php\AttributeContainer;
 
 final class AttributeReducer implements AssemblerReducer
@@ -26,6 +27,10 @@ final class AttributeReducer implements AssemblerReducer
             $attributeDescriptor = new AttributeDescriptor();
             $attributeDescriptor->setName($attribute->getName());
             $attributeDescriptor->setFullyQualifiedStructuralElementName($attribute->getFqsen());
+            foreach ($attribute->getArguments() as $argument) {
+                $attributeDescriptor->addArgument(new CallArgument($argument->getValue(), $argument->getName()));
+            }
+
             $descriptor->addAttribute($attributeDescriptor);
         }
 

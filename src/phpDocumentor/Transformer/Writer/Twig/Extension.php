@@ -316,10 +316,6 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         $attributes = $attributes->merge($descriptor->getAttributes());
                     }
 
-                    if (method_exists($descriptor, 'getInheritedAttributes')) {
-                        $attributes = $attributes->merge($descriptor->getInheritedAttributes());
-                    }
-
                     return $attributes;
                 },
             ),

@@ -20,7 +20,7 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 /**
  * Descriptor representing a property on a class or trait.
  */
-interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped
+interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped, AttributedInterface
 {
     /**
      * Returns true when this property is intended to be read-only.

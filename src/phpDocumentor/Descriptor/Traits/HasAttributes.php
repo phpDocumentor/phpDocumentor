@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
 use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
-use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 
 trait HasAttributes
 {
@@ -32,22 +30,5 @@ trait HasAttributes
         }
 
         return $this->attributes;
-    }
-
-    /** @return Collection<AttributeInterface> */
-    public function getInheritedAttributes(): Collection
-    {
-        if ($this instanceof ChildInterface === false) {
-            return Collection::fromInterfaceString(AttributeInterface::class);
-        }
-
-        $parent = $this->getParent();
-        if ($parent instanceof AttributedInterface === false) {
-            return $this->getAttributes();
-        }
-
-        return $this->getAttributes()->merge(
-            $parent->getInheritedAttributes(),
-        );
     }
 }
