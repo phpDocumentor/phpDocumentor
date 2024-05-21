@@ -120,7 +120,8 @@
     },
     "bin": ["bin/phpdoc", "bin/phpdoc.php"],
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "phpdocumentor/reflection-docblock": "5.4.0"
     },
     "extra": {
         "branch-alias": {
