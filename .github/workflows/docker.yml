@@ -1,5 +1,12 @@
 on:
   workflow_dispatch:
+    inputs:
+      nightly:
+        required: false
+        default: false
+      tags:
+        required: true
+        description: 'The tag to build the image with'
 
 name: Docker build
 jobs:
@@ -7,11 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: elgohr/Publish-Docker-Github-Action@master
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: phpdoc/phpdoc
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          snapshot: true
-          tags: 'latest, 3, 3.4'
+          snapshot: ${{ inputs.nightly }}
+          tags: ${{ inputs.tags }}
           buildoptions: "--target=prod"
+          platforms: linux/amd64,linux/arm64

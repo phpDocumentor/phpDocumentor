@@ -517,3 +517,4 @@ jobs:
         with:
           workflow: Docker build
           token: ${{ secrets.BOT_TOKEN }}
+          inputs: '{"nightly": "true", "tags": "3-unstable"}'

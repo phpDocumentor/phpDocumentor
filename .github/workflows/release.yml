@@ -44,8 +44,10 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@master
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v2
         - name: Release docker
-          uses: elgohr/Publish-Docker-Github-Action@master
+          uses: elgohr/Publish-Docker-Github-Action@v5
           with:
             name: phpdoc/phpdoc
             username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -57,3 +59,4 @@ jobs:
           with:
             workflow: Docker build
             token: ${{ secrets.BOT_TOKEN }}
+            inputs: '{ "tags": "latest,stable"}'
