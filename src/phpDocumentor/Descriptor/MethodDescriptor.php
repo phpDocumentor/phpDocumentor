@@ -41,8 +41,7 @@ use function current;
  */
 class MethodDescriptor extends DescriptorAbstract implements
     Interfaces\MethodInterface,
-    Interfaces\VisibilityInterface,
-    Interfaces\AttributedInterface
+    Interfaces\VisibilityInterface
 {
     use CanBeFinal;
     use CanBeAbstract;

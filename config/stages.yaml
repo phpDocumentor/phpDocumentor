@@ -17,36 +17,44 @@ parameters:
       - 'properties'
       - 'methods'
       - 'usedTraits'
+      - 'attributes'
     'phpDocumentor\Descriptor\InterfaceDescriptor':
       - 'tags'
       - 'parent'
       - 'constants'
       - 'methods'
+      - 'attributes'
     'phpDocumentor\Descriptor\TraitDescriptor':
       - 'tags'
       - 'properties'
       - 'methods'
       - 'usedTraits'
+      - 'attributes'
     'phpDocumentor\Descriptor\EnumDescriptor':
       - 'tags'
       - 'interfaces'
       - 'cases'
       - 'methods'
       - 'usedTraits'
+      - 'attributes'
     'phpDocumentor\Descriptor\FunctionDescriptor':
       - 'tags'
       - 'arguments'
     'phpDocumentor\Descriptor\MethodDescriptor':
       - 'tags'
       - 'arguments'
+      - 'attributes'
     'phpDocumentor\Descriptor\ArgumentDescriptor':
       - 'type'
     'phpDocumentor\Descriptor\PropertyDescriptor':
       - 'tags'
       - 'type'
+      - 'attributes'
     'phpDocumentor\Descriptor\ConstantDescriptor':
       - 'tags'
       - 'type'
+      - 'attributes'
+    'phpDocumentor\Descriptor\AttributeDescriptor': ['attribute']
     'phpDocumentor\Descriptor\Tag\ParamDescriptor': ['type']
     'phpDocumentor\Descriptor\Tag\VarDescriptor': ['type']
     'phpDocumentor\Descriptor\Tag\ReturnDescriptor': ['type']

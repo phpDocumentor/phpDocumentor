@@ -2,10 +2,9 @@
 
 {% if attributes is not empty %}
     <section class="phpdocumentor-attributes">
-        <h3 class="phpdocumentor-elements__header" id="attributes">
-            Attributes
-            {{ include('components/headerlink.html.twig', {'on': node, 'at': 'attributes'}, with_context = false) }}
-        </h3>
+        <h5 class="phpdocumentor-elements__header" id="attributes">
+            Attributes {{ include('components/headerlink.html.twig', {'on': node, 'at': 'attributes'}, with_context = false) }}
+        </h5>
         {% for attribute in attributes %}
             {% include 'components/attribute.html.twig' %}
         {% endfor %}
