@@ -1,0 +1,35 @@
+name: "Sub-split Publishing"
+
+on: # yamllint disable-line rule:truthy
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  publish_sub_splits:
+    runs-on: "ubuntu-latest"
+    name: "Publish Sub-split"
+    steps:
+      - uses: "actions/checkout@v4"
+        with:
+          fetch-depth: "0"
+          persist-credentials: "false"
+      - uses: "frankdejonge/use-github-token@1.1.0"
+        with:
+          authentication: "phpdoc-bot:${{ secrets.BOT_TOKEN }}"
+          user_name: "phpDocumentor Bot"
+          user_email: "info@phpdoc.org"
+      - name: "Cache splitsh-lite"
+        id: "splitsh-cache"
+        uses: "actions/cache@v4.0.2"
+        with:
+          path: "./.splitsh"
+          key: "${{ runner.os }}-splitsh-d-101"
+      - uses: "frankdejonge/use-subsplit-publish@1.1.0"
+        with:
+          source-branch: "${{ github.ref_name }}"
+          config-path: "./config.subsplit-publish.json"
+          splitsh-path: "./.splitsh/splitsh-lite"
+          splitsh-version: "v1.0.1"

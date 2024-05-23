@@ -1,0 +1,10 @@
+{
+  "sub-splits": [
+    {
+      "name": "json-path",
+      "directory": "incubator/json-path",
+      "target": "git@github.com:phpDocumentor/json-path.git",
+      "target-branch": "main"
+    }
+  ]
+}
