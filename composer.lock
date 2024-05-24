@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87b183f4bffbf60b56277b08428b68a5",
+    "content-hash": "61889d67fa8b93a741fa381babcbcbc7",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1968,16 +1968,16 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "dev-main",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/json-path.git",
-                "reference": "51c3e232aa2585b69b4b4eb2dd37e821ddf9db73"
+                "reference": "35f564d8a7435224d1d677be05a68afc5d2e9804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/json-path/zipball/51c3e232aa2585b69b4b4eb2dd37e821ddf9db73",
-                "reference": "51c3e232aa2585b69b4b4eb2dd37e821ddf9db73",
+                "url": "https://api.github.com/repos/phpDocumentor/json-path/zipball/35f564d8a7435224d1d677be05a68afc5d2e9804",
+                "reference": "35f564d8a7435224d1d677be05a68afc5d2e9804",
                 "shasum": ""
             },
             "require": {
@@ -1988,7 +1988,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2008,9 +2007,9 @@
             "description": "Access php objects with json path expressions",
             "support": {
                 "issues": "https://github.com/phpDocumentor/json-path/issues",
-                "source": "https://github.com/phpDocumentor/json-path/tree/main"
+                "source": "https://github.com/phpDocumentor/json-path/tree/0.1.0"
             },
-            "time": "2024-05-06T20:15:13+00:00"
+            "time": "2024-05-24T12:05:29+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -7409,9 +7408,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "phpdocumentor/json-path": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

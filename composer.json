@@ -58,7 +58,7 @@
         "phpdocumentor/guides-graphs": "^1.3",
         "phpdocumentor/guides-markdown": "^1.0",
         "phpdocumentor/guides-restructured-text": "^1.3",
-        "phpdocumentor/json-path": "dev-main@dev",
+        "phpdocumentor/json-path": "^0.1.0",
         "phpdocumentor/reflection": "^6.0",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.4",
