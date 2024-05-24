@@ -54,9 +54,11 @@ jobs:
             password: ${{ secrets.DOCKER_HUB_PASSWORD }}
             tag_semver: true
             buildoptions: "--target=prod"
+            platforms: linux/amd64,linux/arm64
+
         - name: Trigger
           uses: benc-uk/workflow-dispatch@v1.2.3
-          if: ${{ github.event.release.prerelease }} == false;
+          if: ${{ github.event.release.prerelease }} == false
           with:
             workflow: Docker build
             token: ${{ secrets.BOT_TOKEN }}
