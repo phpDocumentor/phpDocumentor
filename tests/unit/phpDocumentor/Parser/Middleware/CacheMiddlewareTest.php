@@ -96,7 +96,7 @@ final class CacheMiddlewareTest extends TestCase
     ): void {
         $cacheInterface->get(
             '0d3c97a4f869de131219802426e09961-c1af748a4386d756f9b87703cf3b33c8',
-            static fn () => base64_encode(serialize($reflectedFile))
+            static fn () => base64_encode(serialize($reflectedFile)),
         );
     }
 }

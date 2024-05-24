@@ -382,7 +382,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'sortByVisibility' => new TwigFilter('sortByVisibility', $this->sortByVisibility(...)),
             'export' => new TwigFilter(
                 'export',
-                static fn ($var) => var_export($var, true)
+                static fn ($var) => var_export($var, true),
             ),
             'description' => new TwigFilter(
                 'description',

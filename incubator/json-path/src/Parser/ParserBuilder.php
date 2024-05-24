@@ -177,7 +177,7 @@ final class ParserBuilder
             self::rootNode(),
             some($inner),
         )->map(
-            static fn ($args) => new Path([$args[0], ...$args[1]])
+            static fn ($args) => new Path([$args[0], ...$args[1]]),
         );
     }
 
