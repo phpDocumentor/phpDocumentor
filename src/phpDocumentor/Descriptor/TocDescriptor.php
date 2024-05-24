@@ -38,7 +38,7 @@ final class TocDescriptor implements Descriptor
             Entry::class,
             array_filter(
                 $this->entries->getAll(),
-                static fn (Entry $entry) => $entry->getParent() === null
+                static fn (Entry $entry) => $entry->getParent() === null,
             ),
         );
     }

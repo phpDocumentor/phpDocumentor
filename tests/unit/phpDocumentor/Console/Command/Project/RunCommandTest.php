@@ -40,7 +40,7 @@ class RunCommandTest extends TestCase
         $pipeline = $this->prophesize(PipelineInterface::class);
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $pipeline->__invoke(Argument::that(
-            static fn (array $options) => $options['force'] === true && $options['filename'] === ['abc']
+            static fn (array $options) => $options['force'] === true && $options['filename'] === ['abc'],
         ))
             ->shouldBeCalledTimes(1);
 
