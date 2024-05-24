@@ -56,6 +56,7 @@ jobs:
             buildoptions: "--target=prod"
         - name: Trigger
           uses: benc-uk/workflow-dispatch@v1.2.3
+          if: ${{ github.event.release.prerelease }} == false;
           with:
             workflow: Docker build
             token: ${{ secrets.BOT_TOKEN }}
