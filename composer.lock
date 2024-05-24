@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af70f5baa5c917ef4e2e6ed627b034bf",
+    "content-hash": "87b183f4bffbf60b56277b08428b68a5",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -1968,11 +1968,17 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "5.x-dev",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpDocumentor/json-path.git",
+                "reference": "51c3e232aa2585b69b4b4eb2dd37e821ddf9db73"
+            },
             "dist": {
-                "type": "path",
-                "url": "incubator/json-path",
-                "reference": "3cba5ea29764a4bbcfe7780bfec80672c8cd5228"
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpDocumentor/json-path/zipball/51c3e232aa2585b69b4b4eb2dd37e821ddf9db73",
+                "reference": "51c3e232aa2585b69b4b4eb2dd37e821ddf9db73",
+                "shasum": ""
             },
             "require": {
                 "parsica-php/parsica": "^0.8.1",
@@ -1982,17 +1988,14 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "phpDocumentor\\JsonPath\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "phpDocumentor\\JsonPath\\": "tests/unit"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2003,9 +2006,11 @@
                 }
             ],
             "description": "Access php objects with json path expressions",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/phpDocumentor/json-path/issues",
+                "source": "https://github.com/phpDocumentor/json-path/tree/main"
+            },
+            "time": "2024-05-06T20:15:13+00:00"
         },
         {
             "name": "phpdocumentor/reflection",

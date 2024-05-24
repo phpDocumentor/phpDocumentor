@@ -25,7 +25,11 @@
         }
     },
     "repositories": [
-        { "type": "path", "url": "incubator/json-path" }
+        {
+            "type": "path",
+            "url": "incubator/json-path",
+            "canonical": false
+        }
     ],
     "require": {
         "php": "^8.1",
@@ -54,7 +58,7 @@
         "phpdocumentor/guides-graphs": "^1.3",
         "phpdocumentor/guides-markdown": "^1.0",
         "phpdocumentor/guides-restructured-text": "^1.3",
-        "phpdocumentor/json-path": "*@dev",
+        "phpdocumentor/json-path": "dev-main@dev",
         "phpdocumentor/reflection": "^6.0",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.4",
