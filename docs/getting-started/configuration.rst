@@ -27,7 +27,7 @@ A simple configuration file looks like this:
 
     </phpdocumentor>
 
-Read more about configuation: :doc:`../references/configuration`.
+Read more about configuration: :doc:`../references/configuration`.
 
 And next
 --------
