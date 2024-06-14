@@ -13,6 +13,7 @@ use Webmozart\Assert\Assert;
 
 use function array_map;
 use function sprintf;
+use function strtolower;
 
 /**
  * @psalm-import-type ConfigurationApiMap from Version3
@@ -133,7 +134,7 @@ final class ApiSpecification implements ArrayAccess
         $visibility = 0;
 
         foreach ($this->visibility as $item) {
-            match ($item) {
+            match (strtolower($item)) {
                 'api' => $visibility |= self::VISIBILITY_API,
                 'public' => $visibility |= self::VISIBILITY_PUBLIC,
                 'protected' => $visibility |= self::VISIBILITY_PROTECTED,
