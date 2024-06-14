@@ -1,4 +1,4 @@
-{% set attributes = attributes(node)|sortByVisibility %}
+{% set attributes = attributes(node)|specializedAttributes|sortByVisibility %}
 
 {% if attributes is not empty %}
     <section class="phpdocumentor-attributes">

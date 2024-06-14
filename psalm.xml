@@ -32,18 +32,17 @@
             </errorLevel>
         </UndefinedMagicMethod>
 
+        <UndefinedMethod>
+            <errorLevel type="suppress">
+                <file name="src/phpDocumentor/Descriptor/Traits/CanBeDeprecated.php"/>
+            </errorLevel>
+        </UndefinedMethod>
+
         <UnusedVariable>
             <errorLevel type="suppress">
                 <file name="src/phpDocumentor/Transformer/Writer/Twig/Extension.php" />
             </errorLevel>
         </UnusedVariable>
-
-        <UndefinedInterfaceMethod>
-            <errorLevel type="suppress">
-                <!-- not sure what's going on here -->
-                <referencedMethod name="League\Flysystem\FilesystemInterface::find"/>
-            </errorLevel>
-        </UndefinedInterfaceMethod>
 
         <InvalidArgument>
             <errorLevel type="suppress">
@@ -66,13 +65,6 @@
         This could be removed when https://youtrack.jetbrains.com/issue/WI-47158 will be resolved
         or if we decide PHPStorm autocompletion is not needed -->
         <UnnecessaryVarAnnotation errorLevel="suppress" />
-
-        <InvalidThrow>
-            <errorLevel type="suppress">
-                <!-- An interface of exception that does not implements Throwable -->
-                <referencedClass name="Psr\Cache\InvalidArgumentException"/>
-            </errorLevel>
-        </InvalidThrow>
 
         <InvalidExtendClass>
             <errorLevel type="suppress">
@@ -105,11 +97,6 @@
 
         <InvalidReturnStatement>
             <errorLevel type="suppress">
-                <!-- Discussed here #2271-->
-                <file name="src/phpDocumentor/Descriptor/ClassDescriptor.php"/>
-                <file name="src/phpDocumentor/Descriptor/PropertyDescriptor.php"/>
-                <!-- Linker & LinkRenderer works with a lot of types and transform each of them individually. They'll have to be refactored -->
-                <file name="src/phpDocumentor/Transformer/Writer/Twig/LinkRenderer.php"/>
                 <file name="src/phpDocumentor/Compiler/ApiDocumentation/Linker/Linker.php"/>
             </errorLevel>
         </InvalidReturnStatement>
@@ -123,13 +110,6 @@
                 <file name="src/phpDocumentor/Compiler/ApiDocumentation/Linker/Linker.php"/>
             </errorLevel>
         </InvalidReturnType>
-
-        <UnusedMethodCall>
-            <errorLevel type="suppress">
-                <!-- Psalm think the call is unused. Don't know why -->
-                <referencedMethod name="Webmozart\Assert\Mixin::nullOrIsInstanceOf"/>
-            </errorLevel>
-        </UnusedMethodCall>
 
         <MoreSpecificImplementedParamType>
             <errorLevel type="suppress">
@@ -147,11 +127,5 @@
                 <file name="src/phpDocumentor/Descriptor/Builder/Reflector/Tags/InvalidTagAssembler.php" />
             </errorLevel>
         </InvalidCast>
-
-        <UndefinedFunction>
-            <errorLevel type="suppress">
-                <referencedFunction name="str_starts_with" />
-            </errorLevel>
-        </UndefinedFunction>
     </issueHandlers>
 </psalm>

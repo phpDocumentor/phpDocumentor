@@ -41,11 +41,11 @@
                         <th class="phpdocumentor-heading">Reason</th>
                     </tr>
                     {% for element in deprecatedElements|filter(el => el.file == file) %}
-                        {% for tag in element.tags.deprecated %}
+                        {% for deprecation in element.deprecations %}
                             <tr>
                                 <td class="phpdocumentor-cell">{{ element.line }}</td>
                                 <td class="phpdocumentor-cell">{{ element|route}}</td>
-                                <td class="phpdocumentor-cell">{{ tag.description | description | markdown }}</td>
+                                <td class="phpdocumentor-cell">{{ deprecation.description | description | markdown }}</td>
                             </tr>
                         {% endfor %}
                     {% endfor %}

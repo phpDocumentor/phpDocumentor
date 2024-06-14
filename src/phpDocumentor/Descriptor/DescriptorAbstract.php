@@ -46,6 +46,7 @@ abstract class DescriptorAbstract implements
     use Traits\IsInFile;
     use Traits\HasErrors;
     use Traits\HasInheritance;
+    use Traits\CanBeDeprecated;
 
     /**
      * Initializes this descriptor.

@@ -34,7 +34,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for method in methods|sortByVisibility %}
-                            <li><a href="{{ link(method) }}">{{ method.name }}()</a></li>
+                            <li class="{% if method.deprecated %}-deprecated{% endif %}"><a href="{{ link(method) }}">{{ method.name }}()</a></li>
                         {% endfor %}
                     </ul>
                 </li>
@@ -45,7 +45,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for constant in constants|sortByVisibility %}
-                            <li><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                            <li class="{% if constants.deprecated %}-deprecated{% endif %}"><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
