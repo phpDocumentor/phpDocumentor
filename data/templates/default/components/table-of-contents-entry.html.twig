@@ -1,5 +1,5 @@
 <dt class="phpdocumentor-table-of-contents__entry -{{ type }} -{{ node.visibility }}">
-    <a href="{{ link(node) }}">{{ node is property ? '$' }}{{ node.name }}{{ node is method or node is function ? '()' }}</a>
+    <a class="{% if node.deprecated %}-deprecated{% endif %}" href="{{ link(node) }}">{{ node is property ? '$' }}{{ node.name }}{{ node is method or node is function ? '()' }}</a>
     <span>
         {% if node is constant %}&nbsp;= {{ node.value }}{% endif %}
         {% if node is enumCase %}{% if node.value %}&nbsp;= {{ node.value }}{% endif %}{% endif %}

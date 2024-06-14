@@ -17,6 +17,7 @@ use ArrayIterator;
 use InvalidArgumentException;
 use League\CommonMark\ConverterInterface;
 use League\Uri\Uri;
+use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
@@ -59,6 +60,7 @@ use Twig\TwigTest;
 use Webmozart\Assert\Assert;
 
 use function array_unshift;
+use function in_array;
 use function ltrim;
 use function method_exists;
 use function sprintf;
@@ -398,6 +400,21 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $fqsenOrTitle;
+                },
+            ),
+            'specializedAttributes' => new TwigFilter(
+                'specializedAttributes',
+                static function (Collection $attributes): Collection {
+                    $filtered = Collection::fromClassString(AttributeDescriptor::class);
+                    foreach ($attributes as $attribute) {
+                        if (in_array((string) $attribute->getFullyQualifiedStructuralElementName(), ['\Deprecated'])) {
+                            continue;
+                        }
+
+                        $filtered->add($attribute);
+                    }
+
+                    return $filtered;
                 },
             ),
         ];

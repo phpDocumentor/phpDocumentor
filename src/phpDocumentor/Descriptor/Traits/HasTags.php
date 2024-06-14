@@ -114,12 +114,4 @@ trait HasTags
 
         return new Collection();
     }
-
-    /**
-     * Checks whether this element is deprecated.
-     */
-    public function isDeprecated(): bool
-    {
-        return isset($this->tags['deprecated']);
-    }
 }

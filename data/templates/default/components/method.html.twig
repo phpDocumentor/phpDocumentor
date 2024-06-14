@@ -20,6 +20,7 @@
         {{ include('components/label.html.twig', {name: 'API', value: 'Yes'}, with_context = false) }}
     {% endif %}
     </div>
+    {{ include('components/deprecation.html.twig', {'node': method}) }}
     {{ include('components/description.html.twig', {'node': method}) }}
     {{ include('components/method-arguments.html.twig', {'node': method}) }}
     {{ include('components/tags.html.twig', {'node': method }) }}

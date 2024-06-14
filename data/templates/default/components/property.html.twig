@@ -19,6 +19,7 @@
     </h4>
     {{ include('components/element-found-in.html.twig', {'node': property}) }}
     {{ include('components/summary.html.twig', {'node': property}) }}
+    {{ include('components/deprecation.html.twig', {'node': property}) }}
     {{ include('components/property-signature.html.twig', {'node': property}) }}
     {{ include('components/description.html.twig', {'node': property}) }}
     {{ include('components/description.html.twig', {'node': property.var[0]}) }}
