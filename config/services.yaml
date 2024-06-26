@@ -80,6 +80,7 @@ services:
 
     phpDocumentor\Console\Command\Project\ListSettingsCommand:
         tags: [ { name: 'console.command' } ]
+        public: true
 
     phpDocumentor\Descriptor\Builder\AssemblerFactory:
         class: 'phpDocumentor\Descriptor\Builder\AssemblerFactory'
