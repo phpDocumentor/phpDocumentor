@@ -57,7 +57,7 @@ class Application extends BaseApplication
             $this->add($container->get($id));
         }
 
-        $this->setDefaultCommand('project:run', true);
+        $this->setDefaultCommand('project:run', false);
 
         $eventDispatcher = $container->get(EventDispatcher::class);
         $logger = $container->get(LoggerInterface::class);
@@ -110,6 +110,15 @@ class Application extends BaseApplication
                 new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
             ],
         );
+    }
+
+    protected function getCommandName(InputInterface $input): string|null
+    {
+        if ($input->getFirstArgument() === null) {
+            return 'run';
+        }
+
+        return $input->getFirstArgument();
     }
 
     /**
