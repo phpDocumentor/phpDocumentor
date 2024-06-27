@@ -43,7 +43,7 @@ Example
 .. code-block:: php
 
     /**
-     * @final should not be extended by consuming code.
+     * @final since version X.y.
      */
     class Service
     {
