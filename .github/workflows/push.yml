@@ -381,6 +381,10 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macOS-latest
+        command:
+          - 'run'
+          - 'settings:list'
+          - '--template default'
     name: Smoke tests
     needs:
       - build-phar
@@ -422,7 +426,7 @@ jobs:
         run: php ./build/phpDocumentor.phar --version
 
       - name: Run phpDocumentor on itself
-        run: php ./build/phpDocumentor.phar -vvv --setting="guides.enabled=false"
+        run: php ./build/phpDocumentor.phar ${{ matrix.command }}
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}

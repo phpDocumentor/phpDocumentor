@@ -118,7 +118,7 @@ class Application extends BaseApplication
             return 'run';
         }
 
-        return $input->getFirstArgument();
+        return $input->getArgument('command');
     }
 
     /**
