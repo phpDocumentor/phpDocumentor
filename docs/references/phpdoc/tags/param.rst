@@ -8,7 +8,7 @@ Syntax
 
 .. code-block::
 
-    @param [<Type>] [name] [<description>]
+    @param [<Type>] [...]$[name] [<description>]
 
 Description
 -----------
@@ -17,7 +17,8 @@ With the ``@param`` tag it is possible to document the :doc:`Type <../types>`
 and the intent of a single `argument of a function or method`_. When provided
 it MAY contain a :doc:`Type <../types>` to indicate what is expected. The name
 of the argument MUST be present so that it is clear which argument this tag
-relates to.
+relates to. The variadic operator ``...`` MAY be used to indicate that the
+argument is variadic.
 
 The description is OPTIONAL yet RECOMMENDED, for instance, in case of
 complicated structures, such as associative arrays.
