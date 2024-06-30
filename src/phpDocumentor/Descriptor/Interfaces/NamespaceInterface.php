@@ -22,4 +22,9 @@ interface NamespaceInterface extends ElementInterface, ContainerInterface, Child
 {
     /** @return Collection<NamespaceInterface> */
     public function getChildren(): Collection;
+
+    /**
+     * Returns true when the namespace is empty.
+     */
+    public function isEmpty(): bool;
 }
