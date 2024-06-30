@@ -234,4 +234,18 @@ class NamespaceDescriptor extends DescriptorAbstract implements Interfaces\Names
     {
         $this->enums = $enums;
     }
+
+    /**
+     * Returns true when the namespace is empty.
+     */
+    public function isEmpty(): bool
+    {
+        return $this->classes->count() === 0
+            && $this->constants->count() === 0
+            && $this->functions->count() === 0
+            && $this->interfaces->count() === 0
+            && $this->traits->count() === 0
+            && $this->enums->count() === 0
+            && $this->children->count() === 0;
+    }
 }
