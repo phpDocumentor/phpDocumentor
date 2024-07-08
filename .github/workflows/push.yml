@@ -249,7 +249,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload PHAR file
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.3.4
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
