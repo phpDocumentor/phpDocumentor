@@ -53,7 +53,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for property in properties|sortByVisibility %}
-                            <li class="{% if property.deprecated %}-deprecated{% endif %}"><a href="{{ link(property) }}">${{ property.name }}</li>
+                            <li class="{% if property.deprecated %}-deprecated{% endif %}"><a href="{{ link(property) }}">${{ property.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
