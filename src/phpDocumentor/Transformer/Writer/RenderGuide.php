@@ -86,8 +86,7 @@ final class RenderGuide extends WriterAbstract implements
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
-        $destination = $transformation->getTransformer()->destination();
-
+        $destination = $transformation->template()->files()->getFilesystem('destination');
         $documents = array_map(
             static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
             $documentationSet->getDocuments()->getAll(),

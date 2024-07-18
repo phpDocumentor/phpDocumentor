@@ -15,6 +15,11 @@
 Documentation
 =============
 
+.. image:: images/screenshot.png
+   :alt: phpDocumentor Screenshot
+   :align: right
+   :width: 33%
+
 Welcome to the documentation for phpDocumentor.
 
 phpDocumentor is the de-facto documentation application for PHP projects. Your project can benefit too from more

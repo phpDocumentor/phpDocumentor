@@ -6,7 +6,6 @@ namespace phpDocumentor\Pipeline\Stage;
 
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
 use Mockery\LegacyMockInterface;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
@@ -22,10 +21,6 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
-
-use function getcwd;
-
-use const DIRECTORY_SEPARATOR;
 
 /** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform */
 final class TransformTest extends TestCase
@@ -77,9 +72,6 @@ final class TransformTest extends TestCase
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('.');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
-        $this->transformer->setTarget(getcwd() . DIRECTORY_SEPARATOR . '.')->shouldBeCalled();
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
-
         ($this->transform)($payload);
     }
 
@@ -88,9 +80,6 @@ final class TransformTest extends TestCase
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file:///my/absolute/folder');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
 
-        $this->transformer->setTarget('/my/absolute/folder')->shouldBeCalled();
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class))->shouldBeCalled();
-
         ($this->transform)($payload);
     }
 
@@ -98,9 +87,6 @@ final class TransformTest extends TestCase
     {
         $config = $this->givenAnExampleConfigWithDsnAndTemplates('file://.');
         $payload = new Payload($config, $this->projectDescriptorBuilder->reveal());
-
-        $this->transformer->setTarget(Argument::any());
-        $this->transformer->setDestination(Argument::type(FilesystemInterface::class));
 
         ($this->transform)($payload);
     }

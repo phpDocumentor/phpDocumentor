@@ -38,7 +38,7 @@
             <source dsn=".">
                 <path>docs</path>
             </source>
-            <output>guide</output>
+            <output>/guide</output>
         </guide>
     </version>
     <setting name="guides.enabled" value="true"/>

@@ -146,12 +146,6 @@ class Transform
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }
 
-        $destination = $this->flySystemFactory->create(Dsn::createFromString((string) $target));
-
-        //TODO: the guides to need this, can we get rid of these lines?
-        $this->transformer->setTarget((string) $target);
-        $this->transformer->setDestination($destination);
-
-        return $destination;
+        return $this->flySystemFactory->create(Dsn::createFromString((string) $target));
     }
 }

@@ -20,6 +20,7 @@ use phpDocumentor\UriFactory;
 
 use function array_map;
 use function file_exists;
+use function ltrim;
 use function sprintf;
 
 /**
@@ -134,7 +135,7 @@ use function sprintf;
                                 $guide['source']['dsn'],
                                 $guide['source']['paths'],
                             ),
-                            $guide['output'],
+                            ltrim($guide['output'], '/'),
                             $guide['format'],
                         ),
                         $version['guides'],
