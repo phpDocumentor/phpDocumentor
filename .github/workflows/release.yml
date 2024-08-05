@@ -32,7 +32,7 @@ jobs:
           build/phpDocumentor.phar.asc
           build/phpDocumentor.phar
     - name: release shim
-      uses: benc-uk/workflow-dispatch@v1.2.3
+      uses: benc-uk/workflow-dispatch@v1.2.4
       with:
         workflow: Release
         repo: phpDocumentor/shim
@@ -57,7 +57,7 @@ jobs:
             platforms: linux/amd64,linux/arm64
 
         - name: Trigger
-          uses: benc-uk/workflow-dispatch@v1.2.3
+          uses: benc-uk/workflow-dispatch@v1.2.4
           if: ${{ github.event.release.prerelease }} == false
           with:
             workflow: Docker build
