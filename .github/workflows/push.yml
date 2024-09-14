@@ -249,7 +249,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload PHAR file
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: phpDocumentor.phar
           path: build/phpDocumentor.phar
@@ -417,7 +417,7 @@ jobs:
           tools: pecl
 
       - name: Download PHAR file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: phpDocumentor.phar
           path: build
@@ -476,7 +476,7 @@ jobs:
           tools: pecl
 
       - name: Download PHAR file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: phpDocumentor.phar
           path: build
