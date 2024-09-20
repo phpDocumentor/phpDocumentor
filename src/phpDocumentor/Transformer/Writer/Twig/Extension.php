@@ -182,7 +182,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                         '/',
                     );
                     if (! $absolutePath) {
-                        return '';
+                        return '<base href="./">';
                     }
 
                     return '<base href="' . $absolutePath . '">';
