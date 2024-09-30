@@ -1929,16 +1929,16 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "1.3.10",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "7719c777cdd49ce5dc7db61a6cd96cf04e3b1e63"
+                "reference": "f21a69f2d39ae04eea8550a90863a74c5ef97d4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/7719c777cdd49ce5dc7db61a6cd96cf04e3b1e63",
-                "reference": "7719c777cdd49ce5dc7db61a6cd96cf04e3b1e63",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/f21a69f2d39ae04eea8550a90863a74c5ef97d4b",
+                "reference": "f21a69f2d39ae04eea8550a90863a74c5ef97d4b",
                 "shasum": ""
             },
             "require": {
@@ -1961,9 +1961,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.3.10"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.4.0"
             },
-            "time": "2024-09-06T17:05:36+00:00"
+            "time": "2024-09-25T17:25:09+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
