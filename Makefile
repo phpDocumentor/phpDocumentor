@@ -41,7 +41,6 @@ help:
 	@echo "phpcs            - performs code-style checks";
 	@echo "phpcbf           - fixes most code-style issues";
 	@echo "phpstan          - performs static analysis on the codebase using phpstan";
-	@echo "psalm            - performs static analysis on the codebase using psalm";
 	@echo "";
 	@echo "== Release tools ==";
 	@echo "composer-mirror  - Runs a production-version of composer install for, i.e., the phar building";
@@ -87,10 +86,6 @@ phpcbf:
 phpstan:
 	${.PHP} ./bin/phpstan analyse src tests --memory-limit=1G incubator/*/src incubator/*/tests --configuration phpstan.neon ${ARGS}
 
-.PHONY: psalm
-psalm:
-	${.PHP} ./bin/psalm.phar
-
 .PHONY: lint
 lint: phpcs
 
@@ -125,7 +120,7 @@ composer-require-checker:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=./tools/composer-require-checker phpdoc  check --config-file /opt/phpdoc/composer-require-config.json composer.json
 
 .PHONY: pre-commit-test
-pre-commit-test: test integration-test phpcs phpstan psalm composer-require-checker
+pre-commit-test: test integration-test phpcs phpstan composer-require-checker
 
 .PHONY: composer
 composer:
