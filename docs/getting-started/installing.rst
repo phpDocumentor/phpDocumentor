@@ -37,7 +37,7 @@ To run phpDocumentor using docker, the following should suffice::
 
 As a convenience, you can alias_ this command so that you can use it from any folder easily::
 
-   $ alias phpdoc="docker run --rm -v $(pwd):/data phpdoc/phpdoc:3"
+   $ alias phpdoc="docker run --rm -v '$(pwd):/data' phpdoc/phpdoc:3"
 
 After doing that, you can simply call ``phpdoc`` from any location. This may also help with following the examples
 in this documentation as we assume you have a command called ``phpdoc`` available globally.
