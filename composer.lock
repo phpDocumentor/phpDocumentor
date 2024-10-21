@@ -1796,16 +1796,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "e2021e4a0e9f2945d899db418008a2b8388c0357"
+                "reference": "47944925825c2d05ca5a7497d85e780b23244add"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/e2021e4a0e9f2945d899db418008a2b8388c0357",
-                "reference": "e2021e4a0e9f2945d899db418008a2b8388c0357",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/47944925825c2d05ca5a7497d85e780b23244add",
+                "reference": "47944925825c2d05ca5a7497d85e780b23244add",
                 "shasum": ""
             },
             "require": {
@@ -1843,9 +1843,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.5.0"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.6.0"
             },
-            "time": "2024-10-12T11:36:55+00:00"
+            "time": "2024-10-16T20:29:51+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
