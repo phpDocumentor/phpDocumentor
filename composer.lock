@@ -1892,16 +1892,16 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "1.5.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "649b6f64fd8a66a979727d2515d35f97e100aa26"
+                "reference": "980a631e16f80aaabea7638c21043438450df5c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/649b6f64fd8a66a979727d2515d35f97e100aa26",
-                "reference": "649b6f64fd8a66a979727d2515d35f97e100aa26",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/980a631e16f80aaabea7638c21043438450df5c0",
+                "reference": "980a631e16f80aaabea7638c21043438450df5c0",
                 "shasum": ""
             },
             "require": {
@@ -1923,9 +1923,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.5.0"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.6.1"
             },
-            "time": "2024-10-12T11:36:55+00:00"
+            "time": "2024-10-25T20:20:41+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
