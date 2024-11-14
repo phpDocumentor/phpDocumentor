@@ -3,6 +3,7 @@
 ![Packagist Version](https://img.shields.io/packagist/v/phpdocumentor/phpdocumentor?label=packagist%20stable)
 ![Packagist Pre Release Version](https://img.shields.io/packagist/vpre/phpdocumentor/phpdocumentor?label=packagist%20unstable)
 [![Downloads](https://img.shields.io/packagist/dm/phpDocumentor/phpDocumentor.svg)](https://packagist.org/packages/phpDocumentor/phpDocumentor)
+[![Gurubase](https://img.shields.io/badge/Gurubase-Ask%20phpDocumentor%20Guru-006BFF)](https://gurubase.io/g/phpdocumentor)
 
 
 phpDocumentor
@@ -54,7 +55,7 @@ phpDocumentor supports the following:
 * *Docblock over types*, docblocks can be more explicit about types not all formats are supported by native php.
 * *Shows any tag*, some tags add additional functionality to phpDocumentor (such as @link).
 * *Low memory usage*, peak memory usage for small projects is less than 20MB, medium projects 40MB, and large frameworks 100MB.
-* *Incremental parsing*, if you kept the Structure file from a previous run, you get an additional performance boost of up
+to 80% on top of the mentioned processing speed increase above.
   to 80% on top of the mentioned processing speed increase above.
 * *Easy template building*, if you want to make a branding you only have to call 1 task and edit 3 files.
 * *Two-step process*, phpDocumentor first generates a cache with your application structure before creating the output.
