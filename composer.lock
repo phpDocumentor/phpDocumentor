@@ -1796,16 +1796,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.6.1",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "529c19d60e25882e7cc07189bd648ff7fcf80056"
+                "reference": "b18915791f7cb5a8b3cad6d671a55502bfeade00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/529c19d60e25882e7cc07189bd648ff7fcf80056",
-                "reference": "529c19d60e25882e7cc07189bd648ff7fcf80056",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/b18915791f7cb5a8b3cad6d671a55502bfeade00",
+                "reference": "b18915791f7cb5a8b3cad6d671a55502bfeade00",
                 "shasum": ""
             },
             "require": {
@@ -1843,9 +1843,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.6.1"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.6.3"
             },
-            "time": "2024-10-25T20:20:41+00:00"
+            "time": "2024-11-22T13:48:58+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -4617,16 +4617,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.4.13",
+            "version": "v6.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "38371c60c71c72b3d64d8d76f6b1bb81a2cc3627"
+                "reference": "73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/38371c60c71c72b3d64d8d76f6b1bb81a2cc3627",
-                "reference": "38371c60c71c72b3d64d8d76f6b1bb81a2cc3627",
+                "url": "https://api.github.com/repos/symfony/string/zipball/73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f",
+                "reference": "73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f",
                 "shasum": ""
             },
             "require": {
@@ -4683,7 +4683,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.4.13"
+                "source": "https://github.com/symfony/string/tree/v6.4.15"
             },
             "funding": [
                 {
@@ -4699,7 +4699,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:18:03+00:00"
+            "time": "2024-11-13T13:31:12+00:00"
         },
         {
             "name": "symfony/var-exporter",
