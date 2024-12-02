@@ -2943,16 +2943,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "f8cd5313753cfac8329ebc4033e2013b874208e1"
+                "reference": "dcd099d876d3a82b857d7f4ea0893e132e63d0fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/f8cd5313753cfac8329ebc4033e2013b874208e1",
-                "reference": "f8cd5313753cfac8329ebc4033e2013b874208e1",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/dcd099d876d3a82b857d7f4ea0893e132e63d0fe",
+                "reference": "dcd099d876d3a82b857d7f4ea0893e132e63d0fe",
                 "shasum": ""
             },
             "require": {
@@ -3018,7 +3018,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/contracts/tree/v3.5.0"
+                "source": "https://github.com/symfony/contracts/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -3034,7 +3034,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-11-25T12:02:18+00:00"
         },
         {
             "name": "symfony/dependency-injection",
