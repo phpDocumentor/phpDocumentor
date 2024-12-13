@@ -87,27 +87,41 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'public' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% set publicMethods = (node.inheritedMethods | merge(node.methods)) | filter(method => method.visibility == 'public') %}
+
+                                {% if publicMethods|length > 0 %}
+                                    {% for method in publicMethods %}
+                                        <a href="{{ method | route('url') }}">{{ method.name }}()</a><br />
+                                    {% endfor %}
                                 {% else %}
                                     <em>No public methods found</em>
-                                {% endfor %}
+                                {% endif %}
                             </section>
                             <section class="span6">
-                                {% for constant in node.inheritedConstants.merge(node.constants) %}
-                                    <a href="{{ constant|route('url')}}">{{ constant.name }}</a><br />
+                                {% set constants = (node.inheritedConstants | merge(node.constants)) %}
+
+                                {% if constants|length > 0 %}
+                                    {% for constant in constants %}
+                                        <a href="{{ constant | route('url') }}">{{ constant.name }}</a><br />
+                                    {% endfor %}
                                 {% else %}
                                     <em>No constants found</em>
-                                {% endfor %}
+                                {% endif %}
                             </section>
                         </section>
                         <section class="row-fluid protected">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'protected' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% set protectedMethods = (node.inheritedMethods | merge(node.methods)) %}
+
+                                {% set protectedMethods = protectedMethods | filter(method => method.visibility == 'protected') %}
+
+                                {% if protectedMethods|length > 0 %}
+                                    {% for method in protectedMethods %}
+                                        <a href="{{ method | route('url') }}">{{ method.name }}()</a><br />
+                                    {% endfor %}
                                 {% else %}
                                     <em>No protected methods found</em>
-                                {% endfor %}
+                                {% endif %}
                             </section>
                             <section class="span6">
                                 <em>N/A</em>
@@ -115,11 +129,17 @@
                         </section>
                         <section class="row-fluid private">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'private' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% set privateMethods = (node.inheritedMethods | merge(node.methods)) %}
+
+                                {% set privateMethods = privateMethods | filter(method => method.visibility == 'private') %}
+
+                                {% if privateMethods|length > 0 %}
+                                    {% for method in privateMethods %}
+                                        <a href="{{ method | route('url') }}">{{ method.name }}()</a><br />
+                                    {% endfor %}
                                 {% else %}
                                     <em>No private methods found</em>
-                                {% endfor %}
+                                {% endif %}
                             </section>
                             <section class="span6">
                                 <em>N/A</em>
@@ -150,30 +170,40 @@
                             <dd><a href="{{ parent|route('url') }}"><div class="namespace-wrapper">{{ parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                         {% endfor %}
 
-                        {% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
-                            {% if loop.first %}
-                        <dt>See also</dt>
-                            {% endif %}
-                            {% for tag in tags %}
-                            <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><div class="namespace-wrapper">{{ tag.description ?: tag.reference }}</div></a></dd>
+                        {% set seeTags = (node.tags['link'] ?: []) | merge(node.tags['see'] ?: []) %}
+
+                        {% if seeTags|length > 0 %}
+                            <dt>See also</dt>
+                            {% for tag in seeTags %}
+                                <dd><a href="{{ tag.reference | route('url') ?: tag.link }}">
+                                    <div class="namespace-wrapper">{{ tag.description ?: tag.reference }}</div>
+                                </a></dd>
                             {% endfor %}
-                        {% endfor %}
+                        {% else %}
+                            <em>No "see also" tags found</em>
+                        {% endif %}
+
                     </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                    {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'abstract', 'method', 'package', 'subpackage'] %}
-                        <tr>
-                            <th>{{ tagName }}</th>
-                            <td>
-                                {% for tag in tags %}
-                                    {% if tag.version %}{{ tag.version }}{% endif %}
-                                    {{ tag.description|markdown|raw }}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr><td colspan="2"><em>None found</em></td></tr>
-                    {% endfor %}
+                        {% set excludedTags = ['link', 'see', 'abstract', 'method', 'package', 'subpackage'] %}
+                        {% set filteredTags = node.tags|filter(tagName => tagName not in excludedTags) %}
+
+                        {% if filteredTags|length > 0 %}
+                            {% for tagName, tags in filteredTags %}
+                                <tr>
+                                    <th>{{ tagName }}</th>
+                                    <td>
+                                        {% for tag in tags %}
+                                            {% if tag.version %}{{ tag.version }}{% endif %}
+                                            {{ tag.description|markdown|raw }}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="2"><em>None found</em></td></tr>
+                         {% endif %}
                     </table>
                 </aside>
             </div>
@@ -199,15 +229,20 @@
                 </div>
                 <aside class="span4 detailsbar"></aside>
             </div>
+                {% set publicMethods = node.inheritedMethods.merge(node.methods)|filter(method => method.visibility == 'public') %}
+                {% set protectedMethods = node.inheritedMethods.merge(node.methods)|filter(method => method.visibility == 'protected') %}
+                {% set privateMethods = node.inheritedMethods.merge(node.methods)|filter(method => method.visibility == 'private') %}
 
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'public' %}
-                {{ block('method') }}
+                {% for method in publicMethods %}
+                    {{ block('method') }}
                 {% endfor %}
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'protected' %}
-                {{ block('method') }}
+
+                {% for method in protectedMethods %}
+                    {{ block('method') }}
                 {% endfor %}
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'private' %}
-                {{ block('method') }}
+
+                {% for method in privateMethods %}
+                    {{ block('method') }}
                 {% endfor %}
             {% endif %}
         </div>

@@ -4,7 +4,7 @@
             <a id="constant_{{ constant.name }}" name="constant_{{ constant.name }}" class="anchor"></a>
             <article id="constant_{{ constant.name }}" class="constant">
                 <h3 class="{% if constant.deprecated %}deprecated{% endif %}">{{ constant.name }}</h3>
-                <pre class="signature">{{ constant.name }} = {{ constant.value }}{% if not (constant.types is empty) %} : {{ constant.types|join('|') }}{% endif %}</pre>
+                <pre class="signature">{{ constant.name }} = {{ constant.value }}{{ not constant.type }} : {{ constant.type|route('class:short')|join('|') }}</pre>
                 <p><em>{{ constant.summary }}</em></p>
                 {{ constant.description|markdown|raw }}
             </article>
@@ -26,37 +26,43 @@
                     <dt>Inherited from</dt>
                     <dd><a href="{{ constant.parent|route('url') }}"><div class="path-wrapper">{{ constant.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                 {% endif %}
-                {% for tagName,tags in constant.tags if tagName in ['link', 'see'] %}
-                    {% if loop.first %}
-                        <dt>See also</dt>
+                {% for tagName, tags in constant.tags %}
+                    {% if tagName in ['link', 'see'] %}
+                        {% if loop.first %}
+                            <dt>See also</dt>
+                        {% endif %}
+                        {% for tag in tags %}
+                            <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                        {% endfor %}
                     {% endif %}
-                    {% for tag in tags %}
-                        <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
-                    {% endfor %}
                 {% endfor %}
-                {% for tagName,tags in constant.tags if tagName in ['uses'] %}
-                    {% if loop.first %}
-                        <dt>Uses</dt>
+                {% for tagName, tags in constant.tags %}
+                    {% if tagName in ['uses'] %}
+                        {% if loop.first %}
+                            <dt>Uses</dt>
+                        {% endif %}
+                        {% for tag in tags %}
+                            <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                        {% endfor %}
                     {% endif %}
-                    {% for tag in tags %}
-                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
-                    {% endfor %}
                 {% endfor %}
             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                {% for tagName,tags in constant.tags if tagName not in ['link', 'see', 'var', 'deprecated', 'uses'] %}
-                    <tr>
-                        <th>
-                            {{ tagName }}
-                        </th>
-                        <td>
-                            {% for tag in tags %}
-                                {% if tag.version %}{{ tag.version }}{% endif %}
-                                {{ tag.description|markdown|raw }}
-                            {% endfor %}
-                        </td>
-                    </tr>
+                {% for tagName, tags in constant.tags %}
+                    {% if tagName not in ['link', 'see', 'var', 'deprecated', 'uses'] %}
+                        <tr>
+                            <th>
+                                {{ tagName }}
+                            </th>
+                            <td>
+                                {% for tag in tags %}
+                                    {% if tag.version %}{{ tag.version }}{% endif %}
+                                    {{ tag.description|markdown|raw }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% else %}
                     <tr><td colspan="2"><em>None found</em></td></tr>
                 {% endfor %}

@@ -96,8 +96,10 @@
                             <li>
                                 <a href="{{ path('reports/deprecated.html') }}">
                                     {% set deprecatedCount = 0 %}
-                                    {% for element in project.indexes.elements if element.deprecated %}
-                                        {% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}
+                                    {% for element in project.indexes.elements %}
+                                        {% if element.deprecated %}
+                                            {% set deprecatedCount = deprecatedCount + element.tags.deprecated.count %}
+                                        {% endif %}
                                     {% endfor %}
                                     <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">{{ deprecatedCount }}</span>
                                 </a>
@@ -108,9 +110,9 @@
             </div>
         </div>
     </div>
-    <!--<div class="go_to_top">-->
-    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
-    <!--</div>-->
+    <div class="go_to_top">
+    <a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>
+    </div>
 </div>
 
 <div id="___" class="container-fluid">
