@@ -58,6 +58,7 @@
                         </ul>
                     </li>
                     {% endif %}
+		    {% if project.settings.custom['graphs.enabled'] %}
                     <li class="dropdown" id="charts-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Charts <b class="caret"></b>
@@ -70,6 +71,7 @@
                             </li>
                         </ul>
                     </li>
+                    {% endif %}
                     <li class="dropdown" id="reports-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Reports <b class="caret"></b>
