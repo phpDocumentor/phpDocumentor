@@ -17,5 +17,5 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 
 interface Generator
 {
-    public function create(DocumentationSetDescriptor $documentationSet, string $filename): void;
+    public function create(DocumentationSetDescriptor $documentationSet): string|null;
 }

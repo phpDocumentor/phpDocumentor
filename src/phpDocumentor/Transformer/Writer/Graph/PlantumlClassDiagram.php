@@ -21,10 +21,10 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer;
 use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Uml\ClassDiagram;
 use Psr\Log\LoggerInterface;
 
 use function addslashes;
-use function file_put_contents;
 use function implode;
 
 use const PHP_EOL;
@@ -37,10 +37,10 @@ final class PlantumlClassDiagram implements Generator
     ) {
     }
 
-    public function create(DocumentationSetDescriptor $documentationSet, string $filename): void
+    public function create(DocumentationSetDescriptor $documentationSet): string|null
     {
         if ($documentationSet instanceof ApiSetDescriptor === false) {
-            return;
+            return null;
         }
 
         $output = $this->plantumlRenderer->render(
@@ -54,123 +54,13 @@ final class PlantumlClassDiagram implements Generator
                     return [];
                 }
             },
-            <<<PUML
-skinparam shadowing false
-skinparam linetype ortho
-hide empty members
-left to right direction
-set namespaceSeparator \\\\
-
-{$this->renderNamespace($documentationSet->getNamespace())}
-PUML,
+            (new ClassDiagram())->generateUml([$documentationSet->getNamespace()]),
         );
 
         if (! $output) {
             $this->logger->error('Generating the class diagram failed');
 
-            return;
-        }
-
-        file_put_contents($filename, $output);
-    }
-
-    private function renderNamespace(NamespaceInterface $namespace): string
-    {
-        $output = '';
-        /** @var ClassDescriptor $class */
-        foreach ($namespace->getClasses() as $class) {
-            $abstract = $class->isAbstract() ? 'abstract ' : '';
-            $className = addslashes((string) $class->getFullyQualifiedStructuralElementName());
-
-            $extends = '';
-            if ($class->getParent() !== null) {
-                $parentFqsen = $class->getParent() instanceof ClassDescriptor
-                    ? (string) $class->getParent()->getFullyQualifiedStructuralElementName()
-                    : (string) $class->getParent();
-
-                $extends = ' extends ' . addslashes($parentFqsen);
-            }
-
-            $implementsList = [];
-            foreach ($class->getInterfaces() as $parent) {
-                $parentFqsen = $parent instanceof InterfaceDescriptor
-                    ? (string) $parent->getFullyQualifiedStructuralElementName()
-                    : (string) $parent;
-
-                $implementsList[] = addslashes($parentFqsen);
-            }
-
-            if ($implementsList !== []) {
-                $implements = ' implements ' . implode(',', $implementsList);
-            } else {
-                $implements = '';
-            }
-
-            foreach ($class->getUsedTraits() as $parent) {
-                $parentFqsen = $parent instanceof TraitDescriptor
-                    ? (string) $parent->getFullyQualifiedStructuralElementName()
-                    : (string) $parent;
-
-                $output .= addslashes($parentFqsen) . ' <-- ' . $className . ' : uses' . PHP_EOL;
-            }
-
-            $output .= <<<PUML
-
-{$abstract}class {$className}{$extends}{$implements} {
-}
-
-PUML;
-        }
-
-        /** @var InterfaceDescriptor $interface */
-        foreach ($namespace->getInterfaces() as $interface) {
-            $interfaceName = addslashes((string) $interface->getFullyQualifiedStructuralElementName());
-
-            $implementsList = [];
-            foreach ($interface->getParent() as $parent) {
-                $parentFqsen = $parent instanceof InterfaceDescriptor
-                    ? (string) $parent->getFullyQualifiedStructuralElementName()
-                    : (string) $parent;
-
-                $implementsList[] = addslashes($parentFqsen);
-            }
-
-            if ($implementsList !== []) {
-                $implements = ' extends ' . implode(',', $implementsList);
-            } else {
-                $implements = '';
-            }
-
-            $output .= <<<PUML
-
-interface {$interfaceName}{$implements} {
-}
-
-PUML;
-        }
-
-        /** @var TraitDescriptor $class */
-        foreach ($namespace->getTraits() as $class) {
-            $className = addslashes((string) $class->getFullyQualifiedStructuralElementName());
-
-            foreach ($class->getUsedTraits() as $parent) {
-                $parentFqsen = $parent instanceof TraitDescriptor
-                    ? (string) $parent->getFullyQualifiedStructuralElementName()
-                    : (string) $parent;
-
-                $output .= addslashes($parentFqsen) . ' <-- ' . $className . ' : uses' . PHP_EOL;
-            }
-
-            $output .= <<<PUML
-
-class {$className} << (T,#FF7700) Trait >> {
-}
-
-PUML;
-        }
-
-        foreach ($namespace->getChildren() as $child) {
-            $output .= $this->renderNamespace($child);
+            return null;
         }
 
         return $output;
