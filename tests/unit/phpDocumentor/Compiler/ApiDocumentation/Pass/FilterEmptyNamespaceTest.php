@@ -27,10 +27,28 @@ final class FilterEmptyNamespaceTest extends TestCase
 
         $apiSet = self::faker()->apiSetDescriptor();
         $apiSet->setNamespace($parentNamespace);
+        $apiSet->getIndex('namespaces')->set(
+            (string) $parentNamespace->getFullyQualifiedStructuralElementName(),
+            $parentNamespace,
+        );
+        $apiSet->getIndex('elements')->set(
+            '~' . $parentNamespace->getFullyQualifiedStructuralElementName(),
+            $parentNamespace,
+        );
+        $apiSet->getIndex('namespaces')->set(
+            (string) $childNamespace->getFullyQualifiedStructuralElementName(),
+            $childNamespace,
+        );
+        $apiSet->getIndex('elements')->set(
+            '~' . $childNamespace->getFullyQualifiedStructuralElementName(),
+            $childNamespace,
+        );
 
         $fixture = new FilterEmptyNamespaces();
         $fixture($apiSet);
 
         $this->assertCount(0, $apiSet->getNamespace()->getChildren());
+        $this->assertCount(1, $apiSet->getIndex('namespaces')->getAll());
+        $this->assertCount(1, $apiSet->getIndex('elements')->getAll());
     }
 }
