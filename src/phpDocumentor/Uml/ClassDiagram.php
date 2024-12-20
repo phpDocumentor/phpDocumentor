@@ -9,6 +9,7 @@ use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -83,11 +84,14 @@ UML;
 
         $implementsList = [];
         foreach ($class->getInterfaces() as $parent) {
-            $parentFqsen = $parent instanceof InterfaceDescriptor
-                ? (string) $parent->getFullyQualifiedStructuralElementName()
-                : (string) $parent;
+            if ($parent instanceof InterfaceInterface) {
+                $this->interfaceDescriptor($parent);
+                $implementsList[] = addslashes($parent->getFullyQualifiedStructuralElementName() . '__interface');
+                continue;
+            }
 
-            $implementsList[] = addslashes($parentFqsen);
+            $this->fqsen($parent);
+            $implementsList[] = addslashes($parent . '__class');
         }
 
         if ($implementsList !== []) {
@@ -97,15 +101,17 @@ UML;
         }
 
         foreach ($class->getUsedTraits() as $trait) {
-            $traitFqsen = $trait instanceof TraitDescriptor
-                ? (string) $trait->getFullyQualifiedStructuralElementName()
-                : (string) $trait;
-
-            if ($trait instanceof TraitDescriptor) {
+            if ($trait instanceof TraitInterface) {
                 $this->traitDescriptor($trait);
+                $output .= addslashes($trait->getFullyQualifiedStructuralElementName() . '__trait')
+                        . ' <-- ' . addslashes(
+                            $this->toClassName((string) $class->getFullyQualifiedStructuralElementName()),
+                        )
+                    . ' : uses' . PHP_EOL;
+                continue;
             }
 
-            $output .= addslashes($traitFqsen) . ' <-- ' . addslashes(
+            $output .= addslashes($this->toClassName((string) $trait)) . ' <-- ' . addslashes(
                 $this->toClassName((string) $class->getFullyQualifiedStructuralElementName()),
             ) . ' : uses' . PHP_EOL;
         }
@@ -121,7 +127,7 @@ PUML;
         $this->elements[$reference] = new Element($output, true);
     }
 
-    private function interfaceDescriptor(InterfaceDescriptor|Fqsen $descriptor): void
+    private function interfaceDescriptor(InterfaceInterface|Fqsen $descriptor): void
     {
         if ($descriptor instanceof Fqsen) {
             $this->fqsen($descriptor);
@@ -136,7 +142,7 @@ PUML;
 
         foreach ($descriptor->getParent() as $parent) {
             $this->interfaceDescriptor($parent);
-            if ($parent instanceof InterfaceDescriptor) {
+            if ($parent instanceof InterfaceInterface) {
                 $parents[] = addslashes($parent->getFullyQualifiedStructuralElementName() . '__interface');
                 continue;
             }

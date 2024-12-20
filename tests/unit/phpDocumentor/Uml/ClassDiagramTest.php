@@ -57,14 +57,23 @@ left to right direction
 set namespaceSeparator \\
 
 namespace phpDocumentor {
-     class "MyClass" as MyClass__class    implements \\phpDocumentor\\MyInterface {
+    interface "MyInterface" as MyInterface__interface  {
+    }
+}
+namespace phpDocumentor {
+     class "MyClass" as MyClass__class    implements \\phpDocumentor\\MyInterface__interface {
     }
 }
 
 UML;
 
         $diagram = new ClassDiagram();
-        $this->assertSame($expected, $diagram->generateUml([$descriptor]));
+        $this->assertSame(
+            $expected,
+            $diagram->generateUml(
+                [$descriptor, self::faker()->interfaceDescriptor(new Fqsen('\phpDocumentor\MyInterface'))],
+            ),
+        );
     }
 
     public function testGenerateClassWithParentInSubNamespace(): void
@@ -168,11 +177,15 @@ left to right direction
 set namespaceSeparator \\
 
 namespace phpDocumentor {
-     class "MyParent" as MyParent__class    implements \\phpDocumentor\\MyInterface {
+     class "MyParent" as MyParent__class    implements \\phpDocumentor\\MyInterface__interface {
     }
 }
 namespace phpDocumentor {
      class "MyClass" as MyClass__class   extends \\phpDocumentor\\MyParent__class  {
+    }
+}
+namespace phpDocumentor {
+    interface "MyInterface" as MyInterface__interface  {
     }
 }
 namespace phpDocumentor {
@@ -293,7 +306,10 @@ UML;
     public function testAddsTraitsToNamespaces(): void
     {
         $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));
+        $classDescriptor = self::faker()->classDescriptor(new Fqsen('\phpDocumentor\MyNamespace\MyClass'));
+        $namespace->setClasses(Collection::fromClassString(ClassDescriptor::class, [$classDescriptor]));
         $trait = self::faker()->traitDescriptor(new Fqsen('\phpDocumentor\MyNamespace\MyEnum'));
+        $classDescriptor->setUsedTraits(Collection::fromClassString(TraitDescriptor::class, [$trait]));
 
         $namespace->setTraits(Collection::fromClassString(TraitDescriptor::class, [$trait]));
 
@@ -306,6 +322,11 @@ set namespaceSeparator \\
 
 namespace phpDocumentor\\MyNamespace {
     class "MyEnum"  as MyEnum__trait << (T,#FF7700) Trait >> {
+    }
+}
+\\phpDocumentor\\MyNamespace\\MyEnum__trait <-- \\phpDocumentor\\MyNamespace\\MyClass__class : uses
+namespace phpDocumentor\\MyNamespace {
+     class "MyClass" as MyClass__class    {
     }
 }
 
