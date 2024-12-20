@@ -51,6 +51,7 @@ final class ApiSpecification implements ArrayAccess
         private Source|null $examples,
         private string $encoding,
         private bool $validate,
+        private bool $ignorePackages,
     ) {
     }
 
@@ -81,6 +82,7 @@ final class ApiSpecification implements ArrayAccess
                 : null,
             $api['encoding'],
             $api['validate'],
+            $api['ignore-packages'],
         );
     }
 
@@ -106,6 +108,7 @@ final class ApiSpecification implements ArrayAccess
             null,
             'utf8',
             false,
+            false,
         );
     }
 
@@ -126,7 +129,12 @@ final class ApiSpecification implements ArrayAccess
     /** @return string[] */
     public function getIgnoredTags(): array
     {
-        return $this->ignoreTags;
+        $tags =  $this->ignoreTags;
+        if ($this->ignorePackages) {
+            $tags[] = 'package';
+        }
+
+        return $tags;
     }
 
     public function calculateVisiblity(): int
@@ -173,5 +181,10 @@ final class ApiSpecification implements ArrayAccess
     public function source(): Source
     {
         return $this->source;
+    }
+
+    public function ignorePackages(): bool
+    {
+        return $this->ignorePackages;
     }
 }

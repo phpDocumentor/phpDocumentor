@@ -45,7 +45,8 @@ use function var_export;
  *     examples?: array{dsn: string, paths: array<string>},
  *     include-source: bool,
  *     validate: bool,
- *     visibility: non-empty-array<array-key, string>
+ *     visibility: non-empty-array<array-key, string>,
+ *     ignore-packages: bool
  * }
  * @psalm-type ConfigurationMap = array{
  *     configVersion: string,
@@ -244,6 +245,10 @@ final class Version3 implements ConfigurationInterface, Normalizable
                         ->info('In which language is your code written?')
                         ->values(['php'])
                         ->defaultValue('php')
+                    ->end()
+                    ->booleanNode('ignore-packages')
+                        ->info('Whether to ignore packages in the documentation')
+                        ->defaultFalse()
                     ->end()
                     ->arrayNode('visibilities')
                         ->prototype('enum')

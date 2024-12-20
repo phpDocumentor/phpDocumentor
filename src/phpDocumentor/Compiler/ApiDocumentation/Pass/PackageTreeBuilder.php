@@ -56,6 +56,10 @@ final class PackageTreeBuilder extends ApiDocumentationPass
 
     protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
     {
+        if ($subject->getSettings()->ignorePackages()) {
+            return $subject;
+        }
+
         $package = $subject->getPackage();
         Assert::isInstanceOf($package, PackageInterface::class);
 

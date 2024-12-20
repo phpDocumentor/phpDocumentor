@@ -195,6 +195,7 @@ final class Version3Test extends TestCase
                             'markers' => ['markers' => ['TODO', 'FIXME']],
                             'ignore-tags' => ['ignore_tags' => []],
                             'output' => '.',
+                            'ignore-packages' => false,
                         ],
                     ],
                     'guides' => [],
