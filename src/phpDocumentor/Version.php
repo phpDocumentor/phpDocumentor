@@ -9,6 +9,7 @@ use OutOfBoundsException;
 
 use function explode;
 use function file_get_contents;
+use function ltrim;
 use function sprintf;
 use function strpos;
 use function trim;
@@ -35,7 +36,6 @@ final class Version
             // @codeCoverageIgnoreStart
             try {
                 $packageVersion = PrettyVersions::getRootPackageVersion();
-
                 if ($packageVersion->getPrettyVersion() === $version) {
                     return $version;
                 }
@@ -57,7 +57,7 @@ final class Version
 
     public function getVersion(): string
     {
-        return $this->version;
+        return ltrim($this->version, 'v');
     }
 
     public function getExtensionVersion(): string
