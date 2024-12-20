@@ -33,6 +33,8 @@ use const DIRECTORY_SEPARATOR;
  */
 final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
 {
+    use IoTrait;
+
     public function __construct(
         private readonly Generator $plantumlClassDiagram,
     ) {
@@ -73,7 +75,10 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         switch ($transformation->getSource() ?: 'class') {
             case 'class':
             default:
-                $this->plantumlClassDiagram->create($documentationSet, $filename);
+                $graph = $this->plantumlClassDiagram->create($documentationSet);
+                if ($graph !== null) {
+                    $this->persistTo($transformation, $filename, $graph);
+                }
         }
     }
 
