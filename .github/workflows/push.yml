@@ -224,6 +224,8 @@ jobs:
         php-versions:
           - '8.1'
           - '8.2'
+          - '8.3'
+          - '8.4'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '8.1'
@@ -335,6 +337,8 @@ jobs:
         php-versions:
           - '8.1'
           - '8.2'
+          - '8.3'
+          - '8.4'
         operating-system:
           - ubuntu-latest
           - windows-latest
@@ -397,6 +401,8 @@ jobs:
         php-versions:
           - '8.1'
           - '8.2'
+          - '8.3'
+          - '8.4'
         operating-system:
           - ubuntu-latest
           - windows-latest
