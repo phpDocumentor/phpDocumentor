@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline;
 
-use League\Pipeline\PipelineBuilder;
-use League\Pipeline\PipelineInterface;
 use phpDocumentor\Pipeline\Stage\TimedStageDecorator;
 use Psr\Log\LoggerInterface;
 

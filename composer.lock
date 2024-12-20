@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb1dcdb61db5812f5d65da3978417813",
+    "content-hash": "95bd200492e94ebb06206cbc6c01bb05",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -832,63 +832,6 @@
                 }
             ],
             "time": "2024-09-21T08:32:55+00:00"
-        },
-        {
-            "name": "league/pipeline",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/pipeline.git",
-                "reference": "aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/pipeline/zipball/aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8",
-                "reference": "aa14b0e3133121f8be39e9a3b6ddd011fc5bb9a8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "leanphp/phpspec-code-coverage": "^4.2",
-                "phpspec/phpspec": "^4.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Pipeline\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frenky.net",
-                    "role": "Author"
-                },
-                {
-                    "name": "Woody Gilk",
-                    "email": "woody.gilk@gmail.com",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A plug and play pipeline implementation.",
-            "keywords": [
-                "composition",
-                "design pattern",
-                "pattern",
-                "pipeline",
-                "sequential"
-            ],
-            "support": {
-                "issues": "https://github.com/thephpleague/pipeline/issues",
-                "source": "https://github.com/thephpleague/pipeline/tree/master"
-            },
-            "time": "2018-06-05T21:06:51+00:00"
         },
         {
             "name": "league/tactician",

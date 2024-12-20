@@ -44,7 +44,6 @@
         "jean85/pretty-package-versions": "^1.5 || ^2.0.1",
         "league/commonmark": "^2.2",
         "league/flysystem": "^1.0",
-        "league/pipeline": "^1.0",
         "league/tactician": "^1.0",
         "league/uri": "^6.7",
         "league/uri-interfaces": "^2.0",

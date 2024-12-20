@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console\Command\Project;
 
-use League\Pipeline\PipelineInterface;
 use phpDocumentor\Console\Application;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Pipeline\PipelineInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -23,7 +23,6 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use function array_keys;
 
@@ -38,15 +37,14 @@ class RunCommandTest extends TestCase
         $output = new BufferedOutput();
 
         $pipeline = $this->prophesize(PipelineInterface::class);
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $pipeline->__invoke(Argument::that(
             static fn (array $options) => $options['force'] === true && $options['filename'] === ['abc'],
         ))
-            ->shouldBeCalledTimes(1);
+            ->shouldBeCalledTimes(1)->willReturn(null);
 
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
 
-        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal(), $eventDispatcher->reveal());
+        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
         $application = $this->prophesize(Application::class);
         $application->getVersion()->willReturn('3.0');
         $application->getHelperSet()->willReturn(new HelperSet());
@@ -60,8 +58,8 @@ class RunCommandTest extends TestCase
     {
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
         $pipeline = $this->prophesize(PipelineInterface::class);
-        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal(), $eventDispatcher->reveal());
+        $pipeline->process(Argument::any())->willReturn(null);
+        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
         $options = $command->getDefinition()->getOptions();
         $this->assertEquals(
             [
