@@ -7,6 +7,7 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Pipeline\Attribute\Stage;
 
@@ -21,9 +22,10 @@ final class FilterEmptyNamespaces extends ApiDocumentationPass
     {
         /** @var Collection<NamespaceInterface> $index */
         $index = $subject->getIndex('namespaces');
+        $elementsIndex = $subject->getIndex('elements');
         $namespace = $subject->getNamespace();
 
-        $this->checkForEmptyChildren($namespace, $namespace->getChildren(), $index);
+        $this->checkForEmptyChildren($namespace, $namespace->getChildren(), $index, $elementsIndex);
 
         return $subject;
     }
@@ -31,14 +33,16 @@ final class FilterEmptyNamespaces extends ApiDocumentationPass
     /**
      * @param Collection<NamespaceInterface> $namespaces
      * @param Collection<NamespaceInterface> $index
+     * @param Collection<ElementInterface> $elementsIndex
      */
     private function checkForEmptyChildren(
         NamespaceInterface $namespace,
         Collection $namespaces,
         Collection $index,
+        Collection $elementsIndex,
     ): void {
         foreach ($namespace->getChildren() as $childNamespace) {
-            $this->checkForEmptyChildren($childNamespace, $namespace->getChildren(), $index);
+            $this->checkForEmptyChildren($childNamespace, $namespace->getChildren(), $index, $elementsIndex);
         }
 
         if (! $namespace->isEmpty()) {
@@ -47,5 +51,6 @@ final class FilterEmptyNamespaces extends ApiDocumentationPass
 
         $index->offsetUnset((string) $namespace->getFullyQualifiedStructuralElementName());
         $namespaces->offsetUnset($namespace->getName());
+        $elementsIndex->offsetUnset('~' . $namespace->getFullyQualifiedStructuralElementName());
     }
 }
