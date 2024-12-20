@@ -14,20 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Graph;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\InterfaceDescriptor;
-use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
-use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Uml\ClassDiagram;
 use Psr\Log\LoggerInterface;
-
-use function addslashes;
-use function implode;
-
-use const PHP_EOL;
 
 final class PlantumlClassDiagram implements Generator
 {

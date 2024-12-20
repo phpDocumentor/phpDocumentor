@@ -6,7 +6,9 @@ namespace phpDocumentor\Uml;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
@@ -222,5 +224,94 @@ UML;
 
         $diagram = new ClassDiagram();
         $this->assertSame($expected, $diagram->generateUml([$descriptor1, $descriptor2, $namespace]));
+    }
+
+    public function testAddsInterfacesToNamespaces(): void
+    {
+        $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));
+        $interface = self::faker()->interfaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace\MyInterface'));
+        $interface->setParent(new Collection([
+            new Fqsen('\phpDocumentor\MyNamespace\MyParent'),
+            self::faker()->interfaceDescriptor(new Fqsen('\phpDocumentor\SecondParent')),
+        ]));
+
+        $namespace->setInterfaces(Collection::fromClassString(InterfaceDescriptor::class, [$interface]));
+
+        // @codingStandardsIgnoreStart
+        $expected =  <<<'UML'
+skinparam shadowing false
+skinparam linetype ortho
+hide empty members
+left to right direction
+set namespaceSeparator \\
+
+namespace phpDocumentor\\MyNamespace {
+    class "MyParent" as MyParent__class {
+    }
+}
+namespace phpDocumentor {
+    interface "SecondParent" as SecondParent__interface  {
+    }
+}
+namespace phpDocumentor\\MyNamespace {
+    interface "MyInterface" as MyInterface__interface  extends \\phpDocumentor\\MyNamespace\\MyParent__class,\\phpDocumentor\\SecondParent__interface {
+    }
+}
+
+UML;
+        // @codingStandardsIgnoreEnd
+
+        $diagram = new ClassDiagram();
+        $this->assertSame($expected, $diagram->generateUml([$namespace]));
+    }
+
+    public function testAddsEnumsToNamespaces(): void
+    {
+        $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));
+        $enum = self::faker()->enumDescriptor(new Fqsen('\phpDocumentor\MyNamespace\MyEnum'));
+
+        $namespace->setEnums(Collection::fromClassString(EnumDescriptor::class, [$enum]));
+
+        $expected =  <<<'UML'
+skinparam shadowing false
+skinparam linetype ortho
+hide empty members
+left to right direction
+set namespaceSeparator \\
+
+namespace phpDocumentor\\MyNamespace {
+    enum "MyEnum" as MyEnum__enum {
+    }
+}
+
+UML;
+
+        $diagram = new ClassDiagram();
+        $this->assertSame($expected, $diagram->generateUml([$namespace]));
+    }
+
+    public function testAddsTraitsToNamespaces(): void
+    {
+        $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));
+        $trait = self::faker()->traitDescriptor(new Fqsen('\phpDocumentor\MyNamespace\MyEnum'));
+
+        $namespace->setTraits(Collection::fromClassString(TraitDescriptor::class, [$trait]));
+
+        $expected =  <<<'UML'
+skinparam shadowing false
+skinparam linetype ortho
+hide empty members
+left to right direction
+set namespaceSeparator \\
+
+namespace phpDocumentor\\MyNamespace {
+    class "MyEnum"  as MyEnum__trait << (T,#FF7700) Trait >> {
+    }
+}
+
+UML;
+
+        $diagram = new ClassDiagram();
+        $this->assertSame($expected, $diagram->generateUml([$namespace]));
     }
 }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Uml;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Uml\ClassDiagram\Element;
@@ -50,48 +52,16 @@ UML;
 
     private function classDescriptor(ClassInterface|Fqsen $class): void
     {
-        $classFqsen = $class instanceof ClassDescriptor
-            ? $class->getFullyQualifiedStructuralElementName()
-            : $class;
+        if ($class instanceof Fqsen) {
+            $this->fqsen($class);
 
-        $pnamespace = addslashes($this->getNamespace($classFqsen));
-        $pclassName = $class->getName();
-        $alias = $pclassName . '__class';
-        $reference = $classFqsen . '__class';
-
-        if (isset($this->elements[$reference]) && $this->elements[$reference]->descriptorBased === true) {
             return;
         }
 
-        if ($class instanceof Fqsen) {
-            if (isset($this->elements[$reference])) {
-                return;
-            }
+        $classFqsen = $class->getFullyQualifiedStructuralElementName();
+        $reference = $classFqsen . '__class';
 
-            if ($pnamespace === '') {
-                $this->elements[$reference] = new Element(
-                    <<<PUML
-class "$pclassName" as $alias {
-}
-
-PUML,
-                    false,
-                );
-
-                return;
-            }
-
-            $this->elements[$reference] = new Element(
-                <<<PUML
-namespace {$pnamespace} {
-    class "$pclassName" as $alias {
-    }
-}
-
-PUML,
-                false,
-            );
-
+        if (isset($this->elements[$reference]) && $this->elements[$reference]->descriptorBased === true) {
             return;
         }
 
@@ -126,12 +96,16 @@ PUML,
             $implements = '';
         }
 
-        foreach ($class->getUsedTraits() as $parent) {
-            $parentFqsen = $parent instanceof TraitDescriptor
-                ? (string) $parent->getFullyQualifiedStructuralElementName()
-                : (string) $parent;
+        foreach ($class->getUsedTraits() as $trait) {
+            $traitFqsen = $trait instanceof TraitDescriptor
+                ? (string) $trait->getFullyQualifiedStructuralElementName()
+                : (string) $trait;
 
-            $output .= addslashes($parentFqsen) . ' <-- ' . addslashes(
+            if ($trait instanceof TraitDescriptor) {
+                $this->traitDescriptor($trait);
+            }
+
+            $output .= addslashes($traitFqsen) . ' <-- ' . addslashes(
                 $this->toClassName((string) $class->getFullyQualifiedStructuralElementName()),
             ) . ' : uses' . PHP_EOL;
         }
@@ -147,6 +121,49 @@ PUML;
         $this->elements[$reference] = new Element($output, true);
     }
 
+    private function interfaceDescriptor(InterfaceDescriptor|Fqsen $descriptor): void
+    {
+        if ($descriptor instanceof Fqsen) {
+            $this->fqsen($descriptor);
+
+            return;
+        }
+
+        $fqsen = $descriptor->getFullyQualifiedStructuralElementName();
+
+        $extends = '';
+        $parents = [];
+
+        foreach ($descriptor->getParent() as $parent) {
+            $this->interfaceDescriptor($parent);
+            if ($parent instanceof InterfaceDescriptor) {
+                $parents[] = addslashes($parent->getFullyQualifiedStructuralElementName() . '__interface');
+                continue;
+            }
+
+            $parents[] = addslashes($parent . '__class');
+        }
+
+        if ($parents !== []) {
+            $extends = ' extends ' . implode(',', $parents);
+        }
+
+        $namespace = addslashes($this->getNamespace($fqsen));
+        $className = $descriptor->getName();
+        $alias = $className . '__interface';
+        $reference = $fqsen . '__interface';
+
+        $output = <<<PUML
+namespace $namespace {
+    interface "$className" as $alias $extends {
+    }
+}
+
+PUML;
+
+        $this->elements[$reference] = new Element($output, true);
+    }
+
     private function namespaceDescriptor(NamespaceInterface $descriptor): void
     {
         if ($descriptor->isEmpty()) {
@@ -154,6 +171,9 @@ PUML;
         }
 
         $this->createUmlElements($descriptor->getClasses()->getAll());
+        $this->createUmlElements($descriptor->getInterfaces()->getAll());
+        $this->createUmlElements($descriptor->getEnums()->getAll());
+        $this->createUmlElements($descriptor->getTraits()->getAll());
         foreach ($descriptor->getChildren() as $child) {
             $this->namespaceDescriptor($child);
         }
@@ -178,9 +198,87 @@ PUML;
         foreach ($descriptors as $descriptor) {
             match (true) {
                 $descriptor instanceof ClassInterface => $this->classDescriptor($descriptor),
+                $descriptor instanceof InterfaceDescriptor => $this->interfaceDescriptor($descriptor),
+                $descriptor instanceof EnumDescriptor => $this->enumDescriptor($descriptor),
+                $descriptor instanceof TraitDescriptor => $this->traitDescriptor($descriptor),
                 $descriptor instanceof NamespaceInterface => $this->namespaceDescriptor($descriptor),
+                $descriptor instanceof Fqsen => $this->fqsen($descriptor),
                 default => null,
             };
         }
+    }
+
+    private function fqsen(Fqsen $fqsen): void
+    {
+        $namespaceName = addslashes($this->getNamespace($fqsen));
+        $pclassName = $fqsen->getName();
+        $alias = $pclassName . '__class';
+        $reference = $fqsen . '__class';
+
+        if (isset($this->elements[$reference])) {
+            return;
+        }
+
+        if ($namespaceName === '') {
+            $this->elements[$reference] = new Element(
+                <<<PUML
+class "$pclassName" as $alias {
+}
+
+PUML,
+                false,
+            );
+
+            return;
+        }
+
+        $this->elements[$reference] = new Element(
+            <<<PUML
+namespace {$namespaceName} {
+    class "$pclassName" as $alias {
+    }
+}
+
+PUML,
+            false,
+        );
+    }
+
+    private function enumDescriptor(EnumDescriptor $descriptor): void
+    {
+        $fqsen = $descriptor->getFullyQualifiedStructuralElementName();
+        $namespace = addslashes($this->getNamespace($fqsen));
+        $className = $descriptor->getName();
+        $alias = $className . '__enum';
+        $reference = $fqsen . '__enum';
+
+        $output = <<<PUML
+namespace $namespace {
+    enum "$className" as $alias {
+    }
+}
+
+PUML;
+
+        $this->elements[$reference] = new Element($output, true);
+    }
+
+    private function traitDescriptor(TraitInterface $trait): void
+    {
+        $fqsen = $trait->getFullyQualifiedStructuralElementName();
+        $namespace = addslashes($this->getNamespace($fqsen));
+        $className = $trait->getName();
+        $alias = $className . '__trait';
+        $reference = $fqsen . '__trait';
+
+        $output = <<<PUML
+namespace $namespace {
+    class "$className"  as $alias << (T,#FF7700) Trait >> {
+    }
+}
+
+PUML;
+
+        $this->elements[$reference] = new Element($output, true);
     }
 }
