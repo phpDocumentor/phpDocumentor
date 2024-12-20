@@ -303,6 +303,7 @@ UML;
         $this->assertSame($expected, $diagram->generateUml([$namespace]));
     }
 
+    /** @requires OS Linux */
     public function testAddsTraitsToNamespaces(): void
     {
         $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));

@@ -75,7 +75,10 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
         switch ($transformation->getSource() ?: 'class') {
             case 'class':
             default:
-                $this->persistTo($transformation, $filename, $this->plantumlClassDiagram->create($documentationSet));
+                $graph = $this->plantumlClassDiagram->create($documentationSet);
+                if ($graph !== null) {
+                    $this->persistTo($transformation, $filename, $graph);
+                }
         }
     }
 
