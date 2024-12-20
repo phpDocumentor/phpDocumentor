@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use League\Pipeline\Pipeline;
+use phpDocumentor\Pipeline\PipelineInterface;
 
 /**
  * Compiles and links the ast objects into the full ast
@@ -24,7 +24,7 @@ final class Compile
     /**
      * Initializes the command with all necessary dependencies to construct human-suitable output from the AST.
      */
-    public function __construct(private readonly Pipeline $compilerPipeline)
+    public function __construct(private readonly PipelineInterface $compilerPipeline)
     {
     }
 

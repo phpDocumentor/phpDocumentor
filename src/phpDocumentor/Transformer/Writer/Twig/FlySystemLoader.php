@@ -77,7 +77,7 @@ final class FlySystemLoader implements LoaderInterface
      *
      * @inheritDoc
      */
-    public function getCacheKey($name)
+    public function getCacheKey(string $name): string
     {
         $this->guardTemplateExistsAndIsFile($name);
 
@@ -85,7 +85,7 @@ final class FlySystemLoader implements LoaderInterface
     }
 
     /** @inheritDoc */
-    public function isFresh($name, $time)
+    public function isFresh(string $name, $time): bool
     {
         $this->guardTemplateExistsAndIsFile($name);
 

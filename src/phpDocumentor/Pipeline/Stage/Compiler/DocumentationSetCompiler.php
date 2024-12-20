@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Compiler;
 
-use League\Pipeline\Pipeline;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Pipeline\PipelineInterface;
 
 final class DocumentationSetCompiler
 {
     /** @param class-string<DocumentationSetDescriptor> $type */
     public function __construct(
-        private readonly Pipeline $compilerPipeline,
+        private readonly PipelineInterface $compilerPipeline,
         private readonly string $type,
     ) {
     }

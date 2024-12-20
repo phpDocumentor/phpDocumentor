@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use League\Pipeline\Pipeline;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Pipeline\PipelineInterface;
 
 final class ParseApiDocumentationSets
 {
-    public function __construct(private readonly Pipeline $parseApiDocumentationSetPipeline)
+    public function __construct(private readonly PipelineInterface $parseApiDocumentationSetPipeline)
     {
     }
 
