@@ -259,7 +259,7 @@ left to right direction
 set namespaceSeparator \\
 
 namespace phpDocumentor\\MyNamespace {
-    class "MyParent" as MyParent__class {
+    class "MyParent" as MyParent__class << external >>{
     }
 }
 namespace phpDocumentor {

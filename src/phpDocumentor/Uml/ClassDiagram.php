@@ -30,7 +30,7 @@ class ClassDiagram
     private array $elements = [];
 
     /** @param ElementInterface[] $descriptors */
-    public function generateUml(array $descriptors): string
+    public function generateUml(iterable $descriptors): string
     {
         $uml = <<<'UML'
 skinparam shadowing false
@@ -54,7 +54,7 @@ UML;
     private function classDescriptor(ClassInterface|Fqsen $class): void
     {
         if ($class instanceof Fqsen) {
-            $this->fqsen($class);
+            $this->fqsen($class, stereoType: '<< external >>');
 
             return;
         }
@@ -90,7 +90,7 @@ UML;
                 continue;
             }
 
-            $this->fqsen($parent);
+            $this->fqsen($parent, 'interface', '<< external >>');
             $implementsList[] = addslashes($parent . '__class');
         }
 
@@ -130,7 +130,7 @@ PUML;
     private function interfaceDescriptor(InterfaceInterface|Fqsen $descriptor): void
     {
         if ($descriptor instanceof Fqsen) {
-            $this->fqsen($descriptor);
+            $this->fqsen($descriptor, 'interface', '<< external >>');
 
             return;
         }
@@ -199,7 +199,7 @@ PUML;
     }
 
     /** @param ElementInterface[] $descriptors */
-    private function createUmlElements(array $descriptors): void
+    private function createUmlElements(iterable $descriptors): void
     {
         foreach ($descriptors as $descriptor) {
             match (true) {
@@ -208,13 +208,13 @@ PUML;
                 $descriptor instanceof EnumDescriptor => $this->enumDescriptor($descriptor),
                 $descriptor instanceof TraitDescriptor => $this->traitDescriptor($descriptor),
                 $descriptor instanceof NamespaceInterface => $this->namespaceDescriptor($descriptor),
-                $descriptor instanceof Fqsen => $this->fqsen($descriptor),
+                $descriptor instanceof Fqsen => $this->fqsen($descriptor, stereoType: '<< external >>'),
                 default => null,
             };
         }
     }
 
-    private function fqsen(Fqsen $fqsen): void
+    private function fqsen(Fqsen $fqsen, string $type = 'class', string|null $stereoType = null): void
     {
         $namespaceName = addslashes($this->getNamespace($fqsen));
         $pclassName = $fqsen->getName();
@@ -228,7 +228,7 @@ PUML;
         if ($namespaceName === '') {
             $this->elements[$reference] = new Element(
                 <<<PUML
-class "$pclassName" as $alias {
+$type "$pclassName" as $alias $stereoType{
 }
 
 PUML,
@@ -241,7 +241,7 @@ PUML,
         $this->elements[$reference] = new Element(
             <<<PUML
 namespace {$namespaceName} {
-    class "$pclassName" as $alias {
+    class "$pclassName" as $alias $stereoType{
     }
 }
 

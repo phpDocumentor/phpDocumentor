@@ -89,7 +89,11 @@ left to right direction
 set namespaceSeparator \\
 
 namespace phpDocumentor {
-     class "MyClass" as MyClass__class    implements \\phpDocumentor\\MyInterface {
+    interface "MyInterface" as MyInterface__interface  {
+    }
+}
+namespace phpDocumentor {
+     class "MyClass" as MyClass__class    implements \\phpDocumentor\\MyInterface__interface {
     }
 }
 
@@ -109,7 +113,7 @@ left to right direction
 set namespaceSeparator \\
 
 namespace phpDocumentor\\SubNamespace {
-    class "MyParent" as MyParent__class {
+     class "MyParent" as MyParent__class    {
     }
 }
 namespace phpDocumentor {
