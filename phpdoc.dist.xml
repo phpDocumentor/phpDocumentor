@@ -11,7 +11,7 @@
     </paths>
     <version number="3.0.0">
         <folder>latest</folder>
-        <api>
+        <api ignore-packages="true">
             <source dsn=".">
                 <path>src</path>
             </source>

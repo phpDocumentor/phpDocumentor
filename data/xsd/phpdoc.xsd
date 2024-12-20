@@ -91,6 +91,7 @@
             <xs:element name="examples" type="pd:sourceType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute name="format" type="xs:string" default="php" />
+        <xs:attribute name="ignore-packages" type="xs:boolean" default="false"/>
     </xs:complexType>
 
     <xs:complexType name="rstGuideType">
