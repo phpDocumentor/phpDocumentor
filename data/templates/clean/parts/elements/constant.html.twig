@@ -1,0 +1,76 @@
+{% block constant %}
+    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_{{ constant.name }}" name="constant_{{ constant.name }}" class="anchor"></a>
+            <article id="constant_{{ constant.name }}" class="constant">
+                <h3 class="{{ constant.visibility }} {% if constant.deprecated %}deprecated{% endif %}">{{ constant.name }}</h3>
+                <pre class="signature">{{ constant.name }} = {{ constant.value }}{% if not (constant.type is empty) %} : {{ constant.type|route|join('|') }}{% endif %}</pre>
+                <p><em>{{ constant.summary }}</em></p>
+                {{ constant.description|markdown|raw }}
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="fas-solid fa-arrow-down"></i></h1>
+            {% if constant.deprecated %}
+                <aside class="alert alert-block alert-info">
+                    <h4>Deprecated</h4>
+                    {{ constant.tags.deprecated[0].description }}
+                </aside>
+            {% endif %}
+            <dl>
+                {% if (node.parent is null) %}
+                <dt>File</dt>
+                <dd><a href="{{ node.file|route('url') }}"><div class="path-wrapper">{{ node.path }}</div></a></dd>
+                {% endif %}
+                {% if (node.parent is not null and constant.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+                    <dt>Inherited from</dt>
+                    <dd><a href="{{ constant.parent|route('url') }}"><div class="path-wrapper">{{ constant.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
+                {% endif %}
+
+                {# See Also Section #}
+                {% set see_tags = constant.tags['see'] ?? [] %}
+                {% set link_tags = constant.tags['link'] ?? [] %}
+                {% set combined_tags = see_tags|merge(link_tags) %}
+                {% if combined_tags is not empty %}
+                    <dt>See also</dt>
+                    {% for tag in combined_tags %}
+                        <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+
+                {# Uses Section #}
+                {% set uses_tags = constant.tags['uses'] %}
+                {% if uses_tags is not empty %}
+                    <dt>Uses</dt>
+                    {% for tag in uses_tags %}
+                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            {# Tags Section #}
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                {% set excluded_tags = ['link', 'see', 'var', 'deprecated', 'uses'] %}
+                {% set other_tags = constant.tags|filter((tags, tag_name) => tag_name not in excluded_tags) %}
+                {% if other_tags|length > 0 %}
+                    {% for tag_name, tags in other_tags %}
+                        <tr>
+                            <th>
+                                {{ tag_name }}
+                            </th>
+                            <td>
+                                {% for tag in tags %}
+                                    {% if tag.version %}{{ tag.version }}{% endif %}
+                                    {{ tag.description|markdown|raw }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="2"><em>None found</em></td></tr>
+                {% endif %}
+            </table>
+        </aside>
+    </div>
+{% endblock %}

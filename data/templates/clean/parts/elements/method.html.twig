@@ -1,0 +1,126 @@
+{% block method %}
+    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_{{ method.name }}" name="method_{{ method.name }}" class="anchor"></a>
+            <article class="method">
+                <h3 class="{{ method.visibility }} {% if method.deprecated %}deprecated{% endif %}">{{ method.name }}()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="fa-solid fa-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">{{ method.hasReturnByReference ? '& ' ~ '' }}{{ method.name }}({% for argument in method.arguments %}{{ argument.type ? (argument.type ~ ' ')|raw }} <span class="argument">{{ argument.isVariadic ? '...' }}${{ argument.name }}{{ argument.default ? ' = ' ~ argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.type ? ': ' ~ (method.response.type|raw) }}</pre>
+                <p><em>{{ method.summary }}</em></p>
+                {{ method.description|markdown|raw }}
+
+                {% if method.arguments|length > 0 %}
+                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                        {% for argument in method.arguments %}
+                            <tr>
+                                <td>{{ argument.type|raw }}</td>
+                                <td>${{ argument.name }} {{ argument.isVariadic ? '<small style="color: gray">variadic</small>' }}</td>
+                                <td>{{ argument.description|markdown|raw }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+
+                {% if method.tags.throws|length > 0 or method.tags.throw|length > 0 %}
+                    <h4>Throws</h4>
+                    <dl>
+                        {% for exception in method.tags.throws %}
+                            <dt>{{ exception.type|raw }}</dt>
+                            <dd>{{ exception.description|markdown|raw }}</dd>
+                        {% endfor %}
+                        {% for exception in method.tags.throw %}
+                            <dt>{{ exception.type|raw }}</dt>
+                            <dd>{{ exception.description|markdown|raw }}</dd>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+
+                {% if method.response and method.response.type|join() != 'void' %}
+                    <h4>Returns</h4>
+                    {{ method.response.type|raw }}
+                    {% if method.response.description %}
+                        &mdash; {{ method.response.description|markdown|raw }}
+                    {% endif %}
+                {% endif %}
+                {% set example_tags = method.tags['example'] %}
+                {% if example_tags is not empty %}
+                    <h4>Examples</h4>
+                    {% for tag in example_tags %}
+                        <h5>{{ tag.description|escape }}</h5>
+                        <pre class="pre-scrollable">{{ tag.example|escape }}</pre>
+                    {% endfor %}
+                {% endif %}
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="fas fa-arrow-down"></i></h1>
+            {% if method.static %}
+                <span class="label label-info">static</span>
+            {% endif %}
+            {% if method.abstract %}
+                <span class="label label-info">abstract</span>
+            {% endif %}
+            {% if method.final %}
+                <span class="label label-info">final</span>
+            {% endif %}
+            {% if method.deprecated %}
+                <aside class="alert alert-block alert-info">
+                    <h4>Deprecated{% if method.tags.deprecated[0].version %} since {{ method.tags.deprecated[0].version }}{% endif %}</h4>
+                    {{ method.tags.deprecated[0].description }}
+                </aside>
+            {% endif %}
+            <dl>
+                {% if (method.parent is null) %}
+                    <dt>File</dt>
+                    <dd><a href="{{ method.file|route('url') }}"><div class="path-wrapper">{{ method.path }}</div></a></dd>
+                {% endif %}
+                {% if (method.parent is not null and method.parent.fullyQualifiedStructuralElementName != method.fullyQualifiedStructuralElementName) %}
+                    <dt>Inherited from</dt>
+                    <dd><a href="{{ method.parent|route('url') }}"><div class="path-wrapper">{{ method.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
+                {% endif %}
+                {# See Also Section #}
+                {% set see_tags = method.tags['see'] ?? [] %}
+                {% set link_tags = method.tags['link'] ?? [] %}
+                {% set combined_tags = see_tags|merge(link_tags) %}
+                {% if combined_tags is not empty %}
+                    <dt>See also</dt>
+                    {% for tag in combined_tags %}
+                        <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+
+                {# Uses Section #}
+                {% set uses_tags = method.tags['uses'] %}
+                {% if uses_tags is not empty %}
+                    <dt>Uses</dt>
+                    {% for tag in uses_tags %}
+                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                {% set excluded_tags = ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+                {% set other_tags = method.tags|filter((tags, tag_name) => tag_name not in excluded_tags) %}
+                {% if other_tags|length > 0 %}
+                    {% for tag_name, tags in other_tags %}
+                        <tr>
+                            <th>
+                                {{ tag_name }}
+                            </th>
+                            <td>
+                                {% for tag in tags %}
+                                    {% if tag.version %}{{ tag.version }}{% endif %}
+                                    {{ tag.description|markdown|raw }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="2"><em>None found</em></td></tr>
+                {% endif %}
+            </table>
+        </aside>
+    </div>
+{% endblock %}

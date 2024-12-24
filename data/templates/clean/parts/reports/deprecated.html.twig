@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ project.title }}
+	&raquo; Deprecated elements
+{% endblock %}
+
+{% block content %}
+	<div class="row-fluid">
+
+		<div class="span2 sidebar">
+			<ul class="side-nav nav nav-list">
+				<li class="nav-header">Navigation</li>
+				{% set previous_path = '' %}
+
+				{% for element in project.indexes.elements %}
+					{% if element.deprecated %}
+						{% if element.file.path != previous_path %}
+							<li>
+								<a href="#{{ element.file.path }}">
+									<i class="fa-solid fa-file" style="color: #000000"></i>
+									{{ element.file.path }}
+								</a>
+							</li>
+						{% endif %}
+						{% set previous_path = element.file.path %}
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div class="span10 offset2">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">
+						<i class="fa-solid fa-file-circle-xmark" style="color: #3a87ad"></i>
+					</a>
+					<span class="divider">\</span>
+				</li>
+				<li>Deprecated elements</li>
+			</ul>
+
+			<div id="marker-accordion">
+				{% set previous_path = '' %}
+					{% set has_deprecated_elements = false %}
+
+					{% for element in project.indexes.elements %}
+						{% if element.deprecated %}
+							{% set has_deprecated_elements = true %}
+							{% if element.file.path != previous_path %}
+								{% if previous_path %}
+									</table>
+								</div>
+								{% endif %}
+								<a name="{{ element.file.path }}" id="{{ element.file.path }}"></a>
+								<h3>
+									<i class="fa-solid fa-file" style="color: #000000"></i>
+									{{ element.file.path }}
+									<small style="float: right;padding-right: 10px;">{{ element.tags.deprecated.count }}</small>
+								</h3>
+								<div>
+									<table class="table markers table-bordered">
+										<tr>
+											<th>Element</th>
+											<th>Line</th>
+											<th>Description</th>
+										</tr>
+							{% endif %}
+							{% for tag in element.tags.deprecated %}
+								<tr>
+									<td>{{ element.fullyQualifiedStructuralElementName }}</td>
+									<td>{{ element.line }}</td>
+									<td>{{ tag.description }}</td>
+								</tr>
+							{% endfor %}
+							{% set previous_path = element.file.path %}
+						{% endif %}
+					{% endfor %}
+					{% if not has_deprecated_elements %}
+						<div class="alert alert-info">No deprecated elements have been found in this project.</div>
+					{% endif %}
+			</table>
+		</div>
+	</div>
+</div></div>{% endblock %}
