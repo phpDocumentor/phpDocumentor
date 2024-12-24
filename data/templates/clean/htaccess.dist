@@ -1,4 +1,9 @@
-# Fixes a vulnerability in CentOS: https://stackoverflow.com/questions/20533279/
+<ifModule mod_deflate.c>
+    <filesMatch "\.(js|css|html)$">
+        SetOutputFilter DEFLATE
+    </filesMatch>
+</ifModule>
+
 <FilesMatch \.php\.txt$>
     RemoveHandler .php
     ForceType text/plain

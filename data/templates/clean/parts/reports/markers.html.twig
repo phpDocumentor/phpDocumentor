@@ -1,0 +1,75 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ project.title }}
+	&raquo; Markers
+{% endblock %}
+
+{% block content %}
+	<section class="row-fluid">
+		<div class="span2 sidebar">
+			<ul class="side-nav nav nav-list">
+				<li class="nav-header">Navigation</li>
+				{% set marker_count = 0 %}
+				{% for file in project.files %}
+					{% if file.markers.count > 0 %}
+						<li>
+							<a href="#{{ file.path }}">
+								<i class="fa-solid fa-file" style="color: #000000"></i>
+								{{ file.path }}</a>
+						</li>
+					{% endif %}
+					{% set marker_count = marker_count + file.markers.count %}
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div class="span10 offset2">
+
+			<ul class="breadcrumb">
+				<li>
+					<a href="/">
+						<i class="fa-solid fa-location-dot" style="color: #f89406"></i>
+					</a>
+					<span class="divider">\</span>
+				</li>
+				<li>Markers</li>
+			</ul>
+
+			{% if marker_count <= 0 %}
+				<div class="alert alert-warning">No markers have been found in this project.</div>
+			{% endif %}
+
+			<div id="marker-accordion">
+				{% for file in project.files %}
+					{% if file.markers.count > 0 %}
+						<div class="package-contents">
+							<a name="{{ file.path }}" id="{{ file.path }}"></a>
+							<h3>
+								<i class="fa-solid fa-file" style="color: #000000"></i>
+								{{ file.path }}
+								<small style="float: right;padding-right: 10px;">{{ file.markers.count }}</small>
+							</h3>
+							<div>
+								<table class="table markers table-bordered">
+									<tr>
+										<th>Type</th>
+										<th>Line</th>
+										<th>Description</th>
+									</tr>
+									{% for marker in file.markers %}
+										<tr>
+											<td>{{ marker.type }}</td>
+											<td>{{ marker.line }}</td>
+											<td>{{ marker.message }}</td>
+										</tr>
+									{% endfor %}
+								</table>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endblock %}

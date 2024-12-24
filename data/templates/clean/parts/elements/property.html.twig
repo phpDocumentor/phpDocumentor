@@ -1,0 +1,75 @@
+{% block property %}
+    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_{{ property.name }}" name="property_{{ property.name }}" class="anchor"></a>
+            <article class="property">
+                <h3 class="{{ property.visibility }} {% if property.deprecated %}deprecated{% endif %}">${{ property.name }}</h3>
+                <pre class="signature">${{ property.name }}{% if property.type %} : {{ property.type|raw }}{% endif %}</pre>
+                <p><em>{{ property.summary }}</em></p>
+                {{ property.description|markdown|raw }}
+
+                {% if property.type %}
+                <h4>Type</h4>
+                {{ property.type|route|join('|')|raw }}
+                {% if property.var.0.description %}&mdash; {{ property.var.0.description }}{% endif %}
+                {% endif %}
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="fas-solid fa-arrow-down"></i></h1>
+            {% if property.deprecated %}
+                <aside class="alert alert-block alert-info">
+                    <h4>Deprecated</h4>
+                    {{ property.tags.deprecated[0].description }}
+                </aside>
+            {% endif %}
+            <dl>
+                {% if (node.parent is not null and property.parent.fullyQualifiedStructuralElementName != node.fullyQualifiedStructuralElementName) %}
+                    <dt>Inherited from</dt>
+                    <dd><a href="{{ property.parent|route('url') }}"><div class="path-wrapper">{{ property.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
+                {% endif %}
+                {# See Also Section #}
+                {% set see_tags = property.tags['see'] ?? [] %}
+                {% set link_tags = property.tags['link'] ?? [] %}
+                {% set combined_tags = see_tags|merge(link_tags) %}
+                {% if combined_tags is not empty %}
+                    <dt>See also</dt>
+                    {% for tag in combined_tags %}
+                        <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+
+                {# Uses Section #}
+                {% set uses_tags = property.tags['uses'] %}
+                {% if uses_tags is not empty %}
+                    <dt>Uses</dt>
+                    {% for tag in uses_tags %}
+                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                {% set excluded_tags = ['link', 'see', 'access', 'var', 'deprecated', 'uses'] %}
+                {% set other_tags = property.tags|filter((tags, tag_name) => tag_name not in excluded_tags) %}
+                {% if other_tags|length > 0 %}
+                    {% for tag_name, tags in other_tags %}
+                        <tr>
+                            <th>
+                                {{ tag_name }}
+                            </th>
+                            <td>
+                                {% for tag in tags %}
+                                    {% if tag.version %}{{ tag.version }}{% endif %}
+                                    {{ tag.description|markdown|raw }}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="2"><em>None found</em></td></tr>
+                {% endif %}
+            </table>
+        </aside>
+    </div>
+{% endblock %}
