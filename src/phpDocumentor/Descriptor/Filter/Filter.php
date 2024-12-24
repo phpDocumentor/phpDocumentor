@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use League\Pipeline\InterruptibleProcessor;
-use League\Pipeline\Pipeline;
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Pipeline\InterruptibleProcessor;
+use phpDocumentor\Pipeline\Pipeline;
 
 /**
  * Filter used to manipulate a descriptor after being build.

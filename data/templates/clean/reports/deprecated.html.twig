@@ -10,7 +10,7 @@
         <div class="span2 sidebar">
             <ul class="side-nav nav nav-list">
                 <li class="nav-header">Navigation</li>
-                {% for element in project.indexes.elements if element.deprecated %}
+                {% for element in project.indexes.elements|filter (element =>  element.deprecated) %}
                     {% if element.file.path != previousPath %}
                         <li><a href="#{{ element.file.path }}"><i class="icon-file"></i> {{ element.file.path }}</a></li>
                     {% endif %}
@@ -26,7 +26,7 @@
             </ul>
 
             <div id="marker-accordion">
-                {% for element in project.indexes.elements if element.deprecated %}
+                {% for element in project.indexes.elements|filter (element =>  element.deprecated) %}
                     {% if element.file.path != previousPath %}
                     {% if previousPath %}
                         </table>

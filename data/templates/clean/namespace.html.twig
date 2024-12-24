@@ -12,9 +12,9 @@
             <div class="row-fluid">
                 <div class="span8 content namespace">
                     <nav>
-                        {#<a href="" class="pull-left">&laquo; NamespaceAssembler</a>#}
+                        {# <a href="" class="pull-left">&laquo; NamespaceAssembler</a> #}
                         {{ node.parent|route|raw }}
-                        {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
+                        {# <a href="" class="pull-right">ClassAssembler &raquo;</a> #}
                     </nav>
                     <h1><small>{{ node.parent.fullyQualifiedStructuralElementName }}</small>{{ node.name }}</h1>
 
@@ -79,7 +79,7 @@
                                     <div class="namespace-wrapper">{{ child|route|raw }}</div>
                                 {% endif %}
                             {% endblock %}
-                            <div class="namespace-wrapper">{{ node.fullyQualifiedStructuralElementName}}</div>
+                            <div class="namespace-wrapper">{{ node.fullyQualifiedStructuralElementName }}</div>
                         </dd>
                     </dl>
                 </aside>

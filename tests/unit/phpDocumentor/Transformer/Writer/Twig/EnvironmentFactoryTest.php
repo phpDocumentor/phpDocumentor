@@ -78,7 +78,7 @@ final class EnvironmentFactoryTest extends TestCase
         $environment = $this->factory->create($projectDescriptor, $apiSetDescriptor, $template);
 
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(7, $environment->getExtensions());
+        $this->assertCount(8, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
@@ -131,7 +131,7 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->isDebug());
         $this->assertTrue($environment->isAutoReload());
         $this->assertInstanceOf(Environment::class, $environment);
-        $this->assertCount(7, $environment->getExtensions());
+        $this->assertCount(8, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }

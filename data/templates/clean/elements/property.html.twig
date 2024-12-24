@@ -28,7 +28,7 @@
                     <dt>Inherited from</dt>
                     <dd><a href="{{ property.parent|route('url') }}"><div class="path-wrapper">{{ property.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                 {% endif %}
-                {% for tagName,tags in property.tags if tagName in ['link', 'see'] %}
+                {% for tagName, tags in property.tags|filter (tagName =>  tagName in ['link', 'see']) %}
                     {% if loop.first %}
                         <dt>See also</dt>
                     {% endif %}
@@ -36,7 +36,7 @@
                         <dd><a href="{{ tag.reference|route('url') ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
                     {% endfor %}
                 {% endfor %}
-                {% for tagName,tags in property.tags if tagName in ['uses'] %}
+                {% for tagName, tags in property.tags|filter (tagName =>  tagName in ['uses']) %}
                     {% if loop.first %}
                         <dt>Uses</dt>
                     {% endif %}
@@ -47,7 +47,7 @@
             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                {% for tagName,tags in property.tags if tagName not in ['link', 'see', 'access', 'var', 'deprecated', 'uses'] %}
+                {% for tagName, tags in property.tags|filter (tagName =>  tagName not in ['link', 'see', 'access', 'var', 'deprecated', 'uses']) %}
                     <tr>
                         <th>
                             {{ tagName }}
