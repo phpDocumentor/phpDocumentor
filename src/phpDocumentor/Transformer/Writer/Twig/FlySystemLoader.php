@@ -42,8 +42,7 @@ final class FlySystemLoader implements LoaderInterface
         $this->overloadPrefix = $overloadPrefix !== null ? $overloadPrefix . '::' : null;
     }
 
-    /** @inheritDoc */
-    public function getSourceContext($name): Source
+    public function getSourceContext(string $name): Source
     {
         $this->guardTemplateExistsAndIsFile($name);
 
@@ -61,8 +60,7 @@ final class FlySystemLoader implements LoaderInterface
         );
     }
 
-    /** @inheritDoc */
-    public function exists($name)
+    public function exists(string $name): bool
     {
         return $this->filesystem->has($this->resolveTemplateName($name));
     }
