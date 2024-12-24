@@ -63,9 +63,9 @@
             <div class="row-fluid">
                 <div class="span8 content class">
                     <nav>
-                        {#<a href="" class="pull-left">&laquo; NamespaceAssembler</a>#}
+                        {# <a href="" class="pull-left">&laquo; NamespaceAssembler</a> #}
                         {{ node.namespace|route|raw }}
-                        {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
+                        {# <a href="" class="pull-right">ClassAssembler &raquo;</a> #}
                     </nav>
                     {% if project.settings.shouldIncludeSource %}
                         <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
@@ -87,15 +87,15 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'public' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'public') %}
+                                    <a href="{{ method|route('url') }}">{{ method.name }}()</a><br />
                                 {% else %}
                                     <em>No public methods found</em>
                                 {% endfor %}
                             </section>
                             <section class="span6">
                                 {% for constant in node.inheritedConstants.merge(node.constants) %}
-                                    <a href="{{ constant|route('url')}}">{{ constant.name }}</a><br />
+                                    <a href="{{ constant|route('url') }}">{{ constant.name }}</a><br />
                                 {% else %}
                                     <em>No constants found</em>
                                 {% endfor %}
@@ -103,8 +103,8 @@
                         </section>
                         <section class="row-fluid protected">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'protected' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'protected') %}
+                                    <a href="{{ method|route('url') }}">{{ method.name }}()</a><br />
                                 {% else %}
                                     <em>No protected methods found</em>
                                 {% endfor %}
@@ -115,8 +115,8 @@
                         </section>
                         <section class="row-fluid private">
                             <section class="span6">
-                                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'private' %}
-                                    <a href="{{ method|route('url')}}">{{ method.name }}()</a><br />
+                                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'private') %}
+                                    <a href="{{ method|route('url') }}">{{ method.name }}()</a><br />
                                 {% else %}
                                     <em>No private methods found</em>
                                 {% endfor %}
@@ -150,7 +150,7 @@
                             <dd><a href="{{ parent|route('url') }}"><div class="namespace-wrapper">{{ parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                         {% endfor %}
 
-                        {% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+                        {% for tagName, tags in node.tags|filter (tagName =>  tagName in ['link', 'see']) %}
                             {% if loop.first %}
                         <dt>See also</dt>
                             {% endif %}
@@ -161,7 +161,7 @@
                     </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                    {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'abstract', 'method', 'package', 'subpackage'] %}
+                    {% for tagName, tags in node.tags|filter (tagName =>  tagName not in ['link', 'see', 'abstract', 'method', 'package', 'subpackage']) %}
                         <tr>
                             <th>{{ tagName }}</th>
                             <td>
@@ -200,13 +200,13 @@
                 <aside class="span4 detailsbar"></aside>
             </div>
 
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'public' %}
+                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'public') %}
                 {{ block('method') }}
                 {% endfor %}
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'protected' %}
+                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'protected') %}
                 {{ block('method') }}
                 {% endfor %}
-                {% for method in node.inheritedMethods.merge(node.methods) if method.visibility == 'private' %}
+                {% for method in node.inheritedMethods.merge(node.methods)|filter (method =>  method.visibility == 'private') %}
                 {{ block('method') }}
                 {% endfor %}
             {% endif %}

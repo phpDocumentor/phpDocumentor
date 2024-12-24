@@ -6,7 +6,7 @@
                 {% if namespace.children|length > 0 or namespace.classes|length > 0 or namespace.interfaces|length > 0 or namespace.traits|length > 0 %}
                     <a class="accordion-toggle {{ namespace.name != '\\' ? 'collapsed' }}" data-toggle="collapse" data-target="#namespace-{{ code }}"></a>
                 {% endif %}
-                <a href="{{ namespace|route("url")|raw }}" style="margin-left: 30px; padding-left: 0">{{ namespace.name }}</a>
+                <a href="{{ namespace|route('url')|raw }}" style="margin-left: 30px; padding-left: 0">{{ namespace.name }}</a>
             </div>
             <div id="namespace-{{ code }}" class="accordion-body collapse {{ namespace.name == '\\' ? 'in' }}">
                 <div class="accordion-inner">

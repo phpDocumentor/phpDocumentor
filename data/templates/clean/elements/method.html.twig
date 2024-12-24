@@ -5,7 +5,7 @@
             <article class="method">
                 <h3 class="{{ method.visibility }} {% if method.deprecated %}deprecated{% endif %}">{{ method.name }}()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">{{ method.hasReturnByReference ? '& '~'' }}{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|')~' ' }} <span class="argument">{{ argument.isVariadic ? '...' }}${{ argument.name }}{{ argument.default ? ' = '~argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': '~method.response.types|join('|') }}</pre>
+                <pre class="signature" style="margin-right: 54px;">{{ method.hasReturnByReference ? '& ' ~ '' }}{{ method.name }}({% for argument in method.arguments %}{{ argument.types ? argument.types|join('|') ~ ' ' }} <span class="argument">{{ argument.isVariadic ? '...' }}${{ argument.name }}{{ argument.default ? ' = ' ~ argument.default }}</span>{% if not loop.last %}, {% endif %}{% endfor %}) {{ method.response.types ? ': ' ~ method.response.types|join('|') }}</pre>
                 <p><em>{{ method.summary }}</em></p>
                 {{ method.description|markdown|raw }}
 
@@ -44,7 +44,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% for tagName,tags in method.tags if tagName in ['example'] %}
+                {% for tagName, tags in method.tags|filter (tagName =>  tagName in ['example']) %}
                     {% if loop.first %}
                         <h4>Examples</h4>
                     {% endif %}
@@ -81,7 +81,7 @@
                     <dt>Inherited from</dt>
                     <dd><a href="{{ method.parent|route('url') }}"><div class="path-wrapper">{{ method.parent.fullyQualifiedStructuralElementName }}</div></a></dd>
                 {% endif %}
-                {% for tagName,tags in method.tags if tagName in ['link', 'see'] %}
+                {% for tagName, tags in method.tags|filter (tagName =>  tagName in ['link', 'see']) %}
                     {% if loop.first %}
                         <dt>See also</dt>
                     {% endif %}
@@ -89,7 +89,7 @@
                         <dd><a href="{{ (tag.reference|route('url')) ?: tag.link }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
                     {% endfor %}
                 {% endfor %}
-                {% for tagName,tags in method.tags if tagName in ['uses'] %}
+                {% for tagName, tags in method.tags|filter (tagName =>  tagName in ['uses']) %}
                     {% if loop.first %}
                         <dt>Uses</dt>
                     {% endif %}
@@ -100,7 +100,7 @@
             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                {% for tagName,tags in method.tags if tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses'] %}
+                {% for tagName, tags in method.tags|filter (tagName =>  tagName not in ['link', 'see', 'abstract', 'example', 'param', 'return', 'access', 'deprecated', 'throws', 'throw', 'uses']) %}
                     <tr>
                         <th>
                             {{ tagName }}

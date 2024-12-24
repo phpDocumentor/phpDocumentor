@@ -63,14 +63,14 @@
             <div class="row-fluid">
                 <div class="span8 content file">
                     <nav>
-                        {#<a href="" class="pull-left">&laquo; NamespaceAssembler</a>#}
-                        {#<a href="" class="pull-right">ClassAssembler &raquo;</a>#}
+                        {# <a href="" class="pull-left">&laquo; NamespaceAssembler</a> #}
+                        {# <a href="" class="pull-right">ClassAssembler &raquo;</a> #}
                     </nav>
 
                     {% if project.settings.shouldIncludeSource %}
                         <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
                     {% endif %}
-                    <h1><small>{{ node.path|split('/')|slice(0,-1)|join('/') }}</small>{{ node.name }}</h1>
+                    <h1><small>{{ node.path|split('/')|slice(0, -1)|join('/') }}</small>{{ node.name }}</h1>
                     <p><em>{{ node.summary }}</em></p>
                     {{ node.description|markdown|raw }}
 
@@ -118,7 +118,7 @@
                             <dd><div class="namespace-wrapper">{{ node.subpackage ? (node.package ~ '\\' ~ node.subpackage) : node.package }}</div></dd>
                         {% endif %}
 
-                        {% for tagName,tags in node.tags if tagName in ['link', 'see'] %}
+                        {% for tagName, tags in node.tags|filter (tagName =>  tagName in ['link', 'see']) %}
                             {% if loop.first %}
                                 <dt>See also</dt>
                             {% endif %}
@@ -130,7 +130,7 @@
                     </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                        {% for tagName,tags in node.tags if tagName not in ['link', 'see', 'package', 'subpackage'] %}
+                        {% for tagName, tags in node.tags|filter (tagName =>  tagName not in ['link', 'see', 'package', 'subpackage']) %}
                             <tr>
                                 <th>
                                     {{ tagName }}

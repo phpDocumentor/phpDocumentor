@@ -19,6 +19,9 @@
                 "tests/integration/phpDocumentor/",
                 "tests/functional/phpDocumentor/"
             ],
+            "TwigCsFixer\\": [
+                "tests/twig-cs-fixer/"
+            ],
             "Prophecy\\" : [
                 "tests/unit/Prophecy"
             ]
@@ -96,7 +99,8 @@
         "phpstan/phpstan-webmozart-assert": "^1.2",
         "phpunit/phpunit": "^10.0",
         "rector/rector": "^1.2.5",
-        "symfony/var-dumper": "^6.0"
+        "symfony/var-dumper": "^6.0",
+        "vincentlanglet/twig-cs-fixer": "^3.5"
     },
     "config": {
         "bin-dir": "bin/",
