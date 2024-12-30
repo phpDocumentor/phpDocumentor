@@ -568,7 +568,7 @@ body .modal {
         margin-bottom: 0px;
     }
 
-    .navbar {
+    /*.navbar {
         position: fixed;
         top: 0;
         left: 0;
@@ -593,7 +593,7 @@ body .modal {
         margin-left: 250px;
         padding-top: 60px;
         background-color: #fff;
-    }
+    }*/
 
 }
 
