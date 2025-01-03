@@ -1,7 +1,7 @@
 Generating documentation
 ========================
 
-After you have :ref:`installed<installing>` phpDocumentor you can use the ``phpdoc`` command to generate
+After you have :ref:`installed<Installation>` phpDocumentor you can use the ``phpdoc`` command to generate
 your documentation.
 
 Throughout this documentation we expect that the ``phpdoc`` command is available; thus whenever we ask you
