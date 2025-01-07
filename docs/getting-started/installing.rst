@@ -21,7 +21,6 @@ available before installing phpDocumentor.
 
 - `PHP 8.1.2`_ or higher
 - The mbstring_ php extension
-- Graphviz_ (optional)
 - PlantUML_ (optional)
 
 Stand-alone, using Docker
@@ -53,6 +52,18 @@ Once you run the command, phpDocumentor will be installed and it can be executed
 
 For more information about Phive have a look at the `Phive website`_.
 
+As a dependency, using Composer
+-------------------------------
+
+If you are using Composer_ in your project, you can add phpDocumentor as a dependency by running the following command::
+
+   $ composer require phpdocumentor/shim
+
+This will install the shim package that will download the latest version of phpDocumentor and make it available in your
+project. You can then run phpDocumentor by calling the following command::
+
+   $ vendor/bin/phpdoc run -d . -t docs/api
+
 Stand-alone, downloading a PHAR
 -------------------------------
 
@@ -76,12 +87,12 @@ And next
 --------
 
 - :doc:`what-is-a-docblock` - how to quickly start using phpDocumentor.
+- :ref:`Generate diagrams` - how to generate diagrams in your documentation.
 - :doc:`configuration` - advanced configuration options.
 
 .. _Docker image:           https://hub.docker.com/r/phpdoc/phpdoc
 .. _Composer:               https://getcomposer.org
 .. _`PHP 8.1.2`:            https://www.php.net
-.. _Graphviz:               https://graphviz.org/download/
 .. _PlantUML:               https://plantuml.com/download
 .. _Twig:                   https://twig.symfony.com/
 .. _Phive website:          https://phar.io/

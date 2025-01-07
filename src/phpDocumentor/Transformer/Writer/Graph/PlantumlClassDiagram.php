@@ -15,16 +15,14 @@ namespace phpDocumentor\Transformer\Writer\Graph;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Guides\Graphs\Renderer\PlantumlRenderer;
+use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Uml\ClassDiagram;
-use Psr\Log\LoggerInterface;
 
 final class PlantumlClassDiagram implements Generator
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly PlantumlRenderer $plantumlRenderer,
+        private readonly UmlExtension $plantumlRenderer,
     ) {
     }
 
@@ -34,23 +32,24 @@ final class PlantumlClassDiagram implements Generator
             return null;
         }
 
-        $output = $this->plantumlRenderer->render(
-            new class extends RenderContext{
-                public function __construct()
-                {
-                }
+        $output = $this->plantumlRenderer->uml(
+            [
+                'env' =>
+                new class extends RenderContext{
+                    public function __construct()
+                    {
+                    }
 
-                public function getLoggerInformation(): array
-                {
-                    return [];
-                }
-            },
+                    public function getLoggerInformation(): array
+                    {
+                        return [];
+                    }
+                },
+            ],
             (new ClassDiagram())->generateUml([$documentationSet->getNamespace()]),
         );
 
         if (! $output) {
-            $this->logger->error('Generating the class diagram failed');
-
             return null;
         }
 

@@ -57,14 +57,18 @@ final class ContainerFactory
     ): ContainerBuilder {
         $this->container->setParameter('vendor_dir', $vendorDir);
         $this->container->setParameter('kernel.project_dir', dirname(__DIR__, 3));
-        $this->container->setParameter('guides.graphs.renderer', 'plantuml');
-        $this->container->setParameter('guides.graphs.plantuml_binary', '%kernel.project_dir%/bin/plantuml');
+        $this->container->setParameter('env(PHPDOC_PLANTUML)', 'plantuml_smetana');
+        $this->container->setParameter('guides.graphs.renderer', '%env(PHPDOC_PLANTUML)%');
+        $this->container->setParameter('env(PHPDOC_PLANTUML_BIN)', '%kernel.project_dir%/bin/plantuml');
+        $this->container->setParameter('env(PHPDOC_PLANTUML_SERVER)', 'https://www.plantuml.com/plantuml/svg');
+        $this->container->setParameter('guides.graphs.plantuml_binary', '%env(PHPDOC_PLANTUML_BIN)%');
+        $this->container->setParameter('guides.graphs.plantuml_server', '%env(PHPDOC_PLANTUML_SERVER)%');
 
         foreach ($extensionHandler->loadExtensions() as $extension) {
             $this->registerExtension(new $extension());
         }
 
-        $this->container->compile();
+        $this->container->compile(true);
 
         return $this->container;
     }
