@@ -9,3 +9,4 @@ Guides
    types
    inheritance
    continuous-integration
+   generate-diagrams

@@ -19,6 +19,7 @@ cypress/screenshots
 cypress/videos
 .phpunit.result.cache
 .phpunit.cache
+.twig-cs-fixer.cache
 
 # IDEs and editors
 .idea

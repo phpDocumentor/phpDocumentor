@@ -6,7 +6,7 @@ RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
     && apt-get install --no-install-recommends -yq libicu-dev libicu72 zlib1g-dev ca-certificates-java gpg
 
-RUN apt-get -yq install openjdk-17-jre-headless graphviz \
+RUN apt-get -yq install openjdk-17-jre-headless \
     && rm -rf /var/lib/apt/lists/* /usr/share/man/man1 \
     && docker-php-ext-install -j$(nproc) intl
 

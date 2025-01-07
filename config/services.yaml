@@ -249,3 +249,9 @@ services:
     phpDocumentor\Guides\RestructuredText\Directives\ClassDiagram:
       tags:
         - { name: 'phpdoc.guides.directive' }
+
+    phpDocumentor\Uml\PlantumlRenderer:
+      arguments:
+        $plantUmlBinaryPath: '%guides.graphs.plantuml_binary%'
+      tags:
+        - { name: 'phpdoc.guides.graph.renderer', 'alias': 'plantuml_smetana' }
