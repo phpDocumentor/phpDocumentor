@@ -19,7 +19,8 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use LogicException;
-use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -31,7 +32,7 @@ use function sys_get_temp_dir;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
 
-/** @coversDefaultClass \phpDocumentor\Parser\FlySystemFactory */
+/** @coversDefaultClass \phpDocumentor\FileSystem\FlySystemFactory */
 final class FlySystemFactoryTest extends TestCase
 {
     use ProphecyTrait;

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use Exception;
-use League\Flysystem\FilesystemInterface;
-use phpDocumentor\Dsn;
 use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Event\PostTransformEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
@@ -26,7 +26,7 @@ use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Webmozart\Assert\Assert;
 
 use function count;
@@ -74,7 +74,6 @@ class Transform
 
         $templates = $this->templateFactory->getTemplates(
             $configuration['phpdocumentor']['templates'],
-            $this->createFileSystem($configuration['phpdocumentor']['paths']['output']),
         );
         $project = $payload->getBuilder()->getProjectDescriptor();
         $transformations = $templates->getTransformations();
@@ -88,10 +87,12 @@ class Transform
             Transformer::EVENT_PRE_TRANSFORM,
         );
 
+        $destination = $this->flySystemFactory->create($configuration['phpdocumentor']['paths']['output']);
+
         foreach ($project->getVersions() as $version) {
             $documentationSets = $version->getDocumentationSets();
             foreach ($documentationSets as $documentationSet) {
-                $this->transformer->execute($project, $documentationSet, $transformations);
+                $this->transformer->execute($destination, $project, $documentationSet, $transformations);
             }
         }
 
@@ -138,10 +139,10 @@ class Transform
         );
     }
 
-    private function createFileSystem(Dsn $dsn): FilesystemInterface
+    private function createFileSystem(Dsn $dsn): FileSystem
     {
         $target     = $dsn->getPath();
-        $fileSystem = new Filesystem();
+        $fileSystem = new SymfonyFilesystem();
         if (! $fileSystem->isAbsolutePath((string) $target)) {
             $target = getcwd() . DIRECTORY_SEPARATOR . $target;
         }

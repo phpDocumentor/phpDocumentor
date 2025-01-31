@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use Symfony\Component\Filesystem\Path as SymfonyPath;
 use Webmozart\Assert\Assert;
 
@@ -127,7 +127,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     {
         if (isset($this->options['template']) && $this->options['template']) {
             $configuration['phpdocumentor']['templates'] = array_map(
-                static fn ($templateName) => ['name' => $templateName],
+                static fn ($templateName) => new TemplateDefinition($templateName),
                 (array) $this->options['template'],
             );
         }

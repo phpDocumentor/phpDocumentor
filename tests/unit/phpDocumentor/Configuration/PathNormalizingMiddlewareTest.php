@@ -14,7 +14,7 @@ namespace phpDocumentor\Configuration;
  */
 
 use League\Uri\Uri;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;

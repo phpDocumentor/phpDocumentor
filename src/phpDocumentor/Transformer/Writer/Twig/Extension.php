@@ -47,7 +47,7 @@ use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;

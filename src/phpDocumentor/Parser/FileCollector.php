@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\File;
 
 interface FileCollector
 {
     /**
-     * @param Dsn                  $dsn        dsn of source.
-     * @param list<string|Path>    $paths
-     * @param array<string, mixed> $ignore     array containing keys 'paths' and 'hidden'
-     * @param list<string>         $extensions
+     * @param list<string|Path> $paths
+     * @param array{paths: string[], hidden: bool} $ignore     array containing keys 'paths' and 'hidden'
+     * @param list<string> $extensions
      *
      * @return File[]
      */
-    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array;
+    public function getFiles(FileSystem $fileSystem, array $paths, array $ignore, array $extensions): array;
 }

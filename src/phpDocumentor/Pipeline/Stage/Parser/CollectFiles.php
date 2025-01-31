@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
+use phpDocumentor\FileSystem\FileSystemFactory;
 use phpDocumentor\Parser\FileCollector;
 use Psr\Log\LoggerInterface;
 
@@ -21,6 +22,7 @@ use function count;
 final class CollectFiles
 {
     public function __construct(
+        private readonly FileSystemFactory $fileSystemFactory,
         private readonly FileCollector $fileCollector,
         private readonly LoggerInterface $logger,
     ) {
@@ -32,7 +34,7 @@ final class CollectFiles
         $this->logger->info('Collecting files from ' . $apiConfig->source()->dsn());
 
         $files = $this->fileCollector->getFiles(
-            $apiConfig->source()->dsn(),
+            $this->fileSystemFactory->create($apiConfig->source()->dsn()),
             $apiConfig->source()->globPatterns(),
             $apiConfig['ignore'],
             $apiConfig['extensions'],

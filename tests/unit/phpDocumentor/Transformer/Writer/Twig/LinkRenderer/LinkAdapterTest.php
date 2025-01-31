@@ -17,7 +17,7 @@ use ArrayObject;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;

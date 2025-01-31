@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 use function current;

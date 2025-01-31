@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
-use Symfony\Component\Filesystem\Path as SymfonyPath;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 
 use function array_map;
 use function array_merge;
@@ -85,18 +84,18 @@ final class PathNormalizingMiddleware implements MiddlewareInterface
             }
         }
 
-        /** @var array{name: string, location?: ?Path, parameters?: array<string, mixed>} $template */
+        /** @var TemplateDefinition $template */
         foreach ($configuration['phpdocumentor']['templates'] as $key => $template) {
-            if (isset($template['location']) === false) {
+            if (isset($template->location) === false) {
                 continue;
             }
 
-            $location = $template['location'];
-            if ($location instanceof Path && SymfonyPath::isAbsolute((string) $location) === false) {
+            $location = $template->location;
+            if ($location instanceof Path && Path::isAbsolutePath((string) $location) === false) {
                 $location = new Path($configPath . '/' . $location);
             }
 
-            $template['location'] = $location;
+            $template->location = $location;
 
             $configuration['phpdocumentor']['templates'][$key] = $template;
         }

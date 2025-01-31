@@ -103,9 +103,9 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertInstanceOf(ChainLoader::class, $loader);
         $this->assertEquals(
             [
-                new FlySystemLoader($mountManager->getFilesystem('templates'), '', 'base'),
-                new FlySystemLoader($mountManager->getFilesystem('template'), 'guides', 'base'),
-                new FlySystemLoader($mountManager->getFilesystem('template')),
+                new FileSystemLoader($mountManager->getFilesystem('templates'), '', 'base'),
+                new FileSystemLoader($mountManager->getFilesystem('template'), 'guides', 'base'),
+                new FileSystemLoader($mountManager->getFilesystem('template')),
                 new FilesystemLoader('./data/templates'),
             ],
             $loader->getLoaders(),

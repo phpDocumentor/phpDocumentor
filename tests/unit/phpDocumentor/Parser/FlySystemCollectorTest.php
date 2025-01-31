@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use League\Flysystem\MountManager;
-use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
+use phpDocumentor\FileSystem\SpecificationFactory;
 use PHPUnit\Framework\TestCase;
 
 use function stripos;
@@ -26,8 +28,8 @@ use const PHP_OS;
 final class FlySystemCollectorTest extends TestCase
 {
     /**
-     * @uses \phpDocumentor\Parser\SpecificationFactory
-     * @uses \phpDocumentor\Parser\FlySystemFactory
+     * @uses \phpDocumentor\FileSystem\SpecificationFactory
+     * @uses \phpDocumentor\FileSystem\FlySystemFactory
      */
     public function testSingleSourceDir(): void
     {

@@ -19,9 +19,10 @@ use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\OrSpecification;
+use phpDocumentor\FileSystem\SpecificationFactory;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Parser\SpecificationFactory */
+/** @coversDefaultClass \phpDocumentor\FileSystem\SpecificationFactory */
 final class SpecificationFactoryTest extends TestCase
 {
     private SpecificationFactory $fixture;

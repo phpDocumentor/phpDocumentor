@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\FileSystem;
 
 use Stringable;
 use Webmozart\Assert\Assert;

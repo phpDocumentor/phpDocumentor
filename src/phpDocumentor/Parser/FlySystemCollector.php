@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\Path;
+use phpDocumentor\FileSystem\SpecificationFactoryInterface;
 
 final class FlySystemCollector implements FileCollector
 {
     public function __construct(
         private readonly SpecificationFactoryInterface $specificationFactory,
-        private readonly FlySystemFactory $flySystemFactory,
     ) {
     }
 
@@ -31,11 +31,9 @@ final class FlySystemCollector implements FileCollector
      *
      * @return list<FlySystemFile>
      */
-    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array
+    public function getFiles(FileSystem $fileSystem, array $paths, array $ignore, array $extensions): array
     {
         $specs = $this->specificationFactory->create($paths, $ignore, $extensions);
-
-        $fileSystem = $this->flySystemFactory->create($dsn);
 
         $files = [];
 

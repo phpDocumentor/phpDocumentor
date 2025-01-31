@@ -11,16 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Parser;
+namespace phpDocumentor\FileSystem;
 
-use Flyfinder\Finder;
 use InvalidArgumentException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\Filesystem;
+use League\Flysystem\Filesystem as FlySystemFilesystem;
 use League\Flysystem\MountManager;
 use LogicException;
-use phpDocumentor\Dsn;
 use Webmozart\Assert\Assert;
 
 use function hash;
@@ -39,23 +37,21 @@ class FlySystemFactory implements FileSystemFactory
     /**
      * Returns a Filesystem instance based on the scheme of the provided Dsn
      */
-    public function create(Dsn $dsn): Filesystem
+    public function create(Dsn $dsn): FileSystem
     {
         $dsnId = hash('md5', (string) $dsn);
 
         try {
             $filesystem = $this->mountManager->getFilesystem($dsnId);
         } catch (LogicException) {
-            $filesystem = new Filesystem($this->createAdapter($dsn));
+            $filesystem = new FlySystemFilesystem($this->createAdapter($dsn));
 
             $this->mountManager->mountFilesystem($dsnId, $filesystem);
         }
 
-        $filesystem->addPlugin(new Finder());
+        Assert::isInstanceOf($filesystem, FlySystemFilesystem::class);
 
-        Assert::isInstanceOf($filesystem, Filesystem::class);
-
-        return $filesystem;
+        return FlySystemAdapter::createFromFileSystem($filesystem);
     }
 
     private function createAdapter(Dsn $dsn): AdapterInterface

@@ -15,8 +15,8 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\Parser\FileCollector;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

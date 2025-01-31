@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer;
 
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
@@ -50,15 +50,12 @@ final class TransformerTest extends TestCase
         $this->writer = $this->prophesize(WriterAbstract::class);
         $this->writer->getName()->willReturn('myTestWriter');
         $this->writer->__toString()->willReturn('myTestWriter');
-        $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
-        $this->flySystemFactory->create(Argument::any())->willReturn(self::faker()->fileSystem());
         $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument(0);
 
         $this->fixture = new Transformer(
             new Collection(['myTestWriter' => $this->writer->reveal()]),
             new NullLogger(),
-            $this->flySystemFactory->reveal(),
             $eventDispatcher->reveal(),
         );
     }
@@ -77,19 +74,6 @@ final class TransformerTest extends TestCase
         self::assertSame('Transform analyzed project into artifacts', $fixture->getDescription());
     }
 
-    public function testSettingAndGettingATarget(): void
-    {
-        $filesystem = self::faker()->fileSystem();
-        $this->flySystemFactory->create(Argument::any())->willReturn($filesystem);
-
-        $this->assertEquals('', $this->fixture->getTarget());
-
-        $this->fixture->setTarget(__DIR__);
-
-        $this->assertEquals(__DIR__, $this->fixture->getTarget());
-        $this->assertEquals($filesystem, $this->fixture->destination());
-    }
-
     public function testExecute(): void
     {
         $apiSet = self::faker()->apiSetDescriptor();
@@ -104,7 +88,7 @@ final class TransformerTest extends TestCase
 
         $this->writer->transform($transformation, $project, $apiSet)->shouldBeCalled();
 
-        $this->fixture->execute($project, $apiSet, [$transformation->reveal()]);
+        $this->fixture->execute($this->$project, $apiSet, [$transformation->reveal()]);
     }
 
     public function testGetDescription(): void
