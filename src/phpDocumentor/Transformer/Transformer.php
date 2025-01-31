@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use League\Flysystem\FilesystemInterface;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Dsn;
-use phpDocumentor\Event\Dispatcher;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
 use phpDocumentor\Transformer\Event\WriterInitializationEvent;
@@ -27,7 +24,6 @@ use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Webmozart\Assert\Assert;
 
 use function in_array;
 
@@ -48,13 +44,8 @@ class Transformer
 
     final public const EVENT_POST_TRANSFORM = 'transformer.transform.post';
 
-    final public const COMPILER_PRIORITY = 5000;
-
-    /** @var string|null $target Target location where to output the artifacts */
-    protected $target = null;
-
-    /** @var FilesystemInterface|null $destination The destination filesystem to write to */
-    private FilesystemInterface|null $destination = null;
+    /** @var FileSystem|null $destination The destination filesystem to write to */
+    private FileSystem|null $destination;
 
     /** @var Writer\Collection $writers */
     protected $writers;
@@ -65,7 +56,6 @@ class Transformer
     public function __construct(
         Writer\Collection $writerCollection,
         private readonly LoggerInterface $logger,
-        private readonly FlySystemFactory $flySystemFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         $this->writers = $writerCollection;
@@ -76,37 +66,9 @@ class Transformer
         return 'Transform analyzed project into artifacts';
     }
 
-    /**
-     * Sets the target location where to output the artifacts.
-     *
-     * @param string $target The target location where to output the artifacts.
-     */
-    public function setTarget(string $target): void
+    public function destination(): FileSystem
     {
-        $this->target = $target;
-        $this->destination = $this->flySystemFactory->create(Dsn::createFromString($target));
-    }
-
-    /**
-     * Returns the location where to store the artifacts.
-     */
-    public function getTarget(): string|null
-    {
-        return $this->target;
-    }
-
-    public function setDestination(FilesystemInterface $filesystem): void
-    {
-        $this->destination = $filesystem;
-    }
-
-    public function destination(): FilesystemInterface
-    {
-        $destination = $this->destination;
-
-        Assert::notNull($destination);
-
-        return $destination;
+        return $this->destination;
     }
 
     /**
@@ -115,10 +77,12 @@ class Transformer
      * @param Transformation[] $transformations
      */
     public function execute(
+        FileSystem $destination,
         ProjectDescriptor $project,
         DocumentationSetDescriptor $documentationSet,
         array $transformations,
     ): void {
+        $this->destination = $destination;
         $this->initializeWriters($project, $documentationSet, $transformations);
         $this->transform($project, $documentationSet, $transformations);
 

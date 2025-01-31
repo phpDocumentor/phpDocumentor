@@ -42,28 +42,25 @@ class CallableAdapterTest extends TestCase
     /** @return iterable<string, array{input: Callable_, output: string}> */
     public static function callableProvider(): iterable
     {
-        yield
-          'empty callable' => [
-              'input' => new Callable_(),
-              'output' => 'callable',
-          ];
+        yield 'empty callable' => [
+            'input' => new Callable_(),
+            'output' => 'callable',
+        ];
 
-        yield
-          'callable with parameters' => [
-              'input' => new Callable_(
-                  [new CallableParameter(new String_()), new CallableParameter(new String_())],
-              ),
-              'output' => 'callable(string, string)',
-          ];
+        yield 'callable with parameters' => [
+            'input' => new Callable_(
+                [new CallableParameter(new String_()), new CallableParameter(new String_())],
+            ),
+            'output' => 'callable(string, string)',
+        ];
 
-        yield
-          'callable with return type' => [
-              'input' => new Callable_(
-                  [],
-                  new String_(),
-              ),
-              'output' => 'callable(): string',
-          ];
+        yield 'callable with return type' => [
+            'input' => new Callable_(
+                [],
+                new String_(),
+            ),
+            'output' => 'callable(): string',
+        ];
 
         yield 'callable with named parameters' => [
             'input' => new Callable_(

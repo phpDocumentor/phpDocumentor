@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use League\Flysystem\Adapter\NullAdapter;
-use League\Flysystem\Filesystem;
 use Mockery\LegacyMockInterface;
 use Mockery\MockInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Template\Collection;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
@@ -51,12 +50,18 @@ final class TransformTest extends TestCase
         $projectDescriptor->getVersions()->add(self::faker()->versionDescriptor([$documentationSet]));
 
         $this->flySystemFactory = $this->prophesize(FlySystemFactory::class);
-        $this->flySystemFactory->create(Argument::type(Dsn::class))->willReturn(new Filesystem(new NullAdapter()));
+        $this->flySystemFactory->create(Argument::type(Dsn::class))
+            ->willReturn($this->prophesize(FileSystem::class)->reveal());
         $this->projectDescriptorBuilder = $this->prophesize(ProjectDescriptorBuilder::class);
         $this->projectDescriptorBuilder->getProjectDescriptor()->willReturn($projectDescriptor);
         $this->transformer = $this->prophesize(Transformer::class);
         $this->logger = $this->prophesize(LoggerInterface::class);
-        $this->transformer->execute($projectDescriptor, $documentationSet, [])->shouldBeCalled();
+        $this->transformer->execute(
+            Argument::type(FileSystem::class),
+            $projectDescriptor,
+            $documentationSet,
+            [],
+        )->shouldBeCalled();
         $templateFactory = $this->prophesize(Factory::class);
         $templateFactory->getTemplates(Argument::any(), Argument::any())->willReturn(new Collection());
 

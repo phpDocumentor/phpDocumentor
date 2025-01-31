@@ -15,9 +15,9 @@ namespace phpDocumentor\Transformer\Template;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Dsn;
+use phpDocumentor\Configuration\TemplateDefinition;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Parser\FlySystemFactory;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use PHPUnit\Framework\TestCase;
@@ -66,8 +66,7 @@ final class FactoryTest extends TestCase
 
         // Act
         $result = $this->fixture->getTemplates(
-            [['name' => $templateName, 'parameters' => []]],
-            $this->flySystemFactory->create(Dsn::createFromString('./build')),
+            [new TemplateDefinition($templateName)],
         )[$templateName];
 
         // Assert
@@ -99,8 +98,7 @@ final class FactoryTest extends TestCase
 
         // Act
         $this->fixture->getTemplates(
-            [['name' => 'does-not-exist', 'parameters' => []]],
-            $this->flySystemFactory->create(Dsn::createFromString('./build')),
+            [new TemplateDefinition('does-not-exist')],
         );
     }
 

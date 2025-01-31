@@ -144,6 +144,16 @@ use function sprintf;
             }
         }
 
+        if (isset($configuration['phpdocumentor']['templates'])) {
+            foreach ($configuration['phpdocumentor']['templates'] as $templateNumber => $template) {
+                $configuration['phpdocumentor']['templates'][$templateNumber] = new TemplateDefinition(
+                    $template['name'],
+                    $template['location'],
+                    $template['parameters'],
+                );
+            }
+        }
+
         return new Configuration($configuration);
     }
 }

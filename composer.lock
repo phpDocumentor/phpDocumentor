@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffac355d036d03c38c1f008ccc1c6a92",
+    "content-hash": "a1587296bbeb2706856fd7300773435a",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1603,16 +1603,16 @@
         },
         {
             "name": "phpdocumentor/filesystem",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/filesystem.git",
-                "reference": "baf81ce5f6ebf450b798bee74f60d107c21e3a8b"
+                "reference": "1234be43d6604bd5ca0951e5d0e8e61e62b872b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/baf81ce5f6ebf450b798bee74f60d107c21e3a8b",
-                "reference": "baf81ce5f6ebf450b798bee74f60d107c21e3a8b",
+                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/1234be43d6604bd5ca0951e5d0e8e61e62b872b0",
+                "reference": "1234be43d6604bd5ca0951e5d0e8e61e62b872b0",
                 "shasum": ""
             },
             "require": {
@@ -1641,9 +1641,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/filesystem/issues",
-                "source": "https://github.com/phpDocumentor/filesystem/tree/1.9.0"
+                "source": "https://github.com/phpDocumentor/filesystem/tree/1.10.0"
             },
-            "time": "2025-09-10T21:23:28+00:00"
+            "time": "2026-04-13T20:20:50+00:00"
         },
         {
             "name": "phpdocumentor/flyfinder",

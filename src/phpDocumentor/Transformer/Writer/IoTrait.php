@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use League\Flysystem\FileNotFoundException;
 use League\Uri\UriString;
 use phpDocumentor\Transformer\Transformation;
 
@@ -29,38 +28,25 @@ trait IoTrait
         $path = $this->normalizeSourcePath($path);
         $destination = $this->normalizeDestination($destination);
 
-        $metadata = $transformation->template()->files()->getMetadata($path);
-        $type = $metadata ? ($metadata['type'] ?? null) : null;
-
-        if ($type === 'file') {
-            if ($transformation->template()->files()->has($destination)) {
-                $transformation->template()->files()->delete($destination);
-            }
-
-            $transformation->template()->files()->copy($path, $destination);
+        if ($transformation->template()->files()->isDirectory($path)) {
+            $this->copyDirectory($transformation, $path, $destination);
 
             return;
         }
 
-        $this->copyDirectory($transformation, $path, $destination);
-    }
-
-    protected function readSourceFile(Transformation $transformation, string $path): string
-    {
-        $path = $this->normalizeSourcePath($path);
-        $contents = $transformation->template()->files()->read($path);
-        if ($contents === false) {
-            throw new FileNotFoundException($path);
+        if (! $transformation->template()->files()->has($path)) {
+            return;
         }
 
-        return $contents;
+        $transformation->getTransformer()->destination()->put(
+            $destination,
+            $transformation->template()->files()->read($path),
+        );
     }
 
     protected function persistTo(Transformation $transformation, string $path, string $contents): void
     {
-        $path = $this->normalizeDestination($path);
-
-        $transformation->template()->files()->put($path, $contents);
+        $transformation->getTransformer()->destination()->put($path, $contents);
     }
 
     private function copyDirectory(Transformation $transformation, string $path, string $destination): void
@@ -124,11 +110,6 @@ trait IoTrait
 
     private function normalizeDestination(string $destination): string
     {
-        // prepend destination scheme if none was set
-        if (! UriString::parse($destination)['scheme']) {
-            $destination = 'destination://' . $destination;
-        }
-
         return $destination;
     }
 }

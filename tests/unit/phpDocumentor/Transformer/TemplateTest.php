@@ -15,10 +15,11 @@ namespace phpDocumentor\Transformer;
 
 use ArrayIterator;
 use InvalidArgumentException;
-use League\Flysystem\MountManager;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Template\Parameter;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function count;
 use function iterator_to_array;
@@ -27,6 +28,7 @@ use function iterator_to_array;
 final class TemplateTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     public function testConstructingATemplateWithAllProperties(): void
     {
@@ -142,8 +144,8 @@ final class TemplateTest extends TestCase
         $this->assertSame($parentTransformation, $template['parent']);
     }
 
-    private function givenExampleMountManager(): MountManager
+    private function givenExampleMountManager(): FileSystem
     {
-        return new MountManager();
+        return $this->prophesize(FileSystem::class)->reveal();
     }
 }

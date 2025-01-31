@@ -22,6 +22,6 @@ final class TemplateNotFound extends InvalidArgumentException
 {
     public function __construct(string $template)
     {
-        parent::__construct(sprintf('The given template %s could not be found or is not readable', $template));
+        parent::__construct(sprintf('The given template "%s" could not be found or is not readable', $template));
     }
 }

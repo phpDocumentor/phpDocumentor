@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use ArrayObject;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 
 /**
  * @template-extends ArrayObject<string, mixed>&ConfigurationMap
@@ -27,13 +27,7 @@ use phpDocumentor\Path;
  *         versions: array<string, VersionSpecification>,
  *         use_cache: bool,
  *         settings: array<string, mixed>,
- *         templates: non-empty-array<
- *             array{
- *                 name: string,
- *                 location: ?Path,
- *                 parameters: array<string, mixed>
- *             }
- *         >
+ *         templates: non-empty-list<TemplateDefinition>
  *     }
  * }
  */

@@ -14,7 +14,7 @@ namespace phpDocumentor\Configuration;
  */
 
 use League\Uri\Uri;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
@@ -73,7 +73,10 @@ final class PathNormalizingMiddlewareTest extends TestCase
     public function testNormalizeTemplateLocations(string|null $input, string|null $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
-        $configuration['phpdocumentor']['templates'][0]['location'] = $input ? new Path($input) : null;
+        $configuration['phpdocumentor']['templates'][0] = new TemplateDefinition(
+            'test',
+            $input ? new Path($input) : null,
+        );
 
         $middleware = new PathNormalizingMiddleware();
         $outputConfig = $middleware(
@@ -81,7 +84,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
             Uri::createFromString($configPath),
         );
 
-        $resultingPath = $outputConfig['phpdocumentor']['templates'][0]['location'];
+        $resultingPath = $outputConfig['phpdocumentor']['templates'][0]->location;
         if ($resultingPath instanceof Path) {
             $resultingPath = (string) $resultingPath;
         }

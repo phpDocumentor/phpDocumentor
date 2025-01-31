@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Uri;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

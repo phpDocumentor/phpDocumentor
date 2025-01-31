@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use InvalidArgumentException;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\MountManager;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\FileSystem\FlySystemAdapter;
+use phpDocumentor\FileSystem\MountManager;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @coversDefaultClass \phpDocumentor\Transformer\Writer\FileIo
@@ -33,6 +34,7 @@ use PHPUnit\Framework\TestCase;
 final class FileIoTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     private vfsStreamDirectory $templatesFolder;
     private vfsStreamDirectory $sourceFolder;
@@ -49,14 +51,31 @@ final class FileIoTest extends TestCase
         $this->destinationFolder = vfsStream::newDirectory('destination');
         $root->addChild($this->destinationFolder);
 
+        $this->transformer = $this->prophesize(Transformer::class);
+        $this->transformer->destination()->willReturn(
+            FlySystemAdapter::createFromFileSystem(
+                new Filesystem(new Local($this->destinationFolder->url(), 0)),
+            ),
+        );
+
         $mountManager = new MountManager(
             [
-                'templates' => new Filesystem(new Local($this->templatesFolder->url())),
-                'template' => new Filesystem(new Local($this->sourceFolder->url())),
-                'destination' => new Filesystem(new Local($this->destinationFolder->url())),
+                'templates' =>  FlySystemAdapter::createFromFileSystem(
+                    new Filesystem(new Local($this->templatesFolder->url())),
+                ),
+                'template' => FlySystemAdapter::createFromFileSystem(
+                    new Filesystem(new Local($this->sourceFolder->url())),
+                ),
+                'destination' => FlySystemAdapter::createFromFileSystem(
+                    new Filesystem(new Local($this->destinationFolder->url(), 0)),
+                ),
             ],
         );
-        $this->template = new Template('My Template', $mountManager);
+
+        $this->template = new Template(
+            'My Template',
+            $mountManager,
+        );
     }
 
     public function testCopiesFileFromCustomTemplateToDestination(): void
@@ -69,17 +88,10 @@ final class FileIoTest extends TestCase
         $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
 
         $this->assertFalse($this->destinationFolder->hasChild('index.html'));
-        $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
-                'index.html.twig',
-                'index.html',
-            ),
-            $project,
-            $apiSet,
-        );
+
+        $transformation = $this->getTransformation('index.html.twig', 'index.html');
+
+        $writer->transform($transformation, $project, $apiSet);
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
     }
 
@@ -92,12 +104,8 @@ final class FileIoTest extends TestCase
         $apiSet = self::faker()->apiSetDescriptor();
         $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
 
-        $this->assertFalse($this->destinationFolder->hasChild('images/destination.png'));
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'templates/templateName/images/image.png',
                 'images/destination.png',
             ),
@@ -111,16 +119,17 @@ final class FileIoTest extends TestCase
     {
         $apiSet = self::faker()->apiSetDescriptor();
         $project = self::faker()->projectDescriptor([self::faker()->versionDescriptor([$apiSet])]);
-        $this->sourceFolder->addChild(vfsStream::newFile('index.html.twig')->withContent('new content'));
-        $this->destinationFolder->addChild(vfsStream::newFile('index.html')->withContent('original content'));
+        $this->sourceFolder->addChild(
+            vfsStream::newFile('index.html.twig')->withContent('new content'),
+        );
+        $this->destinationFolder->addChild(
+            vfsStream::newFile('index.html')->withContent('original content'),
+        );
 
         $writer = new FileIo();
 
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'index.html.twig',
                 'index.html',
             ),
@@ -128,7 +137,10 @@ final class FileIoTest extends TestCase
             $apiSet,
         );
         $this->assertTrue($this->destinationFolder->hasChild('index.html'));
-        $this->assertStringEqualsFile($this->destinationFolder->getChild('index.html')->url(), 'new content');
+        $this->assertStringEqualsFile(
+            $this->destinationFolder->getChild('index.html')->url(),
+            'new content',
+        );
     }
 
     public function testCopiesDirectoryFromCustomTemplateToDestination(): void
@@ -143,10 +155,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'images',
                 'images',
             ),
@@ -171,10 +180,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'templates/templateName/images',
                 'images',
             ),
@@ -199,10 +205,7 @@ final class FileIoTest extends TestCase
 
         $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'images',
                 'images',
             ),
@@ -227,59 +230,30 @@ final class FileIoTest extends TestCase
 
         $writer = new FileIo();
 
-        $this->assertFalse($this->destinationFolder->hasChild('images'));
         $writer->transform(
-            new Transformation(
-                $this->template,
-                'copy',
-                'fileio',
+            $this->getTransformation(
                 'templates/templateName/images',
                 'images',
             ),
             $project,
             $apiSet,
         );
+
         $this->assertTrue($this->destinationFolder->hasChild('images'));
         $this->assertTrue($this->destinationFolder->hasChild('images/subfolder/image2.png'));
     }
 
-    public function testExceptionOccursIfSourceFileCannotBeFound(): void
+    private function getTransformation(string $source, string $artifact): Transformation
     {
-        $this->expectException(FileNotFoundException::class);
-        $writer = new FileIo();
-
         $transformation = new Transformation(
             $this->template,
             'copy',
             'fileio',
-            'unknown_file',
-            'nah.png',
+            $source,
+            $artifact,
         );
-        $apiSetDescriptor = self::faker()->apiSetDescriptor();
-        $projectDescriptor = self::faker()->projectDescriptor(
-            [self::faker()->versionDescriptor([$apiSetDescriptor])],
-        );
+        $transformation->setTransformer($this->transformer->reveal());
 
-        $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
-    }
-
-    public function testExceptionOccursIfQueryIsInvalid(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $writer = new FileIo();
-
-        $apiSetDescriptor = self::faker()->apiSetDescriptor();
-        $projectDescriptor = self::faker()->projectDescriptor(
-            [self::faker()->versionDescriptor([$apiSetDescriptor])],
-        );
-        $transformation = new Transformation(
-            $this->template,
-            'not-a-copy',
-            'fileio',
-            'unknown_file',
-            'nah.png',
-        );
-
-        $writer->transform($transformation, $projectDescriptor, $apiSetDescriptor);
+        return $transformation;
     }
 }

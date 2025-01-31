@@ -183,8 +183,6 @@ services:
 
     Symfony\Component\Stopwatch\Stopwatch: ~
 
-    League\Flysystem\MountManager: ~
-
     League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension:
       tags: ['commonmark.extension']
 
@@ -259,3 +257,6 @@ services:
         $plantUmlBinaryPath: '%guides.graphs.plantuml_binary%'
       tags:
         - { name: 'phpdoc.guides.graph.renderer', 'alias': 'plantuml_smetana' }
+
+    phpDocumentor\FileSystem\Finder\SpecificationFactoryInterface:
+      class: phpDocumentor\FileSystem\Finder\SpecificationFactory
