@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use InvalidArgumentException;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use phpDocumentor\FileSystem\FileSystem;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
 use Twig\Source;
@@ -26,7 +25,7 @@ use function str_starts_with;
 use function strlen;
 use function substr;
 
-final class FlySystemLoader implements LoaderInterface
+final class FileSystemLoader implements LoaderInterface
 {
     /**
      * @var string|null prefix used to allow extends of base templates. For example
@@ -35,7 +34,7 @@ final class FlySystemLoader implements LoaderInterface
     private $overloadPrefix;
 
     public function __construct(
-        private readonly FilesystemInterface $filesystem,
+        private readonly FileSystem $filesystem,
         private readonly string $templatePath = '',
         string|null $overloadPrefix = null,
     ) {
@@ -87,28 +86,17 @@ final class FlySystemLoader implements LoaderInterface
     {
         $this->guardTemplateExistsAndIsFile($name);
 
-        $timestamp = $this->filesystem->getTimestamp($this->resolveTemplateName($name));
+        $timestamp = $this->filesystem->lastModified($this->resolveTemplateName($name));
 
-        return (int) $time >= (int) $timestamp;
+        return (int) $time >= $timestamp;
     }
 
     /** @throws LoaderError */
     private function guardTemplateExistsAndIsFile(string $name): void
     {
-        try {
-            $path = $this->resolveTemplateName($name);
-            $metadata = $this->filesystem->getMetadata($path);
-            if ($metadata === false) {
-                throw new FileNotFoundException($path);
-            }
-
-            if ($metadata['type'] !== 'file') {
-                throw new LoaderError(
-                    sprintf('Cannot use anything other than a file as a template, received: %s', $path),
-                );
-            }
-        } catch (FileNotFoundException) {
-            throw new LoaderError(sprintf('Template "%s" could not be found on the given filesystem', $name));
+        $path = $this->resolveTemplateName($name);
+        if (! $this->filesystem->has($path)) {
+            throw new LoaderError(sprintf("File '%s' does not exist", $path));
         }
     }
 

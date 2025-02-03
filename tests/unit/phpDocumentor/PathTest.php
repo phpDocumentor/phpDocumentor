@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Path */
+/** @coversDefaultClass \phpDocumentor\FileSystem\Path */
 final class PathTest extends TestCase
 {
     public function testItCanContainALocationOnAStorageService(): void

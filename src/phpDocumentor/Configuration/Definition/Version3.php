@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

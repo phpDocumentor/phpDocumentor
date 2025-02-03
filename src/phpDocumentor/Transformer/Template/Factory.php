@@ -15,13 +15,11 @@ namespace phpDocumentor\Transformer\Template;
 
 use DirectoryIterator;
 use InvalidArgumentException;
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
-use phpDocumentor\Dsn;
-use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Path;
+use phpDocumentor\Configuration\TemplateDefinition;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\FlySystemFactory;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
@@ -57,9 +55,9 @@ class Factory
      * Attempts to find, construct and return a template object with the given template name or (relative/absolute)
      * path.
      *
-     * @param array<int, array{name:string, location: ?Path, parameters:array<string, string>}> $templates
+     * @param list<TemplateDefinition> $templates
      */
-    public function getTemplates(array $templates, FilesystemInterface $output): Collection
+    public function getTemplates(array $templates): Collection
     {
         $stopWatch = new Stopwatch();
         $loadedTemplates = [];
@@ -67,15 +65,13 @@ class Factory
         foreach ($templates as $template) {
             $stopWatch->start('load template');
 
-            $location = $template['location'] ?? null;
-            $templateNameOrLocation = $location instanceof Path
-                ? ($location . '/' . $template['name'])
-                : $template['name'];
+            $templateNameOrLocation = $template->location instanceof Path
+                ? ($template->location . '/' . $template->name)
+                : $template->name;
 
-            $loadedTemplates[$template['name']] = $this->loadTemplate(
-                $output,
+            $loadedTemplates[$template->name] = $this->loadTemplate(
                 $templateNameOrLocation,
-                $template['parameters'] ?? [],
+                $template->parameters,
             );
             $stopWatch->stop('load template');
         }
@@ -84,12 +80,12 @@ class Factory
     }
 
     /** @param array<string, string> $parameters */
-    private function loadTemplate(FilesystemInterface $output, string $template, array $parameters): Template
+    private function loadTemplate(string $template, array $parameters): Template
     {
-        $template = $this->createTemplateFromXml($output, $template, $parameters);
+        $template = $this->createTemplateFromXml($template, $parameters);
 
         if ($template->getExtends() !== null) {
-            $parentTemplate = $this->loadTemplate($output, $template->getExtends(), $parameters);
+            $parentTemplate = $this->loadTemplate($template->getExtends(), $parameters);
             $template->merge($parentTemplate);
         }
 
@@ -145,26 +141,20 @@ class Factory
      * @param array<string, string> $templateParams
      */
     private function createTemplateFromXml(
-        FilesystemInterface $filesystem,
         string $nameOrPath,
         array $templateParams,
     ): Template {
         // create the filesystems that a template needs to be able to manipulate, the source folder containing this
         // template its files; the destination to where it can write its files and a global templates folder where to
         // get global template files from
-        $files = new MountManager(
-            [
-                'templates' => $this->getTemplatesDirectory(),
-                'template' => $this->resolve($nameOrPath),
-                'destination' => $filesystem,
-            ],
-        );
 
-        $xml = $files->read('template://' . self::TEMPLATE_DEFINITION_FILENAME);
+        $templateFileSystem = $this->resolve($nameOrPath);
+
+        $xml = $templateFileSystem->read(self::TEMPLATE_DEFINITION_FILENAME);
         Assert::string($xml);
 
         $xml = new SimpleXMLElement($xml);
-        $template = new Template((string) $xml->name, $files);
+        $template = new Template((string) $xml->name, $templateFileSystem);
         $template->setAuthor((string) $xml->author . ((string) $xml->email ? ' <' . $xml->email . '>' : ''));
         $template->setVersion((string) $xml->version);
         $template->setCopyright((string) $xml->copyright);
@@ -206,9 +196,9 @@ class Factory
         return $template;
     }
 
-    private function resolve(string $nameOrPath): FilesystemInterface
+    private function resolve(string $nameOrPath): FileSystem
     {
-        $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . '/template.xml';
+        $configPath = rtrim($nameOrPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . self::TEMPLATE_DEFINITION_FILENAME;
         if (file_exists($configPath) && is_readable($configPath)) {
             return $this->flySystemFactory->create(Dsn::createFromString(rtrim($nameOrPath, DIRECTORY_SEPARATOR)));
         }
@@ -216,9 +206,9 @@ class Factory
         // if we load a global template
         $globalTemplatesFilesystem = $this->getTemplatesDirectory();
         if ($globalTemplatesFilesystem->has($nameOrPath)) {
-            $templateFilesystem = $this->createNewFilesystemFromSubfolder($globalTemplatesFilesystem, $nameOrPath);
+            $templateFilesystem = $this->createNewFilesystemFromSubfolder($nameOrPath);
 
-            if (! $templateFilesystem->has('template.xml')) {
+            if (! $templateFilesystem->has(self::TEMPLATE_DEFINITION_FILENAME)) {
                 throw new TemplateNotFound($nameOrPath);
             }
 
@@ -243,21 +233,12 @@ class Factory
     }
 
     private function createNewFilesystemFromSubfolder(
-        Filesystem $hostFilesystem,
         string $subfolder,
     ): Filesystem {
-        $hostFilesystemAdapter = $hostFilesystem->getAdapter();
-        if (! $hostFilesystemAdapter instanceof AbstractAdapter) {
-            throw new RuntimeException(
-                'Failed to load template, The filesystem of the global templates does not support '
-                . 'getting a subfolder from it',
-            );
-        }
+        $dsnString = $this->getTemplatesPath();
+        $globalDsn = Dsn::createFromString($dsnString);
+        $template = $globalDsn->withPath(new Path($globalDsn->getPath() . DIRECTORY_SEPARATOR . $subfolder));
 
-        $templateAdapter = clone $hostFilesystemAdapter;
-        $globalRoot = $templateAdapter->getPathPrefix();
-        $templateAdapter->setPathPrefix($globalRoot . $subfolder);
-
-        return new Filesystem($templateAdapter);
+        return $this->flySystemFactory->create($template);
     }
 }

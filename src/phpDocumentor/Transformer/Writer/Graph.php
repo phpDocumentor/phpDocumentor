@@ -70,7 +70,7 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
             return;
         }
 
-        $filename = $this->getDestinationPath($transformation);
+        $filename = $transformation->getArtifact();
 
         switch ($transformation->getSource() ?: 'class') {
             case 'class':
@@ -80,10 +80,5 @@ final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustom
                     $this->persistTo($transformation, $filename, $graph);
                 }
         }
-    }
-
-    private function getDestinationPath(Transformation $transformation): string
-    {
-        return $transformation->getTransformer()->getTarget() . DIRECTORY_SEPARATOR . $transformation->getArtifact();
     }
 }

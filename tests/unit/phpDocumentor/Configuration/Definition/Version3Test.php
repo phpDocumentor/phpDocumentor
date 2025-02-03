@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge;

@@ -11,15 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Parser;
+namespace phpDocumentor\FileSystem;
 
 use Flyfinder\Specification\Glob;
 use Flyfinder\Specification\HasExtension;
 use Flyfinder\Specification\IsHidden;
 use Flyfinder\Specification\NotSpecification;
 use Flyfinder\Specification\SpecificationInterface;
-use phpDocumentor\Parser\SpecificationFactoryInterface as FactoryInterface;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\SpecificationFactoryInterface as FactoryInterface;
 
 /**
  * Factory class to build Specification used by FlyFinder when reading files to process.
@@ -30,7 +29,7 @@ final class SpecificationFactory implements FactoryInterface
      * Creates a SpecificationInterface object based on the ignore and extension parameters.
      *
      * @param list<string|Path> $paths
-     * @param array<string, bool|array<string>|null> $ignore
+     * @param array{paths: list<string|Path>, hidden: bool} $ignore
      * @param list<string> $extensions
      */
     public function create(array $paths, array $ignore, array $extensions): SpecificationInterface
