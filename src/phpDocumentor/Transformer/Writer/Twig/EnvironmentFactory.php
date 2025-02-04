@@ -16,12 +16,11 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
-use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
+use Twig\Extension\ExtensionInterface as TwigExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader;
 
@@ -29,14 +28,16 @@ class EnvironmentFactory
 {
     private Path|null $templateOverridesAt = null;
 
-    /** @param string[] $guidesTemplateBasePath */
+    /**
+     * @param string[] $guidesTemplateBasePath,
+     * @param iterable<TwigExtension> $extensions
+     */
     public function __construct(
         private readonly LinkRenderer $renderer,
         private readonly ConverterInterface $markDownConverter,
-        private readonly AssetsExtension $assetsExtension,
-        private readonly UmlExtension $umlExtension,
         private readonly RelativePathToRootConverter $relativePathToRootConverter,
         private readonly PathBuilder $pathBuilder,
+        private iterable $extensions,
         private readonly array $guidesTemplateBasePath,
     ) {
     }
@@ -64,6 +65,9 @@ class EnvironmentFactory
         $loaders[] = new FilesystemLoader($this->guidesTemplateBasePath);
 
         $env = new Environment(new ChainLoader($loaders));
+        foreach ($this->extensions as $extension) {
+            $env->addExtension($extension);
+        }
 
         $this->addPhpDocumentorExtension($project, $documentationSet, $env);
         $this->enableDebug($env);
@@ -88,8 +92,6 @@ class EnvironmentFactory
             $this->pathBuilder,
         );
         $twigEnvironment->addExtension($extension);
-        $twigEnvironment->addExtension($this->assetsExtension);
-        $twigEnvironment->addExtension($this->umlExtension);
     }
 
     private function enableDebug(Environment $twigEnvironment): void

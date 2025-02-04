@@ -2,16 +2,14 @@
 Extensions
 ##########
 
-.. warning::
-
-    This feature is still under development and only available in the nightly docker builds.
+.. include:: include.rst.txt
 
 **********
 Installing
 **********
 
 PhpDocumentor can be extended with additional functionality by installing extensions. By default the application
-will search for an extensions folder in the ``.phpdoc`` folder in your working directory.
+will search for an ``extensions``` folder in the ``.phpdoc`` folder in your working directory.
 
 Supported extension styles:
 
@@ -25,17 +23,21 @@ Once extensions are correctly loaded phpDocumentor will print a message in the c
     Failed to load extensions:
     [WARNING] phpdocumentor/invalid:1.0.0
 
-Extensions are validated before they are acually loaded. If an extension is invalid it will not be loaded and a warning
+Extensions are validated before they are actually loaded. If an extension is invalid it will not be loaded and a warning
 will be printed in the console. Like in the example above. To load an extension it must be valid and compatible with
 the current version of phpDocumentor. Extension developers must specify the phpDocumentor version they are compatible
 with in the manifest file.
+
+.. _setup-extension:
 
 ************************
 Write your own extension
 ************************
 
 To write your own extension you need to create a folder in the extensions folder with the name of your extension.
-In this folder you need to create a manifest file called ``manifest.xml``. This file contains the information:
+In our example we use :code:`Example` as the name of our extension. The namespace of your extension is free to choose.
+
+First you need to create a manifest file called ``manifest.xml``. This file contains the extension information:
 
 .. code-block:: xml
 
@@ -83,6 +85,11 @@ Services that are registered in the application can be used in the extension.
 Extension points
 ----------------
 
-phpDocumentor does not have real extension points. But we have defined some common locations that can be used to extend
-the application. Depending on the type of extension you are writing you can use them.
+phpDocumentor does not have real extension points right now. As the extensions feature is under development extensions
+might break without warning.
 
+.. toctree::
+   :caption: Common use-cases
+   :titlesonly:
+
+   twig-extension

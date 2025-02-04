@@ -60,6 +60,8 @@ that we provide, or add your own. To see which things you can override, you can 
 source code and look for any file ending in ``.css.twig``. In phpDocumentor, we aim to use a component based
 architecture using separate twig files for objects and components; so be sure to check out these folders.
 
+.. _template-replace-component:
+
 *************************************
 Replacing whole objects or components
 *************************************

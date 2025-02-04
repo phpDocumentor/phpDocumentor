@@ -50,15 +50,17 @@ final class EnvironmentFactoryTest extends TestCase
         $this->factory = new EnvironmentFactory(
             new LinkRenderer($this->router->reveal(), new HtmlFormatter()),
             $markDownConverter->reveal(),
-            new AssetsExtension(
-                new TestLogger(),
-                $this->prophesize(NodeRenderer::class)->reveal(),
-                $this->prophesize(DocumentNameResolverInterface::class)->reveal(),
-                $this->prophesize(UrlGeneratorInterface::class)->reveal(),
-            ),
-            new UmlExtension([], 'plantuml'),
             $relativePathToRootConverter,
             new PathBuilder($this->router->reveal(), $relativePathToRootConverter),
+            [
+                new AssetsExtension(
+                    new TestLogger(),
+                    $this->prophesize(NodeRenderer::class)->reveal(),
+                    $this->prophesize(DocumentNameResolverInterface::class)->reveal(),
+                    $this->prophesize(UrlGeneratorInterface::class)->reveal(),
+                ),
+                new UmlExtension([], 'plantuml'),
+            ],
             ['./data/templates'],
         );
     }
