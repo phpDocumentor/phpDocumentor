@@ -202,6 +202,7 @@ services:
     phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory:
       arguments:
         $guidesTemplateBasePath: '%phpdoc.guides.base_template_paths%'
+        $extensions: !tagged_iterator { tag: 'twig.extension' }
 
     phpDocumentor\Transformer\Writer\Collection:
         arguments: [!tagged_iterator { tag: 'phpdoc.transformer.writer' }]

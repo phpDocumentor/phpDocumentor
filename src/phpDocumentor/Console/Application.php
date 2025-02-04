@@ -30,6 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function getcwd;
+use function is_array;
 use function sprintf;
 
 class Application extends BaseApplication
@@ -45,6 +46,11 @@ class Application extends BaseApplication
             '--extensions-dir',
             $this->getDefinition()->getOption('extensions-dir')->getDefault(),
         );
+
+        if (! is_array($extensionsDirs)) {
+            $extensionsDirs = [$extensionsDirs];
+        }
+
         $extensionHandler = ExtensionHandler::getInstance($extensionsDirs);
         $containerFactory = new ContainerFactory();
         $container = $containerFactory->create(
@@ -101,11 +107,9 @@ class Application extends BaseApplication
                 new InputOption(
                     'extensions-dir',
                     null,
-                    InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                    InputOption::VALUE_OPTIONAL,
                     'extensions directory to load extensions from',
-                    [
-                        getcwd() . '/.phpdoc/extensions',
-                    ],
+                    getcwd() . '/.phpdoc/extensions',
                 ),
                 new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
             ],
