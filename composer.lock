@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76b7593cc895edba0f63fddf16411d0d",
+    "content-hash": "f2c2ddc7462e0573414754cd32994308",
     "packages": [
         {
             "name": "cypresslab/php-curry",

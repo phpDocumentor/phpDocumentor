@@ -7,6 +7,9 @@ parameters:
   treatPhpDocTypesAsCertain: false
   scanFiles:
     - vendor/phpdocumentor/guides/src/DependencyInjection/GuidesExtension.php
+  paths:
+    - src
+    - tests
 
   ignoreErrors:
 

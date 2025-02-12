@@ -164,7 +164,7 @@ class Transformer
      * - transformer.writer.initialization.pre, before the initialization of a single writer.
      * - transformer.writer.initialization.post, after the initialization of a single writer.
      *
-     * @uses Dispatcher to emit the events surrounding an initialization.
+     * @uses EventDispatcherInterface to emit the events surrounding an initialization.
      */
     private function initializeWriter(
         WriterAbstract $writer,

@@ -23,6 +23,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function array_keys;
 
@@ -44,7 +45,11 @@ class RunCommandTest extends TestCase
 
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
 
-        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
+        $command = new RunCommand(
+            $descriptor->reveal(),
+            $pipeline->reveal(),
+            $this->prophesize(EventDispatcher::class)->reveal(),
+        );
         $application = $this->prophesize(Application::class);
         $application->getVersion()->willReturn('3.0');
         $application->getHelperSet()->willReturn(new HelperSet());
@@ -59,7 +64,11 @@ class RunCommandTest extends TestCase
         $descriptor = $this->prophesize(ProjectDescriptorBuilder::class);
         $pipeline = $this->prophesize(PipelineInterface::class);
         $pipeline->process(Argument::any())->willReturn(null);
-        $command = new RunCommand($descriptor->reveal(), $pipeline->reveal());
+        $command = new RunCommand(
+            $descriptor->reveal(),
+            $pipeline->reveal(),
+            $this->prophesize(EventDispatcher::class)->reveal(),
+        );
         $options = $command->getDefinition()->getOptions();
         $this->assertEquals(
             [

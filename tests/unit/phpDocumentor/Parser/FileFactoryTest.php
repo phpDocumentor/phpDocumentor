@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\Php\NodesFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /** @coversDefaultClass \phpDocumentor\Parser\FileFactory */
 final class FileFactoryTest extends TestCase
@@ -33,7 +34,7 @@ final class FileFactoryTest extends TestCase
         FileFactory::createInstance(
             $this->prophesize(DocBlockFactoryInterface::class)->reveal(),
             NodesFactory::createInstance(),
-            new ArrayObject([new EmittingMiddleware()]),
+            new ArrayObject([new EmittingMiddleware($this->prophesize(EventDispatcher::class)->reveal())]),
         );
 
         // if we reach this point then the FileFactory did not fail to instantiate and the middlewares

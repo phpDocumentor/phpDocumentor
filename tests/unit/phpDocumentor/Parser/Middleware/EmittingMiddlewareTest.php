@@ -14,25 +14,38 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser\Middleware;
 
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function md5;
 
 /** @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware */
 final class EmittingMiddlewareTest extends TestCase
 {
+    use ProphecyTrait;
     use Faker;
 
     public function testEmitsPreParsingEvent(): void
     {
         // start with a clean dispatcher
-        Dispatcher::setInstance('default', new Dispatcher());
+        $eventDispatcher = $this->prophesize(EventDispatcher::class);
+        $eventDispatcher->dispatch(
+            Argument::that(
+                function (PreFileEvent $event) {
+                    $this->assertSame($event->getFile(), __FILE__);
+
+                    return true;
+                },
+            ),
+            Argument::any(),
+        )->willReturnArgument();
 
         $filename = __FILE__;
         $file = new FileDescriptor(md5('result'));
@@ -44,14 +57,7 @@ final class EmittingMiddlewareTest extends TestCase
             new ProjectFactoryStrategies([]),
         );
 
-        Dispatcher::getInstance()->addListener(
-            'parser.file.pre',
-            function (PreFileEvent $event) use ($filename): void {
-                $this->assertSame($event->getFile(), $filename);
-            },
-        );
-
-        $middleware = new EmittingMiddleware();
+        $middleware = new EmittingMiddleware($eventDispatcher->reveal());
         $result = $middleware->execute(
             $command,
             function (CreateCommand $receivedCommand) use ($command, $file) {
