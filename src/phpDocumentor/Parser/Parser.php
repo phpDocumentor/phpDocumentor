@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Webmozart\Assert\Assert;
 
 use function count;
 use function ini_get;
@@ -67,6 +66,7 @@ class Parser
         /** @var Stopwatch $stopwatch The profiling component that measures time and memory usage over time */
         private readonly Stopwatch $stopwatch,
         private readonly LoggerInterface $logger,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
         $defaultEncoding = ini_get('zend.script_encoding');
         if (! $defaultEncoding) {
@@ -187,12 +187,9 @@ class Parser
         $this->startTimingTheParsePhase();
 
         $event = PreParsingEvent::createInstance($this);
-        Assert::isInstanceOf($event, PreParsingEvent::class);
-        Dispatcher::getInstance()
-            ->dispatch(
-                $event->setFileCount(count($files)),
-                'parser.pre',
-            );
+        $this->dispatcher->dispatch(
+            $event->setFileCount(count($files)),
+        );
 
         /** @var Project $project */
         $project = $this->projectFactory->create(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME, $files);

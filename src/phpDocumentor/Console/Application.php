@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
-use Monolog\Handler\PsrHandler;
 use phpDocumentor\AutoloaderLocator;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Version;
@@ -25,8 +24,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function getcwd;
@@ -72,7 +71,7 @@ class Application extends BaseApplication
         $eventDispatcher->addListener(
             ConsoleEvents::COMMAND,
             static function (ConsoleEvent $event) use ($logger): void {
-                $logger->pushHandler(new PsrHandler(new ConsoleLogger($event->getOutput())));
+                $logger->pushHandler(new ConsoleLogHandler(new SymfonyStyle($event->getInput(), $event->getOutput())));
             },
         );
 

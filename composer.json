@@ -66,6 +66,7 @@
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpdocumentor/type-resolver": "^1.8",
         "psr/cache": "^2.0|^3.0",
+        "psr/event-dispatcher": "^1.0",
         "psr/log": "^1.1",
         "symfony/cache": "^6.0",
         "symfony/config": "^6.0",

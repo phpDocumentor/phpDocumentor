@@ -16,7 +16,6 @@ namespace phpDocumentor\Parser;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Event\Dispatcher;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Project;
@@ -25,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -45,6 +45,7 @@ final class ParserTest extends TestCase
 
     /** @var ObjectProphecy|ProjectFactory */
     private $projectFactory;
+    private EventDispatcherInterface|ObjectProphecy $eventDispatcher;
 
     /**
      * Instantiates a new parser object as fixture.
@@ -53,11 +54,13 @@ final class ParserTest extends TestCase
     {
         ini_set('zend.script_encoding', '');
         $this->projectFactory = $this->prophesize(ProjectFactory::class);
+        $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
 
         $this->fixture = new Parser(
             $this->projectFactory->reveal(),
             new Stopwatch(),
             new NullLogger(),
+            $this->eventDispatcher->reveal(),
         );
     }
 
@@ -118,6 +121,7 @@ final class ParserTest extends TestCase
             $this->prophesize(ProjectFactory::class)->reveal(),
             $this->prophesize(Stopwatch::class)->reveal(),
             new NullLogger(),
+            $this->prophesize(EventDispatcherInterface::class)->reveal(),
         );
 
         $this->assertEquals('Default', $parser->getDefaultPackageName());
@@ -155,12 +159,14 @@ final class ParserTest extends TestCase
         $files = [new LocalFile($file->url())];
 
         $preParsingEvent = null;
-        Dispatcher::getInstance()->addListener(
-            'parser.pre',
-            static function (PreParsingEvent $event) use (&$preParsingEvent): void {
+
+        $this->eventDispatcher->dispatch(
+            Argument::that(static function (PreParsingEvent $event) use (&$preParsingEvent) {
                 $preParsingEvent = $event;
-            },
-        );
+
+                return true;
+            }),
+        )->shouldBeCalled();
 
         $this->projectFactory->create(Argument::any(), Argument::any())->shouldBeCalled()->willReturn(
             new Project(ProjectDescriptorBuilder::DEFAULT_PROJECT_NAME),

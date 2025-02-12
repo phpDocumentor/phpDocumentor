@@ -21,6 +21,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform */
 final class TransformTest extends TestCase
@@ -59,11 +60,16 @@ final class TransformTest extends TestCase
         $templateFactory = $this->prophesize(Factory::class);
         $templateFactory->getTemplates(Argument::any(), Argument::any())->willReturn(new Collection());
 
+        $eventDispatcher = $this->prophesize(EventDispatcher::class);
+        $eventDispatcher->addListener(Argument::any(), Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturnArgument();
+
         $this->transform = new Transform(
             $this->transformer->reveal(),
             $this->flySystemFactory->reveal(),
             $this->logger->reveal(),
             $templateFactory->reveal(),
+            $eventDispatcher->reveal(),
         );
     }
 
