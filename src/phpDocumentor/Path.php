@@ -80,6 +80,11 @@ final class Path implements Stringable
         $parts = explode('/', (string) $input);
         array_pop($parts);
 
-        return new self(implode('/', $parts));
+        $path = implode('/', $parts);
+        if ($path === '') {
+            return new self('/');
+        }
+
+        return new self($path);
     }
 }
