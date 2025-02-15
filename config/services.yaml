@@ -167,8 +167,11 @@ services:
     Monolog\Logger:
       public: true
       arguments:
-        - 'app'
+        $name: 'app'
+        $processors:
+          - '@Monolog\Processor\PsrLogMessageProcessor'
 
+    Monolog\Processor\PsrLogMessageProcessor: ~
     Psr\Log\LoggerInterface:
       alias: 'Monolog\Logger'
       public: true
