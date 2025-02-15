@@ -48,4 +48,11 @@ final class PathTest extends TestCase
         $this->assertFalse(Path::isAbsolutePath('./my/absolute/path'));
         $this->assertFalse(Path::isAbsolutePath('../my/absolute/path'));
     }
+
+    public function testDirnameOnRootFile(): void
+    {
+        $path = Path::dirname(new Path('/config.xml'));
+
+        $this->assertEquals(new Path('/'), $path);
+    }
 }
