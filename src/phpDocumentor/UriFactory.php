@@ -35,10 +35,10 @@ final class UriFactory
                     $uriString = substr($uriString, strlen('file:///'));
                 }
 
-                return LeagueUri::createFromWindowsPath($uriString);
+                return LeagueUri::fromWindowsPath($uriString);
             }
 
-            return LeagueUri::createFromString($uriString);
+            return LeagueUri::new($uriString);
         } catch (Throwable $exception) {
             throw new InvalidArgumentException(
                 sprintf(
@@ -59,7 +59,7 @@ final class UriFactory
             $path = '/' . $path;
         }
 
-        return LeagueUri::createFromComponents(
+        return LeagueUri::fromComponents(
             [
                 'scheme' => 'phar',
                 'host' => '',
