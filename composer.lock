@@ -1635,20 +1635,21 @@
         },
         {
             "name": "phpdocumentor/filesystem",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/filesystem.git",
-                "reference": "28a38af80ca5b4a492caca83051988d3741430d1"
+                "reference": "841245ca21cf225da9d9313e63c573f77828833e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/28a38af80ca5b4a492caca83051988d3741430d1",
-                "reference": "28a38af80ca5b4a492caca83051988d3741430d1",
+                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/841245ca21cf225da9d9313e63c573f77828833e",
+                "reference": "841245ca21cf225da9d9313e63c573f77828833e",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.1",
+                "webmozart/assert": "^1.3"
             },
             "type": "library",
             "extra": {
@@ -1672,9 +1673,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/filesystem/issues",
-                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.0"
+                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.1"
             },
-            "time": "2025-01-29T20:10:47+00:00"
+            "time": "2025-02-28T16:16:01+00:00"
         },
         {
             "name": "phpdocumentor/flyfinder",
@@ -1782,26 +1783,27 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.7.0",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "ba5db0c601700065636509ba5bc82c7ce6440008"
+                "reference": "d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/ba5db0c601700065636509ba5bc82c7ce6440008",
-                "reference": "ba5db0c601700065636509ba5bc82c7ce6440008",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64",
+                "reference": "d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64",
                 "shasum": ""
             },
             "require": {
                 "doctrine/deprecations": "^1.1",
                 "ext-json": "*",
                 "ext-zlib": "*",
-                "league/flysystem": "^1.1 || ^3.0",
+                "league/flysystem": "^1.1.0 || ^3.29.1",
                 "league/tactician": "^1.1",
                 "league/uri": "^7.5.1",
                 "php": "^8.1",
+                "phpdocumentor/filesystem": "^1.7.0",
                 "phpdocumentor/flyfinder": "^1.1 || ^2.0",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/clock": "^6.4.8",
@@ -1834,9 +1836,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.7.0"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.7.3"
             },
-            "time": "2025-01-29T20:10:47+00:00"
+            "time": "2025-03-07T16:16:23+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1888,16 +1890,16 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "1.7.0",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "204611039932549a3906c62ea6a867852aafa000"
+                "reference": "d841d5e6a79cd4e2a0858d171f2b116f60ebd1a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/204611039932549a3906c62ea6a867852aafa000",
-                "reference": "204611039932549a3906c62ea6a867852aafa000",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/d841d5e6a79cd4e2a0858d171f2b116f60ebd1a4",
+                "reference": "d841d5e6a79cd4e2a0858d171f2b116f60ebd1a4",
                 "shasum": ""
             },
             "require": {
@@ -1925,9 +1927,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.7.0"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.7.3"
             },
-            "time": "2025-01-29T20:10:47+00:00"
+            "time": "2025-03-07T15:51:49+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
@@ -2563,16 +2565,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.1",
+            "version": "2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba"
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
-                "reference": "cb6ce4845ce34a8ad9e68117c10ee90a29919eba",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+                "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
                 "shasum": ""
             },
             "require": {
@@ -2581,7 +2583,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -2596,7 +2598,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for HTTP messages",
@@ -2610,9 +2612,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-message/tree/1.1"
+                "source": "https://github.com/php-fig/http-message/tree/2.0"
             },
-            "time": "2023-04-04T09:50:52+00:00"
+            "time": "2023-04-04T09:54:51+00:00"
         },
         {
             "name": "psr/log",
@@ -3665,16 +3667,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.4.18",
+            "version": "v6.4.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "394b440934056b8d9d6ba250001458e9d7998b7f"
+                "reference": "3294a433fc9d12ae58128174896b5b1822c28dad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/394b440934056b8d9d6ba250001458e9d7998b7f",
-                "reference": "394b440934056b8d9d6ba250001458e9d7998b7f",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/3294a433fc9d12ae58128174896b5b1822c28dad",
+                "reference": "3294a433fc9d12ae58128174896b5b1822c28dad",
                 "shasum": ""
             },
             "require": {
@@ -3738,7 +3740,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.4.18"
+                "source": "https://github.com/symfony/http-client/tree/v6.4.19"
             },
             "funding": [
                 {
@@ -3754,7 +3756,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-28T15:49:13+00:00"
+            "time": "2025-02-13T09:55:13+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4220,82 +4222,6 @@
             ],
             "support": {
                 "source": "https://github.com/symfony/polyfill-php80/tree/v1.31.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-09-09T11:45:10+00:00"
-        },
-        {
-            "name": "symfony/polyfill-php81",
-            "version": "v1.31.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php81.git",
-                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
-                "reference": "4a4cfc2d253c21a5ad0e53071df248ed48c6ce5c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.31.0"
             },
             "funding": [
                 {
@@ -4992,24 +4918,23 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.19.0",
+            "version": "v3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d4f8c2b86374f08efc859323dbcd95c590f7124e"
+                "reference": "3468920399451a384bef53cf7996965f7cd40183"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d4f8c2b86374f08efc859323dbcd95c590f7124e",
-                "reference": "d4f8c2b86374f08efc859323dbcd95c590f7124e",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3468920399451a384bef53cf7996965f7cd40183",
+                "reference": "3468920399451a384bef53cf7996965f7cd40183",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0.2",
+                "php": ">=8.1.0",
                 "symfony/deprecation-contracts": "^2.5|^3",
                 "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3",
-                "symfony/polyfill-php81": "^1.29"
+                "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
                 "phpstan/phpstan": "^2.0",
@@ -5056,7 +4981,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.19.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.20.0"
             },
             "funding": [
                 {
@@ -5068,7 +4993,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-29T07:06:14+00:00"
+            "time": "2025-02-13T08:34:43+00:00"
         },
         {
             "name": "webmozart/assert",
