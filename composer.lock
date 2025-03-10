@@ -1635,20 +1635,21 @@
         },
         {
             "name": "phpdocumentor/filesystem",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/filesystem.git",
-                "reference": "28a38af80ca5b4a492caca83051988d3741430d1"
+                "reference": "841245ca21cf225da9d9313e63c573f77828833e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/28a38af80ca5b4a492caca83051988d3741430d1",
-                "reference": "28a38af80ca5b4a492caca83051988d3741430d1",
+                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/841245ca21cf225da9d9313e63c573f77828833e",
+                "reference": "841245ca21cf225da9d9313e63c573f77828833e",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.1",
+                "webmozart/assert": "^1.3"
             },
             "type": "library",
             "extra": {
@@ -1672,9 +1673,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/filesystem/issues",
-                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.0"
+                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.1"
             },
-            "time": "2025-01-29T20:10:47+00:00"
+            "time": "2025-02-28T16:16:01+00:00"
         },
         {
             "name": "phpdocumentor/flyfinder",
