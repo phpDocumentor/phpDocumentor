@@ -1639,16 +1639,16 @@
         },
         {
             "name": "phpdocumentor/filesystem",
-            "version": "1.7.1",
+            "version": "1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/filesystem.git",
-                "reference": "841245ca21cf225da9d9313e63c573f77828833e"
+                "reference": "bb7c7853a32b364cc7ac824eb15fc640b24b765e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/841245ca21cf225da9d9313e63c573f77828833e",
-                "reference": "841245ca21cf225da9d9313e63c573f77828833e",
+                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/bb7c7853a32b364cc7ac824eb15fc640b24b765e",
+                "reference": "bb7c7853a32b364cc7ac824eb15fc640b24b765e",
                 "shasum": ""
             },
             "require": {
@@ -1677,9 +1677,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/filesystem/issues",
-                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.1"
+                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.4"
             },
-            "time": "2025-02-28T16:16:01+00:00"
+            "time": "2025-03-10T19:50:04+00:00"
         },
         {
             "name": "phpdocumentor/flyfinder",
@@ -1787,16 +1787,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.7.3",
+            "version": "1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64"
+                "reference": "3a9db0cd5f0709be69813912c46986e09b603c46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64",
-                "reference": "d6495e31d56f6d72e4e3b36bc7dfe0de22d04b64",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/3a9db0cd5f0709be69813912c46986e09b603c46",
+                "reference": "3a9db0cd5f0709be69813912c46986e09b603c46",
                 "shasum": ""
             },
             "require": {
@@ -1807,7 +1807,7 @@
                 "league/tactician": "^1.1",
                 "league/uri": "^7.5.1",
                 "php": "^8.1",
-                "phpdocumentor/filesystem": "^1.7.0",
+                "phpdocumentor/filesystem": "^1.7.1",
                 "phpdocumentor/flyfinder": "^1.1 || ^2.0",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/clock": "^6.4.8",
@@ -1840,9 +1840,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.7.3"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.7.4"
             },
-            "time": "2025-03-07T16:16:23+00:00"
+            "time": "2025-03-10T20:39:09+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
