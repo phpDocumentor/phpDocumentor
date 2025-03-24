@@ -91,7 +91,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "doctrine/coding-standard": "^12.0",
+        "doctrine/coding-standard": "^13.0",
         "fakerphp/faker": "^1.21",
         "mikey179/vfsstream": "^1.2",
         "mockery/mockery": "^1.0",
