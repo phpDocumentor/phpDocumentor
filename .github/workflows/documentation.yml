@@ -21,7 +21,7 @@ jobs:
 
       - name: "Upload documentation artifacts"
         if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}"
-        uses: "actions/upload-artifact@v4.6.1"
+        uses: "actions/upload-artifact@v4.6.2"
         with:
           name: "documentation"
           path: "build/docs"
@@ -36,7 +36,7 @@ jobs:
         uses: "actions/checkout@v4"
       - name: "Upload website artifacts"
 
-        uses: "actions/upload-artifact@v4.6.1"
+        uses: "actions/upload-artifact@v4.6.2"
         with:
           name: "website"
           path: "data/website"
