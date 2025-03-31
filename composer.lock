@@ -1788,16 +1788,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.7.4",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "3a9db0cd5f0709be69813912c46986e09b603c46"
+                "reference": "cc56ae7975848c7f69465e07e722fc93b0ef419b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/3a9db0cd5f0709be69813912c46986e09b603c46",
-                "reference": "3a9db0cd5f0709be69813912c46986e09b603c46",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/cc56ae7975848c7f69465e07e722fc93b0ef419b",
+                "reference": "cc56ae7975848c7f69465e07e722fc93b0ef419b",
                 "shasum": ""
             },
             "require": {
@@ -1808,7 +1808,7 @@
                 "league/tactician": "^1.1",
                 "league/uri": "^7.5.1",
                 "php": "^8.1",
-                "phpdocumentor/filesystem": "^1.7.1",
+                "phpdocumentor/filesystem": "^1.7.4",
                 "phpdocumentor/flyfinder": "^1.1 || ^2.0",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/clock": "^6.4.8",
@@ -1841,9 +1841,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.7.4"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.8.0"
             },
-            "time": "2025-03-10T20:39:09+00:00"
+            "time": "2025-03-16T11:29:49+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
