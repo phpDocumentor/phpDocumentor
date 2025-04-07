@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'phpdoc/test-project',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'phpdoc/test-danger' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '135019222681899e28e1271eff56492e18ba24ae',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpdoc/test-danger',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpdoc/test-extension' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'ae5081f325979705c3cb024edaf8b6571b22e2b7',
+            'type' => 'phpdoc-extension',
+            'install_path' => __DIR__ . '/../phpdoc/test-extension',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phpdoc/test-project' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

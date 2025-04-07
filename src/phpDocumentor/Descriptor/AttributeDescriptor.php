@@ -57,6 +57,17 @@ final class AttributeDescriptor implements Descriptor, Stringable, AttributeInte
         return $this->arguments;
     }
 
+    public function getArgument(string $name): ValueObjects\CallArgument|null
+    {
+        foreach ($this->arguments as $argument) {
+            if ($argument->getName() === $name) {
+                return $argument;
+            }
+        }
+
+        return null;
+    }
+
     public function hasArguments(): bool
     {
         return $this->arguments->count() > 0;

@@ -19,6 +19,7 @@ use Jean85\PrettyVersions;
 use PharIo\Manifest\ApplicationName;
 use phpDocumentor\AutoloaderLocator;
 use phpDocumentor\Version;
+use SplFileInfo;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -46,7 +47,9 @@ final class ExtensionHandler
     /** @param string[] $extensionsDirs */
     private function __construct(private array $extensionsDirs = [])
     {
+        $this->loaders[] = new PackageLoader();
         $this->loaders[] = new DirectoryLoader();
+        $this->loaders[] = new PharLoader();
         $this->validator = new Validator(
             new ApplicationName(PrettyVersions::getRootPackageName()),
             new Version(),
@@ -125,20 +128,30 @@ final class ExtensionHandler
             return [];
         }
 
-        $extensions = [];
         $iterator = new DirectoryIterator($extensionsDir);
+        $extensions = $this->findExtensionsInDir(new SplFileInfo($extensionsDir));
         foreach ($iterator as $dir) {
             if ($dir->isDot()) {
                 continue;
             }
 
-            foreach ($this->loaders as $loader) {
-                if (! $loader->supports($dir)) {
-                    continue;
-                }
+            $extensions = array_merge($extensions, $this->findExtensionsInDir($dir));
+        }
 
-                $extensions[$dir->getPathName()] = $loader->load(new DirectoryIterator($dir->getPathName()));
+        return array_filter($extensions);
+    }
+
+    /** @return ExtensionInfo[] */
+    private function findExtensionsInDir(SplFileInfo $dir): array
+    {
+        $extensions = [];
+
+        foreach ($this->loaders as $loader) {
+            if (! $loader->supports($dir)) {
+                continue;
             }
+
+            $extensions[$dir->getPathName()] = $loader->load($dir);
         }
 
         return array_filter($extensions);

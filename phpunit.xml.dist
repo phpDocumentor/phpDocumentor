@@ -30,6 +30,9 @@
     <testsuite name="incubator">
       <directory>./incubator/*/tests/unit/</directory>
     </testsuite>
+    <testsuite name="e2e">
+      <directory>./tests/e2e/</directory>
+    </testsuite>
   </testsuites>
   <logging>
     <junit outputFile="build/logs/junit.xml"/>

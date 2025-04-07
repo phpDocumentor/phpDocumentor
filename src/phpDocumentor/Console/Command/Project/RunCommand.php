@@ -247,6 +247,12 @@ HELP,
                 null,
                 InputOption::VALUE_NONE,
                 'Whether to parse DocBlocks marked with @internal tag',
+            )
+            ->addOption(
+                'progress',
+                null,
+                InputOption::VALUE_NONE | InputOption::VALUE_NEGATABLE,
+                'Enable the progress bar',
             );
 
         parent::configure();
@@ -270,7 +276,7 @@ HELP,
                 ->run(new ArrayInput([]), $output);
         }
 
-        $this->observeProgressToShowProgressBars($io);
+        $this->observeProgressToShowProgressBars($input, $io);
 
         $pipeLine = $this->pipeline;
         $pipeLine($input->getOptions());
@@ -291,7 +297,7 @@ HELP,
         return 0;
     }
 
-    private function observeProgressToShowProgressBars(OutputStyle $output): void
+    private function observeProgressToShowProgressBars(InputInterface $input, OutputStyle $output): void
     {
         // Code that is poorly testable and not worth the effort
         // @codeCoverageIgnoreStart
@@ -301,35 +307,48 @@ HELP,
 
         $this->eventDispatcher->addListener(
             PreParsingEvent::class,
-            function (PreParsingEvent $event) use ($output): void {
+            function (PreParsingEvent $event) use ($input, $output): void {
                 $output->writeln('Parsing source files');
+                if ($input->getOption('progress') !== null && $input->getOption('progress') !== true) {
+                    return;
+                }
+
                 $this->progressBar = $output->createProgressBar($event->getFileCount());
                 $this->progressBar->start();
             },
         );
-        $this->eventDispatcher->addListener(
-            'parser.file.pre',
-            function (): void {
-                $this->progressBar->advance();
-            },
-        );
+
+        if ($input->getOption('progress') === null || $input->getOption('progress') === true) {
+            $this->eventDispatcher->addListener(
+                'parser.file.pre',
+                function (): void {
+                    $this->progressBar->advance();
+                },
+            );
+        }
 
         $this->eventDispatcher->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output): void {
+            function (PreTransformEvent $event) use ($input, $output): void {
                 $output->writeln('');
                 $output->writeln('Applying transformations (can take a while)');
+                if ($input->getOption('progress') !== null && $input->getOption('progress') !== true) {
+                    return;
+                }
+
                 $this->progressBar = $output->createProgressBar(count($event->getTransformations()));
                 $this->progressBar->start();
             },
         );
 
-        $this->eventDispatcher->addListener(
-            Transformer::EVENT_POST_TRANSFORMATION,
-            function (): void {
-                $this->progressBar->advance();
-            },
-        );
+        if ($input->getOption('progress') === null || $input->getOption('progress') === true) {
+            $this->eventDispatcher->addListener(
+                Transformer::EVENT_POST_TRANSFORMATION,
+                function (): void {
+                    $this->progressBar->advance();
+                },
+            );
+        }
         // @codeCoverageIgnoreEnd
     }
 
