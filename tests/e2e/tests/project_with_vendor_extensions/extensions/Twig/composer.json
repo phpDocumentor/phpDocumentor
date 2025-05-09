@@ -1,0 +1,15 @@
+{
+  "name": "phpdoc/test-extension",
+  "type": "phpdoc-extension",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "MyExtension\\Twig\\": "./"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
