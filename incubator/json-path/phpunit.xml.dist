@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd"
-        colors="true"
-        verbose="true"
-        bootstrap="vendor/autoload.php"
-        convertDeprecationsToExceptions="true"
-        beStrictAboutOutputDuringTests="true"
-        beStrictAboutChangesToGlobalState="true"
-        beStrictAboutTodoAnnotatedTests="true"
->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" colors="true" bootstrap="vendor/autoload.php" beStrictAboutOutputDuringTests="true" beStrictAboutChangesToGlobalState="true" cacheDirectory=".phpunit.cache">
+  <coverage>
+    <report>
+      <clover outputFile="build/logs/clover.xml"/>
+      <html outputDirectory="build/coverage" lowUpperBound="35" highLowerBound="70"/>
+    </report>
+  </coverage>
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/unit</directory>
     </testsuite>
-<!--    <testsuite name="integration">-->
-<!--      <directory>./tests/integration</directory>-->
-<!--    </testsuite>-->
   </testsuites>
-  <filter>
-    <whitelist>
+  <logging/>
+  <source>
+    <include>
       <directory suffix=".php">./src/</directory>
-    </whitelist>
-  </filter>
-  <logging>
-    <log type="coverage-html"
-         target="build/coverage"
-         lowUpperBound="35"
-         highLowerBound="70"/>
-    <log type="coverage-clover" target="build/logs/clover.xml"/>
-  </logging>
+    </include>
+  </source>
 </phpunit>
