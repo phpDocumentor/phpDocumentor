@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "252504d23fd5c37dd57c133eba483266",
+    "content-hash": "7ea135cde06957d972afab3593547510",
     "packages": [
         {
             "name": "cypresslab/php-curry",
@@ -53,6 +53,7 @@
                 "issues": "https://github.com/matteosister/php-curry/issues",
                 "source": "https://github.com/matteosister/php-curry/tree/0.5.0"
             },
+            "abandoned": true,
             "time": "2017-03-10T17:05:37+00:00"
         },
         {
@@ -1981,25 +1982,25 @@
         },
         {
             "name": "phpdocumentor/json-path",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/json-path.git",
-                "reference": "35f564d8a7435224d1d677be05a68afc5d2e9804"
+                "reference": "40c4f082cd478aab8938888bc710608188a448d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/json-path/zipball/35f564d8a7435224d1d677be05a68afc5d2e9804",
-                "reference": "35f564d8a7435224d1d677be05a68afc5d2e9804",
+                "url": "https://api.github.com/repos/phpDocumentor/json-path/zipball/40c4f082cd478aab8938888bc710608188a448d1",
+                "reference": "40c4f082cd478aab8938888bc710608188a448d1",
                 "shasum": ""
             },
             "require": {
                 "parsica-php/parsica": "^0.8.1",
-                "php": "7.4|8.0.*|8.1.*",
-                "symfony/property-access": "^5.4|^6.0"
+                "php": "8.1.*|8.2.*|8.3.*|8.4.*",
+                "symfony/property-access": "^5.4|^6.4|^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
@@ -2020,9 +2021,9 @@
             "description": "Access php objects with json path expressions",
             "support": {
                 "issues": "https://github.com/phpDocumentor/json-path/issues",
-                "source": "https://github.com/phpDocumentor/json-path/tree/0.1.0"
+                "source": "https://github.com/phpDocumentor/json-path/tree/0.2.0"
             },
-            "time": "2024-05-24T12:05:29+00:00"
+            "time": "2025-05-13T07:11:53+00:00"
         },
         {
             "name": "phpdocumentor/reflection",
@@ -4384,16 +4385,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v6.4.7",
+            "version": "v6.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "9174e2ec62563dfc15fbe84d1618613092e09d91"
+                "reference": "80e0378f2f058b60d87dedc3c760caec882e992c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/9174e2ec62563dfc15fbe84d1618613092e09d91",
-                "reference": "9174e2ec62563dfc15fbe84d1618613092e09d91",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/80e0378f2f058b60d87dedc3c760caec882e992c",
+                "reference": "80e0378f2f058b60d87dedc3c760caec882e992c",
                 "shasum": ""
             },
             "require": {
@@ -4441,7 +4442,7 @@
                 "reflection"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-access/tree/v6.4.7"
+                "source": "https://github.com/symfony/property-access/tree/v6.4.18"
             },
             "funding": [
                 {
@@ -4457,20 +4458,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:22:46+00:00"
+            "time": "2024-12-16T14:42:05+00:00"
         },
         {
             "name": "symfony/property-info",
-            "version": "v6.4.7",
+            "version": "v6.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "42778ca731b8796e02e237008f4ed871361ddfce"
+                "reference": "94d18e5cc11a37fd92856d38b61d9cdf72536a1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/42778ca731b8796e02e237008f4ed871361ddfce",
-                "reference": "42778ca731b8796e02e237008f4ed871361ddfce",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/94d18e5cc11a37fd92856d38b61d9cdf72536a1e",
+                "reference": "94d18e5cc11a37fd92856d38b61d9cdf72536a1e",
                 "shasum": ""
             },
             "require": {
@@ -4478,17 +4479,20 @@
                 "symfony/string": "^5.4|^6.0|^7.0"
             },
             "conflict": {
+                "doctrine/annotations": "<1.12",
                 "phpdocumentor/reflection-docblock": "<5.2",
                 "phpdocumentor/type-resolver": "<1.5.1",
-                "symfony/dependency-injection": "<5.4",
-                "symfony/serializer": "<6.4"
+                "symfony/cache": "<5.4",
+                "symfony/dependency-injection": "<5.4|>=6.0,<6.4",
+                "symfony/serializer": "<5.4"
             },
             "require-dev": {
+                "doctrine/annotations": "^1.12|^2",
                 "phpdocumentor/reflection-docblock": "^5.2",
-                "phpstan/phpdoc-parser": "^1.0",
+                "phpstan/phpdoc-parser": "^1.0|^2.0",
                 "symfony/cache": "^5.4|^6.0|^7.0",
                 "symfony/dependency-injection": "^5.4|^6.0|^7.0",
-                "symfony/serializer": "^6.4|^7.0"
+                "symfony/serializer": "^5.4|^6.4|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -4524,7 +4528,7 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-info/tree/v6.4.7"
+                "source": "https://github.com/symfony/property-info/tree/v6.4.18"
             },
             "funding": [
                 {
@@ -4540,7 +4544,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-28T10:28:08+00:00"
+            "time": "2025-01-21T10:52:27+00:00"
         },
         {
             "name": "symfony/routing",
