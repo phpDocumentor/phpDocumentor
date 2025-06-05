@@ -46,6 +46,13 @@ describe('Showing properties for a class', function() {
                 .and('not.have.class', '-abstract')
                 .and('have.class', '-deprecated');
         });
+
+        it('Can be marked "public private(set)" (visibility) to influence styling', function() {
+            getElementWithName('property', '$asymmetric')
+                .should('have.class', '-public')
+                .and('not.have.class', '-protected')
+                .and('not.have.class', '-private');
+        });
     });
 
     describe('Synopsis', function() {
@@ -95,6 +102,12 @@ describe('Showing properties for a class', function() {
             getElementWithName('property', '$secretIngredient')
                 .find('.phpdocumentor-signature__visibility')
                 .contains('private');
+        });
+
+        it('Can show the "public private(set)" visibility specifier', function() {
+            getElementWithName('property', '$asymmetric')
+                .find('.phpdocumentor-signature__visibility')
+                .contains('public private(set)');
         });
 
         it('has the deprecated modifier', function() {

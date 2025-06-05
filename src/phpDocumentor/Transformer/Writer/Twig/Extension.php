@@ -509,18 +509,13 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function sortByVisibility(Collection $collection): ArrayIterator
     {
-        $visibilityOrder = [
-            'public' => 0,
-            'protected' => 1,
-            'private' => 2,
-        ];
         $iterator = $collection->getIterator();
         $iterator->uasort(
-            static function (Descriptor $a, Descriptor $b) use ($visibilityOrder): int {
+            static function (Descriptor $a, Descriptor $b): int {
                 $prio = 0;
                 if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
-                    $visibilityPriorityA = $visibilityOrder[$a->getVisibility()] ?? 0;
-                    $visibilityPriorityB = $visibilityOrder[$b->getVisibility()] ?? 0;
+                    $visibilityPriorityA = $a->getVisibility()->readModifier()->getWeight();
+                    $visibilityPriorityB = $b->getVisibility()->readModifier()->getWeight();
                     $prio = $visibilityPriorityA <=> $visibilityPriorityB;
                 }
 

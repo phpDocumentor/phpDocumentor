@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
 
 /**
  * Descriptor representing a constant on a class, trait, property or file.
@@ -33,6 +34,8 @@ interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterf
     public function getValue(): string;
 
     public function setFinal(bool $final): void;
+
+    public function setVisibility(Visibility $visibility): void;
 
     public function isFinal(): bool;
 

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
@@ -67,7 +69,7 @@ DOCBLOCK,
         self::assertSame('\\' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
         self::assertSame('', $descriptor->getNamespace());
         self::assertSame($value, $descriptor->getValue());
-        self::assertSame('public', $descriptor->getVisibility());
+        self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 
     /**
@@ -99,7 +101,7 @@ DOCBLOCK,
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());
-        self::assertSame('public', $descriptor->getVisibility());
+        self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 
     /**
@@ -131,6 +133,6 @@ DOCBLOCK,
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, $descriptor->getValue());
-        self::assertSame('public', $descriptor->getVisibility());
+        self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 }

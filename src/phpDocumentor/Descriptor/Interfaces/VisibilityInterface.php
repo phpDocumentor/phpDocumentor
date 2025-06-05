@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+
 interface VisibilityInterface
 {
     /**
@@ -24,5 +26,5 @@ interface VisibilityInterface
      * - protected
      * - private
      */
-    public function getVisibility(): string;
+    public function getVisibility(): Visibility;
 }

@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
 
 /**
  * Descriptor representing a property on a class or trait.
@@ -58,10 +59,8 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
 
     /**
      * Sets whether this property is available from inside or outside its class and/or descendants.
-     *
-     * @param string $visibility May be either 'public', 'private' or 'protected'.
      */
-    public function setVisibility(string $visibility): void;
+    public function setVisibility(Visibility $visibility): void;
 
     /** @return Collection<VarDescriptor> */
     public function getVar(): Collection;

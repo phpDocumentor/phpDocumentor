@@ -64,6 +64,8 @@ final readonly class Pizza implements Product
      */
     private float $property1, $property2, $property3;
 
+    public private(set) string $asymmetric;
+
     public function getName(): string
     {
         return $this->name;

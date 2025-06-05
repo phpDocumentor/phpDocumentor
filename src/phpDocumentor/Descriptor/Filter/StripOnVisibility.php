@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use InvalidArgumentException;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 
 /**
  * Strips any Descriptor if their visibility is allowed according to the ProjectDescriptorBuilder.
@@ -54,13 +55,12 @@ class StripOnVisibility implements FilterInterface
         return new FilterPayload(null, $payload->getApiSpecification());
     }
 
-    private function toVisibility(string $visibility): int
+    private function toVisibility(Visibility $visibility): int
     {
-        return match ($visibility) {
-            'public' => ApiSpecification::VISIBILITY_PUBLIC,
-            'protected' => ApiSpecification::VISIBILITY_PROTECTED,
-            'private' => ApiSpecification::VISIBILITY_PRIVATE,
-            default => throw new InvalidArgumentException($visibility . ' is not a valid visibility'),
+        return match ($visibility->readModifier()) {
+            VisibilityModifier::PUBLIC => ApiSpecification::VISIBILITY_PUBLIC,
+            VisibilityModifier::PROTECTED => ApiSpecification::VISIBILITY_PROTECTED,
+            VisibilityModifier::PRIVATE => ApiSpecification::VISIBILITY_PRIVATE,
         };
     }
 }
