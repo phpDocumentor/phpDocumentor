@@ -64,4 +64,7 @@ interface PropertyInterface extends ElementInterface, TypeInterface, ChildInterf
 
     /** @return Collection<VarDescriptor> */
     public function getVar(): Collection;
+
+    /** @return Collection<PropertyHookInterface> */
+    public function getHooks(): Collection;
 }

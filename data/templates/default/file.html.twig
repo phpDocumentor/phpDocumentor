@@ -5,7 +5,12 @@
 
     <article class="phpdocumentor-element -file">
         {{ include('components/file-title.html.twig') }}
-        {{ include('components/element-header.html.twig') }}
+        {{ include('components/summary.html.twig') }}
+        {{ include('components/deprecation.html.twig') }}
+        {{ include('components/description.html.twig') }}
+        {{ include('components/tags.html.twig', {node: node}) }}
+
+        {{ include ('components/table-of-contents.html.twig') }}
 
         {{ include('components/constants.html.twig') }}
         {{ include('components/functions.html.twig') }}

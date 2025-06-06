@@ -1,0 +1,9 @@
+<code class="phpdocumentor-code phpdocumentor-signature {% if hook.deprecated %}-deprecated{% endif %}">
+    <span class="phpdocumentor-signature__visibility">{{ hook.visibility }}</span>
+    {% if hook.final %}<span class="phpdocumentor-signature__final">final</span>{% endif %}
+    {% if hook.name != 'set' %}
+        <span class="phpdocumentor-signature__type">{{ not property.type ? "mixed" : property.type|route('class:short')|join('|')|raw }}</span>
+    {% endif %}
+    <span class="phpdocumentor-signature__name">{{ hook.name }}</span>
+</code>
+

@@ -9,6 +9,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\PropertyHookDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Webmozart\Assert\Assert;
@@ -23,7 +24,10 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
             return null;
         }
 
-        Assert::isInstanceOfAny($descriptor, [ElementInterface::class, TagDescriptor::class]);
+        Assert::isInstanceOfAny(
+            $descriptor,
+            [ElementInterface::class, TagDescriptor::class, PropertyHookDescriptor::class],
+        );
 
         /** @phpstan-var ElementInterface|TagDescriptor $descriptor */
         $description = new DescriptionDescriptor(

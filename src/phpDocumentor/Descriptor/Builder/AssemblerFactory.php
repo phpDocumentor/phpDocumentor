@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\InterfaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\NamespaceAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler;
+use phpDocumentor\Descriptor\Builder\Reflector\PropertyHookAssembler;
 use phpDocumentor\Descriptor\Builder\Reflector\Reducer\AttributeReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Reducer\MetadataReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\Reducer\VisibilityReducer;
@@ -72,6 +73,7 @@ use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Namespace_;
 use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\PropertyHook;
 use phpDocumentor\Reflection\Php\Trait_;
 
 use function array_merge;
@@ -165,6 +167,10 @@ class AssemblerFactory
         $factory->register(
             Matcher::forType(Property::class),
             new PropertyAssembler($attributeReducer, $visibilityReducer),
+        );
+        $factory->register(
+            Matcher::forType(PropertyHook::class),
+            new PropertyHookAssembler($argumentAssembler, $attributeReducer, $metadataReducer),
         );
         $factory->register(Matcher::forType(Argument::class), $argumentAssembler);
         $factory->register(Matcher::forType(Method::class), new MethodAssembler(

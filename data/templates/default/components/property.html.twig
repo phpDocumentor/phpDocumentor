@@ -7,6 +7,7 @@
             {% if property.deprecated %}-deprecated{% endif %}
             {% if property.writeOnly %}-write-only{% endif %}
             {% if property.readOnly %}-read-only{% endif %}
+            {% if property.isVirtual %}-virtual{% endif %}
         "
 >
     <h4 class="phpdocumentor-element__name" id="property_{{ property.name }}">
@@ -15,6 +16,7 @@
         <span class="phpdocumentor-element__modifiers">
             {% if property.writeOnly %}<small class="phpdocumentor-element__modifier">write-only</small>{% endif %}
             {% if property.readOnly %}<small class="phpdocumentor-element__modifier">read-only</small>{% endif %}
+            {% if property.isVirtual %}<small class="phpdocumentor-element__modifier">virtual</small>{% endif %}
         </span>
     </h4>
     {{ include('components/element-found-in.html.twig', {'node': property}) }}
@@ -25,4 +27,5 @@
     {{ include('components/description.html.twig', {'node': property.var[0]}) }}
     {{ include('components/tags.html.twig', {'node': property}) }}
     {{ include('components/attributes.html.twig' , {'node': property}) }}
+    {{ include('components/property-hooks.html.twig', {'node': property}) }}
 </article>

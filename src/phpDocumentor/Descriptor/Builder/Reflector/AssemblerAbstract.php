@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerRedu
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\PropertyHookDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
@@ -77,8 +78,10 @@ abstract class AssemblerAbstract extends BaseAssembler
     /**
      * Assemble DocBlock.
      */
-    protected function assembleDocBlock(DocBlock|null $docBlock, DescriptorAbstract $target): void
-    {
+    protected function assembleDocBlock(
+        DocBlock|null $docBlock,
+        DescriptorAbstract|PropertyHookDescriptor $target,
+    ): void {
         if (! $docBlock) {
             return;
         }

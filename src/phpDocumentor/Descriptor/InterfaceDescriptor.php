@@ -26,6 +26,8 @@ use phpDocumentor\Reflection\Fqsen;
  */
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
+    use Traits\HasAttributes;
+
     /** @var Collection<InterfaceInterface|Fqsen> $parents */
     protected Collection $parents;
 

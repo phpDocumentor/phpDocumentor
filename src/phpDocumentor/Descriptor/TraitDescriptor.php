@@ -30,6 +30,7 @@ use function sprintf;
  */
 class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInterface
 {
+    use Traits\HasAttributes;
     use Traits\HasProperties;
     use Traits\HasMethods;
     use Traits\UsesTraits;
