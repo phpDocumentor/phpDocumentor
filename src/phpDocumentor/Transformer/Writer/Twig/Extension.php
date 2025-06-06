@@ -25,6 +25,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
 use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
@@ -312,8 +313,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'attributes',
-                static function (DescriptorAbstract $descriptor): Collection {
-                    $attributes = new Collection();
+                static function (AttributedInterface $descriptor): Collection {
+                    $attributes = Collection::fromInterfaceString(AttributeInterface::class);
                     if (method_exists($descriptor, 'getAttributes')) {
                         $attributes = $attributes->merge($descriptor->getAttributes());
                     }
@@ -509,18 +510,13 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      */
     public function sortByVisibility(Collection $collection): ArrayIterator
     {
-        $visibilityOrder = [
-            'public' => 0,
-            'protected' => 1,
-            'private' => 2,
-        ];
         $iterator = $collection->getIterator();
         $iterator->uasort(
-            static function (Descriptor $a, Descriptor $b) use ($visibilityOrder): int {
+            static function (Descriptor $a, Descriptor $b): int {
                 $prio = 0;
                 if ($a instanceof VisibilityInterface && $b instanceof VisibilityInterface) {
-                    $visibilityPriorityA = $visibilityOrder[$a->getVisibility()] ?? 0;
-                    $visibilityPriorityB = $visibilityOrder[$b->getVisibility()] ?? 0;
+                    $visibilityPriorityA = $a->getVisibility()->readModifier()->getWeight();
+                    $visibilityPriorityB = $b->getVisibility()->readModifier()->getWeight();
                     $prio = $visibilityPriorityA <=> $visibilityPriorityB;
                 }
 

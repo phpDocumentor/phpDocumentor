@@ -19,6 +19,8 @@ use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 
@@ -127,7 +129,7 @@ final class MethodDescriptorTest extends MockeryTestCase
     {
         $this->assertEquals('public', $this->fixture->getVisibility());
 
-        $this->fixture->setVisibility('private');
+        $this->fixture->setVisibility(new Visibility(VisibilityModifier::PRIVATE));
 
         $this->assertEquals('private', $this->fixture->getVisibility());
     }

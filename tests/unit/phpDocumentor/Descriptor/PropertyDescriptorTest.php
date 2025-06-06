@@ -18,6 +18,8 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Array_;
 
@@ -70,7 +72,7 @@ final class PropertyDescriptorTest extends MockeryTestCase
     {
         self::assertEquals('public', $this->fixture->getVisibility());
 
-        $this->fixture->setVisibility('private');
+        $this->fixture->setVisibility(new Visibility(VisibilityModifier::PRIVATE));
 
         self::assertEquals('private', $this->fixture->getVisibility());
     }

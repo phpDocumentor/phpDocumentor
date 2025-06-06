@@ -24,6 +24,8 @@ use Webmozart\Assert\Assert;
  */
 class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCaseInterface
 {
+    use Traits\HasAttributes;
+
     private EnumInterface|null $parent = null;
 
     private string|null $value = null;

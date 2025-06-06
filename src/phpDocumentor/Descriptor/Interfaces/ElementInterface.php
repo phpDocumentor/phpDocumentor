@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
 
 /**
  * Represents the public interface to which all descriptors should be held.
  */
-interface ElementInterface extends Descriptor, TracksErrors
+interface ElementInterface extends Descriptor, TracksErrors, DocblockInterface
 {
     /**
      * Returns the namespace for this element (defaults to global "\")
@@ -49,16 +47,6 @@ interface ElementInterface extends Descriptor, TracksErrors
      * Returns the Fully Qualified Structural Element Name (FQSEN) for this element.
      */
     public function getFullyQualifiedStructuralElementName(): Fqsen|null;
-
-    /**
-     * Sets a summary describing this element.
-     */
-    public function setSummary(string $summary): void;
-
-    /**
-     * Returns the summary describing this element.
-     */
-    public function getSummary(): string;
 
     /**
      * Sets the file and location for this element.
@@ -95,13 +83,6 @@ interface ElementInterface extends Descriptor, TracksErrors
      * @see getPath() to find out in which file this element is found.
      */
     public function getLine(): int;
-
-    /**
-     * Returns all tags associated with this element.
-     *
-     * @return Collection<Collection<TagDescriptor>>
-     */
-    public function getTags(): Collection;
 
     /**
      * Sets the name of the package to which this element belongs.

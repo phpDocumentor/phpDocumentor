@@ -18,6 +18,8 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -46,7 +48,7 @@ final class StripOnVisibilityTest extends TestCase
         $apiSpec['visibility'] = ['api'];
 
         $descriptor = $this->prophesize(MethodDescriptor::class);
-        $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
+        $descriptor->getVisibility()->shouldBeCalled()->willReturn(new Visibility(VisibilityModifier::PUBLIC));
         $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
         self::assertNull(
@@ -81,7 +83,7 @@ final class StripOnVisibilityTest extends TestCase
         $apiSpec['visibility'] = ['public'];
 
         $descriptor = $this->prophesize(MethodDescriptor::class);
-        $descriptor->getVisibility()->shouldBeCalled()->willReturn('public');
+        $descriptor->getVisibility()->shouldBeCalled()->willReturn(new Visibility(VisibilityModifier::PUBLIC));
         $descriptor->getTags()->shouldBeCalled()->willReturn(new Collection());
 
         self::assertSame(

@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Fqsen;
 /**
  * Represents the public interface for an interface descriptor.
  */
-interface InterfaceInterface extends ElementInterface, TypeInterface
+interface InterfaceInterface extends ElementInterface, TypeInterface, AttributedInterface
 {
     /**
      * Returns the parent for this descriptor.

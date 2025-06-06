@@ -44,3 +44,4 @@ parameters:
     - %currentWorkingDirectory%/tests/functional/**/*.php
     - %currentWorkingDirectory%/incubator/*/tests/unit/*.php
     - %currentWorkingDirectory%/incubator/*/tests/unit/**/*.php
+    - %currentWorkingDirectory%/tests/e2e/tests/project_with_vendor_extensions/*.php

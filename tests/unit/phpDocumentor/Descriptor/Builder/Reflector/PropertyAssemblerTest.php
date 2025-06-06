@@ -68,7 +68,6 @@ final class PropertyAssemblerTest extends TestCase
         $this->assertSame($expectedFqsen, (string) $descriptor->getFullyQualifiedStructuralElementName());
         $this->assertSame($propertyName, $descriptor->getName());
         $this->assertSame('\\' . $namespace, $descriptor->getNamespace());
-        $this->assertSame('protected', $descriptor->getVisibility());
         $this->assertSame('string', (string) $descriptor->getType());
         $this->assertFalse($descriptor->isStatic());
     }

@@ -29,12 +29,14 @@ use Webmozart\Assert\Assert;
  */
 class ConstantDescriptor extends DescriptorAbstract implements
     Interfaces\ConstantInterface,
-    Interfaces\VisibilityInterface
+    Interfaces\VisibilityInterface,
+    Interfaces\AttributedInterface
 {
     use Traits\CanBeFinal;
     use Traits\HasVisibility;
     use Traits\BelongsToClassTraitOrInterface;
     use Traits\CanHaveAType;
+    use Traits\HasAttributes;
 
     protected string $value = '';
 

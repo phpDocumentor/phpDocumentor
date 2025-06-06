@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\Collection;
 /**
  * Public interface definition for object representing traits.
  */
-interface TraitInterface extends ElementInterface, TypeInterface
+interface TraitInterface extends ElementInterface, TypeInterface, AttributedInterface
 {
     /** @param Collection<ConstantInterface> $constants */
     public function setConstants(Collection $constants): void;

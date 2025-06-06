@@ -1,0 +1,7 @@
+{% if property.hooks is not empty %}
+    <h5>Hooks</h5>
+    {% for hook in property.hooks %}
+        {{ include('components/property-hook.html.twig', {'hook': hook, 'property': property}) }}
+    {% endfor %}
+{% endif %}
+

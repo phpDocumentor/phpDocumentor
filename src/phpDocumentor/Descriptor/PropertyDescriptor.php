@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyHookInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
@@ -45,6 +46,17 @@ class PropertyDescriptor extends DescriptorAbstract implements
     protected bool $static = false;
     private bool $readOnly = false;
     private bool $writeOnly = false;
+
+    /** @var Collection<PropertyHookInterface> $hooks */
+    private Collection $hooks;
+    private bool $isVirtual = false;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->hooks = new Collection();
+    }
 
     /**
      * {@inheritDoc}
@@ -149,6 +161,10 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     public function isReadOnly(): bool
     {
+        if ($this->isVirtual && isset($this->hooks['get'])) {
+            return $this->hooks->count() === 1;
+        }
+
         return $this->readOnly;
     }
 
@@ -159,6 +175,30 @@ class PropertyDescriptor extends DescriptorAbstract implements
 
     public function isWriteOnly(): bool
     {
+        if ($this->isVirtual && isset($this->hooks['set'])) {
+            return $this->hooks->count() === 1;
+        }
+
         return $this->writeOnly;
+    }
+
+    public function addHook(PropertyHookInterface $hook): void
+    {
+        $this->hooks->set($hook->getName(), $hook);
+    }
+
+    public function getHooks(): Collection
+    {
+        return $this->hooks;
+    }
+
+    public function setVirtual(bool $isVirtual): void
+    {
+        $this->isVirtual = $isVirtual;
+    }
+
+    public function isVirtual(): bool
+    {
+        return $this->isVirtual;
     }
 }

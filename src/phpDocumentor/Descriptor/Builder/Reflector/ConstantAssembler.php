@@ -35,7 +35,7 @@ class ConstantAssembler extends AssemblerAbstract
      *
      * @param Constant $data
      */
-    public function create(object $data): ConstantInterface
+    public function buildDescriptor(object $data): ConstantInterface
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());
@@ -53,7 +53,6 @@ class ConstantAssembler extends AssemblerAbstract
 
         $constantDescriptor->setStartLocation($data->getLocation());
         $constantDescriptor->setEndLocation($data->getEndLocation());
-        $constantDescriptor->setVisibility((string) $data->getVisibility() ?: 'public');
 
         return $constantDescriptor;
     }

@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\PropertyHookDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Reflection\Php\Property;
 
@@ -40,10 +41,10 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setNamespace(substr((string) $data->getFqsen(), 0, -strlen($data->getName()) - 3));
         $propertyDescriptor->setFullyQualifiedStructuralElementName($data->getFqsen());
         $propertyDescriptor->setName($data->getName());
-        $propertyDescriptor->setVisibility((string) $data->getVisibility() ?: 'public');
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setReadOnly($data->isReadOnly());
         $propertyDescriptor->setDefault($data->getDefault());
+        $propertyDescriptor->setVirtual($data->isVirtual());
 
         if ($data->getType()) {
             $propertyDescriptor->setType($data->getType());
@@ -53,6 +54,12 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setStartLocation($data->getLocation());
         $propertyDescriptor->setEndLocation($data->getEndLocation());
         $this->overwriteTypeFromDocBlock($propertyDescriptor);
+
+        foreach ($data->getHooks() as $hook) {
+            $propertyDescriptor->addHook(
+                $this->getBuilder()->buildDescriptor($hook, PropertyHookDescriptor::class),
+            );
+        }
 
         return $propertyDescriptor;
     }
