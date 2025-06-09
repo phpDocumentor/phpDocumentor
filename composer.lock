@@ -258,16 +258,16 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.2025.2",
+            "version": "v1.2025.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "13ba6ee7b4f44db546a9931847bcec1b1728b77a"
+                "reference": "a036dfe6f1fb5f4ea170bf80796ded93afa48187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/13ba6ee7b4f44db546a9931847bcec1b1728b77a",
-                "reference": "13ba6ee7b4f44db546a9931847bcec1b1728b77a",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/a036dfe6f1fb5f4ea170bf80796ded93afa48187",
+                "reference": "a036dfe6f1fb5f4ea170bf80796ded93afa48187",
                 "shasum": ""
             },
             "bin": [
@@ -293,9 +293,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jawira/plantuml/issues",
-                "source": "https://github.com/jawira/plantuml/tree/v1.2025.2"
+                "source": "https://github.com/jawira/plantuml/tree/v1.2025.3"
             },
-            "time": "2025-03-07T14:00:51+00:00"
+            "time": "2025-06-06T13:00:45+00:00"
         },
         {
             "name": "jawira/plantuml-encoding",
@@ -7654,5 +7654,5 @@
     "platform-overrides": {
         "php": "8.1.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
