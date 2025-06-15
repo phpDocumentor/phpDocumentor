@@ -70,6 +70,12 @@ trait HasConstants
             return $inheritedConstants;
         }
 
-        return $inheritedConstants->merge($parent->getConstants()->merge($parent->getInheritedConstants()));
+        $inheritedConstants = $inheritedConstants->merge(
+            $parent->getConstants()->matches(
+                static fn (ConstantInterface $constant) => (string) $constant->getVisibility() !== 'private',
+            ),
+        );
+
+        return $inheritedConstants->merge($parent->getInheritedConstants());
     }
 }
