@@ -19,6 +19,8 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
+use function method_exists;
+
 trait HasProperties
 {
     /** @var Collection<PropertyInterface> $properties References to properties defined in this class. */
@@ -53,7 +55,7 @@ trait HasProperties
     {
         $inheritedProperties = Collection::fromInterfaceString(PropertyInterface::class);
 
-        if ($this instanceof ClassInterface) {
+        if (method_exists($this, 'getUsedTraits')) {
             foreach ($this->getUsedTraits() as $trait) {
                 if (! $trait instanceof TraitInterface) {
                     continue;
@@ -63,7 +65,11 @@ trait HasProperties
             }
         }
 
-        if ($this instanceof ChildInterface && $this->getParent() instanceof ClassInterface === false) {
+        if ($this instanceof ChildInterface === false) {
+            return $inheritedProperties;
+        }
+
+        if ($this->getParent() instanceof ClassInterface === false) {
             return $inheritedProperties;
         }
 

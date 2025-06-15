@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\TraitInterface;
+
+use function method_exists;
 
 trait HasMethods
 {
@@ -39,5 +43,34 @@ trait HasMethods
         }
 
         return $this->methods;
+    }
+
+    /** @return Collection<MethodInterface> */
+    public function getInheritedMethods(): Collection
+    {
+        $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
+
+        if (method_exists($this, 'getUsedTraits')) {
+            foreach ($this->getUsedTraits() as $trait) {
+                if (! $trait instanceof TraitInterface) {
+                    continue;
+                }
+
+                $inheritedMethods = $inheritedMethods->merge($trait->getMethods());
+            }
+        }
+
+        if ($this instanceof ChildInterface === false) {
+            return $inheritedMethods;
+        }
+
+        $parent = $this->getParent();
+        if ($parent instanceof self === false) {
+            return $inheritedMethods;
+        }
+
+        $inheritedMethods = $inheritedMethods->merge($parent->getMethods());
+
+        return $inheritedMethods->merge($parent->getInheritedMethods());
     }
 }

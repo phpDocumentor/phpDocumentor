@@ -37,12 +37,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
     use Traits\HasConstants;
 
     /** @return Collection<MethodInterface> */
-    public function getInheritedMethods(): Collection
-    {
-        return Collection::fromInterfaceString(MethodInterface::class);
-    }
-
-    /** @return Collection<MethodInterface> */
     public function getMagicMethods(): Collection
     {
         /** @var Collection<Tag\MethodDescriptor> $methodTags */
@@ -72,12 +66,6 @@ class TraitDescriptor extends DescriptorAbstract implements Interfaces\TraitInte
         }
 
         return $methods;
-    }
-
-    /** @return Collection<PropertyInterface> */
-    public function getInheritedProperties(): Collection
-    {
-        return Collection::fromInterfaceString(PropertyInterface::class);
     }
 
     /** @return Collection<PropertyInterface> */

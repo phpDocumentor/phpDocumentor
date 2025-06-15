@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
@@ -58,6 +59,7 @@ class TraitAssembler extends AssemblerAbstract
         $this->addConstants($data->getConstants(), $traitDescriptor);
         $this->addProperties($data->getProperties(), $traitDescriptor);
         $this->addMethods($data->getMethods(), $traitDescriptor);
+        $this->addUses($data->getUsedTraits(), $traitDescriptor);
 
         return $traitDescriptor;
     }
@@ -113,6 +115,19 @@ class TraitAssembler extends AssemblerAbstract
 
             $methodDescriptor->setParent($traitDescriptor);
             $traitDescriptor->getMethods()->set($methodDescriptor->getName(), $methodDescriptor);
+        }
+    }
+
+    /**
+     * Registers traits used by this trait.
+     *
+     * @param Fqsen[] $usedTraits
+     */
+    protected function addUses(array $usedTraits, TraitInterface $traitDescriptor): void
+    {
+        $traits = $traitDescriptor->getUsedTraits();
+        foreach ($usedTraits as $traitFqsen) {
+            $traits->set((string) $traitFqsen, $traitFqsen);
         }
     }
 }
