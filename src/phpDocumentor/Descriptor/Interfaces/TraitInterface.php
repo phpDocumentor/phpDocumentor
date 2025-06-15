@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Reflection\Fqsen;
 
 /**
  * Public interface definition for object representing traits.
@@ -75,4 +76,18 @@ interface TraitInterface extends ElementInterface, TypeInterface, AttributedInte
      * Returns the file associated with the parent class or trait.
      */
     public function getFile(): FileInterface|null;
+
+    /**
+     * Sets all traits used by this trait.
+     *
+     * @param Collection<TraitInterface|Fqsen> $usedTraits
+     */
+    public function setUsedTraits(Collection $usedTraits): void;
+
+    /**
+     * Returns all traits used by this trait.
+     *
+     * @return Collection<TraitInterface|Fqsen>
+     */
+    public function getUsedTraits(): Collection;
 }

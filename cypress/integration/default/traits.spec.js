@@ -117,4 +117,90 @@ describe('Traits', function() {
             });
         });
     });
+
+    describe('Traits using other traits', function() {
+        beforeEach(function(){
+            cy.visit('build/default/classes/Marios-PizzaToppingTrait.html');
+        });
+
+        describe('Methods', function() {
+            it('Shows methods inherited from used trait', function() {
+                // Check that the Table of Contents includes methods from the trait
+                getTocEntry(getToc('methods', 'Methods'), 'getSauceType()')
+                    .should('exist')
+                    .and('have.class', '-method')
+                    .and('have.class', '-public');
+            });
+
+            it.skip('Indicates which trait a method came from', function() {
+                // Ensure the method shows where it was inherited from
+                getTocEntry(getToc('methods', 'Methods'), 'getSauceType()')
+                    .find('.phpdocumentor-table-of-contents__entry__trait')
+                    .should('contain', 'PizzaSauceTrait');
+            });
+
+            it.skip('Links to the trait from which a method was inherited', function() {
+                // Ensure the trait name links to that trait's documentation
+                getTocEntry(getToc('methods', 'Methods'), 'getSauceType()')
+                    .find('.phpdocumentor-table-of-contents__entry__trait a')
+                    .should('have.attr', 'href', 'classes/Marios-PizzaSauceTrait.html');
+            });
+        });
+
+        describe('Properties', function() {
+            it('Shows properties inherited from used trait', function() {
+                // Check that the Table of Contents includes properties from the trait
+                getTocEntry(getToc('properties', 'Properties'), 'sauceType')
+                    .should('exist')
+                    .and('have.class', '-property')
+                    .and('have.class', '-protected');
+            });
+
+            it.skip('Indicates which trait a property came from', function() {
+                // Ensure the property shows where it was inherited from
+                getTocEntry(getToc('properties', 'Properties'), 'sauceType')
+                    .find('.phpdocumentor-table-of-contents__entry__trait')
+                    .should('contain', 'PizzaSauceTrait');
+            });
+
+            it.skip('Links to the trait from which a property was inherited', function() {
+                // Ensure the trait name links to that trait's documentation
+                getTocEntry(getToc('properties', 'Properties'), 'sauceType')
+                    .find('.phpdocumentor-table-of-contents__entry__trait a')
+                    .should('have.attr', 'href', 'classes/Marios-PizzaSauceTrait.html');
+            });
+        });
+
+        describe('Constants', function() {
+            beforeEach(function(){
+                // First, let's check if we can see a trait's constants in the documentation
+                cy.visit('build/default/classes/Marios-SharedTrait.html');
+                // Then let's create a copy of this test file to check at runtime
+                cy.visit('build/default/classes/Marios-PizzaToppingTrait.html');
+            });
+
+            it('Shows constants inherited from used trait', function() {
+                // Check that the Table of Contents includes constants from the trait
+                getTocEntry(getToc('constants', 'Constants'), 'SAUCE_VERSION')
+                    .should('exist')
+                    .and('have.class', '-constant')
+                    .and('have.class', '-public');
+            });
+
+            it.skip('Indicates which trait a constant came from', function() {
+                // Ensure the constant shows where it was inherited from
+                getTocEntry(getToc('constants', 'Constants'), 'SAUCE_VERSION')
+                    .find('.phpdocumentor-table-of-contents__entry__trait')
+                    .should('contain', 'PizzaSauceTrait');
+            });
+
+            it.skip('Links to the trait from which a constant was inherited', function() {
+                // Ensure the trait name links to that trait's documentation
+                getTocEntry(getToc('constants', 'Constants'), 'SAUCE_VERSION')
+                    .find('.phpdocumentor-table-of-contents__entry__trait a')
+                    .should('have.attr', 'href', 'classes/Marios-PizzaSauceTrait.html');
+            });
+        });
+
+    });
 });

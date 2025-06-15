@@ -18,7 +18,6 @@ use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
-use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -55,28 +54,6 @@ class ClassDescriptor extends DescriptorAbstract implements Interfaces\ClassInte
     public function isReadOnly(): bool
     {
         return $this->readOnly;
-    }
-
-    /** @return Collection<MethodInterface> */
-    public function getInheritedMethods(): Collection
-    {
-        $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
-
-        foreach ($this->getUsedTraits() as $trait) {
-            if (! $trait instanceof TraitInterface) {
-                continue;
-            }
-
-            $inheritedMethods = $inheritedMethods->merge($trait->getMethods());
-        }
-
-        if (! $this->getParent() instanceof self) {
-            return $inheritedMethods;
-        }
-
-        $inheritedMethods = $inheritedMethods->merge($this->getParent()->getMethods());
-
-        return $inheritedMethods->merge($this->getParent()->getInheritedMethods());
     }
 
     /** @return Collection<MethodInterface> */
