@@ -15,7 +15,6 @@ namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
-use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 
@@ -69,12 +68,17 @@ trait HasProperties
             return $inheritedProperties;
         }
 
-        if ($this->getParent() instanceof ClassInterface === false) {
+        $parent = $this->getParent();
+        if ($parent instanceof self === false) {
             return $inheritedProperties;
         }
 
-        $inheritedProperties = $inheritedProperties->merge($this->getParent()->getProperties());
+        $inheritedProperties = $inheritedProperties->merge(
+            $parent->getProperties()->matches(
+                static fn (PropertyInterface $property) => (string) $property->getVisibility() !== 'private',
+            ),
+        );
 
-        return $inheritedProperties->merge($this->getParent()->getInheritedProperties());
+        return $inheritedProperties->merge($parent->getInheritedProperties());
     }
 }

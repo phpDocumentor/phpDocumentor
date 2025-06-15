@@ -21,7 +21,7 @@ use phpDocumentor\Descriptor\ValueObjects\Visibility;
 /**
  * Descriptor representing a constant on a class, trait, property or file.
  */
-interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped
+interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterface, IsTyped, VisibilityInterface
 {
     /**
      * Sets the value representation for this constant.

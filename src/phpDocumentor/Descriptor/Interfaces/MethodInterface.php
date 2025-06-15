@@ -26,7 +26,8 @@ interface MethodInterface extends
     TypeInterface,
     InheritsFromElement,
     ChildInterface,
-    AttributedInterface
+    AttributedInterface,
+    VisibilityInterface
 {
     public function setAbstract(bool $abstract): void;
 

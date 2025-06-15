@@ -15,6 +15,8 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use stdClass;
 
@@ -124,9 +126,13 @@ final class ClassDescriptorTest extends MockeryTestCase
         $grandParent = new ClassDescriptor();
         $grandParent->getMethods()->set('construct', new MethodDescriptor());
 
+        $privateMethod = new MethodDescriptor();
+        $privateMethod->setVisibility(new Visibility(VisibilityModifier::PRIVATE));
+
         $parent = new ClassDescriptor();
         $parent->getMethods()->set('construct', new MethodDescriptor());
         $parent->getMethods()->set('otherMethod', new MethodDescriptor());
+        $parent->getMethods()->set('privateMethod', $privateMethod);
         $parent->setParent($grandParent);
         $this->fixture->setParent($parent);
 
@@ -179,16 +185,15 @@ final class ClassDescriptorTest extends MockeryTestCase
         $collectionMock = m::mock(Collection::class);
         $collectionMock->shouldReceive('get');
         $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getConstants')->andReturn(new Collection(['constants']));
-        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection(['inherited']));
+        $mock->shouldReceive('getConstants')->andReturn(new Collection([new ConstantDescriptor()]));
+        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection([new ConstantDescriptor()]));
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedConstants();
 
         self::assertInstanceOf(Collection::class, $result);
 
-        $expected = ['inherited', 'constants'];
-        self::assertSame($expected, $result->getAll());
+        self::assertCount(2, $result->getAll());
     }
 
     public function testGetInheritedPropertiesNoParent(): void
@@ -202,19 +207,19 @@ final class ClassDescriptorTest extends MockeryTestCase
 
     public function testGetInheritedPropertiesWithClassDescriptorParent(): void
     {
-        $collectionMock = m::mock(Collection::class);
-        $collectionMock->shouldReceive('get');
+        $privateProperty = new PropertyDescriptor();
+        $privateProperty->setVisibility(new Visibility(VisibilityModifier::PRIVATE));
+
         $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getProperties')->andReturn(new Collection(['properties']));
-        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection(['inherited']));
+        $mock->shouldReceive('getProperties')->andReturn(new Collection([new PropertyDescriptor(), $privateProperty]));
+        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection([new PropertyDescriptor()]));
 
         $this->fixture->setParent($mock);
         $result = $this->fixture->getInheritedProperties();
 
         self::assertInstanceOf(Collection::class, $result);
 
-        $expected = ['inherited', 'properties'];
-        self::assertSame($expected, $result->getAll());
+        self::assertCount(2, $result->getAll());
     }
 
     public function testRetrievingInheritedPropertiesReturnsTraitProperties(): void

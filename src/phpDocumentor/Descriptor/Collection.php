@@ -259,6 +259,21 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     }
 
     /**
+     * @param callable(T):bool $callback
+     *
+     * @return self<T>
+     */
+    public function matches(callable $callback): Collection
+    {
+        return new self(
+            array_filter(
+                $this->getAll(),
+                $callback,
+            ),
+        );
+    }
+
+    /**
      * @param class-string<C> $classString
      * @param array<C> $elements
      *

@@ -69,7 +69,11 @@ trait HasMethods
             return $inheritedMethods;
         }
 
-        $inheritedMethods = $inheritedMethods->merge($parent->getMethods());
+        $inheritedMethods = $inheritedMethods->merge(
+            $parent->getMethods()->matches(
+                static fn (MethodInterface $method) => (string) $method->getVisibility() !== 'private',
+            ),
+        );
 
         return $inheritedMethods->merge($parent->getInheritedMethods());
     }
