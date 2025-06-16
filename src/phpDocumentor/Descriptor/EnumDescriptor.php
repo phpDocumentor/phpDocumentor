@@ -66,35 +66,6 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         return $inheritedMethods;
     }
 
-    /** @return Collection<MethodInterface> */
-    public function getMagicMethods(): Collection
-    {
-        $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
-
-        $methods = Collection::fromInterfaceString(MethodInterface::class);
-
-        foreach ($methodTags as $methodTag) {
-            $method = new MethodDescriptor();
-            $method->setName($methodTag->getMethodName());
-            $method->setDescription($methodTag->getDescription());
-            $method->setStatic($methodTag->isStatic());
-            $method->setParent($this);
-            $method->setReturnType($methodTag->getResponse()->getType());
-            $method->setHasReturnByReference($methodTag->getHasReturnByReference());
-
-            $returnTags = $method->getTags()->fetch('return', new Collection());
-            $returnTags->add($methodTag->getResponse());
-
-            foreach ($methodTag->getArguments() as $name => $argument) {
-                $method->addArgument($name, $argument);
-            }
-
-            $methods->add($method);
-        }
-
-        return $methods;
-    }
-
     /** @inheritDoc */
     public function setPackage($package): void
     {

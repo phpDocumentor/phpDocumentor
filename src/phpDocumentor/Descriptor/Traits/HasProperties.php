@@ -13,12 +13,18 @@ namespace phpDocumentor\Descriptor\Traits;
  * @link https://phpdoc.org
  */
 
+use InvalidArgumentException;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
+use phpDocumentor\Descriptor\PropertyDescriptor;
+use phpDocumentor\Descriptor\Tag;
+use phpDocumentor\Descriptor\Validation\Error;
 
+use function ltrim;
 use function method_exists;
+use function sprintf;
 
 trait HasProperties
 {
@@ -80,5 +86,53 @@ trait HasProperties
         );
 
         return $inheritedProperties->merge($parent->getInheritedProperties());
+    }
+
+    /** @return Collection<PropertyInterface> */
+    public function getMagicProperties(): Collection
+    {
+        $tags = $this->getTags();
+        /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
+        $propertyTags = $tags->fetch('property', new Collection())->filter(Tag\PropertyDescriptor::class)
+            ->merge($tags->fetch('property-read', new Collection())->filter(Tag\PropertyDescriptor::class))
+            ->merge($tags->fetch('property-write', new Collection())->filter(Tag\PropertyDescriptor::class));
+
+        $properties = Collection::fromInterfaceString(PropertyInterface::class);
+
+        /** @var Tag\PropertyDescriptor $propertyTag */
+        foreach ($propertyTags as $propertyTag) {
+            $property = new PropertyDescriptor();
+            $property->setName(ltrim($propertyTag->getVariableName(), '$'));
+            $property->setDescription($propertyTag->getDescription());
+            $property->setType($propertyTag->getType());
+            $property->setWriteOnly($propertyTag->getName() === 'property-write');
+            $property->setReadOnly($propertyTag->getName() === 'property-read');
+            try {
+                $property->setParent($this);
+                $properties->set($property->getName(), $property);
+            } catch (InvalidArgumentException $e) {
+                $this->errors->add(
+                    new Error(
+                        'ERROR',
+                        sprintf(
+                            'Property name is invalid %s',
+                            $e->getMessage(),
+                        ),
+                        null,
+                    ),
+                );
+            }
+        }
+
+        if ($this instanceof ChildInterface === false) {
+            return $properties;
+        }
+
+        $parent = $this->getParent();
+        if ($parent instanceof self) {
+            $properties = $properties->merge($parent->getMagicProperties());
+        }
+
+        return $properties;
     }
 }

@@ -30,7 +30,7 @@ trait MagicPropertyContainerTests
         $expected->setParent($this->fixture);
 
         self::assertEquals(
-            new Collection([$expected]),
+            new Collection(['variableName' => $expected]),
             $magicProperties,
         );
     }
