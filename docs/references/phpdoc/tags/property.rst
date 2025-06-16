@@ -42,7 +42,8 @@ Effects in phpDocumentor
 
 *Structural Elements* of type *class* or *trait* tagged with the
 ``@property``, ``@property-read`` or ``@property-write`` tag will show an extra
-property in their property listing matching the data provided with this tag.
+property in their property listing matching the data provided with this tag. Native properties
+always take precedence over properties defined with this tag.
 
 
 Examples
@@ -102,6 +103,19 @@ in order to implement a "magic", read-only ``$full_name`` property:
                 return "{$this->first_name} {$this->last_name}";
             }
         }
+    }
+
+The :code:`@property-write` is ignored by phpDocumentor as the native php property is defined.
+
+.. code-block:: php
+   :linenos:
+
+   /**
+    * @property-write mix $full_name
+    */
+    class User
+    {
+        public string $full_name;
     }
 
 
