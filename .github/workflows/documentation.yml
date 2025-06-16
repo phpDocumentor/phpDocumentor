@@ -74,7 +74,7 @@ jobs:
         run: "rsync -r --delete data/website/site/* docs/site"
 
       - name: "Commit"
-        uses: "stefanzweifel/git-auto-commit-action@v5"
+        uses: "stefanzweifel/git-auto-commit-action@v6"
         with:
           repository: "docs"
           commit_message: "Update main documentation"
