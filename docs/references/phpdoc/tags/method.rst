@@ -44,7 +44,7 @@ Effects in phpDocumentor
 
 *Structural Elements* of type *class* or *interface* tagged with the ``@method``
 tag will show an extra method in their method listing matching the data
-provided with this tag.
+provided with this tag. Native methods always take precedence over methods defined with this tag.
 
 Examples
 --------

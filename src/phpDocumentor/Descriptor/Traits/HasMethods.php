@@ -17,6 +17,8 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
+use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\Tag;
 
 use function method_exists;
 
@@ -76,5 +78,43 @@ trait HasMethods
         );
 
         return $inheritedMethods->merge($parent->getInheritedMethods());
+    }
+
+    /** @return Collection<MethodInterface> */
+    public function getMagicMethods(): Collection
+    {
+        $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
+
+        $methods = Collection::fromInterfaceString(MethodInterface::class);
+
+        foreach ($methodTags as $methodTag) {
+            $method = new MethodDescriptor();
+            $method->setName($methodTag->getMethodName());
+            $method->setDescription($methodTag->getDescription());
+            $method->setStatic($methodTag->isStatic());
+            $method->setParent($this);
+            $method->setReturnType($methodTag->getResponse()->getType());
+            $method->setHasReturnByReference($methodTag->getHasReturnByReference());
+
+            $returnTags = $method->getTags()->fetch('return', new Collection());
+            $returnTags->add($methodTag->getResponse());
+
+            foreach ($methodTag->getArguments() as $name => $argument) {
+                $method->addArgument($name, $argument);
+            }
+
+            $methods->set($method->getName(), $method);
+        }
+
+        if (! $this instanceof ChildInterface) {
+            return $methods;
+        }
+
+        $parent = $this->getParent();
+        if ($parent instanceof static) {
+            $methods = $methods->merge($parent->getMagicMethods());
+        }
+
+        return $methods;
     }
 }
