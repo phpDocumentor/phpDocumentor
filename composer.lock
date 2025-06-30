@@ -1792,16 +1792,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "cc56ae7975848c7f69465e07e722fc93b0ef419b"
+                "reference": "b5353a52c69c984fa26822bd7df83031e4dff1e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/cc56ae7975848c7f69465e07e722fc93b0ef419b",
-                "reference": "cc56ae7975848c7f69465e07e722fc93b0ef419b",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/b5353a52c69c984fa26822bd7df83031e4dff1e9",
+                "reference": "b5353a52c69c984fa26822bd7df83031e4dff1e9",
                 "shasum": ""
             },
             "require": {
@@ -1845,9 +1845,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.8.0"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.8.1"
             },
-            "time": "2025-03-16T11:29:49+00:00"
+            "time": "2025-06-24T19:19:06+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -3612,16 +3612,16 @@
         },
         {
             "name": "symfony/html-sanitizer",
-            "version": "v6.4.18",
+            "version": "v6.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/html-sanitizer.git",
-                "reference": "28e9fb12a6784c64b1b5e6fc92853bb7a3c4bf05"
+                "reference": "f66d6585c6ece946239317c339f8b2860dfdf2db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/28e9fb12a6784c64b1b5e6fc92853bb7a3c4bf05",
-                "reference": "28e9fb12a6784c64b1b5e6fc92853bb7a3c4bf05",
+                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/f66d6585c6ece946239317c339f8b2860dfdf2db",
+                "reference": "f66d6585c6ece946239317c339f8b2860dfdf2db",
                 "shasum": ""
             },
             "require": {
@@ -3661,7 +3661,7 @@
                 "sanitizer"
             ],
             "support": {
-                "source": "https://github.com/symfony/html-sanitizer/tree/v6.4.18"
+                "source": "https://github.com/symfony/html-sanitizer/tree/v6.4.21"
             },
             "funding": [
                 {
@@ -3677,20 +3677,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-17T13:18:31+00:00"
+            "time": "2025-03-31T07:29:45+00:00"
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.4.19",
+            "version": "v6.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "3294a433fc9d12ae58128174896b5b1822c28dad"
+                "reference": "19f11e742b94dcfd968a54f5381bb9082a88cb57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/3294a433fc9d12ae58128174896b5b1822c28dad",
-                "reference": "3294a433fc9d12ae58128174896b5b1822c28dad",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/19f11e742b94dcfd968a54f5381bb9082a88cb57",
+                "reference": "19f11e742b94dcfd968a54f5381bb9082a88cb57",
                 "shasum": ""
             },
             "require": {
@@ -3754,7 +3754,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.4.19"
+                "source": "https://github.com/symfony/http-client/tree/v6.4.23"
             },
             "funding": [
                 {
@@ -3770,7 +3770,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-13T09:55:13+00:00"
+            "time": "2025-06-27T20:02:31+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4256,7 +4256,7 @@
         },
         {
             "name": "symfony/polyfill-php83",
-            "version": "v1.31.0",
+            "version": "v1.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php83.git",
@@ -4312,7 +4312,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php83/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-php83/tree/v1.32.0"
             },
             "funding": [
                 {
