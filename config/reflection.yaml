@@ -12,7 +12,7 @@ services:
       tags: ['phpdoc.reflection.reducer']
 
   phpDocumentor\Reflection\Php\:
-    resource: '%kernel.project_dir%/vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'
+    resource: '%vendor_dir%/phpdocumentor/reflection/src/phpDocumentor/Reflection/Php'
 
   phpDocumentor\Reflection\Php\NodesFactory:
     class: phpDocumentor\Reflection\Php\NodesFactory
