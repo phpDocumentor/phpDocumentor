@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   phpdoc:
     build:
@@ -6,7 +5,9 @@ services:
       target: dev
       dockerfile: Dockerfile
     user: ${CURRENT_UID}
-    volumes: [".:/opt/phpdoc"]
+    volumes:
+      - ./:/opt/phpdoc
+      - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"
   phpdoc-pcov:
     build:
@@ -14,5 +15,7 @@ services:
       target: dev-pcov
       dockerfile: Dockerfile
     user: ${CURRENT_UID}
-    volumes: [".:/opt/phpdoc"]
+    volumes:
+      - ./:/opt/phpdoc
+      - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"
