@@ -4,9 +4,9 @@ services:
       context: .
       target: dev
       dockerfile: Dockerfile
+    user: ${CURRENT_UID}
     volumes:
       - ./:/opt/phpdoc
-      # Use the container vendor folder not the one from ./
       - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"
   phpdoc-pcov:
@@ -14,8 +14,8 @@ services:
       context: .
       target: dev-pcov
       dockerfile: Dockerfile
+    user: ${CURRENT_UID}
     volumes:
       - ./:/opt/phpdoc
-      # Use the container vendor folder not the one from ./
       - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"

@@ -12,10 +12,7 @@ RUN apt-get -yq install openjdk-17-jre-headless \
 
 FROM composer:2 AS build
 
-# This should speed up the build process faster when developing
-RUN mkdir -p /opt/phpdoc
-COPY ./composer* /opt/phpdoc
-
+COPY . /opt/phpdoc
 WORKDIR /opt/phpdoc
 RUN /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev
 
@@ -36,23 +33,13 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 FROM phpdoc_base AS prod
 
-# We parent dev from phpdoc_base so that code updates don't triger a full rebuild (also prod is blank)
-# 
-# This will need to be changed in the future if/when more commands are added but for now this vastyl speeds up the devleopment process
-FROM phpdoc_base AS dev
+FROM prod AS dev
 
 RUN apt-get update \
     && apt-get install -yq git \
     && useradd -m -s /bin/bash phpdoc
 
-# Move the full copy last so modifications don't triger a re-install
-COPY . /opt/phpdoc
-    
-# We do this for the same reasons as for dev (above)
-FROM phpdoc_base AS dev-pcov
+FROM dev AS dev-pcov
 
 RUN pecl install pcov \
 	&& docker-php-ext-enable pcov
-
-# Move the full copy last so modifications don't triger a re-install
-COPY . /opt/phpdoc    
