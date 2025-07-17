@@ -305,9 +305,10 @@
 								{% endif %}
 								{% for tag in tags %}
 									<dd>
-										<a href="{{ tag.reference|route('url') }}">
-											<span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span>
-										</a>
+										<span class="namespace-wrapper">
+											<a href="{{ tag.reference|route('url') }}">{{ tag.reference }}</a> 
+											{{ tag.description }}
+										</span>
 									</dd>
 								{% endfor %}
 							{% endif %}
