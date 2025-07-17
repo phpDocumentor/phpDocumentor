@@ -1,4 +1,4 @@
-FROM php:8.1 as base
+FROM php:8.1 AS base
 
 # /usr/share/man/man1 needs to be created before installing openjdk-11-jre lest it will fail
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
@@ -12,11 +12,14 @@ RUN apt-get -yq install openjdk-17-jre-headless \
 
 FROM composer:2 AS build
 
-COPY . /opt/phpdoc
+# This should speed up the build process faster when developing
+RUN mkdir -p /opt/phpdoc
+COPY ./composer* /opt/phpdoc
+
 WORKDIR /opt/phpdoc
 RUN /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev
 
-FROM base as phpdoc_base
+FROM base AS phpdoc_base
 
 WORKDIR /data
 VOLUME /data
@@ -31,15 +34,25 @@ ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-FROM phpdoc_base as prod
+FROM phpdoc_base AS prod
 
-FROM prod as dev
+# We parent dev from phpdoc_base so that code updates don't triger a full rebuild (also prod is blank)
+# 
+# This will need to be changed in the future if/when more commands are added but for now this vastyl speeds up the devleopment process
+FROM phpdoc_base AS dev
 
 RUN apt-get update \
     && apt-get install -yq git \
     && useradd -m -s /bin/bash phpdoc
 
-FROM dev as dev-pcov
+# Move the full copy last so modifications don't triger a re-install
+COPY . /opt/phpdoc
+    
+# We do this for the same reasons as for dev (above)
+FROM phpdoc_base AS dev-pcov
 
 RUN pecl install pcov \
 	&& docker-php-ext-enable pcov
+
+# Move the full copy last so modifications don't triger a re-install
+COPY . /opt/phpdoc    

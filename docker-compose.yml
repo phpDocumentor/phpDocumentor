@@ -1,18 +1,22 @@
-version: '3.8'
 services:
   phpdoc:
     build:
       context: .
       target: dev
       dockerfile: Dockerfile
-    user: ${CURRENT_UID}
-    volumes: [".:/opt/phpdoc"]
+    volumes:
+      - ./:/opt/phpdoc
+      # Use the container vendor folder not the one from ./
+      - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"
+    entrypoint: "/opt/phpdoc/bin/phpdoc --template clean --force"
   phpdoc-pcov:
     build:
       context: .
       target: dev-pcov
       dockerfile: Dockerfile
-    user: ${CURRENT_UID}
-    volumes: [".:/opt/phpdoc"]
+    volumes:
+      - ./:/opt/phpdoc
+      # Use the container vendor folder not the one from ./
+      - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"
