@@ -43,7 +43,12 @@
                 {% if uses_tags is not empty %}
                     <dt>Uses</dt>
                     {% for tag in uses_tags %}
-                        <dd><a href="{{ tag.reference|route('url') }}"><span class="namespace-wrapper">{{ tag.description ?: tag.reference }}</span></a></dd>
+                        <dd>
+                            <span class="namespace-wrapper">
+                                <a href="{{ tag.reference|route('url') }}">{{ tag.reference }}</a> 
+                                {{ tag.description }}
+                            </span>
+                        </dd>
                     {% endfor %}
                 {% endif %}
             </dl>
