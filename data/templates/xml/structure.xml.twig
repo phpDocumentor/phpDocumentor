@@ -32,6 +32,35 @@
                 </function>
             {% endfor %}
 
+            {# @var function \phpDocumentor\Descriptor\EnumDescriptor #}
+            {% for enum in file.enums %}
+                <enum namespace="{{ enum.namespace }}" line="{{ enum.line }}">
+                    <name>{{ enum.name }}</name>
+                    <full_name>{{ enum.fullyQualifiedStructuralElementName }}</full_name>
+                    {{ include('docblock.xml.twig', {descriptor: enum}) }}
+                    
+                    {% for interface in enum.interfaces %}
+                        <implements>{{ interface }}</implements>
+                    {% endfor %}
+
+                    {% for constant in enum.constants %}
+                        {{ include('constant.xml.twig', {constant: constant}) }}
+                    {% endfor %}
+
+                    {% for case in enum.cases %}
+                        {{ include('enum-case.xml.twig', {case: case}) }}
+                    {% endfor %}
+
+                    {% for method in enum.methods %}
+                        {{ include('method.xml.twig', {method: method}) }}
+                    {% endfor %}
+
+                    {% for method in class.magicMethods %}
+                        {{ include('method.xml.twig', {method: method, inherited_from: null, magic: true}) }}
+                    {% endfor %}
+                </enum>
+            {% endfor %}
+
             {# @var interface \phpDocumentor\Descriptor\InterfaceDescriptor #}
             {% for interface in file.interfaces %}
                 <interface namespace="{{ interface.namespace }}" line="{{ interface.line }}" package="{{ interface.package }}">
