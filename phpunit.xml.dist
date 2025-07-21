@@ -30,8 +30,8 @@
     <testsuite name="incubator">
       <directory>./incubator/*/tests/unit/</directory>
     </testsuite>
-    <testsuite name="e2e">
-      <directory>./tests/e2e/</directory>
+    <testsuite name="cli">
+      <directory>./tests/cli/</directory>
     </testsuite>
   </testsuites>
   <logging>

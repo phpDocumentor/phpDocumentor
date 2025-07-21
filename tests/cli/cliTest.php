@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace e2e;
+namespace cli;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
-final class e2eTest extends TestCase
+final class cliTest extends TestCase
 {
     /** @return iterable<string, array{command: string[], stdout: string|false, stderr: string, cwd?: string}> */
     public static function provider(): iterable
@@ -82,14 +82,15 @@ final class e2eTest extends TestCase
     ): void {
         $process = new Process(
             [
-                "phpdoc", ...$command
+               "php", realpath(dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'bin') . DIRECTORY_SEPARATOR . "phpdoc", ...$command
             ],
-            $cwd,
-            ['PATH' => realpath(__DIR__ . '/../../bin') . ':'. $_ENV['PATH']]
+            $cwd
         );
         $statusCode = $process->run();
 
-        self::assertStringMatchesFormat($stdout, $process->getOutput());
+        if ($statusCode === 0) {
+            self::assertStringMatchesFormat($stdout, $process->getOutput());
+        }
         self::assertStringMatchesFormat($stderr, $process->getErrorOutput());
         self::assertEquals(0, $statusCode);
     }

@@ -14,5 +14,10 @@
   "require": {
     "phpdoc/test-extension": "dev-main@dev",
     "phpdoc/test-danger": "dev-main@dev"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpdocumentor/shim": true
+    }
   }
 }

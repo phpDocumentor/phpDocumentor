@@ -38,7 +38,7 @@ Options:
       --ansi|--no-ansi                           Force (or disable --no-ansi) ANSI output
   -n, --no-interaction                           Do not ask any interactive question
   -c, --config[=CONFIG]                          Location of a custom configuration file
-      --extensions-dir[=EXTENSIONS-DIR]          extensions directory to load extensions from [default: "/opt/project/tests/e2e/.phpdoc/extensions"]
+      --extensions-dir[=EXTENSIONS-DIR]          extensions directory to load extensions from [default: "%s"]
       --no-extensions                            Do not load any extensions
       --log[=LOG]                                Log file to write to
   -v|vv|vvv, --verbose                           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug

@@ -16,7 +16,7 @@ Options:
       --ansi|--no-ansi                   Force (or disable --no-ansi) ANSI output
   -n, --no-interaction                   Do not ask any interactive question
   -c, --config[=CONFIG]                  Location of a custom configuration file
-      --extensions-dir[=EXTENSIONS-DIR]  extensions directory to load extensions from [default: "/opt/project/tests/e2e/.phpdoc/extensions"]
+      --extensions-dir[=EXTENSIONS-DIR]  extensions directory to load extensions from [default: "%s"]
       --no-extensions                    Do not load any extensions
       --log[=LOG]                        Log file to write to
   -v|vv|vvv, --verbose                   Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
@@ -24,10 +24,10 @@ Options:
 Help:
   The help command displays help for a given command:
   
-    /opt/project/bin/phpdoc help list
+    %s/phpdoc help list
   
   You can also output the help in other formats by using the --format option:
   
-    /opt/project/bin/phpdoc help --format=xml list
+    %s/phpdoc help --format=xml list
   
   To display the list of available commands, please use the list command.
