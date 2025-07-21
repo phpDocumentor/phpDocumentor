@@ -1,0 +1,8 @@
+{# @var constant phpDocumentor\Descriptor\EnumCaseDescriptor #}
+<case line="{{ case.line }}">
+    <name>{{ case.name }}</name>
+    <full_name>{{ case.fullyQualifiedStructuralElementName }}</full_name>
+    <value>{{ case.value }}</value>
+    {% if inherited_from %}<inherited_from>{{ inherited_from }}</inherited_from>{% endif %}
+    {{ include('docblock.xml.twig', {descriptor: case}) }}
+</case>
