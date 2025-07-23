@@ -22,3 +22,6 @@ phpmd.xml.dist
 phpstan.neon
 phpunit.xml.dist
 symfony.lock
+
+docker-compose.yml
+Dockerfile
