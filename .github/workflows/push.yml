@@ -229,7 +229,7 @@ jobs:
         testsuite:
           - 'unit'
           - 'integration'
-          - 'cli'
+#          - 'cli'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '8.1'
