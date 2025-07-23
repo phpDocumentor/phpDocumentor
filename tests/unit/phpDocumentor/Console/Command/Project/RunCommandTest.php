@@ -94,6 +94,7 @@ class RunCommandTest extends TestCase
                 'setting',
                 'list-settings',
                 'parseprivate',
+                'progress',
             ],
             array_keys($options),
         );

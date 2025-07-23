@@ -30,6 +30,9 @@
     <testsuite name="incubator">
       <directory>./incubator/*/tests/unit/</directory>
     </testsuite>
+    <testsuite name="cli">
+      <directory>./tests/cli/</directory>
+    </testsuite>
   </testsuites>
   <logging>
     <junit outputFile="build/logs/junit.xml"/>

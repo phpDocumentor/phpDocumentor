@@ -1,0 +1,74 @@
+Description:
+  Parses and transforms the given files to a specified location
+
+Usage:
+  project:run [options]
+  run
+
+Options:
+  -t, --target[=TARGET]                          Path where to store the generated output
+      --cache-folder[=CACHE-FOLDER]              Path where to store the cache files
+  -f, --filename[=FILENAME]                      File to parse, glob patterns are supported. Provide multiple options of this type to add
+                                                 multiple files. (multiple values allowed)
+  -d, --directory[=DIRECTORY]                    directory to parse, glob patterns are supported. Provide multiple options of this type to add
+                                                 multiple directories. (multiple values allowed)
+      --encoding[=ENCODING]                      encoding to be used to interpret source files with
+      --extensions[=EXTENSIONS]                  Provide multiple options of this type to add multiple extensions. default is php (multiple values allowed)
+  -i, --ignore[=IGNORE]                          File(s) and directories (relative to the source-code directory) that will be ignored. Glob patterns are supported. Add multiple options of this type of add more ignore patterns (multiple values allowed)
+      --ignore-tags[=IGNORE-TAGS]                Tag that will be ignored, defaults to none. package, subpackage and ignore may not be ignored. Add multiple options of this type to ignore multiple tags. (multiple values allowed)
+      --hidden                                   Use this option to tell phpDocumentor to parse files and directories that begin with a period (.), by default these are ignored
+      --ignore-symlinks|--no-ignore-symlinks     Ignore symlinks to other files or directories, default is on
+  -m, --markers[=MARKERS]                        Comma-separated list of markers/tags to filter (multiple values allowed)
+      --title[=TITLE]                            Sets the title for this project; default is the phpDocumentor logo
+      --force                                    Forces a full build of the documentation, does not increment existing documentation
+      --validate                                 Validates every processed file using PHP Lint, costs a lot of performance
+      --visibility[=VISIBILITY]                  Specifies the parse visibility that should be displayed in the documentation. Add multiple options of
+                                                 this type to specify multiple levels.("public,protected") (multiple values allowed)
+      --defaultpackagename[=DEFAULTPACKAGENAME]  Name to use for the default package.
+      --sourcecode|--no-sourcecode               Whether to include syntax highlighted source code
+      --template[=TEMPLATE]                      Name of the template to use (optional) (multiple values allowed)
+      --examples-dir[=EXAMPLES-DIR]              Directory to seacher for example files referenced by @example tags
+  -s, --setting[=SETTING]                        Provide custom setting(s) as "key=value", run again with --list-settings for a list (multiple values allowed)
+      --list-settings                            Returns a list of available settings
+      --parseprivate                             Whether to parse DocBlocks marked with @internal tag
+      --progress|--no-progress                   Enable the progress bar
+  -h, --help                                     Display help for the given command. When no command is given display help for the list command
+  -q, --quiet                                    Do not output any message
+  -V, --version                                  Display this application version
+      --ansi|--no-ansi                           Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction                           Do not ask any interactive question
+  -c, --config[=CONFIG]                          Location of a custom configuration file
+      --extensions-dir[=EXTENSIONS-DIR]          extensions directory to load extensions from [default: "%s"]
+      --no-extensions                            Do not load any extensions
+      --log[=LOG]                                Log file to write to
+  -v|vv|vvv, --verbose                           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+                  phpDocumentor creates documentation from PHP source files. The simplest way
+                  to use it is:
+  
+                      $ phpdoc run -d [directory to parse] -t [output directory]
+  
+                  This will parse every file ending with .php in <directory
+                  to parse> and then output a HTML site containing easily readable documentation
+                  in <output directory>.
+  
+                  phpDocumentor will try to look for a phpdoc.dist.xml or phpdoc.xml file in your
+                  current working directory and use that to override the default settings if
+                  present. In the configuration file can you specify the same settings (and
+                  more) as the command line provides.
+  
+                  Other commands
+                  In addition to this command phpDocumentor also supports additional commands:
+  
+                  Available commands:
+                    help
+                    list
+                    run
+                  project
+                    project:run
+                  
+  
+                  You can get a more detailed listing of the commands using the list
+                  command and get help by prepending the word help to the command
+                  name.

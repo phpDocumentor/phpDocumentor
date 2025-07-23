@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Extension;
 
-use DirectoryIterator;
+use SplFileInfo;
 
 interface ExtensionLoader
 {
-    public function supports(DirectoryIterator $dir): bool;
+    public function supports(SplFileInfo $dir): bool;
 
-    public function load(DirectoryIterator $dir): ExtensionInfo|null;
+    public function load(SplFileInfo $dir): ExtensionInfo|null;
 }

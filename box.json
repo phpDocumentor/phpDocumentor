@@ -5,6 +5,7 @@
     "files": [
         "VERSION",
         "composer.json",
+        "src/extension-finder/Finder.php",
         "vendor/twig/twig/src/TwigTest.php",
         "vendor/twig/twig/src/Node/Expression/TestExpression.php",
         "vendor/twig/twig/src/Node/Expression/Test/ConstantTest.php",
