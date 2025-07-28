@@ -37,8 +37,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -79,8 +77,6 @@ jobs:
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
@@ -125,8 +121,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -168,8 +162,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -253,8 +245,6 @@ jobs:
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
@@ -301,8 +291,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
@@ -370,8 +358,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
@@ -431,8 +417,6 @@ jobs:
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
