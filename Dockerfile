@@ -1,4 +1,4 @@
-FROM php:8.1 as base
+FROM php:8.1 AS base
 
 # /usr/share/man/man1 needs to be created before installing openjdk-11-jre lest it will fail
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
@@ -16,7 +16,7 @@ COPY . /opt/phpdoc
 WORKDIR /opt/phpdoc
 RUN /usr/bin/composer install --prefer-dist -o --no-interaction --no-dev
 
-FROM base as phpdoc_base
+FROM base AS phpdoc_base
 
 WORKDIR /data
 VOLUME /data
@@ -31,15 +31,15 @@ ENTRYPOINT ["/opt/phpdoc/bin/phpdoc"]
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-FROM phpdoc_base as prod
+FROM phpdoc_base AS prod
 
-FROM prod as dev
+FROM prod AS dev
 
 RUN apt-get update \
     && apt-get install -yq git \
     && useradd -m -s /bin/bash phpdoc
 
-FROM dev as dev-pcov
+FROM dev AS dev-pcov
 
 RUN pecl install pcov \
 	&& docker-php-ext-enable pcov
