@@ -1,0 +1,74 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "f1e8c40994fcacb7d3b179c033eff6eb",
+    "packages": [
+        {
+            "name": "phpdoc/test-danger",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "extensions/Danger",
+                "reference": "135019222681899e28e1271eff56492e18ba24ae"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\": "./"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "phpdoc/test-extension",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "extensions/Twig",
+                "reference": "ae5081f325979705c3cb024edaf8b6571b22e2b7"
+            },
+            "type": "phpdoc-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MyExtension\\Twig\\": "./"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "phpdoc/test-extension": 20,
+        "phpdoc/test-danger": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}

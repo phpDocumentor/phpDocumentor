@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phar xmlns="https://phar.io/xml/manifest/1.0">
+    <contains name="MyExtension/Twig" version="1.0" type="extension">
+        <extension for="phpdocumentor/phpdocumentor" compatible="^3.4"/>
+    </contains>
+
+    <copyright>
+        <author name="You" email="you@example.com"/>
+        <license type="MIT" url="https://github.com/phpdocumentor/phpdocumentor-example-extension/blob/1.0.0/LICENSE"/>
+    </copyright>
+
+    <requires>
+        <php version="^8.1"/>
+    </requires>
+
+    <bundles>
+        <component name="MyExtension\Twig\Extension" version="1.0" />
+    </bundles>
+</phar>

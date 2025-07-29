@@ -6,17 +6,18 @@ namespace phpDocumentor\Extension;
 
 use DirectoryIterator;
 use PharIo\Manifest\ManifestLoader;
+use SplFileInfo;
 
 final class DirectoryLoader implements ExtensionLoader
 {
-    public function supports(DirectoryIterator $dir): bool
+    public function supports(SplFileInfo $dir): bool
     {
         return $dir->isDir() && $this->findManifestFile(new DirectoryIterator($dir->getPathname())) !== null;
     }
 
-    public function load(DirectoryIterator $dir): ExtensionInfo|null
+    public function load(SplFileInfo $dir): ExtensionInfo|null
     {
-        $file = $this->findManifestFile($dir);
+        $file = $this->findManifestFile(new DirectoryIterator($dir->getPathname()));
         if ($file === null) {
             return null;
         }

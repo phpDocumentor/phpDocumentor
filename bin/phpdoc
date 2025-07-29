@@ -7,8 +7,8 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 set_time_limit(0);
 
+$_PHPDOC_EXTENSIONS_DIRS = include __DIR__ . '/../src/extension-finder/Finder.php';
 require __DIR__ . '/../src/phpDocumentor/AutoloaderLocator.php';
 $loader = AutoloaderLocator::autoload();
-
-$application = new Application();
+$application = new Application($_PHPDOC_EXTENSIONS_DIRS ?? []);
 $application->run();

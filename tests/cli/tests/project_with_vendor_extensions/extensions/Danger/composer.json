@@ -1,0 +1,15 @@
+{
+  "name": "phpdoc/test-danger",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "phpDocumentor\\": "./"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}

@@ -28,26 +28,33 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use function array_merge;
 use function getcwd;
 use function is_array;
 use function sprintf;
 
 class Application extends BaseApplication
 {
-    public function __construct()
+    /** @param string[] $composerExtensionsDirs An array of directories where composer installeed extensions are located. */
+    public function __construct(private array $composerExtensionsDirs = [])
     {
         parent::__construct('phpDocumentor', (new Version())->getVersion());
     }
 
     public function doRun(InputInterface $input, OutputInterface $output): int
     {
-        $extensionsDirs = $input->getParameterOption(
-            '--extensions-dir',
-            $this->getDefinition()->getOption('extensions-dir')->getDefault(),
-        );
+        $extensionsDirs = [];
+        if ($input->hasParameterOption('--no-extensions') === false) {
+            $extensionsDirs = $input->getParameterOption(
+                '--extensions-dir',
+                $this->getDefinition()->getOption('extensions-dir')->getDefault(),
+            );
 
-        if (! is_array($extensionsDirs)) {
-            $extensionsDirs = [$extensionsDirs];
+            if (! is_array($extensionsDirs)) {
+                $extensionsDirs = [$extensionsDirs];
+            }
+
+            $extensionsDirs = array_merge($extensionsDirs, $this->composerExtensionsDirs);
         }
 
         $extensionHandler = ExtensionHandler::getInstance($extensionsDirs);
@@ -109,6 +116,12 @@ class Application extends BaseApplication
                     InputOption::VALUE_OPTIONAL,
                     'extensions directory to load extensions from',
                     getcwd() . '/.phpdoc/extensions',
+                ),
+                new InputOption(
+                    'no-extensions',
+                    null,
+                    InputOption::VALUE_NONE,
+                    'Do not load any extensions',
                 ),
                 new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
             ],

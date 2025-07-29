@@ -226,6 +226,10 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+        testsuite:
+          - 'unit'
+          - 'integration'
+#          - 'cli'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
             php-versions: '8.1'
@@ -268,7 +272,7 @@ jobs:
         custom-cache-suffix: $(date -u -d "-0 month -$(($(date +%d)-1)) days" "+%F")
 
     - name: Run PHPUnit
-      run: ./bin/phpunit --testsuite=unit,integration --no-coverage
+      run: ./bin/phpunit --testsuite=${{ matrix.testsuite }} --no-coverage
 
   e2e:
     runs-on: ubuntu-latest
