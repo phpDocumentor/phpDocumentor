@@ -1,4 +1,4 @@
-FROM php:8.1 AS base
+FROM php:8.1-bookworm AS base
 
 # /usr/share/man/man1 needs to be created before installing openjdk-11-jre lest it will fail
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
