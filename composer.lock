@@ -1644,16 +1644,16 @@
         },
         {
             "name": "phpdocumentor/filesystem",
-            "version": "1.7.4",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/filesystem.git",
-                "reference": "bb7c7853a32b364cc7ac824eb15fc640b24b765e"
+                "reference": "baf81ce5f6ebf450b798bee74f60d107c21e3a8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/bb7c7853a32b364cc7ac824eb15fc640b24b765e",
-                "reference": "bb7c7853a32b364cc7ac824eb15fc640b24b765e",
+                "url": "https://api.github.com/repos/phpDocumentor/filesystem/zipball/baf81ce5f6ebf450b798bee74f60d107c21e3a8b",
+                "reference": "baf81ce5f6ebf450b798bee74f60d107c21e3a8b",
                 "shasum": ""
             },
             "require": {
@@ -1682,9 +1682,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/filesystem/issues",
-                "source": "https://github.com/phpDocumentor/filesystem/tree/1.7.4"
+                "source": "https://github.com/phpDocumentor/filesystem/tree/1.9.0"
             },
-            "time": "2025-03-10T19:50:04+00:00"
+            "time": "2025-09-10T21:23:28+00:00"
         },
         {
             "name": "phpdocumentor/flyfinder",
@@ -3786,7 +3786,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.32.0",
+            "version": "v1.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -3845,7 +3845,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.32.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.33.0"
             },
             "funding": [
                 {
@@ -3854,6 +3854,10 @@
                 },
                 {
                     "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
                     "type": "github"
                 },
                 {
