@@ -218,6 +218,7 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+          - '8.5'
         testsuite:
           - 'unit'
           - 'integration'
@@ -331,6 +332,7 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+          - '8.5'
         operating-system:
           - ubuntu-latest
           - windows-latest
@@ -393,6 +395,7 @@ jobs:
           - '8.2'
           - '8.3'
           - '8.4'
+          - '8.5'
         operating-system:
           - ubuntu-latest
           - windows-latest
