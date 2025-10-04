@@ -4,84 +4,33 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a4d302a3577f8490807634f2cbb46fd",
+    "content-hash": "ccd797053369165fcd2ae3271205f2cd",
     "packages": [
         {
-            "name": "cypresslab/php-curry",
-            "version": "0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/matteosister/php-curry.git",
-                "reference": "cf1a856b4bfcf6ba671296f1d1216323f366177e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/matteosister/php-curry/zipball/cf1a856b4bfcf6ba671296f1d1216323f366177e",
-                "reference": "cf1a856b4bfcf6ba671296f1d1216323f366177e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~6.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/Cypress/Curry/functions.php"
-                ],
-                "psr-0": {
-                    "Cypress\\Curry": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Curried functions in PHP",
-            "keywords": [
-                "curry",
-                "functional-programming"
-            ],
-            "support": {
-                "issues": "https://github.com/matteosister/php-curry/issues",
-                "source": "https://github.com/matteosister/php-curry/tree/0.5.0"
-            },
-            "abandoned": true,
-            "time": "2017-03-10T17:05:37+00:00"
-        },
-        {
             "name": "parsica-php/parsica",
-            "version": "0.8.1",
+            "version": "0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/parsica-php/parsica.git",
-                "reference": "1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8"
+                "reference": "e5b0a763e26e89de39a0790e949b8ff7f0909d73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/parsica-php/parsica/zipball/1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8",
-                "reference": "1f1ec12f0bd1fe09bab1933fe6d9566d8b6c40b8",
+                "url": "https://api.github.com/repos/parsica-php/parsica/zipball/e5b0a763e26e89de39a0790e949b8ff7f0909d73",
+                "reference": "e5b0a763e26e89de39a0790e949b8ff7f0909d73",
                 "shasum": ""
             },
             "require": {
-                "cypresslab/php-curry": "^0.5.0",
                 "ext-mbstring": "*",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "ext-json": "*",
                 "mathiasverraes/uptodocs": "dev-main",
-                "phpbench/phpbench": "dev-master",
+                "phpbench/phpbench": "^1.0.1",
                 "phpunit/phpunit": "^9.0",
                 "psr/event-dispatcher": "^1.0",
-                "vimeo/psalm": "^4.1"
+                "vimeo/psalm": "^4.30"
             },
             "type": "library",
             "autoload": {
@@ -96,7 +45,8 @@
                     "src/space.php",
                     "src/strings.php",
                     "src/Expression/expression.php",
-                    "src/Internal/FP.php"
+                    "src/Internal/FP.php",
+                    "src/Curry/functions.php"
                 ],
                 "psr-4": {
                     "Parsica\\Parsica\\": "src/"
@@ -128,7 +78,7 @@
             ],
             "support": {
                 "issues": "https://github.com/parsica-php/parsica/issues",
-                "source": "https://github.com/parsica-php/parsica/tree/0.8.1"
+                "source": "https://github.com/parsica-php/parsica/tree/0.8.3"
             },
             "funding": [
                 {
@@ -136,7 +86,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-10T12:58:34+00:00"
+            "time": "2025-07-09T08:39:51+00:00"
         },
         {
             "name": "psr/container",
@@ -2470,12 +2420,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "8.1.*|8.2.*|8.3.*|8.4.*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
