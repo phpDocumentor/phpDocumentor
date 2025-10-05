@@ -18,7 +18,7 @@ jobs:
     name: Composer checks and pre-warm
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env
@@ -58,7 +58,7 @@ jobs:
     name: Unit tests pre-flight
     needs: setup
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Setup cache environment
       id: cache-env
@@ -102,7 +102,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env
@@ -143,7 +143,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env
@@ -184,7 +184,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           set-safe-directory: '/github/workspace'
           fetch-depth: 0
@@ -232,7 +232,7 @@ jobs:
     - phpstan
     - codestyle
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Setup cache environment
       id: cache-env
       uses: shivammathur/cache-extensions@v1
@@ -277,7 +277,7 @@ jobs:
     needs:
       - setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env
@@ -345,7 +345,7 @@ jobs:
     needs:
       - build-phar
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env
@@ -405,7 +405,7 @@ jobs:
       - e2e
       - smoke-tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup cache environment
         id: cache-env

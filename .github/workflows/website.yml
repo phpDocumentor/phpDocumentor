@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'phpDocumentor/phpDocumentor'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
