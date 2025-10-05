@@ -294,6 +294,5 @@ pre {
     margin: 0 1rem;
     min-width: 100px;
     flex: 1 1 auto;
-    /* prevent grow too much */
     max-width: 200px;
 }
