@@ -12,3 +12,13 @@
     ]
 }
 %}
+
+{% block javascripts %}
+    <script
+
+            src="https://analytics.phpdoc.org/api/script.js"
+            data-site-id="1"
+            defer
+    ></script>
+    {{ parent() }}
+{% endblock %}
