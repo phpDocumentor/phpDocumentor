@@ -281,3 +281,19 @@ pre {
     pointer-events: none;
     user-select: none;
 }
+
+.phpdocumentor-sponsors {
+    list-style: none;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.phpdocumentor-sponsors li {
+    display: inline-block;
+    margin: 0 1rem;
+    min-width: 100px;
+    flex: 1 1 auto;
+    /* prevent grow too much */
+    max-width: 200px;
+}
