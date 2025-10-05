@@ -56,13 +56,13 @@ jobs:
           path: "docs"
 
       - name: "Download docs"
-        uses: "actions/download-artifact@v4"
+        uses: "actions/download-artifact@v5"
         with:
           name: "documentation"
           path: "build/docs"
 
       - name: "Download website"
-        uses: "actions/download-artifact@v4"
+        uses: "actions/download-artifact@v5"
         with:
           name: "website"
           path: "data/website"
