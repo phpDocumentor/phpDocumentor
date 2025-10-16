@@ -13,7 +13,7 @@ Syntax
 
 .. code-block::
 
-    @var ["Type"] [element_name] [<description>]
+    @var [Type] [element name] [<description>]
 
 Description
 -----------
