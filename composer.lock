@@ -549,16 +549,16 @@
         },
         {
             "name": "league/csv",
-            "version": "9.23.0",
+            "version": "9.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/csv.git",
-                "reference": "774008ad8a634448e4f8e288905e070e8b317ff3"
+                "reference": "cb491b1ba3c42ff2bcd0113814f4256b42bae845"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/csv/zipball/774008ad8a634448e4f8e288905e070e8b317ff3",
-                "reference": "774008ad8a634448e4f8e288905e070e8b317ff3",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/cb491b1ba3c42ff2bcd0113814f4256b42bae845",
+                "reference": "cb491b1ba3c42ff2bcd0113814f4256b42bae845",
                 "shasum": ""
             },
             "require": {
@@ -568,14 +568,14 @@
             "require-dev": {
                 "ext-dom": "*",
                 "ext-xdebug": "*",
-                "friendsofphp/php-cs-fixer": "^3.69.0",
-                "phpbench/phpbench": "^1.4.0",
-                "phpstan/phpstan": "^1.12.18",
+                "friendsofphp/php-cs-fixer": "^3.75.0",
+                "phpbench/phpbench": "^1.4.1",
+                "phpstan/phpstan": "^1.12.27",
                 "phpstan/phpstan-deprecation-rules": "^1.2.1",
                 "phpstan/phpstan-phpunit": "^1.4.2",
                 "phpstan/phpstan-strict-rules": "^1.6.2",
-                "phpunit/phpunit": "^10.5.16 || ^11.5.7",
-                "symfony/var-dumper": "^6.4.8 || ^7.2.3"
+                "phpunit/phpunit": "^10.5.16 || ^11.5.22 || ^12.3.6",
+                "symfony/var-dumper": "^6.4.8 || ^7.3.0"
             },
             "suggest": {
                 "ext-dom": "Required to use the XMLConverter and the HTMLConverter classes",
@@ -636,7 +636,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-28T06:52:04+00:00"
+            "time": "2025-10-16T08:22:09+00:00"
         },
         {
             "name": "league/flysystem",
@@ -1893,21 +1893,21 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "1.8.0",
+            "version": "1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "c89b0e68cf2ae671dad1d007712fb43decd4b09d"
+                "reference": "db15463e94f3515fc3353049d1409de1cb2bde8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/c89b0e68cf2ae671dad1d007712fb43decd4b09d",
-                "reference": "c89b0e68cf2ae671dad1d007712fb43decd4b09d",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/db15463e94f3515fc3353049d1409de1cb2bde8d",
+                "reference": "db15463e94f3515fc3353049d1409de1cb2bde8d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^3.0",
-                "league/csv": "^9.10.0",
+                "league/csv": "^9.27.0",
                 "php": "^8.1",
                 "phpdocumentor/guides": "^1.0 || ^2.0",
                 "webmozart/assert": "^1.11"
@@ -1930,9 +1930,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.8.0"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.9.2"
             },
-            "time": "2025-03-16T11:29:49+00:00"
+            "time": "2025-10-17T18:33:55+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
