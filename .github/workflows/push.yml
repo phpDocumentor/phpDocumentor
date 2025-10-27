@@ -371,7 +371,7 @@ jobs:
           tools: pecl
 
       - name: Download PHAR file
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: phpDocumentor.phar
           path: build
@@ -431,7 +431,7 @@ jobs:
           tools: pecl
 
       - name: Download PHAR file
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: phpDocumentor.phar
           path: build
