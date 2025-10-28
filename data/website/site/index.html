@@ -182,28 +182,22 @@
                     </code>
                     <p>Tada!</p>
                 </section>
+
+                <section>
+                    <h3>Using Composer</h3>
+                    <p>
+                        If you are using Composer to manage your project dependencies, you can also add
+                        phpDocumentor as a development dependency using our shim package.
+                        This will make sure you never have conflicts with other packages.
+                    </p>
+                    <code>
+                        <pre><span class="phpdocumentor-code__shell">$ </span>composer require --dev phpdocumentor/shim</pre>
+                        <pre><span class="phpdocumentor-code__shell">$ </span>./vendor/bin/phpdoc</pre>
+                    </code>
+                </section>
             </section>
-            <aside class="phpdocumentor-admonition">
-                <i class="fas fa-question-circle phpdocumentor-admonition__icon"></i>
-                <article>
-                    <h5>But wait? What about Composer?</h5>
-                    <p>
-                        Ah, you discovered our secret. There is a phpDocumentor composer package that you could use to
-                        install phpDocumentor.
-                    </p>
-                    <p>
-                        However: phpDocumentor is a complex application, and its libraries are used in countless other
-                        libraries and applications (2 of our libraries have more than 150 million downloads each); and
-                        this means that the chances for a conflict between one of our dependencies and yours is high.
-                        And when I say high, it is really high.
-                    </p>
-                    <p>
-                        So, because of the above: <strong>we do not endorse nor actively support installing phpDocumentor using
-                        Composer</strong>.
-                    </p>
-                </article>
-            </aside>
         </article>
+        <a class="phpdocumentor-button -primary" href="//docs.phpdoc.org/guide/getting-started/index.html">Learn more <i class="fas fa-forward"></i></a>
     </section>
     <section class="phpdocumentor-section phpdocumentor-content">
         <article>
@@ -215,7 +209,7 @@
                 Your sponsorship will help us to keep the project alive.
             </p>
 
-            <p>Our tool sponsors:</p>
+            <p>Our sponsors:</p>
             <ul class="phpdocumentor-sponsors">
                 <li>
                     <a href="https://nexaa.io">
@@ -225,6 +219,11 @@
                 <li>
                     <a href="https://phpstorm.com">
                         <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PhpStorm.svg" alt="PhpStorm logo">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://ingewikkeld.dev">
+                        <img src="images/ingewikkeld.svg" alt="Ingewikkeld logo">
                     </a>
                 </li>
             </ul>

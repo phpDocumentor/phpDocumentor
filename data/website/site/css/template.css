@@ -294,5 +294,9 @@ pre {
     margin: 0 1rem;
     min-width: 100px;
     flex: 1 1 auto;
-    max-width: 200px;
+    max-width: 250px;
+}
+
+.phpdocumentor-sponsors li img {
+    max-width: 250px;
 }
