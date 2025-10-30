@@ -103,10 +103,10 @@ visibilities
 Visibilities are setting the deepest level of elements that will be rendered in your documentation. The values can be
 combined to fine tune the output. By default phpDocumentor includes all elements unless they are marked as ``@internal``
 
-Api will render only the elements marked as part of your api using the ``@api`` tag.
-Public will filter all public elements from your project and render them in to the documentation.
-Protected will filter all public elements from your project and render them in to the documentation.
-Private will filter all public elements from your project and render them in to the documentation.
+- ``api`` will render only the elements marked as part of your api using the ``@api`` tag.
+- ``public`` will filter all public elements from your project and render them in to the documentation.
+- ``protected`` will filter all protected elements from your project and render them in to the documentation.
+- ``private`` will filter all private elements from your project and render them in to the documentation.
 
 It is possible to configure multiple visibitities. When you combine ``public`` and ``private`` all non internal public and
 private elements will be included. If you add ``internal`` also the internal elements will be added.
