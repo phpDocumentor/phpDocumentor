@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+error_reporting(E_ERROR | E_PARSE);
 
 if (class_exists('Phar')) {
     Phar::mapPhar('phpdocumentor.phar');
