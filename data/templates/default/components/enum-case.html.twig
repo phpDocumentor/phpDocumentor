@@ -14,5 +14,5 @@
     {{ include('components/description.html.twig', {'node': case}) }}
     {{ include('components/description.html.twig', {'node': case.var[0]}) }}
     {{ include ('components/tags.html.twig', {'node': case}) }}
-    {{ include('components/attributes.html.twig' , {'node': case}) }}
+    {% include 'components/attributes.html.twig' with {'node': case} only %}
 </article>

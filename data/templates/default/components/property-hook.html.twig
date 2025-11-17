@@ -2,6 +2,6 @@
 {{ include('components/summary.html.twig', {'node': hook}) }}
 {{ include('components/description.html.twig', {'node': hook}) }}
 {{ include('components/tags.html.twig', {'node': hook}) }}
-{{ include('components/attributes.html.twig', {'node': hook}) }}
+{% include 'components/attributes.html.twig' with {'node': hook} only %}
 {{ include('components/method-arguments.html.twig', {'node': hook}) }}
 
