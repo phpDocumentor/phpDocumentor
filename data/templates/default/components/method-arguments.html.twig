@@ -5,7 +5,7 @@
             <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span>
                 : <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}</span>
-                {% if argument.default is not null %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span>{% endif %}
+                {% if argument.default is not null %} = <span class="phpdocumentor-signature__argument__default-value">{{ argument.default | expression }}</span>{% endif %}
             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 {{ include('components/description.html.twig', {'node': argument}) }}

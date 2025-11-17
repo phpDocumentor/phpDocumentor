@@ -39,7 +39,7 @@ class ConstantAssembler extends AssemblerAbstract
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());
-        $constantDescriptor->setValue($data->getValue());
+        $constantDescriptor->setValue($data->getValue(false));
         $constantDescriptor->setFinal($data->isFinal());
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
 

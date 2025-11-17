@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
 use phpDocumentor\Reflection\Php\Enum_;
 use phpDocumentor\Reflection\Php\EnumCase;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -51,7 +52,7 @@ final class EnumAssemblerTest extends TestCase
     public function testEnumsCanHaveCases(): void
     {
         $caseFqsen = new Fqsen('\MyNamespace\Enum\Case');
-        $case = new EnumCase($caseFqsen, new DocBlock('Summary'), null, null, 'Hearts');
+        $case = new EnumCase($caseFqsen, new DocBlock('Summary'), null, null, new Expression('Hearts'));
 
         $fqsen = new Fqsen('\MyNamespace\Enum');
         $enum = $this->givenExampleEnum($fqsen);
@@ -63,7 +64,7 @@ final class EnumAssemblerTest extends TestCase
             ->will(function ($value) {
                 $enumCaseDescriptor = new EnumCaseDescriptor();
                 $enumCaseDescriptor->setName($value[0]->getName());
-                $enumCaseDescriptor->setValue($value[0]->getValue());
+                $enumCaseDescriptor->setValue($value[0]->getValue(false));
 
                 return $enumCaseDescriptor;
             });
@@ -72,7 +73,7 @@ final class EnumAssemblerTest extends TestCase
 
         self::assertCount(1, $descriptor->getCases());
         self::assertSame($case->getName(), $descriptor->getCases()[$case->getName()]->getName());
-        self::assertSame($case->getValue(), $descriptor->getCases()[$case->getName()]->getValue());
+        self::assertSame($case->getValue(false), $descriptor->getCases()[$case->getName()]->getValue());
         self::assertSame($descriptor, $descriptor->getCases()[$case->getName()]->getParent());
     }
 

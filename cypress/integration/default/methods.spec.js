@@ -178,6 +178,25 @@ describe('Showing methods for a class', function() {
                     .find('.phpdocumentor-signature__argument__variadic-operator')
                     .contains('...');
             });
+
+            it('Shows the default value links to type Sauce', function () {
+                cy.visit('build/default/classes/Marios-Pizza-Base.html');
+
+                getElementWithName('method', '__construct()')
+                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__return-type')
+                    .contains('a', 'Sauce')
+                    .should('have.attr', 'href', 'classes/Marios-Pizza-Sauce.html')
+                    .find('abbr')
+                    .should('have.attr', 'title', '\\Marios\\Pizza\\Sauce');
+
+                getElementWithName('method', '__construct()')
+                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__default-value')
+                    .should('contain.text', 'new Sauce()')
+                    .find('a')
+                    .should('have.attr', 'href', 'classes/Marios-Pizza-Sauce.html')
+                    .find('abbr')
+                    .should('have.attr', 'title', '\\Marios\\Pizza\\Sauce');
+            });
         });
     });
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Reflection\Php\Expression;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,14 +29,14 @@ class EnumCaseDescriptor extends DescriptorAbstract implements Interfaces\EnumCa
 
     private EnumInterface|null $parent = null;
 
-    private string|null $value = null;
+    private Expression|null $value = null;
 
-    public function setValue(string|null $value): void
+    public function setValue(Expression|null $value): void
     {
         $this->value = $value;
     }
 
-    public function getValue(): string|null
+    public function getValue(): Expression|null
     {
         return $this->value;
     }

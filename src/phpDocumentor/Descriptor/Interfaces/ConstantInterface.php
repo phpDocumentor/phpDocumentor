@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
+use phpDocumentor\Reflection\Php\Expression;
 
 /**
  * Descriptor representing a constant on a class, trait, property or file.
@@ -26,12 +27,12 @@ interface ConstantInterface extends ElementInterface, TypeInterface, ChildInterf
     /**
      * Sets the value representation for this constant.
      */
-    public function setValue(string $value): void;
+    public function setValue(Expression $value): void;
 
     /**
      * Retrieves a textual representation of the value in this constant.
      */
-    public function getValue(): string;
+    public function getValue(): Expression;
 
     public function setFinal(bool $final): void;
 

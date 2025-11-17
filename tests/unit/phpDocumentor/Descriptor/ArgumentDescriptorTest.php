@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
@@ -100,9 +101,10 @@ final class ArgumentDescriptorTest extends TestCase
         $argument = new ArgumentDescriptor();
         self::assertNull($argument->getDefault());
 
-        $argument->setDefault('a');
+        $expression = new Expression('a');
+        $argument->setDefault($expression);
 
-        self::assertSame('a', $argument->getDefault());
+        self::assertSame($expression, $argument->getDefault());
     }
 
     public function testWhetherAnArgumentCouldBePassedByReference(): void

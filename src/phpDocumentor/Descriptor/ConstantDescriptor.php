@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use Webmozart\Assert\Assert;
 
@@ -38,7 +39,14 @@ class ConstantDescriptor extends DescriptorAbstract implements
     use Traits\CanHaveAType;
     use Traits\HasAttributes;
 
-    protected string $value = '';
+    protected Expression $value;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->value = new Expression('?');
+    }
 
     public function getType(): Type|null
     {
@@ -52,12 +60,12 @@ class ConstantDescriptor extends DescriptorAbstract implements
         return $this->type;
     }
 
-    public function setValue(string $value): void
+    public function setValue(Expression $value): void
     {
         $this->value = $value;
     }
 
-    public function getValue(): string
+    public function getValue(): Expression
     {
         return $this->value;
     }

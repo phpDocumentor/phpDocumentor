@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Traits;
 
+use phpDocumentor\Reflection\Php\Expression;
+
 trait CanHaveADefaultValue
 {
-    /** @var string|null $default the default value for an argument or null if none is provided */
-    protected string|null $default = null;
+    /** @var Expression|null $default the default value for an argument or null if none is provided */
+    protected Expression|null $default = null;
 
-    public function setDefault(string|null $value): void
+    public function setDefault(Expression|null $value): void
     {
         $this->default = $value;
     }
 
-    public function getDefault(): string|null
+    public function getDefault(): Expression|null
     {
         return $this->default;
     }
