@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use Generator;
+use League\Uri\BaseUri;
 use League\Uri\Contracts\UriInterface;
-use League\Uri\UriInfo;
-use League\Uri\UriResolver;
 use Stringable;
 
 use function array_shift;
@@ -187,7 +186,9 @@ final class Dsn implements Stringable
 
     public function resolve(Dsn $baseDsn): self
     {
-        if (UriInfo::isAbsolute($this->uri) || UriInfo::isAbsolutePath($this->uri)) {
+        $uri = BaseUri::from($this->uri);
+
+        if ($uri->isAbsolute() || $uri->isAbsolutePath()) {
             return $this;
         }
 
@@ -195,7 +196,7 @@ final class Dsn implements Stringable
         $newUri  = UriFactory::createUri($baseUri . '/' . $this->uri->getPath());
 
         return self::createFromUri(
-            UriResolver::resolve($newUri, $baseDsn->uri),
+            BaseUri::from($baseUri)->resolve($newUri)->getUri(),
             $baseDsn->parameters,
         );
     }
