@@ -17,7 +17,7 @@
             <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span>
             {% if argument.default is not null %}
                 <span> = </span>
-                <span class="phpdocumentor-signature__argument__default-value">{{ argument.default }}</span>
+                <span class="phpdocumentor-signature__argument__default-value">{{ argument.default | expression }}</span>
                 <span> ]</span>
             {% endif %}
         </span>

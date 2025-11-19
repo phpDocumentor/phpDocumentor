@@ -20,8 +20,6 @@ use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\Php\Argument;
 
-use function stripcslashes;
-
 /**
  * Assembles an ArgumentDescriptor using an ArgumentReflector and ParamDescriptors.
  *
@@ -45,7 +43,7 @@ class ArgumentAssembler extends BaseAssembler
             $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
         }
 
-        $argumentDescriptor->setDefault($this->prettifyValue($data->getDefault()));
+        $argumentDescriptor->setDefault($data->getDefault(false));
         $argumentDescriptor->setByReference(IsApplicable::fromBoolean($data->isByReference()));
         $argumentDescriptor->setVariadic(IsApplicable::fromBoolean($data->isVariadic()));
 
@@ -66,14 +64,5 @@ class ArgumentAssembler extends BaseAssembler
 
         $argumentDescriptor->setDescription($paramDescriptor->getDescription());
         $argumentDescriptor->setType($paramDescriptor->getType());
-    }
-
-    protected function prettifyValue(string|null $value): string|null
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        return stripcslashes($value);
     }
 }

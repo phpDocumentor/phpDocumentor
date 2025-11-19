@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Expression;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -61,14 +62,14 @@ DOCBLOCK,
         );
 
         $docBlock = new DocBlock('This is a example description', $docBlockDescription);
-        $constantReflector = new Constant(new Fqsen('\\' . $name), $docBlock, $value);
+        $constantReflector = new Constant(new Fqsen('\\' . $name), $docBlock, new Expression('\false'));
 
         $descriptor = $this->fixture->create($constantReflector);
 
         self::assertSame($name, $descriptor->getName());
         self::assertSame('\\' . $name, (string) $descriptor->getFullyQualifiedStructuralElementName());
         self::assertSame('', $descriptor->getNamespace());
-        self::assertSame($value, $descriptor->getValue());
+        self::assertEquals(new Expression('\false'), $descriptor->getValue());
         self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 
@@ -100,7 +101,7 @@ DOCBLOCK,
             (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
-        self::assertSame($pi, $descriptor->getValue());
+        self::assertSame($pi, (string) $descriptor->getValue());
         self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 
@@ -132,7 +133,7 @@ DOCBLOCK,
             (string) $descriptor->getFullyQualifiedStructuralElementName(),
         );
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
-        self::assertSame($pi, $descriptor->getValue());
+        self::assertSame($pi, (string) $descriptor->getValue());
         self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
     }
 }

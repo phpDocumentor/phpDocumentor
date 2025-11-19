@@ -18,6 +18,7 @@ services:
     class: phpDocumentor\Reflection\Php\NodesFactory
     factory: [ phpDocumentor\Reflection\Php\NodesFactory, 'createInstance' ]
 
+  phpDocumentor\Reflection\Php\Expression\ExpressionPrinter: ~
   phpDocumentor\Reflection\FqsenResolver: ~
   phpDocumentor\Reflection\DocBlock\TagFactory: '@phpDocumentor\Reflection\DocBlock\StandardTagFactory'
   phpDocumentor\Reflection\DocBlock\StandardTagFactory:
@@ -51,6 +52,10 @@ services:
     class: phpDocumentor\Reflection\Php\ProjectFactory
     arguments:
       $strategies: '@phpDocumentor\Reflection\Php\ProjectFactoryStrategies'
+
+  phpDocumentor\Reflection\Php\Factory\Reducer\Parameter:
+    arguments:
+      $valueConverter: '@phpDocumentor\Reflection\Php\Expression\ExpressionPrinter'
 
   phpDocumentor\Reflection\Php\ProjectFactoryStrategies:
     arguments:

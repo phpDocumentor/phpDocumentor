@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\Array_;
 
 /**
@@ -108,9 +109,10 @@ final class PropertyDescriptorTest extends MockeryTestCase
     {
         self::assertNull($this->fixture->getDefault());
 
-        $this->fixture->setDefault('a');
+        $expression = new Expression('a');
+        $this->fixture->setDefault($expression);
 
-        self::assertSame('a', $this->fixture->getDefault());
+        self::assertSame($expression, $this->fixture->getDefault());
     }
 
     public function testRetrieveFileAssociatedWithAProperty(): void

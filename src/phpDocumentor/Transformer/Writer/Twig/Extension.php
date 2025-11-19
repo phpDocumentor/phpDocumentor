@@ -51,6 +51,7 @@ use phpDocumentor\Descriptor\Tag\SeeDescriptor;
 use phpDocumentor\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -60,6 +61,7 @@ use Twig\TwigFunction;
 use Twig\TwigTest;
 use Webmozart\Assert\Assert;
 
+use function array_map;
 use function array_unshift;
 use function in_array;
 use function ltrim;
@@ -392,6 +394,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 $this->renderDescription(...),
                 ['needs_context' => true],
             ),
+            'expression' => new TwigFilter(
+                'expression',
+                $this->renderExpression(...),
+                ['needs_context' => true, 'is_safe' => ['html']],
+            ),
             'shortFQSEN' => new TwigFilter(
                 'shortFQSEN',
                 static function (string $fqsenOrTitle) {
@@ -449,6 +456,21 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         }
 
         return vsprintf($description->getBodyTemplate(), $tagStrings);
+    }
+
+    /** @param mixed[] $context */
+    public function renderExpression(array $context, Expression|null $expression): string
+    {
+        if ($expression === null) {
+            return '';
+        }
+
+        $parts = array_map(
+            fn (Fqsen|Type $value) => $this->renderRoute($context, $value, LinkRenderer::PRESENTATION_CLASS_SHORT),
+            $expression->getParts(),
+        );
+
+        return $expression->render($parts);
     }
 
     /**

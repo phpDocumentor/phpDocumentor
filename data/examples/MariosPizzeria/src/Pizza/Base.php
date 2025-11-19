@@ -14,7 +14,7 @@ namespace Marios\Pizza;
  */
 final class Base
 {
-    public function __construct(?Sauce $sauce)
+    public function __construct(?Sauce $sauce = new Sauce())
     {
     }
 }

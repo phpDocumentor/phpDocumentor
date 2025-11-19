@@ -43,7 +43,7 @@ class PropertyAssembler extends AssemblerAbstract
         $propertyDescriptor->setName($data->getName());
         $propertyDescriptor->setStatic($data->isStatic());
         $propertyDescriptor->setReadOnly($data->isReadOnly());
-        $propertyDescriptor->setDefault($data->getDefault());
+        $propertyDescriptor->setDefault($data->getDefault(false));
         $propertyDescriptor->setVirtual($data->isVirtual());
 
         if ($data->getType()) {

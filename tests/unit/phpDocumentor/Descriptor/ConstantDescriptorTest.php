@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\String_;
@@ -113,11 +114,10 @@ final class ConstantDescriptorTest extends MockeryTestCase
 
     public function testSetAndGetValue(): void
     {
-        self::assertEmpty($this->fixture->getValue());
+        $expression = new Expression('a');
+        $this->fixture->setValue($expression);
 
-        $this->fixture->setValue('a');
-
-        self::assertSame('a', $this->fixture->getValue());
+        self::assertSame($expression, $this->fixture->getValue());
     }
 
     public function testRetrieveFileAssociatedWithAGlobalConstant(): void

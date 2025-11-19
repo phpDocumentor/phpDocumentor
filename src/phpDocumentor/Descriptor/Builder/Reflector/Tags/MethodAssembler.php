@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Tag\MethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\Php\Expression;
 
 /**
  * Constructs a new descriptor from the Reflector for an `@method` tag.
@@ -51,7 +52,10 @@ class MethodAssembler extends BaseTagAssembler
             $argumentDescriptor->setType($argument->getType());
             $argumentDescriptor->setVariadic(IsApplicable::fromBoolean($argument->isVariadic()));
             $argumentDescriptor->setByReference(IsApplicable::fromBoolean($argument->isReference()));
-            $argumentDescriptor->setDefault($argument->getDefaultValue());
+            if ($argument->getDefaultValue() !== null) {
+                $argumentDescriptor->setDefault(new Expression($argument->getDefaultValue()));
+            }
+
             $descriptor->getArguments()->set($argumentDescriptor->getName(), $argumentDescriptor);
         }
 

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Interfaces;
 
 use phpDocumentor\Descriptor\IsTyped;
 use phpDocumentor\Descriptor\ValueObjects\IsApplicable;
+use phpDocumentor\Reflection\Php\Expression;
 
 /**
  * Describes the public interface for a descriptor of an Argument.
@@ -31,16 +32,16 @@ interface ArgumentInterface extends ElementInterface, IsTyped
     /**
      * Sets the default value for an argument expressed as a string.
      *
-     * @param string $value A textual representation of the default value.
+     * @param Expression $value A textual representation of the default value.
      */
-    public function setDefault(string $value): void;
+    public function setDefault(Expression $value): void;
 
     /**
      * Returns the default value for an argument as string or null if no default is set.
      *
-     * @return string|null A textual representation of the default value, or null if no default value is present.
+     * @return Expression|null A textual representation of the default value, or null if no default value is present.
      */
-    public function getDefault(): string|null;
+    public function getDefault(): Expression|null;
 
     /**
      * Sets whether this argument passes its parameter by reference or by value.
