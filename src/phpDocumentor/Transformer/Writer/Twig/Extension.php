@@ -156,6 +156,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigTest('method', static fn (Descriptor $el) => $el instanceof MethodInterface),
             new TwigTest('argument', static fn (Descriptor $el) => $el instanceof ArgumentInterface),
             new TwigTest('attribute', static fn (Descriptor $el) => $el instanceof AttributeInterface),
+            new TwigTest('attributed', static fn (Descriptor $el) => $el instanceof AttributedInterface),
             new TwigTest('function', static fn (Descriptor $el) => $el instanceof FunctionInterface),
             new TwigTest('constant', static fn (Descriptor $el) => $el instanceof ConstantInterface),
         ];

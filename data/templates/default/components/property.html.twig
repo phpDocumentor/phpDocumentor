@@ -26,6 +26,6 @@
     {{ include('components/description.html.twig', {'node': property}) }}
     {{ include('components/description.html.twig', {'node': property.var[0]}) }}
     {{ include('components/tags.html.twig', {'node': property}) }}
-    {{ include('components/attributes.html.twig' , {'node': property}) }}
+    {% include 'components/attributes.html.twig' with {'node': property} only %}
     {{ include('components/property-hooks.html.twig', {'node': property}) }}
 </article>
