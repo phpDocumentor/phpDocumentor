@@ -55,7 +55,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $newConfiguration = $middleware($configuration);
 
-        self::assertFalse($newConfiguration['phpdocumentor']['use-cache']);
+        self::assertFalse($newConfiguration['phpdocumentor']['use_cache']);
     }
 
     public function testItShouldOverwriteTheCacheFolderBasedOnTheCacheFolderOption(): void

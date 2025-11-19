@@ -94,7 +94,7 @@ final class CommandlineOptionsMiddleware implements MiddlewareInterface
     private function disableCache(Configuration $configuration): Configuration
     {
         if (isset($this->options['force']) && $this->options['force']) {
-            $configuration['phpdocumentor']['use-cache'] = false;
+            $configuration['phpdocumentor']['use_cache'] = false;
         }
 
         return $configuration;

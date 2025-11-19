@@ -21,7 +21,7 @@ final class LoadProjectDescriptorFromCache
     {
         $configuration = $payload->getConfig();
         if (
-            $configuration['phpdocumentor']['use-cache']
+            $configuration['phpdocumentor']['use_cache']
             && ! $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
         ) {
             $this->log('Loading project from cache');

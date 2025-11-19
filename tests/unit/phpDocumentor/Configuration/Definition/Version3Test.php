@@ -163,7 +163,7 @@ final class Version3Test extends TestCase
         return [
             SymfonyConfigFactory::FIELD_CONFIG_VERSION => '3',
             'title' => 'Documentation',
-            'use-cache' => true,
+            'use_cache' => true,
             'paths' => [
                 'output' => '.phpdoc/build',
                 'cache' => '.phpdoc/cache',

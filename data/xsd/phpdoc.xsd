@@ -35,6 +35,7 @@
     <xs:complexType name="phpdocumentorType">
         <xs:sequence>
             <xs:element name="title" type="pd:title" minOccurs="0" maxOccurs="1" default="Documentation"/>
+            <xs:element name="use-cache" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true"/>
             <xs:element name="paths" type="pd:pathsType" minOccurs="0" maxOccurs="1"/>
             <xs:element name="version" type="pd:versionType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="setting" type="pd:settingType" minOccurs="0" maxOccurs="unbounded"/>

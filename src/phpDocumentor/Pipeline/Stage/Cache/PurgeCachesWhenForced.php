@@ -30,7 +30,7 @@ final class PurgeCachesWhenForced
     {
         $this->logger->info('Checking whether to purge cache');
         if (
-            ! $payload->getConfig()['phpdocumentor']['use-cache']
+            ! $payload->getConfig()['phpdocumentor']['use_cache']
             || $payload->getBuilder()->getProjectDescriptor()->getSettings()->isModified()
         ) {
             $this->logger->info('Purging cache');

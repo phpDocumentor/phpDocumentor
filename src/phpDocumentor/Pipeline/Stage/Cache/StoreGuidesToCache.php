@@ -33,7 +33,7 @@ final class StoreGuidesToCache
         $this->commandBus->handle(
             new PersistCacheCommand(
                 ((string) $configuration['phpdocumentor']['paths']['cache']) . '/guides',
-                $configuration['phpdocumentor']['use-cache'],
+                $configuration['phpdocumentor']['use_cache'],
             ),
         );
 

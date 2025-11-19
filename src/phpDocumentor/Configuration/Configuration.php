@@ -25,7 +25,7 @@ use phpDocumentor\Path;
  *         title?: string,
  *         paths: array{output: Dsn, cache: Path},
  *         versions: array<string, VersionSpecification>,
- *         use-cache: bool,
+ *         use_cache: bool,
  *         settings: array<string, mixed>,
  *         templates: non-empty-array<
  *             array{
