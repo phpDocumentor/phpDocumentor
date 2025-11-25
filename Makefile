@@ -4,7 +4,7 @@ ARGS ?=
 .DOCKER_COMPOSE_RUN = ${.USER} docker compose run --rm
 .PHP = docker run --user=$(shell id -u):$(shell id -g) -it --rm -v${CURDIR}:/data -w /data php:8.1
 
-CYPRESS_VERSION = 14.4.0
+CYPRESS_VERSION = 15.6.0
 
 .PHONY: help
 help:

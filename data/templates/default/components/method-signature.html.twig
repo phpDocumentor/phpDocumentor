@@ -11,7 +11,7 @@
         <span class="phpdocumentor-signature__argument">
             {% if argument.default is not null %}<span>[</span>{% endif %}
             {% if not loop.first %}<span>, </span>{% endif %}
-            <span class="phpdocumentor-signature__argument__return-type">{{ argument.type|route('class:short')|join('|')|raw }}&nbsp;</span>
+            <span class="phpdocumentor-signature__argument__type">{{ argument.type|route('class:short')|join('|')|raw }}&nbsp;</span>
             {% if argument.isVariadic %}<span class="phpdocumentor-signature__argument__variadic-operator">...</span>{% endif %}
             {%- if argument.byReference -%}<span class="phpdocumentor-signature__argument__reference-operator">&amp;</span>{%- endif -%}
             <span class="phpdocumentor-signature__argument__name">${{ argument.name }}</span>

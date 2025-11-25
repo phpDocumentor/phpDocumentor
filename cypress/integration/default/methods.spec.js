@@ -183,7 +183,7 @@ describe('Showing methods for a class', function() {
                 cy.visit('build/default/classes/Marios-Pizza-Base.html');
 
                 getElementWithName('method', '__construct()')
-                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__return-type')
+                    .find('.phpdocumentor-signature .phpdocumentor-signature__argument__type')
                     .contains('a', 'Sauce')
                     .should('have.attr', 'href', 'classes/Marios-Pizza-Sauce.html')
                     .find('abbr')
@@ -228,12 +228,23 @@ describe('Showing methods for a class', function() {
                 .find('.phpdocumentor-argument-list__heading')
                 .next()
                 .should('have.class', 'phpdocumentor-argument-list')
-                .contains('.phpdocumentor-signature__argument__name', '$pizzas')
-                .next('.phpdocumentor-signature__argument__return-type')
-                .contains('a', 'Pizza')
-                .should('have.attr', 'href', 'classes/Marios-Pizza.html')
-                .find('abbr')
-                .should('have.attr', 'title', '\\Marios\\Pizza');
+                .within(function () {
+                    // find the argument entry row that mentions the $pizzas parameter
+                    cy.contains('.phpdocumentor-argument-list__entry', '$pizzas')
+                        .as('pizzasEntry');
+
+                    // assert the name is present
+                    cy.get('@pizzasEntry')
+                        .find('.phpdocumentor-argument-list__argument__name')
+                        .contains('$pizzas');
+
+                    // assert there is a linked type pointing to the Pizza class (href + abbr title)
+                    cy.get('@pizzasEntry')
+                        .find('.phpdocumentor-argument-list__argument__type a')
+                        .should('have.attr', 'href', 'classes/Marios-Pizza.html')
+                        .find('abbr')
+                        .should('have.attr', 'title', '\\Marios\\Pizza');
+                });
         })
 
         it('Will show a parameter with a description', function () {
@@ -243,6 +254,30 @@ describe('Showing methods for a class', function() {
                 .contains('.phpdocumentor-argument-list__entry', '$pizza')
                 .next('.phpdocumentor-argument-list__definition')
                 .contains('.phpdocumentor-description', 'The specific pizza to place an order for.');
+        })
+
+        it('Will show default parameter value null without link', function () {
+            getElementWithName('method', 'setBestPizzaEver()')
+                .find('.phpdocumentor-argument-list__heading')
+                .next()
+                .should('have.class', 'phpdocumentor-argument-list')
+                .within(function () {
+                    // find the argument entry row that mentions the $pizzas parameter
+                    cy.contains('.phpdocumentor-argument-list__entry', 'pizza')
+                        .as('pizzaArgument');
+
+                    // assert the name is present
+                    cy.get('@pizzaArgument')
+                        .find('.phpdocumentor-argument-list__argument__name')
+                        .contains('$pizza');
+
+                    // assert there is a linked type pointing to the Pizza class (href + abbr title)
+                    cy.get('@pizzaArgument')
+                        .find('.phpdocumentor-argument-list__argument__default-value')
+                        .contains('null')
+                        .find('a')
+                        .should('not.exist');
+                });
         })
     });
 

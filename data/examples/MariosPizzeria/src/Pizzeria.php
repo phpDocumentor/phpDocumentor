@@ -61,4 +61,8 @@ final class Pizzeria implements \JsonSerializable
     {
         return [];
     }
+
+    public function setBestPizzaEver(Pizza|null $pizza = null): void
+    {
+    }
 }
