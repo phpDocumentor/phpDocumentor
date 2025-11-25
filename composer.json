@@ -62,7 +62,7 @@
         "phpdocumentor/guides-markdown": "^1.7",
         "phpdocumentor/guides-restructured-text": "^1.7",
         "phpdocumentor/json-path": "^0.2.1",
-        "phpdocumentor/reflection": "^6.3",
+        "phpdocumentor/reflection": "^6.4.4",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpdocumentor/type-resolver": "^1.8",
