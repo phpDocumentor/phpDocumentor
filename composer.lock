@@ -790,16 +790,16 @@
         },
         {
             "name": "league/tactician",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/tactician.git",
-                "reference": "e79f763170f3d5922ec29e85cffca0bac5cd8975"
+                "reference": "93b2eafa4321f84164f3d3f607a32a953f3fff0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician/zipball/e79f763170f3d5922ec29e85cffca0bac5cd8975",
-                "reference": "e79f763170f3d5922ec29e85cffca0bac5cd8975",
+                "url": "https://api.github.com/repos/thephpleague/tactician/zipball/93b2eafa4321f84164f3d3f607a32a953f3fff0b",
+                "reference": "93b2eafa4321f84164f3d3f607a32a953f3fff0b",
                 "shasum": ""
             },
             "require": {
@@ -839,9 +839,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/tactician/issues",
-                "source": "https://github.com/thephpleague/tactician/tree/v1.1.0"
+                "source": "https://github.com/thephpleague/tactician/tree/v1.2.0"
             },
-            "time": "2021-02-14T15:29:04+00:00"
+            "time": "2025-12-21T18:05:37+00:00"
         },
         {
             "name": "league/uri",
