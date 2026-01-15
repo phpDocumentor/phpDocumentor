@@ -115,7 +115,10 @@ final class Target
                     $elems[] = trim(count($parts) > 1 ? end($parts) : $elem);
                 }
 
-                $this->abbreviation = $prefix . implode(', ', $elems);
+                $abrev = $prefix . implode(', ', $elems);
+                if ($abrev !== $this->title) {
+                    $this->abbreviation = $abrev;
+                }
 
                 break;
             case LinkRenderer::PRESENTATION_FILE_SHORT:
