@@ -18,6 +18,9 @@ use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use function count;
 use function end;
 use function explode;
+use function implode;
+use function str_starts_with;
+use function trim;
 
 /**
  * The target of a link and how it should be presented.
@@ -97,10 +100,22 @@ final class Target
                 break;
             case LinkRenderer::PRESENTATION_NORMAL:
             case LinkRenderer::PRESENTATION_CLASS_SHORT:
-                $parts = explode('\\', $this->title);
-                if (count($parts) > 1) {
-                    $this->abbreviation = end($parts);
+                $prefix = '';
+                foreach (['array<', 'array{', 'list<', 'list{'] as $pre) {
+                    if (! str_starts_with($this->title, $pre)) {
+                        continue;
+                    }
+
+                    $prefix = $pre;
                 }
+
+                $elems = [];
+                foreach (explode(',', $this->title) as $elem) {
+                    $parts = explode('\\', $elem);
+                    $elems[] = trim(count($parts) > 1 ? end($parts) : $elem);
+                }
+
+                $this->abbreviation = $prefix . implode(', ', $elems);
 
                 break;
             case LinkRenderer::PRESENTATION_FILE_SHORT:
