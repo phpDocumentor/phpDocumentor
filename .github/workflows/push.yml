@@ -29,7 +29,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -69,7 +69,7 @@ jobs:
         key: ${{ env.key }}
 
     - name: Cache extensions
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
@@ -113,7 +113,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -154,7 +154,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -242,7 +242,7 @@ jobs:
         key: ${{ env.key }}
 
     - name: Cache extensions
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ steps.cache-env.outputs.dir }}
         key: ${{ steps.cache-env.outputs.key }}
@@ -288,7 +288,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -356,7 +356,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
@@ -416,7 +416,7 @@ jobs:
           key: ${{ env.key }}
 
       - name: Cache extensions
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.cache-env.outputs.dir }}
           key: ${{ steps.cache-env.outputs.key }}
