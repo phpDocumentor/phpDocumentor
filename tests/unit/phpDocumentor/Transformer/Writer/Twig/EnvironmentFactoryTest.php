@@ -24,7 +24,7 @@ use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Log\Test\TestLogger;
+use Psr\Log\NullLogger;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
@@ -54,7 +54,7 @@ final class EnvironmentFactoryTest extends TestCase
             new PathBuilder($this->router->reveal(), $relativePathToRootConverter),
             [
                 new AssetsExtension(
-                    new TestLogger(),
+                    new NullLogger(),
                     $this->prophesize(NodeRenderer::class)->reveal(),
                     $this->prophesize(DocumentNameResolverInterface::class)->reveal(),
                     $this->prophesize(UrlGeneratorInterface::class)->reveal(),
