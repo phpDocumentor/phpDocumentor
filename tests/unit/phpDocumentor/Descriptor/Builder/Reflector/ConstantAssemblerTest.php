@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Expression;
+use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -135,5 +136,38 @@ DOCBLOCK,
         self::assertSame('\\' . $namespace, $descriptor->getNamespace());
         self::assertSame($pi, (string) $descriptor->getValue());
         self::assertEquals(new Visibility(VisibilityModifier::PUBLIC), $descriptor->getVisibility());
+    }
+
+    public function testCreateTypedConstantDescriptorFromReflector(): void
+    {
+        $type = new String_();
+        $constantReflector = new Constant(
+            new Fqsen('\MyClass::MY_CONST'),
+            null,
+            new Expression("'hello'"),
+            null,
+            null,
+            null,
+            false,
+            $type,
+        );
+
+        $descriptor = $this->fixture->create($constantReflector);
+
+        self::assertSame('MY_CONST', $descriptor->getName());
+        self::assertEquals($type, $descriptor->getType());
+    }
+
+    public function testCreateUntypedConstantDescriptorHasNullType(): void
+    {
+        $constantReflector = new Constant(
+            new Fqsen('\MyClass::MY_CONST'),
+            null,
+            new Expression("'hello'"),
+        );
+
+        $descriptor = $this->fixture->create($constantReflector);
+
+        self::assertNull($descriptor->getType());
     }
 }
