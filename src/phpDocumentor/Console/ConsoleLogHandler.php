@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Console;
 
 use Monolog\Handler\HandlerInterface;
+use Monolog\LogRecord;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
-
-use function strtolower;
 
 final class ConsoleLogHandler implements HandlerInterface
 {
@@ -29,15 +28,15 @@ final class ConsoleLogHandler implements HandlerInterface
     {
     }
 
-    public function isHandling(array $record): bool
+    public function isHandling(LogRecord $record): bool
     {
         return true;
     }
 
-    public function handle(array $record): bool
+    public function handle(LogRecord $record): bool
     {
-        if ($this->output->getVerbosity() >= $this->verbosityLevelMap[strtolower($record['level_name'])]) {
-            $this->output->text($record['message']);
+        if ($this->output->getVerbosity() >= $this->verbosityLevelMap[$record->level->toPsrLogLevel()]) {
+            $this->output->text($record->message);
         }
 
         return true;
@@ -46,7 +45,7 @@ final class ConsoleLogHandler implements HandlerInterface
     public function handleBatch(array $records): void
     {
         foreach ($records as $record) {
-            $this->output->error($record);
+            $this->handle($record);
         }
     }
 
