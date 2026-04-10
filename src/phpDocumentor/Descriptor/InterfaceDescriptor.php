@@ -28,15 +28,13 @@ use phpDocumentor\Reflection\Fqsen;
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
     use Traits\HasAttributes;
+    use Traits\HasProperties;
 
     /** @var Collection<InterfaceInterface|Fqsen> $parents */
     protected Collection $parents;
 
     /** @var Collection<ConstantInterface> $constants */
     protected Collection $constants;
-
-    /** @var Collection<PropertyInterface> $properties */
-    protected Collection $properties;
 
     /** @var Collection<MethodInterface> $methods */
     protected Collection $methods;
@@ -50,7 +48,6 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         $this->setParent(new Collection());
         $this->setConstants(new Collection());
-        $this->setProperties(new Collection());
         $this->setMethods(new Collection());
     }
 
@@ -90,16 +87,6 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         }
 
         return $inheritedConstants;
-    }
-
-    public function setProperties(Collection $properties): void
-    {
-        $this->properties = $properties;
-    }
-
-    public function getProperties(): Collection
-    {
-        return $this->properties;
     }
 
     /** @return Collection<PropertyInterface> */
