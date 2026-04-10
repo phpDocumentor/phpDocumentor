@@ -42,9 +42,10 @@ final class ErrorHandlingMiddleware implements Middleware
         } catch (Throwable $e) {
             $sourceLine = $this->findSourceLine($e);
             $lineInfo = $sourceLine !== null ? ' on line ' . $sourceLine : '';
+            $message = $e instanceof PhpParserError ? $e->getRawMessage() : $e->getMessage();
 
             $this->log(
-                '  Unable to parse file "' . $filename . '"' . $lineInfo . ', an error was detected: ' . $e->getMessage(),
+                '  Unable to parse file "' . $filename . '"' . $lineInfo . ', an error was detected: ' . $message,
                 LogLevel::ALERT,
             );
             $this->log('  ' . $e->getTraceAsString(), LogLevel::DEBUG);
