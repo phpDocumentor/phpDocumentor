@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PhpParser\Error as PhpParserError;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -74,11 +75,6 @@ final class ErrorHandlingMiddlewareTest extends TestCase
             '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test',
             [],
         )->shouldBeCalled();
-        $logger->log(
-            LogLevel::NOTICE,
-            Argument::containingString('  -- Found in '),
-            [],
-        )->shouldBeCalled();
         $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
@@ -94,5 +90,64 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $this->assertInstanceOf(File::class, $result);
         $this->assertSame('', $result->getHash());
         $this->assertSame($filename, $result->getPath());
+    }
+
+    public function testThatSourceLineIsShownForPhpParserErrors(): void
+    {
+        $filename = __FILE__;
+        $command = new CreateCommand(
+            self::faker()->phpParserContext(),
+            new LocalFile($filename),
+            new ProjectFactoryStrategies([]),
+        );
+
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
+        $logger->log(
+            LogLevel::ALERT,
+            '  Unable to parse file "' . __FILE__
+                . '" on line 42, an error was detected: Syntax error, unexpected T_STRING',
+            [],
+        )->shouldBeCalled();
+        $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
+
+        $middleware = new ErrorHandlingMiddleware($logger->reveal());
+
+        $middleware->execute(
+            $command,
+            static function (CreateCommand $receivedCommand): never {
+                throw new PhpParserError('Syntax error, unexpected T_STRING', ['startLine' => 42]);
+            },
+        );
+    }
+
+    public function testThatSourceLineIsShownFromWrappedPhpParserError(): void
+    {
+        $filename = __FILE__;
+        $command = new CreateCommand(
+            self::faker()->phpParserContext(),
+            new LocalFile($filename),
+            new ProjectFactoryStrategies([]),
+        );
+
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
+        $logger->log(
+            LogLevel::ALERT,
+            '  Unable to parse file "' . __FILE__ . '" on line 99, an error was detected: wrapped error',
+            [],
+        )->shouldBeCalled();
+        $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
+
+        $middleware = new ErrorHandlingMiddleware($logger->reveal());
+
+        $middleware->execute(
+            $command,
+            static function (CreateCommand $receivedCommand): never {
+                $cause = new PhpParserError('parse error', ['startLine' => 99]);
+
+                throw new Exception('wrapped error', 0, $cause);
+            },
+        );
     }
 }
