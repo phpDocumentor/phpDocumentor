@@ -33,8 +33,11 @@ final class InvalidTagAssemblerTest extends TestCase
         ));
 
         self::assertSame('see', $tag->getName());
-        // The description body template must escape % to %% so that vsprintf does not
-        // interpret URL-encoded sequences like %20 as format specifiers.
-        self::assertStringContainsString('%%20', $tag->getDescription()->getBodyTemplate());
+        // Rendering the description must not throw a ValueError from vsprintf
+        // interpreting URL-encoded sequences like %20 as format specifiers.
+        self::assertStringContainsString(
+            'LDAP%20Result%20Codes',
+            (string) $tag->getDescription(),
+        );
     }
 }
