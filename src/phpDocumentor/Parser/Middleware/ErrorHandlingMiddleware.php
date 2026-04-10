@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Middleware;
 
-use PhpParser\Error as PhpParserError;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
+use PhpParser\Error as PhpParserError;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Throwable;

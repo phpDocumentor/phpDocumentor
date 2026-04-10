@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Parser\Middleware;
 
 use Exception;
-use PhpParser\Error as PhpParserError;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PhpParser\Error as PhpParserError;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -144,6 +144,7 @@ final class ErrorHandlingMiddlewareTest extends TestCase
             $command,
             static function (CreateCommand $receivedCommand): never {
                 $cause = new PhpParserError('parse error', ['startLine' => 99]);
+
                 throw new Exception('wrapped error', 0, $cause);
             },
         );
