@@ -105,7 +105,8 @@ final class ErrorHandlingMiddlewareTest extends TestCase
         $logger->log(LogLevel::INFO, 'Starting to parse file: ' . __FILE__, [])->shouldBeCalled();
         $logger->log(
             LogLevel::ALERT,
-            '  Unable to parse file "' . __FILE__ . '" on line 42, an error was detected: Syntax error, unexpected T_STRING',
+            '  Unable to parse file "' . __FILE__
+                . '" on line 42, an error was detected: Syntax error, unexpected T_STRING',
             [],
         )->shouldBeCalled();
         $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
