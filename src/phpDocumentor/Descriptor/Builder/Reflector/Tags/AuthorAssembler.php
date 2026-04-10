@@ -19,6 +19,8 @@ use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
+use function str_replace;
+
 /**
  * Constructs a new descriptor from the Reflector for an `@author` tag.
  *
@@ -37,7 +39,10 @@ class AuthorAssembler extends AssemblerAbstract
     protected function buildDescriptor(object $data): AuthorDescriptor
     {
         $tag = new AuthorDescriptor($data->getName());
-        $tag->setDescription(new DescriptionDescriptor(new Description((string) $data), []));
+        $tag->setDescription(new DescriptionDescriptor(
+            new Description(str_replace('%', '%%', (string) $data)),
+            [],
+        ));
 
         return $tag;
     }

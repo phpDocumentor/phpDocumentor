@@ -12,6 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 
 use function sprintf;
+use function str_replace;
 
 /** @extends AssemblerAbstract<TagDescriptor, InvalidTag> */
 final class InvalidTagAssembler extends AssemblerAbstract
@@ -19,7 +20,10 @@ final class InvalidTagAssembler extends AssemblerAbstract
     public function create(object $data): TagDescriptor
     {
         $descriptor = new TagDescriptor($data->getName());
-        $descriptor->setDescription(new DescriptionDescriptor(new Description((string) $data), []));
+        $descriptor->setDescription(new DescriptionDescriptor(
+            new Description(str_replace('%', '%%', (string) $data)),
+            [],
+        ));
         $descriptor->getErrors()->add(
             new Error(
                 'ERROR',

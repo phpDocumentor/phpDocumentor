@@ -23,4 +23,18 @@ final class InvalidTagAssemblerTest extends TestCase
             $tag->getErrors()[0]->getCode(),
         );
     }
+
+    public function testCreateWithUrlEncodedBody(): void
+    {
+        $assembler = new InvalidTagAssembler();
+        $tag = $assembler->create(InvalidTag::create(
+            'LDAP-Error-Code https://ldapwiki.com/wiki/Wiki.jsp?page=LDAP%20Result%20Codes',
+            'see',
+        ));
+
+        self::assertSame('see', $tag->getName());
+        // The description body template must escape % to %% so that vsprintf does not
+        // interpret URL-encoded sequences like %20 as format specifiers.
+        self::assertStringContainsString('%%20', $tag->getDescription()->getBodyTemplate());
+    }
 }
