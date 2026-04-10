@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Middleware;
 
+use PhpParser\Error as PhpParserError;
 use phpDocumentor\Reflection\Middleware\Command;
 use phpDocumentor\Reflection\Middleware\Middleware;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
@@ -39,17 +40,37 @@ final class ErrorHandlingMiddleware implements Middleware
         try {
             return $next($command);
         } catch (Throwable $e) {
+            $sourceLine = $this->findSourceLine($e);
+            $lineInfo = $sourceLine !== null ? ' on line ' . $sourceLine : '';
+
             $this->log(
-                '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
+                '  Unable to parse file "' . $filename . '"' . $lineInfo . ', an error was detected: ' . $e->getMessage(),
                 LogLevel::ALERT,
             );
-            $this->log('  -- Found in ' . $e->getFile() . ' at line ' . $e->getLine(), LogLevel::NOTICE);
             $this->log('  ' . $e->getTraceAsString(), LogLevel::DEBUG);
         }
 
         // when an error occurs, return an empty file with an empty hash; this means phpDocumentor will try to
         // re-parse the file every time
         return new File('', $command->getFile()->path());
+    }
+
+    /**
+     * Walks the exception chain looking for a PhpParser\Error, which carries
+     * the line number in the source file being parsed.
+     */
+    private function findSourceLine(Throwable $e): int|null
+    {
+        $current = $e;
+        while ($current !== null) {
+            if ($current instanceof PhpParserError && $current->getStartLine() > 0) {
+                return $current->getStartLine();
+            }
+
+            $current = $current->getPrevious();
+        }
+
+        return null;
     }
 
     /**
