@@ -17,9 +17,11 @@ use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
+use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
 
 use function strlen;
 use function substr;
@@ -51,6 +53,7 @@ class InterfaceAssembler extends AssemblerAbstract
 
         $this->assembleDocBlock($data->getDocBlock(), $interfaceDescriptor);
         $this->addConstants($data->getConstants(), $interfaceDescriptor);
+        $this->addProperties($data->getProperties(), $interfaceDescriptor);
         $this->addMethods($data->getMethods(), $interfaceDescriptor);
 
         $interfaceParent = $interfaceDescriptor->getParent();
@@ -76,6 +79,24 @@ class InterfaceAssembler extends AssemblerAbstract
 
             $constantDescriptor->setParent($interfaceDescriptor);
             $interfaceDescriptor->getConstants()->set($constantDescriptor->getName(), $constantDescriptor);
+        }
+    }
+
+    /**
+     * Registers the child properties with the generated Interface Descriptor.
+     *
+     * @param Property[] $properties
+     */
+    protected function addProperties(array $properties, InterfaceInterface $interfaceDescriptor): void
+    {
+        foreach ($properties as $property) {
+            $propertyDescriptor = $this->getBuilder()->buildDescriptor($property, PropertyDescriptor::class);
+            if ($propertyDescriptor === null) {
+                continue;
+            }
+
+            $propertyDescriptor->setParent($interfaceDescriptor);
+            $interfaceDescriptor->getProperties()->set($propertyDescriptor->getName(), $propertyDescriptor);
         }
     }
 

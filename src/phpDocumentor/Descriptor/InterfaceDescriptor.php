@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -34,6 +35,9 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
     /** @var Collection<ConstantInterface> $constants */
     protected Collection $constants;
 
+    /** @var Collection<PropertyInterface> $properties */
+    protected Collection $properties;
+
     /** @var Collection<MethodInterface> $methods */
     protected Collection $methods;
 
@@ -46,6 +50,7 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         $this->setParent(new Collection());
         $this->setConstants(new Collection());
+        $this->setProperties(new Collection());
         $this->setMethods(new Collection());
     }
 
@@ -87,6 +92,34 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedConstants;
     }
 
+    public function setProperties(Collection $properties): void
+    {
+        $this->properties = $properties;
+    }
+
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    /** @return Collection<PropertyInterface> */
+    public function getInheritedProperties(): Collection
+    {
+        $inheritedProperties = Collection::fromInterfaceString(PropertyInterface::class);
+
+        /** @var InterfaceInterface|Fqsen $parent */
+        foreach ($this->getParent() as $parent) {
+            if (! $parent instanceof Interfaces\InterfaceInterface) {
+                continue;
+            }
+
+            $inheritedProperties = $inheritedProperties->merge($parent->getProperties());
+            $inheritedProperties = $inheritedProperties->merge($parent->getInheritedProperties());
+        }
+
+        return $inheritedProperties;
+    }
+
     public function setMethods(Collection $methods): void
     {
         $this->methods = $methods;
@@ -122,6 +155,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         foreach ($this->getConstants() as $constant) {
             $constant->setPackage($package);
+        }
+
+        foreach ($this->getProperties() as $property) {
+            $property->setPackage($package);
         }
 
         foreach ($this->getMethods() as $method) {

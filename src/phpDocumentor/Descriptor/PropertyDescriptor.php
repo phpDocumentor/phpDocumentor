@@ -40,7 +40,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
     use Traits\CanHaveADefaultValue;
     use Traits\HasAttributes;
 
-    /** @var ClassInterface|TraitInterface|null $parent */
+    /** @var ClassInterface|TraitInterface|InterfaceInterface|null $parent */
     protected ElementInterface|null $parent = null;
 
     protected bool $static = false;
@@ -63,8 +63,8 @@ class PropertyDescriptor extends DescriptorAbstract implements
      */
     public function setParent($parent): void
     {
-        /** @var ClassInterface|TraitInterface $parent */
-        Assert::isInstanceOfAny($parent, [ClassInterface::class, TraitInterface::class]);
+        /** @var ClassInterface|TraitInterface|InterfaceInterface $parent */
+        Assert::isInstanceOfAny($parent, [ClassInterface::class, TraitInterface::class, InterfaceInterface::class]);
 
         $this->setFullyQualifiedStructuralElementName(
             new Fqsen($parent->getFullyQualifiedStructuralElementName() . '::$' . $this->getName()),
@@ -73,7 +73,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         $this->parent = $parent;
     }
 
-    /** @return ClassInterface|TraitInterface|null */
+    /** @return ClassInterface|TraitInterface|InterfaceInterface|null */
     public function getParent(): ElementInterface|null
     {
         return $this->parent;
