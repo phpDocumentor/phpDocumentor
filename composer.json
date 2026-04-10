@@ -32,6 +32,10 @@
             "type": "path",
             "url": "incubator/json-path",
             "canonical": false
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lacatoire/Reflection.git"
         }
     ],
     "require": {
@@ -62,7 +66,7 @@
         "phpdocumentor/guides-markdown": "^1.7",
         "phpdocumentor/guides-restructured-text": "^1.7",
         "phpdocumentor/json-path": "^0.2.1",
-        "phpdocumentor/reflection": "^6.5.0",
+        "phpdocumentor/reflection": "dev-feat/interface-properties as 6.5.0",
         "phpdocumentor/reflection-common": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpdocumentor/type-resolver": "^1.8",

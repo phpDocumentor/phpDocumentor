@@ -57,6 +57,17 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($mock, $this->fixture->getConstants());
     }
 
+    public function testSettingAndGettingProperties(): void
+    {
+        $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
+
+        $mock = m::mock(Collection::class);
+
+        $this->fixture->setProperties($mock);
+
+        $this->assertSame($mock, $this->fixture->getProperties());
+    }
+
     public function testSettingAndGettingMethods(): void
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
@@ -168,6 +179,35 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame([$constantInGrandParent, $constantInParent], $result->getAll());
     }
 
+    public function testGetInheritedPropertiesNoParent(): void
+    {
+        $descriptor = new InterfaceDescriptor();
+        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
+
+        $descriptor->setParent(new Collection());
+        $this->assertInstanceOf(Collection::class, $descriptor->getInheritedProperties());
+    }
+
+    public function testGetInheritedPropertiesWithParentInterface(): void
+    {
+        $propertyInParent = $this->givenPropertyWithName('property');
+        $propertyInGrandParent = $this->givenPropertyWithName('propertyInGrandParent');
+
+        $parentInterface = new InterfaceDescriptor();
+        $parentInterface->setProperties(new Collection([$propertyInParent]));
+
+        $grandParentInterface = new InterfaceDescriptor();
+        $grandParentInterface->setProperties(new Collection([$propertyInGrandParent]));
+
+        $parentInterface->setParent(new Collection([$grandParentInterface]));
+        $this->fixture->setParent(new Collection([$parentInterface]));
+
+        $result = $this->fixture->getInheritedProperties();
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertSame([$propertyInGrandParent, $propertyInParent], $result->getAll());
+    }
+
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
@@ -219,5 +259,13 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $constantInParent->setName($name);
 
         return $constantInParent;
+    }
+
+    private function givenPropertyWithName(string $name): PropertyDescriptor
+    {
+        $property = new PropertyDescriptor();
+        $property->setName($name);
+
+        return $property;
     }
 }

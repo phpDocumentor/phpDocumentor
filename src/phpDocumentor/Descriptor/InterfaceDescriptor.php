@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
+use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Reflection\Fqsen;
 
 /**
@@ -27,6 +28,7 @@ use phpDocumentor\Reflection\Fqsen;
 class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\InterfaceInterface
 {
     use Traits\HasAttributes;
+    use Traits\HasProperties;
 
     /** @var Collection<InterfaceInterface|Fqsen> $parents */
     protected Collection $parents;
@@ -87,6 +89,24 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedConstants;
     }
 
+    /** @return Collection<PropertyInterface> */
+    public function getInheritedProperties(): Collection
+    {
+        $inheritedProperties = Collection::fromInterfaceString(PropertyInterface::class);
+
+        /** @var InterfaceInterface|Fqsen $parent */
+        foreach ($this->getParent() as $parent) {
+            if (! $parent instanceof Interfaces\InterfaceInterface) {
+                continue;
+            }
+
+            $inheritedProperties = $inheritedProperties->merge($parent->getProperties());
+            $inheritedProperties = $inheritedProperties->merge($parent->getInheritedProperties());
+        }
+
+        return $inheritedProperties;
+    }
+
     public function setMethods(Collection $methods): void
     {
         $this->methods = $methods;
@@ -122,6 +142,10 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
 
         foreach ($this->getConstants() as $constant) {
             $constant->setPackage($package);
+        }
+
+        foreach ($this->getProperties() as $property) {
+            $property->setPackage($package);
         }
 
         foreach ($this->getMethods() as $method) {

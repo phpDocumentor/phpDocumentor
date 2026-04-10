@@ -53,6 +53,23 @@ interface InterfaceInterface extends ElementInterface, TypeInterface, Attributed
     public function getInheritedConstants(): Collection;
 
     /**
+     * Sets the properties associated with this interface.
+     *
+     * @param Collection<PropertyInterface> $properties
+     */
+    public function setProperties(Collection $properties): void;
+
+    /**
+     * Returns the properties associated with this interface.
+     *
+     * @return Collection<PropertyInterface>
+     */
+    public function getProperties(): Collection;
+
+    /** @return Collection<PropertyInterface> */
+    public function getInheritedProperties(): Collection;
+
+    /**
      * Sets the methods belonging to this interface.
      *
      * @param Collection<MethodInterface> $methods
