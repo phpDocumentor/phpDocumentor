@@ -41,6 +41,11 @@ class ConstantAssembler extends AssemblerAbstract
         $constantDescriptor->setName($data->getName());
         $constantDescriptor->setValue($data->getValue(false));
         $constantDescriptor->setFinal($data->isFinal());
+
+        if ($data->getType()) {
+            $constantDescriptor->setType($data->getType());
+        }
+
         // Reflection library formulates namespace as global but this is not wanted for phpDocumentor itself
 
         $separatorLength = ! str_contains((string) $data->getFqsen(), '::') ? 1 : 2;

@@ -23,6 +23,8 @@ use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
 use Webmozart\Assert\Assert;
 
+use function str_replace;
+
 /**
  * This class collects data from the example tag definition of the Reflection library, tries to find the correlating
  * example file on disk and creates a complete Descriptor from that.
@@ -54,7 +56,10 @@ class ExampleAssembler extends AssemblerAbstract
         $descriptor->setFilePath($data->getFilePath());
         $descriptor->setStartingLine($data->getStartingLine());
         $descriptor->setLineCount($data->getLineCount());
-        $descriptor->setDescription(new DescriptionDescriptor(new Description($data->getDescription() ?? ''), []));
+        $descriptor->setDescription(new DescriptionDescriptor(
+            new Description(str_replace('%', '%%', $data->getDescription() ?? '')),
+            [],
+        ));
         $descriptor->setExample($this->finder->find($data));
 
         return $descriptor;
