@@ -1,9 +1,10 @@
+{% import 'components/macros/anchor.macro.twig' as anchor %}
 {% if node is attributed %}
     {% set attributes = attributes(node)|specializedAttributes|sortByVisibility %}
 
     {% if attributes is not empty %}
         <section class="phpdocumentor-attributes">
-            <h5 class="phpdocumentor-elements__header" id="attributes">
+            <h5 class="phpdocumentor-elements__header" id="{{ anchor.for_element(node, 'attributes') }}">
                 Attributes {{ include('components/headerlink.html.twig', {'on': node, 'at': 'attributes'}, with_context = false) }}
             </h5>
             {% for attribute in attributes %}
