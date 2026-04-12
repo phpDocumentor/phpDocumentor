@@ -1,7 +1,8 @@
+{% import 'components/macros/anchor.macro.twig' as anchor %}
 {% set tags = node.tags|filter((v,k) => k not in ['var', 'param', 'property', 'property-read', 'property-write', 'method', 'return', 'package', 'api', 'deprecated']) %}
 
 {% if tags|length > 0 and tags|first|length > 0 %}
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+    <h5 class="phpdocumentor-tag-list__heading" id="{{ anchor.for_element(node, 'tags') }}">
         Tags
         {{ include('components/headerlink.html.twig', {'on': node, 'at': 'tags'}, with_context = false) }}
     </h5>
