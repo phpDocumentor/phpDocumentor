@@ -43,7 +43,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for case in cases %}
-                            <li class="{% if case.deprecated %}-deprecated{% endif %}"><a href="{{ link(case) }}">{{ case.name }}</a></li>
+                            <li{% if case.deprecated %} class="-deprecated"{% endif %}><a href="{{ link(case) }}">{{ case.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
@@ -54,7 +54,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for method in methods|sortByVisibility %}
-                            <li class="{% if method.deprecated %}-deprecated{% endif %}"><a href="{{ link(method) }}">{{ method.name }}()</a></li>
+                            <li{% if method.deprecated %} class="-deprecated"{% endif %}><a href="{{ link(method) }}">{{ method.name }}()</a></li>
                         {% endfor %}
                     </ul>
                 </li>

@@ -103,6 +103,25 @@ describe('Classes', function() {
             getEntryIn('Methods', 'order()').should('exist');
             getEntryIn('Methods', 'doOrder()').should('exist');
         });
+        it('omits the class attribute on non-deprecated entries', function() {
+            getEntryIn('Methods', 'jsonSerialize()').should('not.have.attr', 'class');
+        });
+        it('marks deprecated entries with the -deprecated class', function() {
+            getEntryIn('Methods', 'doOldOrder()').should('have.class', '-deprecated');
+        });
+    });
+
+    describe('Table of Contents links', function() {
+        it('omits the class attribute on a regular method link', function() {
+            cy.get('.phpdocumentor-table-of-contents__entry')
+                .contains('a', 'jsonSerialize()')
+                .should('not.have.attr', 'class');
+        });
+        it('marks a deprecated method link with the -deprecated class', function() {
+            cy.get('.phpdocumentor-table-of-contents__entry')
+                .contains('a', 'doOldOrder()')
+                .should('have.class', '-deprecated');
+        });
     });
 
     describe('Applying a trait', function() {

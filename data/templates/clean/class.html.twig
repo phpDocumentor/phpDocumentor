@@ -65,7 +65,7 @@
 
 								{% if public_methods|length > 0 %}
 									{% for method in public_methods %}
-										<a href="{{ method|route('url') }}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}</a><br/>
+										<a href="{{ method|route('url') }}"{% if method.deprecated %} class="deprecated"{% endif %}>{{ method.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No public methods found</em>
@@ -81,7 +81,7 @@
 
 								{% if public_properties|length > 0 %}
 									{% for property in public_properties %}
-										<a href="{{ property|route('url') }}" class="{{ property.deprecated ? 'deprecated' }}">{{ property.name }}</a><br/>
+										<a href="{{ property|route('url') }}"{% if property.deprecated %} class="deprecated"{% endif %}>{{ property.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No public properties found</em>
@@ -97,7 +97,7 @@
 
 								{% if public_constants|length > 0 %}
 									{% for constant in public_constants %}
-										<a href="{{ constant|route('url') }}" class="{{ constant.deprecated ? 'deprecated' }}">{{ constant.name }}</a><br/>
+										<a href="{{ constant|route('url') }}"{% if constant.deprecated %} class="deprecated"{% endif %}>{{ constant.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No public constants found</em>
@@ -115,7 +115,7 @@
 
 								{% if protected_methods|length > 0 %}
 									{% for method in protected_methods %}
-										<a href="{{ method|route('url') }}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}</a><br/>
+										<a href="{{ method|route('url') }}"{% if method.deprecated %} class="deprecated"{% endif %}>{{ method.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No protected methods found</em>
@@ -131,7 +131,7 @@
 
 								{% if protected_properties|length > 0 %}
 									{% for property in protected_properties %}
-										<a href="{{ property|route('url') }}" class="{{ property.deprecated ? 'deprecated' }}">{{ property.name }}</a><br/>
+										<a href="{{ property|route('url') }}"{% if property.deprecated %} class="deprecated"{% endif %}>{{ property.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No protected properties found</em>
@@ -147,7 +147,7 @@
 
 								{% if protected_constants|length > 0 %}
 									{% for constant in protected_constants %}
-										<a href="{{ constant|route('url') }}" class="{{ constant.deprecated ? 'deprecated' }}">{{ constant.name }}</a><br/>
+										<a href="{{ constant|route('url') }}"{% if constant.deprecated %} class="deprecated"{% endif %}>{{ constant.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No protected constants found</em>
@@ -165,7 +165,7 @@
 
 								{% if private_methods|length > 0 %}
 									{% for method in private_methods %}
-										<a href="{{ method|route('url') }}" class="{{ method.deprecated ? 'deprecated' }}">{{ method.name }}</a><br/>
+										<a href="{{ method|route('url') }}"{% if method.deprecated %} class="deprecated"{% endif %}>{{ method.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No private methods found</em>
@@ -181,7 +181,7 @@
 
 								{% if private_properties|length > 0 %}
 									{% for property in private_properties %}
-										<a href="{{ property|route('url') }}" class="{{ property.deprecated ? 'deprecated' }}">{{ property.name }}</a><br/>
+										<a href="{{ property|route('url') }}"{% if property.deprecated %} class="deprecated"{% endif %}>{{ property.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No private properties found</em>
@@ -197,7 +197,7 @@
 
 								{% if private_constants|length > 0 %}
 									{% for constant in private_constants %}
-										<a href="{{ constant|route('url') }}" class="{{ constant.deprecated ? 'deprecated' }}">{{ constant.name }}</a><br/>
+										<a href="{{ constant|route('url') }}"{% if constant.deprecated %} class="deprecated"{% endif %}>{{ constant.name }}</a><br/>
 									{% endfor %}
 								{% else %}
 									<em>No private constants found</em>
