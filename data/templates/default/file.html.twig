@@ -61,7 +61,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for constant in constants|sortByVisibility %}
-                            <li{% if constants.deprecated %} class="-deprecated"{% endif %}><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                            <li{% if constant.deprecated %} class="-deprecated"{% endif %}><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
