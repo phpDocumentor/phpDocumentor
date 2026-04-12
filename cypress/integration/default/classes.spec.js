@@ -82,6 +82,25 @@ describe('Classes', function() {
                     .parent()
                     .should('have.attr', 'href', 'https://docs.phpdoc.org')
             });
+
+            it('Groups repeated tags under a single entry with one definition per occurrence', function () {
+                cy.get('.phpdocumentor-element.-class > .phpdocumentor-tag-list > .phpdocumentor-tag-list__entry')
+                    .as('entries')
+                    .should('have.length', 2);
+                cy.get('@entries').eq(0)
+                    .should('contain', 'link')
+                    .next('.phpdocumentor-tag-list__definition')
+                    .should('contain', 'https://wwww.phpdoc.org')
+                    .next('.phpdocumentor-tag-list__definition')
+                    .should('contain', 'docs');
+                cy.get('@entries').eq(1)
+                    .should('contain', 'since')
+                    .next('.phpdocumentor-tag-list__definition')
+                    .should('contain', '3.0')
+                    .next('.phpdocumentor-tag-list__definition')
+                    .should('contain', '3.1')
+                    .and('contain', 'Does extra stuff');
+            });
         });
     });
 
