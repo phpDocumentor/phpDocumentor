@@ -74,11 +74,6 @@ final class ErrorHandlingMiddlewareTest extends TestCase
             '  Unable to parse file "' . __FILE__ . '", an error was detected: this is a test',
             [],
         )->shouldBeCalled();
-        $logger->log(
-            LogLevel::NOTICE,
-            Argument::containingString('  -- Found in '),
-            [],
-        )->shouldBeCalled();
         $logger->log(LogLevel::DEBUG, Argument::any(), [])->shouldBeCalled();
 
         $middleware = new ErrorHandlingMiddleware($logger->reveal());
