@@ -120,8 +120,3 @@ that overridden method:
 As with classes, each of the above will only be inherited if the redefined method's DocBlock does not have the
 element that is to be inherited. So, for example, if the DocBlock of the redefined method has a summary then it will
 not receive the overridden method's summary.
-
-Related topics
---------------
-
-* :doc:`../references/phpdoc/inline-tags/inheritdoc`, for a full description of the ``@inheritDoc`` inline tag.
