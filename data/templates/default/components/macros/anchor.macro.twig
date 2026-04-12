@@ -1,0 +1,10 @@
+{%- macro for_element(node, suffix = null) -%}
+{%- set existing = link(node)|split('#')|slice(1)|join('#') -%}
+{%- if existing and suffix -%}
+{{- existing ~ '_' ~ suffix -}}
+{%- elseif existing -%}
+{{- existing -}}
+{%- elseif suffix -%}
+{{- suffix -}}
+{%- endif -%}
+{%- endmacro -%}
