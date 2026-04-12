@@ -27,9 +27,15 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                    {% if constants is not empty %}
                     <li><a href="{{ link(node) }}#toc-constants">Constants</a></li>
+                    {% endif %}
+                    {% if properties is not empty %}
                     <li><a href="{{ link(node) }}#toc-properties">Properties</a></li>
+                    {% endif %}
+                    {% if methods is not empty %}
                     <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
+                    {% endif %}
                 </ul>
             </li>
             {% if properties is not empty %}
@@ -59,7 +65,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for constant in constants|sortByVisibility %}
-                            <li class="{% if constants.deprecated %}-deprecated{% endif %}"><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                            <li class="{% if constant.deprecated %}-deprecated{% endif %}"><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>

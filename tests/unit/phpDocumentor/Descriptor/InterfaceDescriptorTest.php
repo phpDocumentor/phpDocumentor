@@ -208,6 +208,25 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame([$propertyInGrandParent, $propertyInParent], $result->getAll());
     }
 
+    public function testGetInheritedPropertiesWithMultipleParentInterfaces(): void
+    {
+        $propertyInFirstParent = $this->givenPropertyWithName('propertyInFirstParent');
+        $propertyInSecondParent = $this->givenPropertyWithName('propertyInSecondParent');
+
+        $firstParent = new InterfaceDescriptor();
+        $firstParent->setProperties(new Collection([$propertyInFirstParent]));
+
+        $secondParent = new InterfaceDescriptor();
+        $secondParent->setProperties(new Collection([$propertyInSecondParent]));
+
+        $this->fixture->setParent(new Collection([$firstParent, $secondParent]));
+
+        $result = $this->fixture->getInheritedProperties();
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertSame([$propertyInSecondParent, $propertyInFirstParent], $result->getAll());
+    }
+
     public function testRetrievingInheritedMethodsReturnsEmptyCollectionWithoutParent(): void
     {
         $inheritedMethods = $this->fixture->getInheritedMethods();
