@@ -43,7 +43,6 @@ final class ErrorHandlingMiddleware implements Middleware
                 '  Unable to parse file "' . $filename . '", an error was detected: ' . $e->getMessage(),
                 LogLevel::ALERT,
             );
-            $this->log('  -- Found in ' . $e->getFile() . ' at line ' . $e->getLine(), LogLevel::NOTICE);
             $this->log('  ' . $e->getTraceAsString(), LogLevel::DEBUG);
         }
 

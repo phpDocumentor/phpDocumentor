@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61d6d4f3aaad5db47ab9ba76c1a5f0e0",
+    "content-hash": "ffac355d036d03c38c1f008ccc1c6a92",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1990,16 +1990,16 @@
         },
         {
             "name": "phpdocumentor/reflection",
-            "version": "dev-feat/interface-properties",
+            "version": "6.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lacatoire/Reflection.git",
-                "reference": "fea99bbab43998424c8a625266b3a993d8854462"
+                "url": "https://github.com/phpDocumentor/Reflection.git",
+                "reference": "c8d36446027506a005103d57265ba5ea56beabfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lacatoire/Reflection/zipball/fea99bbab43998424c8a625266b3a993d8854462",
-                "reference": "fea99bbab43998424c8a625266b3a993d8854462",
+                "url": "https://api.github.com/repos/phpDocumentor/Reflection/zipball/c8d36446027506a005103d57265ba5ea56beabfc",
+                "reference": "c8d36446027506a005103d57265ba5ea56beabfc",
                 "shasum": ""
             },
             "require": {
@@ -2042,17 +2042,7 @@
                     "phpDocumentor\\": "src/phpDocumentor"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "phpDocumentor\\": [
-                        "tests/unit/phpDocumentor",
-                        "tests/bench/"
-                    ],
-                    "phpDocumentor\\Reflection\\": [
-                        "tests/integration"
-                    ]
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2065,9 +2055,10 @@
                 "static analysis"
             ],
             "support": {
-                "source": "https://github.com/lacatoire/Reflection/tree/feat/interface-properties"
+                "issues": "https://github.com/phpDocumentor/Reflection/issues",
+                "source": "https://github.com/phpDocumentor/Reflection/tree/6.6.0"
             },
-            "time": "2026-04-10T18:51:35+00:00"
+            "time": "2026-04-12T18:07:10+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2124,16 +2115,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.6.7",
+            "version": "5.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "31a105931bc8ffa3a123383829772e832fd8d903"
+                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/31a105931bc8ffa3a123383829772e832fd8d903",
-                "reference": "31a105931bc8ffa3a123383829772e832fd8d903",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/5cee1d3dfc2d2aa6599834520911d246f656bcb8",
+                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8",
                 "shasum": ""
             },
             "require": {
@@ -2182,9 +2173,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.7"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.6"
             },
-            "time": "2026-03-18T20:47:46+00:00"
+            "time": "2025-12-22T21:13:58+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -7734,18 +7725,9 @@
             "time": "2026-02-23T13:21:35+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "phpdocumentor/reflection",
-            "version": "dev-feat/interface-properties",
-            "alias": "6.5.0",
-            "alias_normalized": "6.5.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "phpdocumentor/reflection": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
