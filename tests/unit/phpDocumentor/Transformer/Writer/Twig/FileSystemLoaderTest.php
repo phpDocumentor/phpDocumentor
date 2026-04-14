@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use phpDocumentor\FileSystem\FileSystem;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Error\LoaderError;
 use Twig\Source;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FlySystemLoader */
-final class FlySystemLoaderTest extends TestCase
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FileSystemLoader */
+final class FileSystemLoaderTest extends TestCase
 {
     use ProphecyTrait;
 
     /** @dataProvider fileProvider */
     public function testExists(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
+        $fileSystem = $this->prophesize(FileSystem::class);
         $fileSystem->has($resolvedName)->willReturn(true);
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
+        $loader = new FileSystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
         $this->assertTrue($loader->exists($filename));
     }
@@ -30,11 +29,11 @@ final class FlySystemLoaderTest extends TestCase
     /** @dataProvider fileProvider */
     public function testGetSourceContext(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has($resolvedName)->willReturn(true);
         $fileSystem->read($resolvedName)->willReturn('content');
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
+        $loader = new FileSystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
         $this->assertEquals(
             new Source(
@@ -49,10 +48,10 @@ final class FlySystemLoaderTest extends TestCase
     /** @dataProvider fileProvider */
     public function testGetCacheKey(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has($resolvedName)->willReturn(true);
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
+        $loader = new FileSystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
         $this->assertSame($filename, $loader->getCacheKey($filename));
     }
@@ -60,11 +59,11 @@ final class FlySystemLoaderTest extends TestCase
     /** @dataProvider fileProvider */
     public function testIsFresh(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata($resolvedName)->willReturn(['type' => 'file']);
-        $fileSystem->getTimestamp($resolvedName)->willReturn(10);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has($resolvedName)->willReturn(true);
+        $fileSystem->lastModified($resolvedName)->willReturn(10);
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '', $overloadPrefix);
+        $loader = new FileSystemLoader($fileSystem->reveal(), '', $overloadPrefix);
 
         $this->assertTrue($loader->isFresh($filename, 10));
     }
@@ -93,30 +92,30 @@ final class FlySystemLoaderTest extends TestCase
     public function testInvalidFileType(): void
     {
         $this->expectException(LoaderError::class);
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata('someDir')->willReturn(['type' => 'dir']);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has('someDir')->willReturn(false);
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '');
+        $loader = new FileSystemLoader($fileSystem->reveal(), '');
         $loader->getSourceContext('someDir');
     }
 
     public function testFileDoesNotExist(): void
     {
         $this->expectException(LoaderError::class);
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata('someDir')->willThrow(new FileNotFoundException('someDir'));
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has('someDir')->willReturn(false);
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), '');
+        $loader = new FileSystemLoader($fileSystem->reveal(), '');
         $loader->getSourceContext('someDir');
     }
 
     public function testLoadFileWithPrefix(): void
     {
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
-        $fileSystem->getMetadata('test/file.twig')->willReturn(['type' => 'file']);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->has('test/file.twig')->willReturn(true);
         $fileSystem->read('test/file.twig')->willReturn('content');
 
-        $loader = new FlySystemLoader($fileSystem->reveal(), 'test/');
+        $loader = new FileSystemLoader($fileSystem->reveal(), 'test/');
         $this->assertEquals(
             new Source(
                 'content',

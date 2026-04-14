@@ -16,8 +16,8 @@ namespace phpDocumentor\Configuration;
 use ArrayAccess;
 use BadMethodCallException;
 use OutOfBoundsException;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use ReturnTypeWillChange;
 
 use function array_map;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;

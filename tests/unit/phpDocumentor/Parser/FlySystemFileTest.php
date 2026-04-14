@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use League\Flysystem\FilesystemInterface;
+use phpDocumentor\FileSystem\FileSystem;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -18,7 +18,7 @@ final class FlySystemFileTest extends TestCase
     public function testFileCanBeInstantiatedAndPathIsReturned(): void
     {
         $path = '/path/to/file';
-        $file = new FlySystemFile($this->prophesize(FilesystemInterface::class)->reveal(), $path);
+        $file = new FlySystemFile($this->prophesize(FileSystem::class)->reveal(), $path);
 
         $this->assertSame($path, $file->path());
     }
@@ -28,7 +28,7 @@ final class FlySystemFileTest extends TestCase
         $path     = '/path/to/file';
         $contents = 'contents';
 
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
+        $fileSystem = $this->prophesize(FileSystem::class);
         $fileSystem->read($path)->willReturn($contents);
 
         $file = new FlySystemFile($fileSystem->reveal(), $path);
@@ -41,7 +41,7 @@ final class FlySystemFileTest extends TestCase
         $path     = '/path/to/file';
         $contents = 'contents';
 
-        $fileSystem = $this->prophesize(FilesystemInterface::class);
+        $fileSystem = $this->prophesize(FileSystem::class);
         $fileSystem->read($path)->willReturn($contents);
 
         $file = new FlySystemFile($fileSystem->reveal(), $path);

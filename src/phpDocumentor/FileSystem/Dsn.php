@@ -11,11 +11,12 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor;
+namespace phpDocumentor\FileSystem;
 
 use Generator;
 use League\Uri\BaseUri;
 use League\Uri\Contracts\UriInterface;
+use phpDocumentor\UriFactory;
 use Stringable;
 
 use function array_shift;

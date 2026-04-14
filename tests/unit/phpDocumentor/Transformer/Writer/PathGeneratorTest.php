@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use League\Flysystem\MountManager;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
@@ -43,7 +43,10 @@ final class PathGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->template = new Template('My Template', new MountManager());
+        $this->template = new Template(
+            'My Template',
+            $this->prophesize(FileSystem::class)->reveal(),
+        );
 
         $this->router = $this->prophesize(Router::class);
         $engine = $this->prophesize(Engine::class);

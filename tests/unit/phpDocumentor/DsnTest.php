@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor;
 
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Dsn */
+/** @coversDefaultClass \phpDocumentor\FileSystem\Dsn */
 class DsnTest extends TestCase
 {
     /**
-     * @uses         \phpDocumentor\Path
+     * @uses         \phpDocumentor\FileSystem\Path
      *
      * @dataProvider provideDsnsToTestAgainst
      */

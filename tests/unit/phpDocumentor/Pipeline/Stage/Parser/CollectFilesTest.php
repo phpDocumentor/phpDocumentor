@@ -15,8 +15,9 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
-use phpDocumentor\Dsn;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\FileSystemFactory;
 use phpDocumentor\Parser\FileCollector;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -33,13 +34,20 @@ final class CollectFilesTest extends TestCase
     {
         $fileCollector = $this->prophesize(FileCollector::class);
         $fileCollector->getFiles(
-            Argument::type(Dsn::class),
+            Argument::type(FileSystem::class),
             Argument::any(),
             Argument::any(),
             Argument::exact(['php']),
         )->shouldBeCalled()->willReturn([]);
 
-        $fixture = new CollectFiles($fileCollector->reveal(), new NullLogger());
+        $fileSystemFactory = $this->prophesize(FileSystemFactory::class);
+        $fileSystemFactory->create(Argument::any())->willReturn($this->prophesize(FileSystem::class)->reveal());
+
+        $fixture = new CollectFiles(
+            $fileSystemFactory->reveal(),
+            $fileCollector->reveal(),
+            new NullLogger(),
+        );
 
         $version = new VersionSpecification(
             '1.0.0',

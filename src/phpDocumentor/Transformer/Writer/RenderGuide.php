@@ -18,11 +18,11 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Guides\Handlers\RenderCommand;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\TemplateRenderer;
-use phpDocumentor\Parser\FlySystemFactory;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
@@ -86,7 +86,7 @@ final class RenderGuide extends WriterAbstract implements
     ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
-        $destination = $transformation->template()->files()->getFilesystem('destination');
+        $destination = $transformation->getTransformer()->destination();
         $documents = array_map(
             static fn (DocumentDescriptor $dd) => $dd->getDocumentNode(),
             $documentationSet->getDocuments()->getAll(),

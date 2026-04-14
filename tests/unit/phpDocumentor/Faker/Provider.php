@@ -45,10 +45,11 @@ use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
-use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\FlySystemAdapter;
+use phpDocumentor\FileSystem\FlySystemFactory;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Guides\Nodes\ProjectNode;
-use phpDocumentor\Parser\FlySystemFactory;
-use phpDocumentor\Path;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Factory\ContextStack;
 use phpDocumentor\Reflection\Php\Project;
@@ -64,19 +65,14 @@ use function implode;
 
 final class Provider extends Base
 {
-    public function fileSystem(): Filesystem
+    public function fileSystem(): \phpDocumentor\FileSystem\FileSystem
     {
-        return new Filesystem(new NullAdapter());
+        return FlySystemAdapter::createFromFileSystem(new Filesystem(new NullAdapter()));
     }
 
     public function template(string $name = 'test'): Template
     {
-        return new Template($name, new MountManager([
-            'template' => $this->fileSystem(),
-            'guides' => $this->fileSystem(),
-            'templates' => $this->fileSystem(),
-            'destination' => $this->fileSystem(),
-        ]));
+        return new Template($name, $this->fileSystem());
     }
 
     public function transformation(Template|null $template = null): Transformation

@@ -28,7 +28,7 @@ use Psr\Log\NullLogger;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
-use Twig\Loader\FilesystemLoader;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
 /** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory */
 final class EnvironmentFactoryTest extends TestCase
@@ -62,6 +62,7 @@ final class EnvironmentFactoryTest extends TestCase
                 new UmlExtension([], 'plantuml'),
             ],
             ['./data/templates'],
+            './data/templates',
         );
     }
 
@@ -91,7 +92,7 @@ final class EnvironmentFactoryTest extends TestCase
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders(): void
     {
         $template = self::faker()->template();
-        $mountManager = $template->files();
+        $files = $template->files();
 
         $apiSetDescriptor = self::faker()->apiSetDescriptor();
         $projectDescriptor = self::faker()->projectDescriptor(
@@ -105,10 +106,10 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertInstanceOf(ChainLoader::class, $loader);
         $this->assertEquals(
             [
-                new FlySystemLoader($mountManager->getFilesystem('templates'), '', 'base'),
-                new FlySystemLoader($mountManager->getFilesystem('template'), 'guides', 'base'),
-                new FlySystemLoader($mountManager->getFilesystem('template')),
-                new FilesystemLoader('./data/templates'),
+                new FileSystemLoader($files, '', 'base'),
+                new FileSystemLoader($files, 'guides', 'base'),
+                new TwigFilesystemLoader('./data/templates', ''),
+                new TwigFilesystemLoader('./data/templates'),
             ],
             $loader->getLoaders(),
         );

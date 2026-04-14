@@ -13,29 +13,31 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\FileSystem\Finder\Exclude;
+use phpDocumentor\FileSystem\Finder\SpecificationFactoryInterface;
+use phpDocumentor\FileSystem\Path;
 
 final class FlySystemCollector implements FileCollector
 {
     public function __construct(
         private readonly SpecificationFactoryInterface $specificationFactory,
-        private readonly FlySystemFactory $flySystemFactory,
     ) {
     }
 
     /**
      * @param list<string|Path>    $paths
-     * @param array<string, mixed> $ignore
      * @param list<string>         $extensions
      *
      * @return list<FlySystemFile>
      */
-    public function getFiles(Dsn $dsn, array $paths, array $ignore, array $extensions): array
+    public function getFiles(FileSystem $fileSystem, array $paths, Exclude $exclude, array $extensions): array
     {
-        $specs = $this->specificationFactory->create($paths, $ignore, $extensions);
-
-        $fileSystem = $this->flySystemFactory->create($dsn);
+        $specs = $this->specificationFactory->create(
+            $paths,
+            $exclude,
+            $extensions,
+        );
 
         $files = [];
 

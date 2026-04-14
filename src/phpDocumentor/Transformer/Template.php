@@ -18,7 +18,7 @@ use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
-use League\Flysystem\MountManager;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Template\Parameter;
 use ReturnTypeWillChange;
 
@@ -58,7 +58,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
      *
      * @param string $name Name for this template.
      */
-    public function __construct(private readonly string $name, private readonly MountManager $files)
+    public function __construct(private readonly string $name, private readonly FileSystem $files)
     {
     }
 
@@ -137,20 +137,7 @@ final class Template implements ArrayAccess, Countable, IteratorAggregate
         return $this->extends;
     }
 
-    /**
-     * FlySystem filesystem / MountManager containing the template files, base templates files
-     * and destination filesystem.
-     *
-     * This MountManager has three mounts:
-     *
-     * - template://, the files of this template
-     * - templates://, the base folder containing phpDocumentor's global templates (i.e. `/data/templates`)
-     * - destination://, the destination where the template needs to write to
-     *
-     * By combining this in one mount manager it is easier for writers to copy files between destinations (since
-     * MountManager's can copy between filesystems) and for writers to read and write from various locations.
-     */
-    public function files(): MountManager
+    public function files(): FileSystem
     {
         return $this->files;
     }

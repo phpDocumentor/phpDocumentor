@@ -6,8 +6,8 @@ namespace phpDocumentor\Configuration;
 
 use ArrayAccess;
 use phpDocumentor\Configuration\Definition\Version3;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 

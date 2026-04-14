@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use phpDocumentor\FileSystem\FileNotFoundException;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Reflection\File;
 use Webmozart\Assert\Assert;
 
@@ -22,7 +22,7 @@ use function md5;
 
 final class FlySystemFile implements File
 {
-    public function __construct(private readonly FilesystemInterface $fileSystem, private readonly string $fileName)
+    public function __construct(private readonly FileSystem $fileSystem, private readonly string $fileName)
     {
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Cache;
 
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use RuntimeException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Webmozart\Assert\Assert;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 use function current;
@@ -110,7 +110,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
 
         $newConfiguration = $middleware($configuration);
 
-        self::assertSame([['name' => $expected]], $newConfiguration['phpdocumentor']['templates']);
+        self::assertEquals([new TemplateDefinition($expected)], $newConfiguration['phpdocumentor']['templates']);
     }
 
     public function testItShouldAddSourceFilesForDefaultConfiguration(): void

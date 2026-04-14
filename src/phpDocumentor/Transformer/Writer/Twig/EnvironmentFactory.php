@@ -16,13 +16,13 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 use League\CommonMark\ConverterInterface;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Template;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface as TwigExtension;
 use Twig\Loader\ChainLoader;
-use Twig\Loader\FilesystemLoader;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
 class EnvironmentFactory
 {
@@ -39,6 +39,7 @@ class EnvironmentFactory
         private readonly PathBuilder $pathBuilder,
         private iterable $extensions,
         private readonly array $guidesTemplateBasePath,
+        private readonly string $globalTemplatesPath,
     ) {
     }
 
@@ -52,17 +53,15 @@ class EnvironmentFactory
         DocumentationSetDescriptor $documentationSet,
         Template $template,
     ): Environment {
-        $mountManager = $template->files();
-
         $loaders = [];
         if ($this->templateOverridesAt instanceof Path) {
-            $loaders[] = new FilesystemLoader([(string) $this->templateOverridesAt]);
+            $loaders[] = new TwigFilesystemLoader([(string) $this->templateOverridesAt]);
         }
 
-        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'), '', 'base');
-        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('template'), 'guides', 'base');
-        $loaders[] = new FlySystemLoader($mountManager->getFilesystem('templates'));
-        $loaders[] = new FilesystemLoader($this->guidesTemplateBasePath);
+        $loaders[] = new FileSystemLoader($template->files(), '', 'base');
+        $loaders[] = new FileSystemLoader($template->files(), 'guides', 'base');
+        $loaders[] = new TwigFilesystemLoader($this->globalTemplatesPath, '');
+        $loaders[] = new TwigFilesystemLoader($this->guidesTemplateBasePath);
 
         $env = new Environment(new ChainLoader($loaders));
         foreach ($this->extensions as $extension) {

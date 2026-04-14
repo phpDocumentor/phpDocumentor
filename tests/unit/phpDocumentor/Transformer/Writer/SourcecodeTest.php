@@ -20,7 +20,9 @@ use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Transformation;
+use phpDocumentor\Transformer\Transformer;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -45,10 +47,15 @@ final class SourcecodeTest extends MockeryTestCase
         );
     }
 
-    public function testNoInteractionWithTransformationWhenSourceIsIncluded(): void
+    public function testFileSourceIsStored(): void
     {
+        $transformer = $this->prophesize(Transformer::class);
+        $fileSystem = $this->prophesize(FileSystem::class);
+        $fileSystem->put(Argument::any(), Argument::any())->willReturn(true);
+        $transformer->destination()->willReturn($fileSystem->reveal());
+
         $transformation = $this->prophesize(Transformation::class);
-        $transformation->template()->shouldBeCalled()->willReturn(self::faker()->template());
+        $transformation->getTransformer()->willReturn($transformer->reveal());
 
         $api = self::faker()->apiSetDescriptor();
         $projectDescriptor = $this->giveProjectDescriptor($api);

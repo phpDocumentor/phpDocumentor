@@ -162,7 +162,7 @@ class Transformation
     /**
      * Returns the transformer for this transformation.
      */
-    public function getTransformer(): Transformer|null
+    public function getTransformer(): Transformer
     {
         return $this->transformer;
     }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration;
 
 use League\Uri\Contracts\UriInterface;
-use phpDocumentor\Dsn;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Dsn;
+use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
 
 use function file_exists;

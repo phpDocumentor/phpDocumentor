@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use League\Flysystem\MountManager;
-use phpDocumentor\Dsn;
+use phpDocumentor\FileSystem\Finder\Exclude;
+use phpDocumentor\FileSystem\Finder\SpecificationFactory;
+use phpDocumentor\FileSystem\FlySystemAdapter;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function stripos;
 
@@ -25,21 +27,22 @@ use const PHP_OS;
 /** @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector */
 final class FlySystemCollectorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
-     * @uses \phpDocumentor\Parser\SpecificationFactory
-     * @uses \phpDocumentor\Parser\FlySystemFactory
+     * @uses \phpDocumentor\FileSystem\Finder\SpecificationFactory
+     * @uses \phpDocumentor\FileSystem\FlySystemFactory
      */
     public function testSingleSourceDir(): void
     {
         $fileCollector = new FlySystemCollector(
             new SpecificationFactory(),
-            new FlySystemFactory(new MountManager()),
         );
 
         $files = $fileCollector->getFiles(
-            Dsn::createFromString($this->scheme() . __DIR__ . DIRECTORY_SEPARATOR . 'assets'),
+            FlySystemAdapter::createForPath(__DIR__ . DIRECTORY_SEPARATOR . 'assets'),
             [],
-            [],
+            new Exclude([]),
             ['php'],
         );
         static::assertCount(3, $files);

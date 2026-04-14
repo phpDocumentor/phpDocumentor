@@ -110,9 +110,6 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
     public function testSetAndGetTransformer(): void
     {
         $transformer = m::mock(Transformer::class);
-
-        $this->assertNull($this->fixture->getTransformer());
-
         $this->fixture->setTransformer($transformer);
 
         $this->assertSame($transformer, $this->fixture->getTransformer());

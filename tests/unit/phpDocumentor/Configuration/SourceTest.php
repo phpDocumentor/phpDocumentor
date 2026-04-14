@@ -6,7 +6,7 @@ namespace phpDocumentor\Configuration;
 
 use BadMethodCallException;
 use phpDocumentor\Faker\Faker;
-use phpDocumentor\Path;
+use phpDocumentor\FileSystem\Path;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \phpDocumentor\Configuration\Source */
@@ -14,7 +14,7 @@ final class SourceTest extends TestCase
 {
     use Faker;
 
-    /** @uses \phpDocumentor\Dsn */
+    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testSourceReturnsDsn(): void
     {
         $dsn = self::faker()->dsn();
@@ -23,7 +23,7 @@ final class SourceTest extends TestCase
         self::assertSame($dsn, $source->dsn());
     }
 
-    /** @uses \phpDocumentor\Dsn */
+    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testWithDsnReturnsNewInstanceOfSource(): void
     {
         $dsn = self::faker()->dsn();
@@ -35,7 +35,7 @@ final class SourceTest extends TestCase
         self::assertNotSame($newSource, $source);
     }
 
-    /** @uses \phpDocumentor\Dsn */
+    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testWithDsnReturnsSetsNewDsn(): void
     {
         $dsn = self::faker()->dsn();
