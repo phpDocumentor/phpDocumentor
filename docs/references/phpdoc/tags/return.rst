@@ -39,9 +39,9 @@ The ``$this`` keyword
 ~~~~~~~~~~~~~~~~~~~~~
 
 In addition to the regular :doc:`Types <../types>`, the ``@return`` tag accepts
-``$this`` as a pseudo-type to denote that the method returns the current object
+the ``$this`` keyword to denote that the method returns the current object
 instance itself. It is commonly used to document `fluent interfaces`_ where
-every setter returns ``$this`` so that calls can be chained:
+setters may return ``$this`` so that calls can be chained:
 
 .. code-block:: php
    :linenos:
@@ -58,7 +58,7 @@ every setter returns ``$this`` so that calls can be chained:
 Unlike ``self`` (an instance of the class where the method is declared) and
 ``static`` (an instance of the late-static-bound class), ``$this`` specifically
 refers to the exact instance on which the method was called, which is the
-semantic most IDEs rely on to offer auto-completion on chained calls.
+semantics most IDEs rely on to offer auto-completion on chained calls.
 
 The ``$this`` notation is only meaningful in the context of a ``@return`` tag;
 using it in other tags or types is not part of the PHPDoc Standard.
