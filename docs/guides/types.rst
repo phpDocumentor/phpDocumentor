@@ -124,8 +124,11 @@ static
     An object of the class where this value was consumed, if inherited it will represent the child class. (see late
     static binding in the PHP manual).
 
-$this
-    This exact object instance, usually used to denote a fluent interface.
+.. note::
+
+   The ``$this`` keyword is not a formal type in the PHPDoc Standard but is
+   supported by phpDocumentor in ``@return`` tags to denote fluent interfaces.
+   See the :doc:`../references/phpdoc/tags/return` reference for details.
 
 Arrays
 ------
