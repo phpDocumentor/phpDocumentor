@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1587296bbeb2706856fd7300773435a",
+    "content-hash": "258bebe7677041d8b6993320a152b7c3",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1751,16 +1751,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.9.2",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "d60e8dae9fcb85da610f05f4ef673a42f266b47a"
+                "reference": "5b67c876fa2792b2084e60d6df41b09c85368e8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/d60e8dae9fcb85da610f05f4ef673a42f266b47a",
-                "reference": "d60e8dae9fcb85da610f05f4ef673a42f266b47a",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/5b67c876fa2792b2084e60d6df41b09c85368e8f",
+                "reference": "5b67c876fa2792b2084e60d6df41b09c85368e8f",
                 "shasum": ""
             },
             "require": {
@@ -1774,11 +1774,11 @@
                 "phpdocumentor/filesystem": "^1.7.4",
                 "phpdocumentor/flyfinder": "^1.1 || ^2.0",
                 "psr/event-dispatcher": "^1.0",
-                "symfony/clock": "^6.4.8",
-                "symfony/html-sanitizer": "^6.4.8",
-                "symfony/http-client": "^6.4.9",
+                "symfony/clock": "^6.4.8 || ^7.4 || ^8",
+                "symfony/html-sanitizer": "^6.4.8 || ^7.4 || ^8",
+                "symfony/http-client": "^6.4.9 || ^7.4 || ^8",
                 "symfony/polyfill-php84": "^1.33.0",
-                "symfony/string": "^6.4.9",
+                "symfony/string": "^6.4.9 || ^7.4 || ^8",
                 "symfony/translation-contracts": "^3.5.1",
                 "twig/twig": "~2.15 || ^3.0",
                 "webmozart/assert": "^1.11"
@@ -1805,22 +1805,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.9.2"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.10.0"
             },
-            "time": "2025-10-17T16:59:53+00:00"
+            "time": "2026-04-13T21:44:21+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
-            "version": "1.7.3",
+            "version": "1.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-graphs.git",
-                "reference": "e0fedc704884c261f60bc840760120b280bc2240"
+                "reference": "580ffeb50d12363973b09a24109fb4d7a198efdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/e0fedc704884c261f60bc840760120b280bc2240",
-                "reference": "e0fedc704884c261f60bc840760120b280bc2240",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-graphs/zipball/580ffeb50d12363973b09a24109fb4d7a198efdd",
+                "reference": "580ffeb50d12363973b09a24109fb4d7a198efdd",
                 "shasum": ""
             },
             "require": {
@@ -1828,7 +1828,7 @@
                 "php": "^8.1",
                 "phpdocumentor/guides": "^1.0 || ^2.0",
                 "phpdocumentor/guides-restructured-text": "^1.0 || ^2.0",
-                "symfony/process": "^5.4 || ^6.3 || ^7.0",
+                "symfony/process": "^5.4 || ^6.3 || ^7.0 || ^8.0",
                 "twig/twig": "~2.0 || ^3.0"
             },
             "suggest": {
@@ -1853,29 +1853,29 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-graphs/issues",
-                "source": "https://github.com/phpDocumentor/guides-graphs/tree/1.7.3"
+                "source": "https://github.com/phpDocumentor/guides-graphs/tree/1.9.6"
             },
-            "time": "2025-03-07T15:51:49+00:00"
+            "time": "2026-01-18T19:20:03+00:00"
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "1.9.1",
+            "version": "1.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "04bc3e1da61fcf28758cfa379ced5650a6e9f933"
+                "reference": "b6a58befc859634333c3f1b5475b0c75eacac8f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/04bc3e1da61fcf28758cfa379ced5650a6e9f933",
-                "reference": "04bc3e1da61fcf28758cfa379ced5650a6e9f933",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/b6a58befc859634333c3f1b5475b0c75eacac8f7",
+                "reference": "b6a58befc859634333c3f1b5475b0c75eacac8f7",
                 "shasum": ""
             },
             "require": {
                 "league/commonmark": "^2.4",
                 "php": "^8.1",
                 "phpdocumentor/guides": "^1.0 || ^2.0",
-                "symfony/yaml": "^6.4 || ^7.0"
+                "symfony/yaml": "^6.4 || ^7.0 || ^8.0"
             },
             "type": "library",
             "extra": {
@@ -1896,22 +1896,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.9.1"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.9.6"
             },
-            "time": "2025-09-22T14:05:17+00:00"
+            "time": "2026-02-27T16:08:02+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "1.9.4",
+            "version": "1.9.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "f31f98a0b0e51189eb1fa200fe62b531b60f2cf0"
+                "reference": "73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/f31f98a0b0e51189eb1fa200fe62b531b60f2cf0",
-                "reference": "f31f98a0b0e51189eb1fa200fe62b531b60f2cf0",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2",
+                "reference": "73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2",
                 "shasum": ""
             },
             "require": {
@@ -1939,9 +1939,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.9.4"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.9.7"
             },
-            "time": "2025-11-12T19:52:51+00:00"
+            "time": "2026-04-07T18:56:46+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
@@ -2115,16 +2115,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.6.6",
+            "version": "5.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8"
+                "reference": "31a105931bc8ffa3a123383829772e832fd8d903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/5cee1d3dfc2d2aa6599834520911d246f656bcb8",
-                "reference": "5cee1d3dfc2d2aa6599834520911d246f656bcb8",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/31a105931bc8ffa3a123383829772e832fd8d903",
+                "reference": "31a105931bc8ffa3a123383829772e832fd8d903",
                 "shasum": ""
             },
             "require": {
@@ -2173,9 +2173,9 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.6"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.6.7"
             },
-            "time": "2025-12-22T21:13:58+00:00"
+            "time": "2026-03-18T20:47:46+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
