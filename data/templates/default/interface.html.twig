@@ -9,6 +9,7 @@
         {{ include('components/element-header.html.twig') }}
 
         {{ include('components/constants.html.twig') }}
+        {{ include('components/properties.html.twig') }}
         {{ include('components/methods.html.twig') }}
         {{ include('components/source-modal.html.twig') }}
     </article>
@@ -16,6 +17,7 @@
 
 {% block on_this_page %}
     {% set constants = constants(node) %}
+    {% set properties = properties(node) %}
     {% set methods = methods(node) %}
 
     <section class="phpdocumentor-on-this-page__content">
@@ -25,10 +27,28 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                    {% if constants is not empty %}
                     <li><a href="{{ link(node) }}#toc-constants">Constants</a></li>
+                    {% endif %}
+                    {% if properties is not empty %}
+                    <li><a href="{{ link(node) }}#toc-properties">Properties</a></li>
+                    {% endif %}
+                    {% if methods is not empty %}
                     <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
+                    {% endif %}
                 </ul>
             </li>
+            {% if properties is not empty %}
+                <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                        {% for property in properties|sortByVisibility %}
+                            <li class="{% if property.deprecated %}-deprecated{% endif %}"><a href="{{ link(property) }}">${{ property.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
+
             {% if methods is not empty %}
                 <li class="phpdocumentor-on-this-page-section__title">Methods</li>
                 <li>
@@ -45,7 +65,7 @@
                 <li>
                     <ul class="phpdocumentor-list -clean">
                         {% for constant in constants|sortByVisibility %}
-                            <li class="{% if constants.deprecated %}-deprecated{% endif %}"><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
+                            <li class="{% if constant.deprecated %}-deprecated{% endif %}"><a href="{{ link(constant) }}">{{ constant.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>

@@ -30,6 +30,14 @@ parameters:
 
     - '#Class phpDocumentor\\Guides\\Compiler\\DescriptorAwareCompilerContext extends \@final class phpDocumentor\\Guides\\Compiler\\CompilerContext#'
 
+    # HasProperties::getMagicProperties() recurses into a parent descriptor through the ChildInterface contract.
+    # InterfaceDescriptor uses the trait but does not implement ChildInterface (its own getParent() returns a
+    # Collection of parent interfaces), so that branch is unreachable in its context; PHPStan nonetheless observes
+    # the always-false instanceof while analysing the trait for InterfaceDescriptor.
+    -
+        message: '#Instanceof between phpDocumentor\\Descriptor\\Collection and phpDocumentor\\Descriptor\\InterfaceDescriptor will always evaluate to false\.#'
+        path: src/phpDocumentor/Descriptor/Traits/HasProperties.php
+
   excludePaths:
    #test data
     - %currentWorkingDirectory%/tests/features/**/*.php
