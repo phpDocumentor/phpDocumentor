@@ -250,7 +250,7 @@ class Factory
     ): Filesystem {
         $dsnString = $this->getTemplatesPath();
         $globalDsn = Dsn::createFromString($dsnString);
-        $template = $globalDsn->withPath(new Path($globalDsn->getPath() . DIRECTORY_SEPARATOR . $subfolder));
+        $template = $globalDsn->withPath(new Path($globalDsn->getPath() . '/' . $subfolder));
 
         return $this->flySystemFactory->create($template);
     }
