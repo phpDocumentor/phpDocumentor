@@ -35,6 +35,34 @@ individual project, MAY be:
 This tag MUST NOT occur more than once in a PHPDoc and is limited to
 *Structural Elements* of type method or function.
 
+The ``$this`` keyword
+~~~~~~~~~~~~~~~~~~~~~
+
+In addition to the regular :doc:`Types <../types>`, the ``@return`` tag accepts
+``$this`` as a pseudo-type to denote that the method returns the current object
+instance itself. It is commonly used to document `fluent interfaces`_ where
+every setter returns ``$this`` so that calls can be chained:
+
+.. code-block:: php
+   :linenos:
+
+    /**
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+Unlike ``self`` (an instance of the class where the method is declared) and
+``static`` (an instance of the late-static-bound class), ``$this`` specifically
+refers to the exact instance on which the method was called, which is the
+semantic most IDEs rely on to offer auto-completion on chained calls.
+
+The ``$this`` notation is only meaningful in the context of a ``@return`` tag;
+using it in other tags or types is not part of the PHPDoc Standard.
+
 Effects in phpDocumentor
 ------------------------
 
@@ -75,3 +103,4 @@ Function can return either of two types:
     }
 
 .. _return value of functions or methods: https://www.php.net/functions.returning-values
+.. _fluent interfaces: https://en.wikipedia.org/wiki/Fluent_interface
