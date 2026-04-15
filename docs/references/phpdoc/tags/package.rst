@@ -53,9 +53,13 @@ organized in their own sidebar section.
 
 .. note::
 
-    Aside from the backslash (``\``), phpDocumentor also allows the
-    underscore (``_``) and dot (``.``) as separators for compatibility
-    with existing projects. Despite this the backslash is RECOMMENDED
+    Aside from the backslash (``\``), phpDocumentor also accepts the
+    underscore (``_``), dot (``.``), hyphen (``-``) and square brackets
+    (``[``, ``]``) as separators for compatibility with existing projects.
+    They are treated as equivalent to the backslash and cannot be part
+    of a level name: ``@package PSR_Documentation_API`` is interpreted
+    as the three levels ``PSR``, ``Documentation`` and ``API``, not as
+    a single top-level name. Despite this the backslash is RECOMMENDED
     as separator.
 
 Examples
@@ -66,6 +70,16 @@ Examples
 
     /**
      * @package PSR\Documentation\API
+     */
+
+The following DocBlock is equivalent to ``@package PSR\Documentation\API``
+because the underscore is interpreted as a separator:
+
+.. code-block:: php
+   :linenos:
+
+    /**
+     * @package PSR_Documentation_API
      */
 
 .. _Namespaces: https://www.php.net/language.namespaces
