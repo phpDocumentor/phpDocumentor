@@ -1,5 +1,6 @@
 *.php text eol=lf
 /data/website export-ignore
+/coding-standard export-ignore
 /docs export-ignore
 /features export-ignore
 /tests export-ignore

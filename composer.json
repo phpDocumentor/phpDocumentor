@@ -19,6 +19,9 @@
                 "tests/integration/phpDocumentor/",
                 "tests/functional/phpDocumentor/"
             ],
+            "PhpDocumentorStandard\\": [
+                "coding-standard/PhpDocumentorStandard/"
+            ],
             "TwigCsFixer\\": [
                 "tests/twig-cs-fixer/"
             ],

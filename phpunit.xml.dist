@@ -20,6 +20,7 @@
     <testsuite name="unit">
       <directory>./tests/unit/</directory>
       <directory>./incubator/*/tests/unit/</directory>
+      <directory>./coding-standard/PhpDocumentorStandard/Tests/</directory>
     </testsuite>
     <testsuite name="integration">
       <directory>./tests/integration/</directory>
