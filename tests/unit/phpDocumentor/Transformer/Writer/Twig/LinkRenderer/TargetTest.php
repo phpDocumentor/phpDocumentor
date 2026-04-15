@@ -119,6 +119,11 @@ final class TargetTest extends TestCase
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array{x: Class}',
             ],
+            'A root-namespace FQCN inside a compound drops its leading backslash' => [
+                'array{x: \DateTime}',
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array{x: DateTime}',
+            ],
         ];
     }
 }
