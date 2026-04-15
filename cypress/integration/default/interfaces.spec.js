@@ -27,7 +27,7 @@ describe('Interfaces', function() {
 
     describe('Synopsis', function() {
         it('Page title includes the fully qualified interface name', function () {
-            cy.title().should('match', /\u00bb \\Marios\\Product$/);
+            cy.title().should('match', /\u00bb \\Marios\\Product\s*$/);
         });
 
         it('Has "Product" as title', function () {

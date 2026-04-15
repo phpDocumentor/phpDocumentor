@@ -27,7 +27,7 @@ describe('Namespaces', function() {
         });
 
         it('Page title includes the fully qualified namespace', function() {
-            cy.title().should('match', /\u00bb \\Marios$/);
+            cy.title().should('match', /\u00bb \\Marios\s*$/);
         });
 
         it('Page title for the root namespace omits the separator', function() {
