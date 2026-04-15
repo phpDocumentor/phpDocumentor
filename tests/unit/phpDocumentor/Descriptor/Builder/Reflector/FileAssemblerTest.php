@@ -50,7 +50,6 @@ final class FileAssemblerTest extends TestCase
         $this->defaultPackage = new PackageDescriptor();
         $this->defaultPackage->setName('\\PhpDocumentor');
         $this->fixture = new FileAssembler();
-        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
     }
 
     /**
@@ -58,6 +57,8 @@ final class FileAssemblerTest extends TestCase
      */
     public function testCreateFileDescriptorFromReflector(): void
     {
+        $this->fixture->setBuilder($this->getProjectDescriptorBuilderMock()->reveal());
+
         $filename = 'file.php';
         $content = '<?php ... ?>';
         $hash = md5($content);
@@ -100,7 +101,40 @@ DOCBLOCK,
 
     public function testFileWithNoDocumentedElementsIsKept(): void
     {
+        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->willReturn($this->defaultPackage);
+
+        $this->fixture->setBuilder($projectDescriptorBuilderMock->reveal());
+
         $file = new File('hash', 'empty.php');
+
+        self::assertNotNull($this->fixture->create($file));
+    }
+
+    public function testFileIsKeptWhenAtLeastOneElementSurvivesFiltering(): void
+    {
+        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->willReturn($this->defaultPackage);
+        $survivor = $this->prophesize(DescriptorAbstract::class);
+        $survivor->setLocation(Argument::cetera())->shouldBeCalled();
+        $survivor->getTags()->willReturn(new Collection());
+        $survivor->getFullyQualifiedStructuralElementName()->willReturn(new Fqsen('\\Test\\Kept'));
+        $survivorMock = $survivor->reveal();
+
+        $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(
+            static function (array $args) use ($survivorMock) {
+                /** @var Class_ $class */
+                [$class] = $args;
+
+                return (string) $class->getFqsen() === '\\Test\\Ignored' ? null : $survivorMock;
+            },
+        );
+
+        $this->fixture->setBuilder($projectDescriptorBuilderMock->reveal());
+
+        $file = new File('hash', 'Mixed.php');
+        $file->addClass(new Class_(new Fqsen('\\Test\\Ignored')));
+        $file->addClass(new Class_(new Fqsen('\\Test\\Kept')));
 
         self::assertNotNull($this->fixture->create($file));
     }
@@ -114,7 +148,7 @@ DOCBLOCK,
         $settings->includeSource();
 
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->getDefaultPackageName()->willReturn($this->defaultPackage);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->shouldBeCalled()->willReturn($this->defaultPackage);
 
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function () {
             $mock = $this->prophesize(DescriptorAbstract::class);
