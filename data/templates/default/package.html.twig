@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ project.name }}{% if node.name != '\\' %} &raquo; {{ node.fullyQualifiedStructuralElementName }}{% endif %}
+{% endblock %}
+
 {% block content %}
     {% include 'components/breadcrumbs.html.twig' %}
 

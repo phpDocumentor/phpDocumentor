@@ -25,6 +25,10 @@ describe('Namespaces', function() {
         it('Has "Marios" as title', function() {
             cy.get('.phpdocumentor-content__title').contains("Marios");
         });
+
+        it('Page title includes the fully qualified namespace', function() {
+            cy.title().should('contain', '\\Marios');
+        });
     });
 
     describe('Table of Contents', function() {

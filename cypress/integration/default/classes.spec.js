@@ -26,6 +26,10 @@ describe('Classes', function() {
     });
 
     describe('Synopsis', function() {
+        it('Page title includes the fully qualified class name', function () {
+            cy.title().should('contain', '\\Marios\\Pizzeria');
+        });
+
         it('Has "Pizzeria" as title', function () {
             cy.get('.phpdocumentor-content__title').contains('Pizzeria');
         });

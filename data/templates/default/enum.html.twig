@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ project.name }} &raquo; {{ node.fullyQualifiedStructuralElementName }}
+{% endblock %}
+
 {% block content %}
     {% include 'components/breadcrumbs.html.twig' %}
 
