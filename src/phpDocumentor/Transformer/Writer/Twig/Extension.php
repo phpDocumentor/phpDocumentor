@@ -65,10 +65,14 @@ use function array_map;
 use function array_unshift;
 use function in_array;
 use function ltrim;
+use function mb_strlen;
+use function mb_substr;
 use function method_exists;
+use function preg_replace;
 use function sprintf;
 use function str_replace;
 use function strtolower;
+use function trim;
 use function var_export;
 use function vsprintf;
 
@@ -424,6 +428,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $filtered;
+                },
+            ),
+            'truncate' => new TwigFilter(
+                'truncate',
+                static function (string|null $value, int $length = 50, string $ellipsis = '...'): string {
+                    $normalized = trim((string) preg_replace('/\s+/', ' ', $value ?? ''));
+                    if (mb_strlen($normalized) <= $length) {
+                        return $normalized;
+                    }
+
+                    return mb_substr($normalized, 0, $length - mb_strlen($ellipsis)) . $ellipsis;
                 },
             ),
         ];
