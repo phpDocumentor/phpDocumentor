@@ -60,6 +60,14 @@ describe('Enums', function() {
         });
     });
 
+        it('Renders the backing value next to the case in the table of contents', function() {
+            cy.get('.phpdocumentor-table-of-contents__entry')
+                .contains('PICKUP')
+                .parent()
+                .should('contain', "'pickup'");
+        });
+    });
+
     describe('Methods', function() {
         it('Lists methods declared on the enum', function() {
             cy.get('#method_isDeliver').should('exist');
