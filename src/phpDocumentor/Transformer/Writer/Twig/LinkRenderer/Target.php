@@ -18,6 +18,8 @@ use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use function count;
 use function end;
 use function explode;
+use function preg_match;
+use function preg_replace_callback;
 
 /**
  * The target of a link and how it should be presented.
@@ -97,9 +99,22 @@ final class Target
                 break;
             case LinkRenderer::PRESENTATION_NORMAL:
             case LinkRenderer::PRESENTATION_CLASS_SHORT:
-                $parts = explode('\\', $this->title);
-                if (count($parts) > 1) {
-                    $this->abbreviation = end($parts);
+                if (preg_match('/^\\\\?[A-Za-z_][A-Za-z0-9_]*(?:\\\\[A-Za-z_][A-Za-z0-9_]*)*$/', $this->title) === 1) {
+                    $parts = explode('\\', $this->title);
+                    if (count($parts) > 1) {
+                        $this->abbreviation = end($parts);
+                    }
+
+                    break;
+                }
+
+                $abbreviated = preg_replace_callback(
+                    '/\\\\(?:[A-Za-z_][A-Za-z0-9_]*\\\\)*([A-Za-z_][A-Za-z0-9_]*)/',
+                    static fn (array $matches): string => $matches[1],
+                    $this->title,
+                );
+                if ($abbreviated !== $this->title) {
+                    $this->abbreviation = $abbreviated;
                 }
 
                 break;

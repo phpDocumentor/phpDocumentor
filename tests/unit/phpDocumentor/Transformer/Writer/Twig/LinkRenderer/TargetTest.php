@@ -104,6 +104,11 @@ final class TargetTest extends TestCase
                 LinkRenderer::PRESENTATION_FILE_SHORT,
                 'File.php',
             ],
+            'Each FQCN inside an array shape is shortened in place' => [
+                'array{name?: string, chartColor?: \My\Chart\Color, scheme?: string}',
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array{name?: string, chartColor?: Color, scheme?: string}',
+            ],
         ];
     }
 }
