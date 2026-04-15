@@ -59,7 +59,6 @@ describe('Enums', function() {
                 .find('.phpdocumentor-description')
                 .contains('Cases can have docblocks.');
         });
-    });
 
         it('Does not render docblock sections when the case has no docblock', function() {
             cy.get('#enumcase_DELIVER')
