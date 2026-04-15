@@ -109,6 +109,11 @@ final class TargetTest extends TestCase
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array{name?: string, chartColor?: Color, scheme?: string}',
             ],
+            'No abbreviation for a compound type that does not contain any FQCN' => [
+                'array{name: string, age: int}',
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                null,
+            ],
         ];
     }
 }
