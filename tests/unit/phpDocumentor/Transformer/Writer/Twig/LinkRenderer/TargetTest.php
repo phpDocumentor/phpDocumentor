@@ -114,6 +114,11 @@ final class TargetTest extends TestCase
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 null,
             ],
+            'A multi-segment FQCN without leading backslash is also shortened in a compound' => [
+                'array{x: My\Super\Class}',
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'array{x: Class}',
+            ],
         ];
     }
 }

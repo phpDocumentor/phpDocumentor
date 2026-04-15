@@ -109,8 +109,8 @@ final class Target
                 }
 
                 $abbreviated = preg_replace_callback(
-                    '/\\\\(?:[A-Za-z_][A-Za-z0-9_]*\\\\)*([A-Za-z_][A-Za-z0-9_]*)/',
-                    static fn (array $matches): string => $matches[1],
+                    '/(?<![A-Za-z0-9_])\\\\?(?:[A-Za-z_][A-Za-z0-9_]*\\\\)+([A-Za-z_][A-Za-z0-9_]*)|\\\\([A-Za-z_][A-Za-z0-9_]*)/',
+                    static fn (array $matches): string => $matches[2] ?? $matches[1],
                     $this->title,
                 );
                 if ($abbreviated !== $this->title) {
