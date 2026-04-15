@@ -29,6 +29,10 @@ describe('Enums', function() {
             cy.get('.phpdocumentor-content__title').contains('Delivery');
         });
 
+        it('Shows the backing type next to the enum name', function () {
+            cy.get('.phpdocumentor-element__extends').contains('string');
+        });
+
         it('Has a summary', function () {
             cy.get('.phpdocumentor-element.-class > .phpdocumentor-summary')
                 .contains('This is an enum example');
