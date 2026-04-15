@@ -19,6 +19,8 @@ use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\File;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -81,6 +83,28 @@ DOCBLOCK,
         //$this->assertSame($this->defaultPackage, $descriptor->getPackage());
     }
 
+    public function testFileIsDroppedWhenAllDocumentedElementsAreFilteredOut(): void
+    {
+        $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->willReturn($this->defaultPackage);
+        // Simulate a filter removing every class (e.g. because it carries @ignore).
+        $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->willReturn(null);
+
+        $this->fixture->setBuilder($projectDescriptorBuilderMock->reveal());
+
+        $file = new File('hash', 'Ignored.php');
+        $file->addClass(new Class_(new Fqsen('\\Test\\Ignored')));
+
+        self::assertNull($this->fixture->create($file));
+    }
+
+    public function testFileWithNoDocumentedElementsIsKept(): void
+    {
+        $file = new File('hash', 'empty.php');
+
+        self::assertNotNull($this->fixture->create($file));
+    }
+
     /**
      * Create a descriptor builder mock
      */
@@ -90,7 +114,7 @@ DOCBLOCK,
         $settings->includeSource();
 
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);
-        $projectDescriptorBuilderMock->getDefaultPackageName()->shouldBeCalled()->willReturn($this->defaultPackage);
+        $projectDescriptorBuilderMock->getDefaultPackageName()->willReturn($this->defaultPackage);
 
         $projectDescriptorBuilderMock->buildDescriptor(Argument::any(), Argument::any())->will(function () {
             $mock = $this->prophesize(DescriptorAbstract::class);
