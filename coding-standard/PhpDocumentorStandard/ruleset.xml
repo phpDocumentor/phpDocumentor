@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="PhpDocumentorStandard">
+    <description>Custom sniffs that supplement the shared rulesets used by phpDocumentor.</description>
+
+    <rule ref="PhpDocumentorStandard.Commenting.FileHeader"/>
+</ruleset>
