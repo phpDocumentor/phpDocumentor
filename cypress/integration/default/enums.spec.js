@@ -12,6 +12,7 @@ describe('Enums', function() {
 
     describe('Breadcrumb', function() {
         it('Has a breadcrumb featuring "Marios"', function() {
+            cy.get('.phpdocumentor-breadcrumb').should('have.length', 2);
             cy.get('.phpdocumentor-breadcrumb').contains('Marios');
         });
 
@@ -59,6 +60,13 @@ describe('Enums', function() {
                 .contains('Cases can have docblocks.');
         });
     });
+
+        it('Does not render docblock sections when the case has no docblock', function() {
+            cy.get('#enumcase_DELIVER')
+                .closest('.phpdocumentor-element')
+                .find('.phpdocumentor-summary, .phpdocumentor-description')
+                .should('not.exist');
+        });
 
         it('Renders the backing value next to the case in the table of contents', function() {
             cy.get('.phpdocumentor-table-of-contents__entry')
