@@ -41,9 +41,16 @@ describe('Enums', function() {
     });
 
     describe('Cases', function() {
-        it('Lists every declared case', function() {
+        it('Lists each declared case', function() {
             cy.get('#enumcase_PICKUP').should('exist');
             cy.get('#enumcase_DELIVER').should('exist');
+        });
+
+        it('Wraps each case in an article tagged as an enum case', function() {
+            cy.get('#enumcase_PICKUP')
+                .closest('article')
+                .should('have.class', 'phpdocumentor-element')
+                .and('have.class', '-enum-case');
         });
 
         it('Renders the docblock summary attached to a case', function() {
