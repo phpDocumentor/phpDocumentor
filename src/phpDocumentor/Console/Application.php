@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
+use Monolog\Logger as MonologLogger;
 use phpDocumentor\AutoloaderLocator;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Version;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleEvent;
@@ -25,7 +25,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function array_merge;
@@ -72,13 +71,13 @@ class Application extends BaseApplication
         $this->setDefaultCommand('project:run', false);
 
         $eventDispatcher = $container->get(EventDispatcher::class);
-        $logger = $container->get(LoggerInterface::class);
+        $logger = $container->get(MonologLogger::class);
         $this->setDispatcher($eventDispatcher);
 
         $eventDispatcher->addListener(
             ConsoleEvents::COMMAND,
             static function (ConsoleEvent $event) use ($logger): void {
-                $logger->pushHandler(new ConsoleLogHandler(new SymfonyStyle($event->getInput(), $event->getOutput())));
+                LogConfigurator::attach($logger, $event);
             },
         );
 
@@ -123,7 +122,12 @@ class Application extends BaseApplication
                     InputOption::VALUE_NONE,
                     'Do not load any extensions',
                 ),
-                new InputOption('log', null, InputOption::VALUE_OPTIONAL, 'Log file to write to'),
+                new InputOption(
+                    'log',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Log file to write to (level follows console verbosity)',
+                ),
             ],
         );
     }
