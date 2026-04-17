@@ -49,7 +49,7 @@ class FileAssembler extends AssemblerAbstract
      *
      * @param File $data
      */
-    public function buildDescriptor(object $data): FileInterface
+    public function buildDescriptor(object $data): FileInterface|null
     {
         $fileDescriptor = new FileDescriptor($data->getHash());
         $fileDescriptor->setPackage(
@@ -77,7 +77,35 @@ class FileAssembler extends AssemblerAbstract
         $this->addInterfaces($data->getInterfaces(), $fileDescriptor);
         $this->addTraits($data->getTraits(), $fileDescriptor);
 
+        // If every documented element of the file was filtered out (for example because each
+        // class, function or constant carries an @ignore tag) the file would otherwise keep
+        // a dedicated page and appear in the files index with its full source. Drop it so
+        // @ignore is honoured consistently at file level too.
+        if ($this->hadDocumentedElements($data) && $this->isEffectivelyEmpty($fileDescriptor)) {
+            return null;
+        }
+
         return $fileDescriptor;
+    }
+
+    private function hadDocumentedElements(File $data): bool
+    {
+        return $data->getConstants() !== []
+            || $data->getFunctions() !== []
+            || $data->getClasses() !== []
+            || $data->getInterfaces() !== []
+            || $data->getTraits() !== []
+            || $data->getEnums() !== [];
+    }
+
+    private function isEffectivelyEmpty(FileInterface $fileDescriptor): bool
+    {
+        return $fileDescriptor->getConstants()->count() === 0
+            && $fileDescriptor->getFunctions()->count() === 0
+            && $fileDescriptor->getClasses()->count() === 0
+            && $fileDescriptor->getInterfaces()->count() === 0
+            && $fileDescriptor->getTraits()->count() === 0
+            && $fileDescriptor->getEnums()->count() === 0;
     }
 
     /**
