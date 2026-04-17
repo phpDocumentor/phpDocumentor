@@ -108,8 +108,10 @@ final class Target
                     break;
                 }
 
+                $fqcnPattern = '/(?<![A-Za-z0-9_])\\\\?(?:[A-Za-z_][A-Za-z0-9_]*\\\\)+([A-Za-z_][A-Za-z0-9_]*)'
+                    . '|\\\\([A-Za-z_][A-Za-z0-9_]*)/';
                 $abbreviated = preg_replace_callback(
-                    '/(?<![A-Za-z0-9_])\\\\?(?:[A-Za-z_][A-Za-z0-9_]*\\\\)+([A-Za-z_][A-Za-z0-9_]*)|\\\\([A-Za-z_][A-Za-z0-9_]*)/',
+                    $fqcnPattern,
                     static fn (array $matches): string => $matches[2] ?? $matches[1],
                     $this->title,
                 );
