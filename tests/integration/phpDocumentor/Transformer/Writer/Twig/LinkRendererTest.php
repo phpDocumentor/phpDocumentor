@@ -22,7 +22,12 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Callable_;
+use phpDocumentor\Reflection\Types\CallableParameter;
+use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -269,6 +274,28 @@ final class LinkRendererTest extends TestCase
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
+            ],
+            'callable with union parameter' => [
+                new Callable_([
+                    new CallableParameter(new Compound([new Integer(), new String_()])),
+                ]),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'callable(int|string)',
+            ],
+            'callable with union return type' => [
+                new Callable_(
+                    [],
+                    new Compound([new Integer(), new String_()]),
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'callable(): int|string',
+            ],
+            'callable with intersection parameter' => [
+                new Callable_([
+                    new CallableParameter(new Intersection([new String_(), new Boolean()])),
+                ]),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+                'callable(string&bool)',
             ],
         ];
     }
