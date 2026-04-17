@@ -89,6 +89,7 @@
         "symfony/stopwatch": "^6.0",
         "symfony/string": "^6.4",
         "symfony/yaml": "^6.0",
+        "twig/string-extra": "^3.17",
         "twig/twig": "^3.17",
         "webmozart/assert": "^1.3"
     },
