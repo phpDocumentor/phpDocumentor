@@ -303,6 +303,19 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     }
 
     /**
+     * Returns true when the file has no documented structural elements left.
+     */
+    public function isEmpty(): bool
+    {
+        return $this->classes->count() === 0
+            && $this->constants->count() === 0
+            && $this->functions->count() === 0
+            && $this->interfaces->count() === 0
+            && $this->traits->count() === 0
+            && $this->enums->count() === 0;
+    }
+
+    /**
      * Returns a series of markers contained in this file.
      *
      * A marker is a special inline comment that starts with a keyword and is followed by a single line description.
