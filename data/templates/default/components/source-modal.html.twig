@@ -1,3 +1,4 @@
+{% if project.settings.shouldIncludeSource %}
 {% block sourceview_modal %}
 <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
@@ -95,3 +96,4 @@
         })();
     </script>
 {% endblock %}
+{% endif %}

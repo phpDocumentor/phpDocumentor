@@ -37,6 +37,7 @@ final class ParseFiles
         // TODO: The setVisibility call should purge the cache if it differs; but once we are here, cache has already
         //       been loaded..
         $payload->getBuilder()->setVisibility($apiConfig->calculateVisiblity());
+        $payload->getBuilder()->setIncludeSource(($apiConfig['include-source'] ?? false) === true);
 
         $encoding = $apiConfig['encoding'] ?? '';
         if ($encoding) {

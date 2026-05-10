@@ -183,6 +183,17 @@ class ProjectDescriptorBuilder
         $this->project->getSettings()->setVisibility($visibility);
     }
 
+    public function setIncludeSource(bool $includeSource): void
+    {
+        if ($includeSource) {
+            $this->project->getSettings()->includeSource();
+
+            return;
+        }
+
+        $this->project->getSettings()->excludeSource();
+    }
+
     public function setName(string $title): void
     {
         $this->project->setName($title);

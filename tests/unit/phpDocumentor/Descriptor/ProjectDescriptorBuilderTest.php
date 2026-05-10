@@ -104,4 +104,18 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
 
         self::assertEquals(ApiSpecification::VISIBILITY_PUBLIC, $projectSettings->getVisibility());
     }
+
+    public function testSetIncludeSourceTogglesTheProjectSetting(): void
+    {
+        $this->fixture->createProjectDescriptor();
+        $projectSettings = $this->fixture->getProjectDescriptor()->getSettings();
+
+        self::assertFalse($projectSettings->shouldIncludeSource());
+
+        $this->fixture->setIncludeSource(true);
+        self::assertTrue($projectSettings->shouldIncludeSource());
+
+        $this->fixture->setIncludeSource(false);
+        self::assertFalse($projectSettings->shouldIncludeSource());
+    }
 }
