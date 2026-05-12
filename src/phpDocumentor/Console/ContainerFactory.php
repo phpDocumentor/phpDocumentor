@@ -41,7 +41,6 @@ final class ContainerFactory
         foreach (
             array_merge(
                 [
-                    new ApplicationExtension(),
                     new GuidesExtension(),
                     new ReStructuredTextExtension(),
                     new MarkdownExtension(),
@@ -63,7 +62,15 @@ final class ContainerFactory
     public function create(
         string $vendorDir,
         ExtensionHandler $extensionHandler,
+        string|null $configFile = null,
     ): ContainerBuilder {
+        // ApplicationExtension must be registered in create() (not the constructor) so that
+        // it can receive the config file path resolved from the command-line --config option.
+        // prepend() is called by compile() for all PrependExtensionInterface implementations,
+        // but only after all extensions have been registered via loadFromExtension().
+        // Registering first ensures prepend order is correct relative to other extensions.
+        $this->registerExtension(new ApplicationExtension($configFile));
+
         $this->container->setParameter('vendor_dir', $vendorDir);
         $this->container->setParameter('kernel.project_dir', dirname(__DIR__, 3));
         $this->container->setParameter('env(PHPDOC_PLANTUML)', 'plantuml_smetana');

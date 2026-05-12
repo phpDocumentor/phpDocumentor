@@ -57,11 +57,17 @@ class Application extends BaseApplication
             $extensionsDirs = array_merge($extensionsDirs, $this->composerExtensionsDirs);
         }
 
+        // Read the --config/-c option before building the container so that
+        // ApplicationExtension can load the correct phpdoc.xml file during
+        // the DI extension prepend/load phase (before compile()).
+        $configFile = $input->getParameterOption(['--config', '-c'], null) ?: null;
+
         $extensionHandler = ExtensionHandler::getInstance($extensionsDirs);
         $containerFactory = new ContainerFactory();
         $container = $containerFactory->create(
             AutoloaderLocator::findVendorPath(),
             $extensionHandler,
+            $configFile,
         );
 
         $commands = $container->findTaggedServiceIds('console.command');
