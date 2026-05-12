@@ -1,0 +1,85 @@
+name: Check GPG Key Expiry
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Runs at 08:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  check-expiry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install GPG
+        run: sudo apt-get update && sudo apt-get install -y gnupg
+
+      - name: Import GPG Keys
+        run: |
+          gpg --keyserver hkps://keys.openpgp.org  --recv-keys F33A0AF69AF7A8B15017DB526DA3ACC4991FFAE5
+
+      - name: Check for Expiring Keys
+        id: check-expiry
+        run: |
+          THRESHOLD_DAYS=30
+          CURRENT_DATE=$(date +%s)
+          EXPIRING_KEYS=""
+          HAS_EXPIRING_KEYS=false
+
+          while IFS= read -r line; do
+            if [[ "$line" =~ ^pub ]]; then
+              KEY_ID=$(echo "$line" | cut -d: -f5)
+              KEY_EXPIRY=$(echo "$line" | cut -d: -f7)
+              KEY_EMAIL=$(gpg --list-keys "$KEY_ID" 2>/dev/null | grep -E -o "\<[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\>")
+
+              if [[ -z "$KEY_EXPIRY" ]]; then
+                continue
+              fi
+
+              DAYS_LEFT=$(( (KEY_EXPIRY - CURRENT_DATE) / 86400 ))
+
+              if (( DAYS_LEFT <= THRESHOLD_DAYS && DAYS_LEFT >= 0 )); then
+                EXPIRING_KEYS+="Key **$KEY_ID** ($KEY_EMAIL) expires in **$DAYS_LEFT days**\n"
+                HAS_EXPIRING_KEYS=true
+              fi
+            fi
+          done < <(gpg --list-keys --with-colons)
+
+          echo "expiring_keys=$EXPIRING_KEYS" >> $GITHUB_OUTPUT
+          echo "has_expiring_keys=$HAS_EXPIRING_KEYS" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Issue Alert
+        if: steps.check-expiry.outputs.has_expiring_keys == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'gpg-expiry-alert'
+            });
+
+            const existingIssue = issues.find(issue =>
+              issue.title.includes('GPG Key Expiry Alert')
+            );
+
+            const body = `## ⚠️ GPG Key Expiry Alert\n\n${{ steps.check-expiry.outputs.expiring_keys }}\n\n**Action Required:** Renew the expiring keys.`;
+
+            if (existingIssue) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '⚠️ GPG Key Expiry Alert',
+                body: body,
+                labels: ['gpg-expiry-alert']
+              });
+            }
