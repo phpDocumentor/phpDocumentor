@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="data/xsd/phpdoc.xsd"
+>
+    <title>phpDocumentor</title>
+    <paths>
+        <output>build</output>
+    </paths>
+    <version number="3.0.0">
+        <folder>latest</folder>
+        <guide format="md">
+            <source dsn=".">
+                <path>docs</path>
+            </source>
+            <output>/guide</output>
+        </guide>
+    </version>
+    <setting name="guides.enabled" value="true"/>
+</phpdocumentor>
