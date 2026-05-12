@@ -107,11 +107,31 @@ final class ApplicationExtension extends Extension implements PrependExtensionIn
             ? $factory->createFromFile($configFile)
             : $factory->createDefault();
 
-        // prependExtensionConfig() stores configs in LIFO order, but since this is
-        // the primary source (phpdoc.xml), using prepend is intentional: other
-        // extensions can override values by prepending their own partial configs
-        // after this one.
         $container->prependExtensionConfig('phpdocumentor', $config['phpdocumentor']);
+
+        if (! $this->hasMarkdownGuides($config['phpdocumentor'])) {
+            return;
+        }
+
+        $container->prependExtensionConfig('guides', ['automatic_menu' => true]);
+    }
+
+    /**
+     * Returns true when at least one guide entry in any version uses the Markdown format.
+     *
+     * @param array<mixed> $phpdocConfig The parsed phpdocumentor config array (without the outer 'phpdocumentor' key).
+     */
+    private function hasMarkdownGuides(array $phpdocConfig): bool
+    {
+        foreach ($phpdocConfig['versions'] ?? [] as $version) {
+            foreach ($version['guides'] ?? [] as $guide) {
+                if (($guide['format'] ?? '') === 'md') {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
