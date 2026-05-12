@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d86c414752dc6e5fde60dfc5f09a4a56",
+    "content-hash": "00d8218fe98a8f818ab5292048ce1f7c",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1751,16 +1751,16 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-core.git",
-                "reference": "5b67c876fa2792b2084e60d6df41b09c85368e8f"
+                "reference": "f90731c13f0132dac864c21adce866f0f756541a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/5b67c876fa2792b2084e60d6df41b09c85368e8f",
-                "reference": "5b67c876fa2792b2084e60d6df41b09c85368e8f",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-core/zipball/f90731c13f0132dac864c21adce866f0f756541a",
+                "reference": "f90731c13f0132dac864c21adce866f0f756541a",
                 "shasum": ""
             },
             "require": {
@@ -1805,9 +1805,9 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-core/issues",
-                "source": "https://github.com/phpDocumentor/guides-core/tree/1.10.0"
+                "source": "https://github.com/phpDocumentor/guides-core/tree/1.10.1"
             },
-            "time": "2026-04-13T21:44:21+00:00"
+            "time": "2026-05-08T14:29:08+00:00"
         },
         {
             "name": "phpdocumentor/guides-graphs",
@@ -1859,16 +1859,16 @@
         },
         {
             "name": "phpdocumentor/guides-markdown",
-            "version": "1.9.6",
+            "version": "1.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-markdown.git",
-                "reference": "b6a58befc859634333c3f1b5475b0c75eacac8f7"
+                "reference": "8e30419d5724f025014d3fd6ecc2648a7ebda2a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/b6a58befc859634333c3f1b5475b0c75eacac8f7",
-                "reference": "b6a58befc859634333c3f1b5475b0c75eacac8f7",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-markdown/zipball/8e30419d5724f025014d3fd6ecc2648a7ebda2a9",
+                "reference": "8e30419d5724f025014d3fd6ecc2648a7ebda2a9",
                 "shasum": ""
             },
             "require": {
@@ -1896,22 +1896,22 @@
             "homepage": "https://www.phpdoc.org",
             "support": {
                 "issues": "https://github.com/phpDocumentor/guides-markdown/issues",
-                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.9.6"
+                "source": "https://github.com/phpDocumentor/guides-markdown/tree/1.10.2"
             },
-            "time": "2026-02-27T16:08:02+00:00"
+            "time": "2026-05-12T21:21:19+00:00"
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "1.9.7",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/guides-restructured-text.git",
-                "reference": "73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2"
+                "reference": "382bb6f6ae20cb289999bbbd5b8d42a50032bb44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2",
-                "reference": "73cbcb4ae16a04fe88a8e5f8ed6db2ee116a70f2",
+                "url": "https://api.github.com/repos/phpDocumentor/guides-restructured-text/zipball/382bb6f6ae20cb289999bbbd5b8d42a50032bb44",
+                "reference": "382bb6f6ae20cb289999bbbd5b8d42a50032bb44",
                 "shasum": ""
             },
             "require": {
@@ -1939,9 +1939,9 @@
             "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "support": {
-                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.9.7"
+                "source": "https://github.com/phpDocumentor/guides-restructured-text/tree/1.10.1"
             },
-            "time": "2026-04-07T18:56:46+00:00"
+            "time": "2026-05-05T21:54:11+00:00"
         },
         {
             "name": "phpdocumentor/json-path",
