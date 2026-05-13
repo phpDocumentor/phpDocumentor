@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
@@ -67,8 +69,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns all indexes in this project.
      *
      * @deprecated Please use {@see DocumentationSetDescriptor::getIndexes()}
+     *
+     * @return CollectionInterface<CollectionInterface<ElementInterface>>
      */
-    public function getIndexes(): Collection
+    public function getIndexes(): CollectionInterface
     {
         return $this->getApiDocumentationSet()->getIndexes();
     }
@@ -95,9 +99,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
      *
-     * @param Collection<string> $partials
+     * @param CollectionInterface<string> $partials
      */
-    public function setPartials(Collection $partials): void
+    public function setPartials(CollectionInterface $partials): void
     {
         $this->partials = $partials;
     }
@@ -107,9 +111,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @see setPartials() for more information on partials.
      *
-     * @return Collection<string>
+     * @return CollectionInterface<string>
      */
-    public function getPartials(): Collection
+    public function getPartials(): CollectionInterface
     {
         return $this->partials;
     }

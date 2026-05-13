@@ -125,7 +125,7 @@ class FunctionAssembler extends AssemblerAbstract
         FunctionDescriptor $functionDescriptor,
         Argument $argument,
     ): ArgumentInterface {
-        /** @var Collection<ParamDescriptor> $params */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
         if (! $this->argumentAssembler->getBuilder()) {

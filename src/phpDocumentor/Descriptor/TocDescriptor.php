@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
@@ -32,7 +33,7 @@ final class TocDescriptor implements Descriptor
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->entries = Collection::fromClassString(Entry::class);
+        $this->entries = \phpDocumentor\Descriptor\Collection::fromClassString(Entry::class);
     }
 
     public function addEntry(TableOfContents\Entry $entry): void
@@ -43,7 +44,7 @@ final class TocDescriptor implements Descriptor
     /** @return Collection<Entry> */
     public function getRoots(): Collection
     {
-        return Collection::fromClassString(
+        return \phpDocumentor\Descriptor\Collection::fromClassString(
             Entry::class,
             array_filter(
                 $this->entries->getAll(),

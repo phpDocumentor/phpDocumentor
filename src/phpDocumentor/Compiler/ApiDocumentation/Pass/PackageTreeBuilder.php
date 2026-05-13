@@ -91,14 +91,14 @@ final class PackageTreeBuilder extends ApiDocumentationPass
      * This method will assign the given elements to the package as registered in the package field of that
      * element. If a package does not exist yet it will automatically be created.
      *
-     * @param Collection<PackageInterface> $packages
+     * @param \phpDocumentor\Descriptor\Interfaces\Collection<PackageInterface> $packages
      * @param array<ElementInterface> $elements Series of elements to add to their respective package.
-     * @param string $type     Declares which field of the package will be populated with the given
+     * @param string $type Declares which field of the package will be populated with the given
      *                         series of elements. This name will be transformed to a getter which must exist. Out of
      *                         performance considerations will no effort be done to verify whether the provided type is
      *                         valid.
      */
-    private function addElementsOfTypeToPackage(Collection $packages, array $elements, string $type): void
+    private function addElementsOfTypeToPackage(\phpDocumentor\Descriptor\Interfaces\Collection $packages, array $elements, string $type): void
     {
         foreach ($elements as $element) {
             $packageName = '';
@@ -137,7 +137,7 @@ final class PackageTreeBuilder extends ApiDocumentationPass
             // add element to package
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection<ElementInterface> $collection */
+            /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ElementInterface> $collection */
             $collection = $package->{$getter}();
             $collection->add($element);
         }
@@ -157,10 +157,10 @@ final class PackageTreeBuilder extends ApiDocumentationPass
      * @see PackageInterface::getChildren() for the child packages of a given package.
      * @see DocumentationSetDescriptor::getPackage() for the root package.
      *
-     * @param Collection<PackageInterface> $packages
+     * @param \phpDocumentor\Descriptor\Interfaces\Collection<PackageInterface> $packages
      * @param string $packageName A FQNN of the package (and parents) to create.
      */
-    private function createPackageDescriptorTree(Collection $packages, string $packageName): void
+    private function createPackageDescriptorTree(\phpDocumentor\Descriptor\Interfaces\Collection $packages, string $packageName): void
     {
         $parts = explode('\\', ltrim($packageName, '\\'));
         $fqnn = '';

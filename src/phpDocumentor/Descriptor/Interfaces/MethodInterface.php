@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;

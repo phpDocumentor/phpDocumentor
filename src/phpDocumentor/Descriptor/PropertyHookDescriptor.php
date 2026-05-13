@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Interfaces\PropertyHookInterface;
 
 final class PropertyHookDescriptor implements Descriptor, PropertyHookInterface
@@ -32,7 +33,7 @@ final class PropertyHookDescriptor implements Descriptor, PropertyHookInterface
     public function __construct()
     {
         $this->visibility = new ValueObjects\Visibility(ValueObjects\VisibilityModifier::PUBLIC);
-        $this->arguments = Collection::fromInterfaceString(ArgumentInterface::class);
+        $this->arguments = \phpDocumentor\Descriptor\Collection::fromInterfaceString(ArgumentInterface::class);
     }
 
     public function addArgument(string $name, ArgumentInterface $argument): void

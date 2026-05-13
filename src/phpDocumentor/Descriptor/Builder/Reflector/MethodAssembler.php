@@ -98,7 +98,7 @@ class MethodAssembler extends AssemblerAbstract
      */
     protected function addArgument(Argument $argument, MethodDescriptor $descriptor): void
     {
-        /** @var Collection<ParamDescriptor> $params */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ParamDescriptor> $params */
         $params = $descriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
         if (! $this->argumentAssembler->getBuilder()) {

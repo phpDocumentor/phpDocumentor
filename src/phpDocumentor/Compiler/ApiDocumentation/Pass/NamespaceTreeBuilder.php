@@ -123,7 +123,7 @@ final class NamespaceTreeBuilder extends ApiDocumentationPass
             // add element to namespace
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection<ElementInterface> $collection */
+            /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ElementInterface> $collection */
             $collection = $namespace->{$getter}();
             $collection->add($element);
         }

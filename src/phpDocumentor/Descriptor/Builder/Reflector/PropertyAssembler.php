@@ -66,7 +66,7 @@ class PropertyAssembler extends AssemblerAbstract
 
     private function overwriteTypeFromDocBlock(PropertyInterface $propertyDescriptor): void
     {
-        /** @var Collection<VarDescriptor> $varTags */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<VarDescriptor> $varTags */
         $varTags = $propertyDescriptor->getTags()
             ->fetch('var', new Collection())
             ->filter(VarDescriptor::class);

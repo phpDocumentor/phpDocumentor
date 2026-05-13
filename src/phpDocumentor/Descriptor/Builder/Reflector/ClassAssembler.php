@@ -137,7 +137,7 @@ final class ClassAssembler extends AssemblerAbstract
      */
     protected function addUses(array $traits, ClassInterface $classDescriptor): void
     {
-        /** @var Collection<TraitInterface|Fqsen> $usedTraits */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<TraitInterface|Fqsen> $usedTraits */
         $usedTraits = new Collection($traits);
 
         $classDescriptor->setUsedTraits($usedTraits);

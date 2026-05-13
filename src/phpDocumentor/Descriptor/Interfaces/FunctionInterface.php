@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
-
 /**
  * Descriptor representing a global function in a file.
  */

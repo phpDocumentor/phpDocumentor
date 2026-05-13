@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Configuration\ApiSpecification;
-use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;

@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\TableOfContents;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 
 final class Entry
 {
-    /** @var Collection<Entry> */
-    private readonly Collection $children;
+    /** @var CollectionInterface<Entry> */
+    private readonly CollectionInterface $children;
 
     public function __construct(
         private readonly string $url,
@@ -48,8 +49,8 @@ final class Entry
         $this->children->set($child->getUrl(), $child);
     }
 
-    /** @return Collection<Entry> */
-    public function getChildren(): Collection
+    /** @return CollectionInterface<Entry> */
+    public function getChildren(): CollectionInterface
     {
         return $this->children;
     }

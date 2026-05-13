@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
@@ -25,22 +26,22 @@ trait ImplementsInterfaces
     /**
      * References to interfaces that are implemented by this class.
      *
-     * @var Collection<InterfaceInterface|Fqsen> $implements
+     * @var CollectionInterface<InterfaceInterface|Fqsen> $implements
      */
-    protected Collection $implements;
+    protected CollectionInterface $implements;
 
     /**
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<InterfaceInterface|Fqsen> $implements
+     * @param CollectionInterface<InterfaceInterface|Fqsen> $implements
      */
-    public function setInterfaces(Collection $implements): void
+    public function setInterfaces(CollectionInterface $implements): void
     {
         $this->implements = $implements;
     }
 
-    /** @return Collection<InterfaceInterface|Fqsen> */
-    public function getInterfaces(): Collection
+    /** @return CollectionInterface<InterfaceInterface|Fqsen> */
+    public function getInterfaces(): CollectionInterface
     {
         if (! isset($this->implements)) {
             $this->implements = new Collection();
@@ -49,8 +50,8 @@ trait ImplementsInterfaces
         return $this->implements;
     }
 
-    /** @return Collection<InterfaceInterface|Fqsen> */
-    public function getInterfacesIncludingInherited(): Collection
+    /** @return CollectionInterface<InterfaceInterface|Fqsen> */
+    public function getInterfacesIncludingInherited(): CollectionInterface
     {
         $interfaces = $this->getInterfaces();
         if ($this instanceof InheritsFromElement) {

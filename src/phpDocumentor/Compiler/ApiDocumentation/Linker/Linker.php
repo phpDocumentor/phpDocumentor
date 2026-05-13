@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -116,9 +117,9 @@ final class Linker extends ApiDocumentationPass
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor|DocumentationSetDescriptor $item
+     * @param string|Fqsen|Type|\phpDocumentor\Descriptor\Interfaces\Collection<mixed>|array<mixed>|Descriptor|DocumentationSetDescriptor $item
      *
-     * @return string|DocumentationSetDescriptor|Descriptor|Collection<string|Descriptor>|array<string|Descriptor>|null
+     * @return string|DocumentationSetDescriptor|Descriptor|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor>|array<string|Descriptor>|null
      */
     public function substitute($item, Descriptor|null $container = null)
     {
@@ -127,11 +128,11 @@ final class Linker extends ApiDocumentationPass
         }
 
         if ($item instanceof Fqsen) {
-            return $this->descriptorRepository->findAlias((string) $item, $container);
+            return $this->descriptorRepository->findAlias((string) $item, $container instanceof ElementInterface ? $container : null);
         }
 
         if (is_string($item)) {
-            return $this->descriptorRepository->findAlias($item, $container);
+            return $this->descriptorRepository->findAlias($item, $container instanceof ElementInterface ? $container : null);
         }
 
         if (is_iterable($item)) {
@@ -150,9 +151,9 @@ final class Linker extends ApiDocumentationPass
     }
 
     /**
-     * @param array<string|Descriptor>|Collection<string|Descriptor> $collection
+     * @param array<string|Descriptor>|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor> $collection
      *
-     * @return array<string|Descriptor>|Collection<string|Descriptor>|null
+     * @return array<string|Descriptor>|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor>|null
      */
     private function substituteChildrenOfCollection(iterable $collection, Descriptor|null $container): iterable|null
     {

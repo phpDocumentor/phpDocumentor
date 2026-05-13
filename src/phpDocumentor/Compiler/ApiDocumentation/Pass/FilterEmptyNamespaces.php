@@ -15,7 +15,7 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Pipeline\Attribute\Stage;

@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasFqsen;
 use phpDocumentor\Descriptor\Traits\HasName;
@@ -33,7 +34,7 @@ final class AttributeDescriptor implements Descriptor, Stringable, AttributeInte
 
     public function __construct()
     {
-        $this->arguments = Collection::fromClassString(ValueObjects\CallArgument::class);
+        $this->arguments = \phpDocumentor\Descriptor\Collection::fromClassString(ValueObjects\CallArgument::class);
     }
 
     public function getAttribute(): ClassInterface|Fqsen|null

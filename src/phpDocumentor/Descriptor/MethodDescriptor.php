@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
@@ -51,8 +52,8 @@ class MethodDescriptor extends DescriptorAbstract implements
     /** @var ClassInterface|InterfaceInterface|TraitInterface|EnumInterface|null $parent */
     protected ElementInterface|null $parent = null;
 
-    /** @var Collection<ArgumentInterface> */
-    protected Collection $arguments;
+    /** @var CollectionInterface<ArgumentInterface> */
+    protected CollectionInterface $arguments;
 
     protected bool $static = false;
     private Type|null $returnType = null;

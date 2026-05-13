@@ -138,7 +138,7 @@ final class ElementsIndexBuilder extends ApiDocumentationPass
 
         /** @var ElementInterface $element */
         foreach ($elements as $element) {
-            /** @var Collection<ElementInterface> $collection */
+            /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ElementInterface> $collection */
             foreach ($indexes as $collection) {
                 $collection->set($this->getIndexKey($element), $element);
             }

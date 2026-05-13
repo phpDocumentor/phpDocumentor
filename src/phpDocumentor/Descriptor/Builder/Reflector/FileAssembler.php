@@ -62,7 +62,7 @@ class FileAssembler extends AssemblerAbstract
 
         $fileDescriptor->setIncludes(new Collection($data->getIncludes()));
 
-        /** @var Collection<NamespaceInterface|Fqsen> $namespaceAliases */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<NamespaceInterface|Fqsen> $namespaceAliases */
         $namespaceAliases = new Collection($data->getNamespaces());
         $fileDescriptor->setNamespaceAliases($namespaceAliases);
 

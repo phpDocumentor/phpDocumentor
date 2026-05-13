@@ -17,7 +17,6 @@ use OutOfRangeException;
 use phpDocumentor\Configuration\VersionSpecification;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\Collection as PartialsCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
@@ -28,8 +27,8 @@ use function md5;
 
 final class InitializeBuilderFromConfig
 {
-    /** @param PartialsCollection<string> $partials */
-    public function __construct(private readonly PartialsCollection $partials)
+    /** @param \phpDocumentor\Descriptor\Interfaces\Collection<string> $partials */
+    public function __construct(private readonly \phpDocumentor\Descriptor\Interfaces\Collection $partials)
     {
     }
 

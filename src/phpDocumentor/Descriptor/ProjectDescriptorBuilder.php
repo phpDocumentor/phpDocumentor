@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
 
@@ -158,7 +159,7 @@ class ProjectDescriptorBuilder
             $apiSet->getFiles()->set($descriptor->getPath(), $descriptor);
         }
 
-        $namespaces = $apiSet->getIndexes()->fetch('namespaces', new Collection());
+        $namespaces = $apiSet->getIndexes()->fetch('namespaces', new \phpDocumentor\Descriptor\Collection());
 
         foreach ($project->getNamespaces() as $namespace) {
             $namespaces->set(

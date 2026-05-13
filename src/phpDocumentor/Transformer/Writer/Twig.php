@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Template;
@@ -184,11 +185,11 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     }
 
     /**
-     * @param DescriptorCollection<Descriptor> $nodes
+     * @param Collection<Descriptor> $nodes
      * @param array<mixed> $extraParameters
      */
     private function transformNodeCollection(
-        DescriptorCollection $nodes,
+        Collection $nodes,
         Transformation $transformation,
         DocumentationSetDescriptor $documentationSet,
         string $templatePath,

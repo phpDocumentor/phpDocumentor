@@ -19,7 +19,7 @@ use stdClass;
 /**
  * Tests the functionality for the Collection class.
  *
- * @coversDefaultClass \phpDocumentor\Descriptor\Collection
+ * @coversDefaultClass Collection
  */
 final class CollectionTest extends TestCase
 {

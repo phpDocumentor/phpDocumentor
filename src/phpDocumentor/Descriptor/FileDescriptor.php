@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
@@ -177,7 +178,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of constant descriptors contained in this file.
      *
-     * {@inheritDoc}
+     * @return Collection<ConstantInterface>
      */
     public function getConstants(): Collection
     {
@@ -199,7 +200,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of function descriptors contained in this file.
      *
-     * {@inheritDoc}
+     * @return Collection<FunctionInterface>
      */
     public function getFunctions(): Collection
     {
@@ -221,7 +222,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of class descriptors contained in this file.
      *
-     * {@inheritDoc}
+     * @return Collection<ClassInterface>
      */
     public function getClasses(): Collection
     {
@@ -243,9 +244,9 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of interface descriptors contained in this file.
      *
-     * {@inheritDoc}
+     * @return CollectionInterface<InterfaceInterface>
      */
-    public function getInterfaces(): Collection
+    public function getInterfaces(): CollectionInterface
     {
         return $this->interfaces;
     }
@@ -265,7 +266,7 @@ class FileDescriptor extends DescriptorAbstract implements Interfaces\FileInterf
     /**
      * Returns a list of trait descriptors contained in this file.
      *
-     * {@inheritDoc}
+     * @return Collection<TraitInterface>
      */
     public function getTraits(): Collection
     {

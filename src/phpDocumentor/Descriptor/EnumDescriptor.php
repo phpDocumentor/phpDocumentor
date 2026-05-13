@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
@@ -89,8 +90,8 @@ final class EnumDescriptor extends DescriptorAbstract implements EnumInterface
         }
     }
 
-    /** @param Collection<EnumCaseInterface> $cases */
-    public function setCases(Collection $cases): void
+    /** @param CollectionInterface<EnumCaseInterface> $cases */
+    public function setCases(CollectionInterface $cases): void
     {
         $this->cases = $cases;
     }

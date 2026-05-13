@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
-
 /**
  * Interface representing the common interface for all elements that can contain sub-elements.
  */

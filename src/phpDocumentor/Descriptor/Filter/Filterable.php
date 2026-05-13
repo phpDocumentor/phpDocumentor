@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Filter;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Validation;
 
 /**

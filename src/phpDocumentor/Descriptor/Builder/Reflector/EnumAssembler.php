@@ -88,7 +88,7 @@ final class EnumAssembler extends AssemblerAbstract
      */
     private function addUses(array $traits, EnumInterface $descriptor): void
     {
-        /** @var Collection<TraitInterface|Fqsen> $usedTraits */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<TraitInterface|Fqsen> $usedTraits */
         $usedTraits = new Collection($traits);
 
         $descriptor->setUsedTraits($usedTraits);

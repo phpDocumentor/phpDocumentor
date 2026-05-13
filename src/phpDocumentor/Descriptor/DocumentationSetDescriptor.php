@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor;
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Configuration\Source;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
@@ -34,15 +35,15 @@ abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubje
     /** @var Collection<FileInterface> $files */
     private Collection $files;
 
-    /** @var Collection<Collection<ElementInterface>> $indexes */
-    private Collection $indexes;
+    /** @var CollectionInterface<CollectionInterface<ElementInterface>> $indexes */
+    private CollectionInterface $indexes;
 
     public function __construct()
     {
         $this->tocs = Collection::fromClassString(TocDescriptor::class);
         $this->files = Collection::fromInterfaceString(FileInterface::class);
 
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line we cannot specify the correct state here.
         $this->indexes = Collection::fromClassString(Collection::class);
     }
 
@@ -101,9 +102,9 @@ abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubje
      * generation by providing a conveniently assembled list. An example of such an index is the 'marker' index where
      * a list of TODOs and FIXMEs are located in a central location for reporting.
      *
-     * @param Collection<Collection<ElementInterface>> $indexes
+     * @param CollectionInterface<CollectionInterface<ElementInterface>> $indexes
      */
-    public function setIndexes(Collection $indexes): void
+    public function setIndexes(CollectionInterface $indexes): void
     {
         $this->indexes = $indexes;
     }
@@ -113,9 +114,9 @@ abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubje
      *
      * @see setIndexes() for more information on what indexes are.
      *
-     * @return Collection<Collection<ElementInterface>>
+     * @return CollectionInterface<CollectionInterface<ElementInterface>>
      */
-    public function getIndexes(): Collection
+    public function getIndexes(): CollectionInterface
     {
         return $this->indexes;
     }

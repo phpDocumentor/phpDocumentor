@@ -29,6 +29,7 @@ use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
@@ -218,7 +219,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (Descriptor $baseNode): array {
+                static function (ElementInterface $baseNode): array {
                     $results   = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -233,7 +234,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (Descriptor $baseNode): array {
+                static function (ElementInterface $baseNode): array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -248,7 +249,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'methods',
-                static function (Descriptor $descriptor): Collection {
+                static function (Descriptor $descriptor): \phpDocumentor\Descriptor\Interfaces\Collection {
                     $methods = new Collection();
                     if (method_exists($descriptor, 'getMethods')) {
                         $methods = $methods->merge($descriptor->getMethods());
@@ -267,7 +268,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'properties',
-                static function (Descriptor $descriptor): Collection {
+                static function (Descriptor $descriptor): \phpDocumentor\Descriptor\Interfaces\Collection {
                     $properties = new Collection();
                     if (method_exists($descriptor, 'getProperties')) {
                         $properties = $properties->merge($descriptor->getProperties());
@@ -286,7 +287,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'constants',
-                static function (Descriptor $descriptor): Collection {
+                static function (Descriptor $descriptor): \phpDocumentor\Descriptor\Interfaces\Collection {
                     $constants = new Collection();
                     if (method_exists($descriptor, 'getConstants')) {
                         $constants = $constants->merge($descriptor->getConstants());
@@ -305,7 +306,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'cases',
-                static function (Descriptor $descriptor): Collection {
+                static function (Descriptor $descriptor): \phpDocumentor\Descriptor\Interfaces\Collection {
                     if ($descriptor instanceof EnumDescriptor) {
                         return $descriptor->getCases();
                     }
@@ -315,7 +316,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'attributes',
-                static function (AttributedInterface $descriptor): Collection {
+                static function (AttributedInterface $descriptor): \phpDocumentor\Descriptor\Interfaces\Collection {
                     $attributes = Collection::fromInterfaceString(AttributeInterface::class);
                     if (method_exists($descriptor, 'getAttributes')) {
                         $attributes = $attributes->merge($descriptor->getAttributes());
@@ -412,7 +413,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'specializedAttributes' => new TwigFilter(
                 'specializedAttributes',
-                static function (Collection $attributes): Collection {
+                static function (\phpDocumentor\Descriptor\Interfaces\Collection $attributes): \phpDocumentor\Descriptor\Interfaces\Collection {
                     $filtered = Collection::fromClassString(AttributeDescriptor::class);
                     foreach ($attributes as $attribute) {
                         if (in_array((string) $attribute->getFullyQualifiedStructuralElementName(), ['\Deprecated'])) {
@@ -496,11 +497,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /**
-     * @param Collection<Descriptor> $collection
+     * @param \phpDocumentor\Descriptor\Interfaces\Collection<Descriptor> $collection
      *
      * @return ArrayIterator<array-key, Descriptor>
      */
-    public function sort(string $direction, Collection $collection): ArrayIterator
+    public function sort(string $direction, \phpDocumentor\Descriptor\Interfaces\Collection $collection): ArrayIterator
     {
         $iterator = $collection->getIterator();
         $iterator->uasort(
@@ -526,11 +527,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /**
-     * @param Collection<Descriptor> $collection
+     * @param \phpDocumentor\Descriptor\Interfaces\Collection<Descriptor> $collection
      *
      * @return ArrayIterator<array-key, Descriptor>
      */
-    public function sortByVisibility(Collection $collection): ArrayIterator
+    public function sortByVisibility(\phpDocumentor\Descriptor\Interfaces\Collection $collection): ArrayIterator
     {
         $iterator = $collection->getIterator();
         $iterator->uasort(

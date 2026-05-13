@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Validation\Error;
 
 interface TracksErrors

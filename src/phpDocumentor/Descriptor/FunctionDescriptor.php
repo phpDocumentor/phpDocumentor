@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\Type;
 
@@ -28,7 +29,7 @@ use function current;
 class FunctionDescriptor extends DescriptorAbstract implements Interfaces\FunctionInterface
 {
     /** @var Collection<ArgumentInterface> $arguments */
-    protected Collection $arguments;
+    protected CollectionInterface $arguments;
 
     private Type $returnType;
     private bool $hasReturnByReference = false;
@@ -43,12 +44,14 @@ class FunctionDescriptor extends DescriptorAbstract implements Interfaces\Functi
         $this->setArguments(new Collection());
     }
 
-    public function setArguments(Collection $arguments): void
+    /** @param CollectionInterface<ArgumentInterface> $arguments */
+    public function setArguments(CollectionInterface $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    public function getArguments(): Collection
+    /** @return CollectionInterface<ArgumentInterface> */
+    public function getArguments(): CollectionInterface
     {
         return $this->arguments;
     }

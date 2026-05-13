@@ -16,7 +16,6 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
