@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\FileSystem\Path;
@@ -123,7 +123,7 @@ class LinkRenderer implements LinkRendererInterface
     }
 
     /**
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|Descriptor|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
      * @return string|list<string>
      */

@@ -46,7 +46,7 @@ class UrlGenerator
     {
     }
 
-    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target */
+    /** @param string|Path|Type|Descriptor|Fqsen|Reference\Reference|Reference\Fqsen $target */
     public function generate($target, string $fallback): string|null
     {
         $unlinkable = $target instanceof Fqsen || $target instanceof Type;

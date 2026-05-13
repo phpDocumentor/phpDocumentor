@@ -20,7 +20,6 @@ use League\Uri\Uri;
 use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
@@ -219,7 +218,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (DescriptorAbstract $baseNode): array {
+                static function (Descriptor $baseNode): array {
                     $results   = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -234,7 +233,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (DescriptorAbstract $baseNode): array {
+                static function (Descriptor $baseNode): array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -249,7 +248,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'methods',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): Collection {
                     $methods = new Collection();
                     if (method_exists($descriptor, 'getMethods')) {
                         $methods = $methods->merge($descriptor->getMethods());
@@ -268,7 +267,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'properties',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): Collection {
                     $properties = new Collection();
                     if (method_exists($descriptor, 'getProperties')) {
                         $properties = $properties->merge($descriptor->getProperties());
@@ -287,7 +286,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'constants',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): Collection {
                     $constants = new Collection();
                     if (method_exists($descriptor, 'getConstants')) {
                         $constants = $constants->merge($descriptor->getConstants());
@@ -306,7 +305,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'cases',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): Collection {
                     if ($descriptor instanceof EnumDescriptor) {
                         return $descriptor->getCases();
                     }
@@ -476,7 +475,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 
     /**
      * @param mixed[] $context
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|Descriptor|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
      * @return string[]|string
      */

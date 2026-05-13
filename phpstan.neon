@@ -50,3 +50,9 @@ parameters:
     - %currentWorkingDirectory%/incubator/*/tests/unit/*.php
     - %currentWorkingDirectory%/incubator/*/tests/unit/**/*.php
     - %currentWorkingDirectory%/tests/cli/tests/project_with_vendor_extensions/*.php
+
+services:
+    -
+        class: phpDocumentor\Architecture\DescriptorTest
+        tags:
+            - phpat.test

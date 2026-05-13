@@ -15,6 +15,7 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
@@ -73,9 +74,9 @@ final class LinkAdapter implements LinkRendererInterface
      * Should we not be able to resolve this to a Descriptor, we return the passed object or an FQSEN
      * that could not be resolved because the element is not in the API docs.
      *
-     * @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $target
+     * @param string|Path|Type|Descriptor|Fqsen|Reference\Reference|Reference\Fqsen $target
      *
-     * @return string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference
+     * @return string|Path|Type|Descriptor|Fqsen|Reference\Reference
      */
     private function tryToResolveFqsenToDescriptor($target)
     {
@@ -103,7 +104,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $target;
     }
 
-    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
+    /** @param string|Path|Type|Descriptor|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function normalizePresentation($resolvedTarget, string $presentation): string
     {
         $unlinkable = $resolvedTarget instanceof Fqsen || $resolvedTarget instanceof Type;
@@ -120,7 +121,7 @@ final class LinkAdapter implements LinkRendererInterface
         return $presentation;
     }
 
-    /** @param string|Path|Type|DescriptorAbstract|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
+    /** @param string|Path|Type|Descriptor|Fqsen|Reference\Reference|Reference\Fqsen $resolvedTarget */
     private function determineTitle($resolvedTarget): string
     {
         return (string) $resolvedTarget;
