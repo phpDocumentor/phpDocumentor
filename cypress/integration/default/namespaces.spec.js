@@ -25,6 +25,15 @@ describe('Namespaces', function() {
         it('Has "Marios" as title', function() {
             cy.get('.phpdocumentor-content__title').contains("Marios");
         });
+
+        it('Page title includes the fully qualified namespace', function() {
+            cy.title().should('match', /\u00bb \\Marios\s*$/);
+        });
+
+        it('Page title for the root namespace omits the separator', function() {
+            cy.visit('build/default/namespaces/default.html');
+            cy.title().should('not.contain', '\u00bb');
+        });
     });
 
     describe('Table of Contents', function() {

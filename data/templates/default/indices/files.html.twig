@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ project.name }} &raquo; Files
+{% endblock %}
+
 {% block content %}
     <section>
         {% set orderedFiles = project.files|sort((a,b) => a.name <=> b.name) %}

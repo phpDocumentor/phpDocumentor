@@ -17,6 +17,10 @@ describe('Packages', function() {
             cy.get('.phpdocumentor-content__title')
                 .contains("Marios");
         });
+
+        it('Page title includes the fully qualified package name', function() {
+            cy.title().should('match', /\u00bb \\Marios\s*$/);
+        });
     });
 
     describe('Table of Contents', function() {

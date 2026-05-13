@@ -27,6 +27,10 @@ describe('Traits', function() {
     });
 
     describe('Synopsis', function() {
+        it('Page title includes the fully qualified trait name', function () {
+            cy.title().should('match', /\u00bb \\Marios\\SharedTrait\s*$/);
+        });
+
         it('Has "SharedTrait" as title', function () {
             cy.get('.phpdocumentor-content__title').contains('SharedTrait');
         });
