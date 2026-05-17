@@ -20,7 +20,7 @@ use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
 use ReturnTypeWillChange;
 
-use function array_merge;
+use function array_push;
 use function in_array;
 use function ltrim;
 use function rtrim;
@@ -69,7 +69,7 @@ final class Source implements ArrayAccess
     {
         $patterns = [];
         foreach ($this->paths as $path) {
-            $patterns = array_merge($patterns, $this->pathToGlobPatterns((string) $path));
+            array_push($patterns, ...$this->pathToGlobPatterns((string) $path));
         }
 
         return $patterns;
