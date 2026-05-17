@@ -20,12 +20,11 @@ use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
 use ReturnTypeWillChange;
 
-use function array_map;
+use function array_merge;
 use function in_array;
 use function ltrim;
 use function rtrim;
 use function sprintf;
-use function str_contains;
 use function str_ends_with;
 use function str_starts_with;
 
@@ -68,10 +67,12 @@ final class Source implements ArrayAccess
     /** @return string[] */
     public function globPatterns(): array
     {
-        return array_map(
-            fn (Path $path): string => $this->pathToGlobPattern((string) $path),
-            $this->paths,
-        );
+        $patterns = [];
+        foreach ($this->paths as $path) {
+            $patterns = array_merge($patterns, $this->pathToGlobPatterns((string) $path));
+        }
+
+        return $patterns;
     }
 
     private function normalizePath(string $path): string
@@ -87,15 +88,20 @@ final class Source implements ArrayAccess
         return rtrim($path, '/');
     }
 
-    private function pathToGlobPattern(string $path): string
+    /** @return list<string> */
+    private function pathToGlobPatterns(string $path): array
     {
         $path = $this->normalizePath($path);
 
-        if (! str_ends_with($path, '*') && ! str_contains($path, '.')) {
-            $path .= '/**/*';
+        if (str_ends_with($path, '*')) {
+            return [$path];
         }
 
-        return $path;
+        if ($path === '') {
+            return ['/**/*'];
+        }
+
+        return [$path, $path . '/**/*'];
     }
 
     /** @param string $offset */
