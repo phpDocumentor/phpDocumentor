@@ -51,7 +51,7 @@ jobs:
 
       - name: Create GitHub Issue Alert
         if: steps.check-expiry.outputs.has_expiring_keys == 'true'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: issues } = await github.rest.issues.listForRepo({
