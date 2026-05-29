@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Pipeline\Attribute\Stage;
 
 use function implode;
@@ -38,7 +38,7 @@ final class ResolveInlineMarkers extends ApiDocumentationPass
     /**
      * Scans the files for markers and records them in the markers property of a file.
      */
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         $markerTerms = $subject->getSettings()['markers'];
 

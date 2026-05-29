@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console\Command\Project;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Parser\Event\PreParsingEvent;
 use phpDocumentor\Pipeline\PipelineInterface;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Event\PreTransformEvent;
 use phpDocumentor\Transformer\Transformer;
 use Symfony\Component\Console\Command\Command;

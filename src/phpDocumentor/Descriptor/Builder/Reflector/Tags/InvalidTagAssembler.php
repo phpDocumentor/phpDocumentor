@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\DocBlock\Description;
@@ -26,7 +27,7 @@ use function str_replace;
 /** @extends AssemblerAbstract<TagDescriptor, InvalidTag> */
 final class InvalidTagAssembler extends AssemblerAbstract
 {
-    public function create(object $data): TagDescriptor
+    public function create(object $data): TagInterface
     {
         $descriptor = new TagDescriptor($data->getName());
         $descriptor->setDescription(new DescriptionDescriptor(

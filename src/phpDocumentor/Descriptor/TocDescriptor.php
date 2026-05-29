@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\TableOfContents\Entry;
+use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 
@@ -24,7 +24,7 @@ final class TocDescriptor implements Descriptor
     use HasName;
     use HasDescription;
 
-    /** @var Collection<Entry> */
+    /** @var Collection<Interfaces\TableOfContents\Entry> */
     private readonly Collection $entries;
 
     private int $count = 0;
@@ -32,22 +32,24 @@ final class TocDescriptor implements Descriptor
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->entries = Collection::fromClassString(Entry::class);
+        $this->entries = \phpDocumentor\Descriptor\Collection::fromInterfaceString(
+            Interfaces\TableOfContents\Entry::class,
+        );
     }
 
-    public function addEntry(TableOfContents\Entry $entry): void
+    public function addEntry(Interfaces\TableOfContents\Entry $entry): void
     {
         $this->entries->set($this->count++, $entry);
     }
 
-    /** @return Collection<Entry> */
+    /** @return Collection<Interfaces\TableOfContents\Entry> */
     public function getRoots(): Collection
     {
-        return Collection::fromClassString(
-            Entry::class,
+        return \phpDocumentor\Descriptor\Collection::fromInterfaceString(
+            Interfaces\TableOfContents\Entry::class,
             array_filter(
                 $this->entries->getAll(),
-                static fn (Entry $entry) => $entry->getParent() === null,
+                static fn (Interfaces\TableOfContents\Entry $entry) => $entry->getParent() === null,
             ),
         );
     }

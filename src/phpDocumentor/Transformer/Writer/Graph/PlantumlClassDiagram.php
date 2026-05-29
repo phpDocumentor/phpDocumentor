@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Graph;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Guides\Graphs\Twig\UmlExtension;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Uml\ClassDiagram;
@@ -26,7 +26,7 @@ final class PlantumlClassDiagram implements Generator
     ) {
     }
 
-    public function create(DocumentationSetDescriptor $documentationSet): string|null
+    public function create(DocumentationSetInterface $documentationSet): string|null
     {
         if ($documentationSet instanceof ApiSetDescriptor === false) {
             return null;

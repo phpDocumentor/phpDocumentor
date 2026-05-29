@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder;
 
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
 
 /**
  * @template TDescriptor of Descriptor

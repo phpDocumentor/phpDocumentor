@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\MethodDescriptor;
@@ -24,21 +25,21 @@ use function method_exists;
 
 trait HasMethods
 {
-    /** @var Collection<MethodInterface> $methods References to methods defined in this class. */
-    protected Collection $methods;
+    /** @var CollectionInterface<MethodInterface> $methods References to methods defined in this class. */
+    protected CollectionInterface $methods;
 
     /**
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<MethodInterface> $methods
+     * @param CollectionInterface<MethodInterface> $methods
      */
-    public function setMethods(Collection $methods): void
+    public function setMethods(CollectionInterface $methods): void
     {
         $this->methods = $methods;
     }
 
-    /** @return Collection<MethodInterface> */
-    public function getMethods(): Collection
+    /** @return CollectionInterface<MethodInterface> */
+    public function getMethods(): CollectionInterface
     {
         if (! isset($this->methods)) {
             $this->methods = Collection::fromInterfaceString(MethodInterface::class);
@@ -47,8 +48,8 @@ trait HasMethods
         return $this->methods;
     }
 
-    /** @return Collection<MethodInterface> */
-    public function getInheritedMethods(): Collection
+    /** @return CollectionInterface<MethodInterface> */
+    public function getInheritedMethods(): CollectionInterface
     {
         $inheritedMethods = Collection::fromInterfaceString(MethodInterface::class);
 
@@ -80,8 +81,8 @@ trait HasMethods
         return $inheritedMethods->merge($parent->getInheritedMethods());
     }
 
-    /** @return Collection<MethodInterface> */
-    public function getMagicMethods(): Collection
+    /** @return CollectionInterface<MethodInterface> */
+    public function getMagicMethods(): CollectionInterface
     {
         $methodTags = $this->getTags()->fetch('method', new Collection())->filter(Tag\MethodDescriptor::class);
 

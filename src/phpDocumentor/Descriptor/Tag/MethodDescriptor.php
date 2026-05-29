@@ -25,8 +25,8 @@ class MethodDescriptor extends TagDescriptor
 {
     private string $methodName = '';
 
-    /** @var Collection<ArgumentDescriptor> */
-    private Collection $arguments;
+    /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ArgumentDescriptor> */
+    private \phpDocumentor\Descriptor\Interfaces\Collection $arguments;
 
     private ReturnDescriptor|null $response = null;
 
@@ -51,14 +51,14 @@ class MethodDescriptor extends TagDescriptor
         return $this->methodName;
     }
 
-    /** @param Collection<ArgumentDescriptor> $arguments */
-    public function setArguments(Collection $arguments): void
+    /** @param \phpDocumentor\Descriptor\Interfaces\Collection<ArgumentDescriptor> $arguments */
+    public function setArguments(\phpDocumentor\Descriptor\Interfaces\Collection $arguments): void
     {
         $this->arguments = $arguments;
     }
 
-    /** @return Collection<ArgumentDescriptor> */
-    public function getArguments(): Collection
+    /** @return \phpDocumentor\Descriptor\Interfaces\Collection<ArgumentDescriptor> */
+    public function getArguments(): \phpDocumentor\Descriptor\Interfaces\Collection
     {
         return $this->arguments;
     }

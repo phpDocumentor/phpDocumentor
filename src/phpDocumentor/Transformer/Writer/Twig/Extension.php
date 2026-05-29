@@ -17,19 +17,19 @@ use ArrayIterator;
 use InvalidArgumentException;
 use League\CommonMark\ConverterInterface;
 use League\Uri\Uri;
-use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
 use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\DescriptionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
@@ -38,13 +38,13 @@ use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
@@ -98,11 +98,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     /**
      * Registers the structure and transformation with this extension.
      *
-     * @param ProjectDescriptor $project Represents the complete Abstract Syntax Tree.
+     * @param ProjectInterface $project Represents the complete Abstract Syntax Tree.
      */
     public function __construct(
-        private readonly ProjectDescriptor $project,
-        private readonly DocumentationSetDescriptor $documentationSet,
+        private readonly ProjectInterface $project,
+        private readonly DocumentationSetInterface $documentationSet,
         private readonly ConverterInterface $markdownConverter,
         private LinkRenderer $routeRenderer,
         private readonly RelativePathToRootConverter $relativePathToRootConverter,
@@ -115,8 +115,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
      * Initialize series of globals used by the writers to set the context
      *
      * @return array{
-     *     project: ProjectDescriptor,
-     *     documentationSet: DocumentationSetDescriptor,
+     *     project: ProjectInterface,
+     *     documentationSet: DocumentationSetInterface,
      *     node: ?Descriptor,
      *     usesNamespaces: bool,
      *     usesPackages: bool,
@@ -219,7 +219,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'breadcrumbs',
-                static function (DescriptorAbstract $baseNode): array {
+                static function (ElementInterface $baseNode): array {
                     $results   = [];
                     $namespace = $baseNode instanceof NamespaceDescriptor
                         ? $baseNode->getParent()
@@ -234,7 +234,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'packages',
-                static function (DescriptorAbstract $baseNode): array {
+                static function (ElementInterface $baseNode): array {
                     $results = [];
                     $package = $baseNode instanceof PackageDescriptor
                         ? $baseNode->getParent()
@@ -249,7 +249,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'methods',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): CollectionInterface {
                     $methods = new Collection();
                     if (method_exists($descriptor, 'getMethods')) {
                         $methods = $methods->merge($descriptor->getMethods());
@@ -268,7 +268,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'properties',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): CollectionInterface {
                     $properties = new Collection();
                     if (method_exists($descriptor, 'getProperties')) {
                         $properties = $properties->merge($descriptor->getProperties());
@@ -287,7 +287,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'constants',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): CollectionInterface {
                     $constants = new Collection();
                     if (method_exists($descriptor, 'getConstants')) {
                         $constants = $constants->merge($descriptor->getConstants());
@@ -306,7 +306,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'cases',
-                static function (DescriptorAbstract $descriptor): Collection {
+                static function (Descriptor $descriptor): CollectionInterface {
                     if ($descriptor instanceof EnumDescriptor) {
                         return $descriptor->getCases();
                     }
@@ -316,7 +316,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             new TwigFunction(
                 'attributes',
-                static function (AttributedInterface $descriptor): Collection {
+                static function (AttributedInterface $descriptor): CollectionInterface {
                     $attributes = Collection::fromInterfaceString(AttributeInterface::class);
                     if (method_exists($descriptor, 'getAttributes')) {
                         $attributes = $attributes->merge($descriptor->getAttributes());
@@ -413,8 +413,8 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             ),
             'specializedAttributes' => new TwigFilter(
                 'specializedAttributes',
-                static function (Collection $attributes): Collection {
-                    $filtered = Collection::fromClassString(AttributeDescriptor::class);
+                static function (CollectionInterface $attributes): CollectionInterface {
+                    $filtered = Collection::fromInterfaceString(AttributeInterface::class);
                     foreach ($attributes as $attribute) {
                         if (in_array((string) $attribute->getFullyQualifiedStructuralElementName(), ['\Deprecated'])) {
                             continue;
@@ -430,7 +430,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /** @param mixed[] $context */
-    public function renderDescription(array $context, DescriptionDescriptor|null $description): string
+    public function renderDescription(array $context, DescriptionInterface|null $description): string
     {
         if ($description === null || $description->getBodyTemplate() === '') {
             return '';
@@ -476,7 +476,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
 
     /**
      * @param mixed[] $context
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|Descriptor|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
      * @return string[]|string
      */
@@ -497,11 +497,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /**
-     * @param Collection<Descriptor> $collection
+     * @param CollectionInterface<Descriptor> $collection
      *
      * @return ArrayIterator<array-key, Descriptor>
      */
-    public function sort(string $direction, Collection $collection): ArrayIterator
+    public function sort(string $direction, CollectionInterface $collection): ArrayIterator
     {
         $iterator = $collection->getIterator();
         $iterator->uasort(
@@ -527,11 +527,11 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /**
-     * @param Collection<Descriptor> $collection
+     * @param CollectionInterface<Descriptor> $collection
      *
      * @return ArrayIterator<array-key, Descriptor>
      */
-    public function sortByVisibility(Collection $collection): ArrayIterator
+    public function sortByVisibility(CollectionInterface $collection): ArrayIterator
     {
         $iterator = $collection->getIterator();
         $iterator->uasort(

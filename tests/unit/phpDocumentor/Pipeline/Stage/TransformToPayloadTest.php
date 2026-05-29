@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

@@ -187,6 +187,7 @@ class PropertyDescriptor extends DescriptorAbstract implements
         $this->hooks->set($hook->getName(), $hook);
     }
 
+    /** @return Collection<PropertyHookInterface> */
     public function getHooks(): Collection
     {
         return $this->hooks;

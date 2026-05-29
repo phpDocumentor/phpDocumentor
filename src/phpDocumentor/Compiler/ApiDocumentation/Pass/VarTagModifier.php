@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\EnumDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Pipeline\Attribute\Stage;
 
@@ -34,7 +34,7 @@ use function array_values;
 )]
 final class VarTagModifier extends ApiDocumentationPass
 {
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         foreach ($subject->getIndex('classes')->filter(ClassDescriptor::class) as $class) {
             foreach ($class->getConstants() as $constant) {
@@ -67,7 +67,10 @@ final class VarTagModifier extends ApiDocumentationPass
 
     private function filterVarTags(ConstantInterface|PropertyInterface $descriptor): void
     {
-        $tags = $descriptor->getTags()->fetch('var', Collection::fromClassString(TagDescriptor::class));
+        $tags = $descriptor->getTags()->fetch(
+            'var',
+            Collection::fromInterfaceString(TagInterface::class),
+        );
 
         foreach ($tags->filter(VarDescriptor::class) as $index => $tag) {
             if ($tag->getVariableName() === '') {

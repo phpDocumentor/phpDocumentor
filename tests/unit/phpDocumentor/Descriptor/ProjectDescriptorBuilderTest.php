@@ -18,11 +18,12 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
+use phpDocumentor\ProjectDescriptorBuilder;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
  *
- * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptorBuilder
+ * @coversDefaultClass \phpDocumentor\ProjectDescriptorBuilder
  */
 class ProjectDescriptorBuilderTest extends MockeryTestCase
 {

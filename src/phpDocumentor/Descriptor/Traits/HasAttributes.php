@@ -15,11 +15,12 @@ namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 
 trait HasAttributes
 {
-    /** @var Collection<AttributeInterface> $attributes Attributes set on this class. */
-    protected Collection $attributes;
+    /** @var CollectionInterface<AttributeInterface> $attributes Attributes set on this class. */
+    protected CollectionInterface $attributes;
 
     /** @internal should not be called by any other class than the assamblers */
     public function addAttribute(AttributeInterface $attribute): void
@@ -31,8 +32,8 @@ trait HasAttributes
         $this->getAttributes()->add($attribute);
     }
 
-    /** @return Collection<AttributeInterface> */
-    public function getAttributes(): Collection
+    /** @return CollectionInterface<AttributeInterface> */
+    public function getAttributes(): CollectionInterface
     {
         if (! isset($this->attributes)) {
             $this->attributes = Collection::fromInterfaceString(AttributeInterface::class);

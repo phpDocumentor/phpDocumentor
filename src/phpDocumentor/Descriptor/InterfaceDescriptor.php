@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
@@ -51,22 +52,26 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         $this->setMethods(new Collection());
     }
 
-    public function setParent(Collection $parents): void
+    /** @param CollectionInterface<InterfaceInterface|Fqsen> $parents */
+    public function setParent(CollectionInterface $parents): void
     {
         $this->parents = $parents;
     }
 
-    public function getParent(): Collection
+    /** @return CollectionInterface<InterfaceInterface|Fqsen> */
+    public function getParent(): CollectionInterface
     {
         return $this->parents;
     }
 
-    public function setConstants(Collection $constants): void
+    /** @param CollectionInterface<ConstantInterface> $constants */
+    public function setConstants(CollectionInterface $constants): void
     {
         $this->constants = $constants;
     }
 
-    public function getConstants(): Collection
+    /** @return CollectionInterface<ConstantInterface> */
+    public function getConstants(): CollectionInterface
     {
         return $this->constants;
     }
@@ -107,12 +112,14 @@ class InterfaceDescriptor extends DescriptorAbstract implements Interfaces\Inter
         return $inheritedProperties;
     }
 
-    public function setMethods(Collection $methods): void
+    /** @param CollectionInterface<MethodInterface> $methods */
+    public function setMethods(CollectionInterface $methods): void
     {
         $this->methods = $methods;
     }
 
-    public function getMethods(): Collection
+    /** @return CollectionInterface<MethodInterface> */
+    public function getMethods(): CollectionInterface
     {
         return $this->methods;
     }

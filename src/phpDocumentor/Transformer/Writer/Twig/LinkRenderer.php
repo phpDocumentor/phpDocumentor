@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig;
 
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -43,8 +43,8 @@ class LinkRenderer implements LinkRendererInterface
     final public const PRESENTATION_FILE_SHORT = 'file:short';
 
     private string $destination = '';
-    private ProjectDescriptor $project;
-    private DocumentationSetDescriptor $documentationSet;
+    private ProjectInterface $project;
+    private DocumentationSetInterface $documentationSet;
 
     /** @var LinkRendererInterface[] */
     private array $adapters;
@@ -61,7 +61,7 @@ class LinkRenderer implements LinkRendererInterface
     }
 
     /** @deprecated will be removed once getProject is removed */
-    public function withProject(ProjectDescriptor $projectDescriptor): self
+    public function withProject(ProjectInterface $projectDescriptor): self
     {
         $result = clone $this;
         $result->project = $projectDescriptor;
@@ -69,7 +69,7 @@ class LinkRenderer implements LinkRendererInterface
         return $result;
     }
 
-    public function forDocumentationSet(DocumentationSetDescriptor $documentationSet): self
+    public function forDocumentationSet(DocumentationSetInterface $documentationSet): self
     {
         $result = clone $this;
         $result->documentationSet = $documentationSet;
@@ -78,12 +78,12 @@ class LinkRenderer implements LinkRendererInterface
     }
 
     /** @deprecated use {@see getDocumentationSet()} */
-    public function getProject(): ProjectDescriptor
+    public function getProject(): ProjectInterface
     {
         return $this->project;
     }
 
-    public function getDocumentationSet(): DocumentationSetDescriptor
+    public function getDocumentationSet(): DocumentationSetInterface
     {
         return $this->documentationSet;
     }
@@ -123,7 +123,7 @@ class LinkRenderer implements LinkRendererInterface
     }
 
     /**
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
+     * @param array<Type>|Type|Descriptor|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
      *
      * @return string|list<string>
      */

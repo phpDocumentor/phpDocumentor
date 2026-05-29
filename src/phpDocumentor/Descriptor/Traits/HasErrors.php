@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 
 /**
@@ -27,17 +28,17 @@ use phpDocumentor\Descriptor\Validation\Error;
 
 trait HasErrors
 {
-    /** @var Collection<Error> A collection of errors found during filtering. */
-    protected Collection $errors;
+    /** @var CollectionInterface<Error> A collection of errors found during filtering. */
+    protected CollectionInterface $errors;
 
     /**
      * Sets a list of all errors associated with this element.
      *
      * @internal should not be called by any other class than the assemblers
      *
-     * @param Collection<Error> $errors
+     * @param CollectionInterface<Error> $errors
      */
-    public function setErrors(Collection $errors): void
+    public function setErrors(CollectionInterface $errors): void
     {
         $this->errors = $errors;
     }
@@ -45,9 +46,9 @@ trait HasErrors
     /**
      * Returns all errors associated with this tag.
      *
-     * @return Collection<Error>
+     * @return CollectionInterface<Error>
      */
-    public function getErrors(): Collection
+    public function getErrors(): CollectionInterface
     {
         if (! isset($this->errors)) {
             $this->errors = Collection::fromClassString(Error::class);

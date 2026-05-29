@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace functional\phpDocumentor\core;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\FunctionalTestCase;
 use phpDocumentor\Descriptor\FileDescriptor;
 
@@ -33,7 +34,7 @@ final class FileLevelFunctionalTest extends FunctionalTestCase
         $apiSets = $versions->first()->getDocumentationSets()->filter(ApiSetDescriptor::class);
         $this->assertCount(1, $apiSets);
 
-        /** @var ApiSetDescriptor $apiSet */
+        /** @var ApiDocumentationSet $apiSet */
         $apiSet = $apiSets->first();
         $this->assertCount(1, $apiSet->getFiles());
 

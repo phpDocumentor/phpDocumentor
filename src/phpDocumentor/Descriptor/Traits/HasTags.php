@@ -14,24 +14,25 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
 trait HasTags
 {
-    /** @var Collection<Collection<TagDescriptor>> $tags The tags associated with this element. */
-    protected Collection $tags;
+    /** @var CollectionInterface<CollectionInterface<TagInterface>> $tags The tags associated with this element. */
+    protected CollectionInterface $tags;
 
     /**
      * Sets the tags associated with this element.
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<Collection<TagDescriptor>> $tags
+     * @param CollectionInterface<CollectionInterface<TagInterface>> $tags
      */
-    public function setTags(Collection $tags): void
+    public function setTags(CollectionInterface $tags): void
     {
         $this->tags = $tags;
     }
@@ -39,9 +40,9 @@ trait HasTags
     /**
      * Returns the tags associated with this element.
      *
-     * @return Collection<Collection<TagDescriptor>>
+     * @return CollectionInterface<CollectionInterface<TagInterface>>
      */
-    public function getTags(): Collection
+    public function getTags(): CollectionInterface
     {
         if (! isset($this->tags)) {
             $this->tags = new Collection();
@@ -50,10 +51,10 @@ trait HasTags
         return $this->tags;
     }
 
-    /** @return Collection<AuthorDescriptor> */
-    public function getAuthor(): Collection
+    /** @return CollectionInterface<AuthorDescriptor> */
+    public function getAuthor(): CollectionInterface
     {
-        /** @var Collection<AuthorDescriptor> $author */
+        /** @var CollectionInterface<AuthorDescriptor> $author */
         $author = $this->getTags()->fetch('author', new Collection());
         if ($author->count() !== 0) {
             return $author;
@@ -72,11 +73,11 @@ trait HasTags
     /**
      * Returns the versions for this element.
      *
-     * @return Collection<VersionDescriptor>
+     * @return CollectionInterface<VersionDescriptor>
      */
-    public function getVersion(): Collection
+    public function getVersion(): CollectionInterface
     {
-        /** @var Collection<VersionDescriptor> $version */
+        /** @var CollectionInterface<VersionDescriptor> $version */
         $version = $this->getTags()->fetch('version', new Collection());
         if ($version->count() !== 0) {
             return $version;
@@ -95,11 +96,11 @@ trait HasTags
     /**
      * Returns the copyrights for this element.
      *
-     * @return Collection<TagDescriptor>
+     * @return CollectionInterface<TagInterface>
      */
-    public function getCopyright(): Collection
+    public function getCopyright(): CollectionInterface
     {
-        /** @var Collection<TagDescriptor> $copyright */
+        /** @var CollectionInterface<TagInterface> $copyright */
         $copyright = $this->getTags()->fetch('copyright', new Collection());
         if ($copyright->count() !== 0) {
             return $copyright;

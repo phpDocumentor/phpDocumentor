@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\DocBlock;
 
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
@@ -56,7 +57,7 @@ final class DescriptionDescriptorTest extends TestCase
     }
 
     /** @dataProvider replacementProvider */
-    public function testTagsCanBeReplaced(TagDescriptor|null $tagDescriptorReplacement, string $expected): void
+    public function testTagsCanBeReplaced(TagInterface|null $tagDescriptorReplacement, string $expected): void
     {
         $bodyTemplate = 'my template %1$s';
         $description = new Description(

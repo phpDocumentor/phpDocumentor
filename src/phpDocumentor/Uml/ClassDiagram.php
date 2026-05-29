@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Uml;
 
-use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
+use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
@@ -82,9 +81,9 @@ UML;
         $className = $class->getName() . '__class ';
 
         $extends = '';
-        if ($class->getParent() instanceof ClassDescriptor || $class->getParent() instanceof Fqsen) {
+        if ($class->getParent() instanceof ClassInterface || $class->getParent() instanceof Fqsen) {
             $this->classDescriptor($class->getParent());
-            $parentFqsen = $class->getParent() instanceof ClassDescriptor
+            $parentFqsen = $class->getParent() instanceof ClassInterface
                 ? $class->getParent()->getFullyQualifiedStructuralElementName()
                 : $class->getParent();
 
@@ -214,7 +213,7 @@ PUML;
             match (true) {
                 $descriptor instanceof ClassInterface => $this->classDescriptor($descriptor),
                 $descriptor instanceof InterfaceDescriptor => $this->interfaceDescriptor($descriptor),
-                $descriptor instanceof EnumDescriptor => $this->enumDescriptor($descriptor),
+                $descriptor instanceof EnumInterface => $this->enumDescriptor($descriptor),
                 $descriptor instanceof TraitDescriptor => $this->traitDescriptor($descriptor),
                 $descriptor instanceof NamespaceInterface => $this->namespaceDescriptor($descriptor),
                 $descriptor instanceof Fqsen => $this->fqsen($descriptor, stereoType: '<< external >>'),
@@ -259,7 +258,7 @@ PUML,
         );
     }
 
-    private function enumDescriptor(EnumDescriptor $descriptor): void
+    private function enumDescriptor(EnumInterface $descriptor): void
     {
         $fqsen = $descriptor->getFullyQualifiedStructuralElementName();
         $namespace = addslashes($this->getNamespace($fqsen));

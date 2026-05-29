@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ApiSetDescriptor */
+/** @coversDefaultClass ApiDocumentationSet */
 final class ApiSetDescriptorTest extends TestCase
 {
     use Faker;

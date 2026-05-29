@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Graph;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 
 interface Generator
 {
-    public function create(DocumentationSetDescriptor $documentationSet): string|null;
+    public function create(DocumentationSetInterface $documentationSet): string|null;
 }

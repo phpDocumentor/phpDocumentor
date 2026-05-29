@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Nodes\PHP;
 
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\DescriptionInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 
 /** @extends DescriptorNode<ElementInterface> */
 final class ElementDescription extends DescriptorNode
 {
-    public function getDescription(): DescriptionDescriptor
+    public function getDescription(): DescriptionInterface
     {
-        return $this->descriptor?->getDescription() ?? DescriptionDescriptor::createEmpty();
+        return $this->descriptor?->getDescription() ?? new EmptyDescription();
     }
 }

@@ -15,8 +15,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Docblock;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

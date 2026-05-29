@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
@@ -29,12 +29,12 @@ final class ApiSetBuilder implements DocumentationSetBuilder
     {
     }
 
-    public function supports(DocumentationSetDescriptor $documentationSet): bool
+    public function supports(DocumentationSetInterface $documentationSet): bool
     {
         return $documentationSet instanceof ApiSetDescriptor;
     }
 
-    public function build(DocumentationSetDescriptor $documentationSet): void
+    public function build(DocumentationSetInterface $documentationSet): void
     {
         if ($documentationSet->getNamespace()->getChildren()->count() > 0) {
             $namespacesToc = new TocDescriptor('Namespaces');

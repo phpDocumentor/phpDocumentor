@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -65,7 +66,7 @@ class FunctionAssembler extends AssemblerAbstract
      */
     protected function mapReflectorPropertiesOntoDescriptor(Function_ $reflector, FunctionDescriptor $descriptor): void
     {
-        $packages = Collection::fromClassString(TagDescriptor::class);
+        $packages = Collection::fromInterfaceString(TagInterface::class);
         $package  = $this->extractPackageFromDocBlock($reflector->getDocBlock());
         //TODO: this looks like a potential bug. Have to investigate this!
         if ($package) {
@@ -125,7 +126,7 @@ class FunctionAssembler extends AssemblerAbstract
         FunctionDescriptor $functionDescriptor,
         Argument $argument,
     ): ArgumentInterface {
-        /** @var Collection<ParamDescriptor> $params */
+        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ParamDescriptor> $params */
         $params = $functionDescriptor->getTags()->fetch('param', new Collection())->filter(ParamDescriptor::class);
 
         if (! $this->argumentAssembler->getBuilder()) {

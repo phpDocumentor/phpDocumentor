@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Compiler\NodeTransformer;
 
-use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Compiler\NodeTransformer;
 use phpDocumentor\Guides\Graphs\Nodes\UmlNode;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\Nodes\PHP\ClassDiagram;
+use phpDocumentor\Query\Engine;
 use phpDocumentor\Uml\ClassDiagram as UmlDiagram;
 use Webmozart\Assert\Assert;
 

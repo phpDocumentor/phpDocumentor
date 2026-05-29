@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Faker\Faker;
+use phpDocumentor\ProjectSettings;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -73,9 +73,9 @@ final class ProjectDescriptorTest extends TestCase
 
     public function testGetSetSettings(): void
     {
-        $this->assertInstanceOf(Settings::class, $this->fixture->getSettings());
+        $this->assertInstanceOf(ProjectSettings::class, $this->fixture->getSettings());
 
-        $settings = new Settings();
+        $settings = new ProjectSettings();
         $this->fixture->setSettings($settings);
 
         $this->assertSame($settings, $this->fixture->getSettings());

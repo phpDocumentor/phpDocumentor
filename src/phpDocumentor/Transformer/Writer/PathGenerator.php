@@ -15,7 +15,7 @@ namespace phpDocumentor\Transformer\Writer;
 
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\Query\Engine;
+use phpDocumentor\Query\Engine;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Transformation;
 use RuntimeException;

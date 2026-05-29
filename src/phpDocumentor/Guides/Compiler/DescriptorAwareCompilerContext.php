@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Compiler;
 
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Guides\Nodes\ProjectNode;
 
 final class DescriptorAwareCompilerContext extends CompilerContext
 {
     public function __construct(
         ProjectNode $projectNode,
-        private readonly VersionDescriptor $versionDescriptor,
+        private readonly VersionInterface $versionDescriptor,
     ) {
         parent::__construct($projectNode);
     }
 
-    public function getVersionDescriptor(): VersionDescriptor
+    public function getVersionDescriptor(): VersionInterface
     {
         return $this->versionDescriptor;
     }

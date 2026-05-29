@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Descriptor\Interfaces\DocumentInterface;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
+use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\ProjectNode;
 
-final class GuideSetDescriptor extends DocumentationSetDescriptor
+final class GuideSetDescriptor extends DocumentationSetDescriptor implements GuideDocumentationSet
 {
-    /** @var string */
-    /** @var Collection<DocumentDescriptor> */
+    /** @var Collection<DocumentInterface> */
     private readonly Collection $documents;
 
     public function __construct(
@@ -39,9 +41,17 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         $this->documents = Collection::fromClassString(DocumentDescriptor::class);
     }
 
-    public function addDocument(string $file, DocumentDescriptor $documentDescriptor): void
+    public function addDocument(DocumentNode $document): void
     {
-        $this->documents->set($file, $documentDescriptor);
+        $this->documents->set(
+            $document->getFilePath(),
+            new DocumentDescriptor(
+                $document,
+                $document->getHash(),
+                $document->getFilePath(),
+                $document->getTitle()?->getId() ?? '',
+            ),
+        );
     }
 
     public function getGuidesProjectNode(): ProjectNode
@@ -64,7 +74,7 @@ final class GuideSetDescriptor extends DocumentationSetDescriptor
         return $this->initialHeaderLevel;
     }
 
-    /** @return Collection<DocumentDescriptor> */
+    /** @return Collection<DocumentInterface> */
     public function getDocuments(): Collection
     {
         return $this->documents;

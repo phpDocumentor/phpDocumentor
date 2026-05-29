@@ -19,8 +19,8 @@ use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerRedu
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\PropertyHookDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
@@ -93,7 +93,7 @@ abstract class AssemblerAbstract extends BaseAssembler
         $target = $reducer->create($docBlock, $target);
 
         foreach ($docBlock->getTags() as $tag) {
-            $tagDescriptor = $this->builder->buildDescriptor($tag, TagDescriptor::class);
+            $tagDescriptor = $this->builder->buildDescriptor($tag, TagInterface::class);
 
             // allow filtering of tags
             if (! $tagDescriptor) {

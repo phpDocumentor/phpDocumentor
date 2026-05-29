@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 
-/** @template TDocumentationSet of DocumentationSetDescriptor */
+/** @template TDocumentationSet of DocumentationSetInterface */
 interface DocumentationSetBuilder
 {
-    public function supports(DocumentationSetDescriptor $documentationSet): bool;
+    public function supports(DocumentationSetInterface $documentationSet): bool;
 
     /** @phpstan-param TDocumentationSet $documentationSet */
-    public function build(DocumentationSetDescriptor $documentationSet): void;
+    public function build(DocumentationSetInterface $documentationSet): void;
 }

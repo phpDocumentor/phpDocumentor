@@ -17,6 +17,7 @@ use ArrayAccess;
 use phpDocumentor\Configuration\Definition\Version3;
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
+use phpDocumentor\ProjectSettings;
 use RuntimeException;
 use Webmozart\Assert\Assert;
 
@@ -176,7 +177,7 @@ final class ApiSpecification implements ArrayAccess
     /**
      * Checks whether the Project supports the given visibility.
      *
-     * @see Settings for a list of the available VISIBILITY_* constants.
+     * @see ProjectSettings for a list of the available VISIBILITY_* constants.
      *
      * @param int $visibility One of the VISIBILITY_* constants of the Settings class.
      */

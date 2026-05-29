@@ -15,6 +15,7 @@ namespace functional\phpDocumentor\issues;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\FunctionalTestCase;
 
 final class Issue2425FunctionalTest extends FunctionalTestCase
@@ -30,7 +31,7 @@ final class Issue2425FunctionalTest extends FunctionalTestCase
         $apiSets = $versions->first()->getDocumentationSets()->filter(ApiSetDescriptor::class);
         $this->assertCount(1, $apiSets);
 
-        /** @var ApiSetDescriptor $apiSet */
+        /** @var ApiDocumentationSet $apiSet */
         $apiSet = $apiSets->first();
 
         /** @var ClassDescriptor $classDescriptor */

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace functional\phpDocumentor\core;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\FunctionalTestCase;
 
@@ -30,7 +31,7 @@ final class RootElementsFunctionalTest extends FunctionalTestCase
         $apiSets = $versions->first()->getDocumentationSets()->filter(ApiSetDescriptor::class);
         $this->assertCount(1, $apiSets);
 
-        /** @var ApiSetDescriptor $apiSet */
+        /** @var ApiDocumentationSet $apiSet */
         $apiSet = $apiSets->first();
 
         $traitDescriptor = $apiSet->getIndexes()->get('traits')->get('\\' . \App\Traits\Test::class);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -92,7 +92,7 @@ final class ApiSetBuilderTest extends TestCase
         return $router;
     }
 
-    private function givenAnApiDocumentationSetWithNamespaces(): ApiSetDescriptor
+    private function givenAnApiDocumentationSetWithNamespaces(): ApiDocumentationSet
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
         $apiDocumentationSet->getNamespace()->addChild($this->faker()->namespaceDescriptorTree());
@@ -100,7 +100,7 @@ final class ApiSetBuilderTest extends TestCase
         return $apiDocumentationSet;
     }
 
-    private function givenAnApiDocumentationSetWithPackages(): ApiSetDescriptor
+    private function givenAnApiDocumentationSetWithPackages(): ApiDocumentationSet
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();
         $apiDocumentationSet->getPackage()->addChild($this->faker()->namespaceDescriptorTree());

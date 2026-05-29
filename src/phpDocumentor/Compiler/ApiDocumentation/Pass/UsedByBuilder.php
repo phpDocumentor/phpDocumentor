@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Tag\UsedByDescriptor;
 use phpDocumentor\Descriptor\Tag\UsesDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Pipeline\Attribute\Stage;
 
 #[Stage(
@@ -29,10 +29,10 @@ use phpDocumentor\Pipeline\Attribute\Stage;
 )]
 final class UsedByBuilder extends ApiDocumentationPass
 {
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         foreach ($subject->getIndexes()->get('elements') as $element) {
-            $uses = $element->getTags()->fetch('uses', Collection::fromClassString(TagDescriptor::class));
+            $uses = $element->getTags()->fetch('uses', Collection::fromInterfaceString(TagInterface::class));
             foreach ($uses->filter(UsesDescriptor::class) as $usesTag) {
                 $counterSide = $usesTag->getReference();
                 if ($counterSide instanceof ElementInterface === false) {
@@ -43,7 +43,7 @@ final class UsedByBuilder extends ApiDocumentationPass
                 $tag->setReference($element);
                 $counterSide->getTags()->fetch(
                     'used-by',
-                    Collection::fromClassString(TagDescriptor::class),
+                    Collection::fromInterfaceString(TagInterface::class),
                 )->add($tag);
             }
         }

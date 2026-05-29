@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor\ProjectDescriptor;
+namespace phpDocumentor;
 
 /**
  * Declares that the service implementing this interface yields its own settings.

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides\Compiler\NodeTransformer;
 
-use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Compiler\NodeTransformer;
@@ -23,6 +22,7 @@ use phpDocumentor\Guides\Nodes\PHP\ClassList;
 use phpDocumentor\Guides\Nodes\PHP\DescriptorNode;
 use phpDocumentor\Guides\Nodes\SectionNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
+use phpDocumentor\Query\Engine;
 use Webmozart\Assert\Assert;
 
 use function iterator_to_array;

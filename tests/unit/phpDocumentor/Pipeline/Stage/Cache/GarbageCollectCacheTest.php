@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Cache;
 
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
+use phpDocumentor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

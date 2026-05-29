@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Transformation;
 use Stringable;
 
@@ -50,12 +50,12 @@ abstract class WriterAbstract implements Stringable
      * Abstract definition of the transformation method.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      */
     abstract public function transform(
         Transformation $transformation,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
     ): void;
 
     public function __toString(): string

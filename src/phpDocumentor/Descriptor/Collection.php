@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use ArrayAccess;
 use ArrayIterator;
-use Countable;
 use InvalidArgumentException;
-use IteratorAggregate;
 use OutOfRangeException;
 use ReturnTypeWillChange;
 use Webmozart\Assert\Assert;
@@ -34,10 +31,9 @@ use function count;
  * templates becomes easier.
  *
  * @template T
- * @template-implements ArrayAccess<array-key, T>
- * @template-implements IteratorAggregate<array-key, T>
+ * @template-implements Interfaces\Collection<T>
  */
-class Collection implements Countable, IteratorAggregate, ArrayAccess
+class Collection implements Interfaces\Collection
 {
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
@@ -229,11 +225,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Returns a new collection with the items from this collection and the provided combined.
      *
-     * @param Collection<T> $collection
+     * @param Interfaces\Collection<T> $collection
      *
-     * @return Collection<T>
+     * @return Interfaces\Collection<T>
      */
-    public function merge(self $collection): Collection
+    public function merge(Interfaces\Collection $collection): Interfaces\Collection
     {
         return new self(array_merge($collection->getAll(), $this->items));
     }
@@ -241,13 +237,13 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param class-string<F> $className
      *
-     * @return Collection<F>
+     * @return Interfaces\Collection<F>
      *
      * @template F of object
      */
-    public function filter(string $className): Collection
+    public function filter(string $className): Interfaces\Collection
     {
-        /** @var Collection<F> $collection */
+        /** @var Interfaces\Collection<F> $collection */
         $collection = new self(
             array_filter(
                 $this->getAll(),
@@ -261,9 +257,9 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * @param callable(T):bool $callback
      *
-     * @return self<T>
+     * @return Interfaces\Collection<T>
      */
-    public function matches(callable $callback): Collection
+    public function matches(callable $callback): Interfaces\Collection
     {
         return new self(
             array_filter(
@@ -277,11 +273,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param class-string<C> $classString
      * @param array<C> $elements
      *
-     * @return Collection<C>
+     * @return Interfaces\Collection<C>
      *
      * @template C
      */
-    public static function fromClassString(string $classString, array $elements = []): Collection
+    public static function fromClassString(string $classString, array $elements = []): Interfaces\Collection
     {
         Assert::classExists($classString);
 
@@ -292,11 +288,11 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param class-string<C> $interfaceString
      * @param array<C> $elements
      *
-     * @return Collection<C>
+     * @return Interfaces\Collection<C>
      *
      * @template C
      */
-    public static function fromInterfaceString(string $interfaceString, array $elements = []): Collection
+    public static function fromInterfaceString(string $interfaceString, array $elements = []): Interfaces\Collection
     {
         Assert::interfaceExists($interfaceString);
 

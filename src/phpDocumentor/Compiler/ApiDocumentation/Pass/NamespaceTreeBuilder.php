@@ -15,9 +15,9 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use InvalidArgumentException;
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
@@ -46,7 +46,7 @@ use function ucfirst;
 )]
 final class NamespaceTreeBuilder extends ApiDocumentationPass
 {
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         $subject->getIndexes()
             ->fetch('elements', new Collection())
@@ -89,7 +89,7 @@ final class NamespaceTreeBuilder extends ApiDocumentationPass
      *             be done to verify whether the provided type is valid.
      */
     protected function addElementsOfTypeToNamespace(
-        DocumentationSetDescriptor $documentationSet,
+        DocumentationSetInterface $documentationSet,
         array $elements,
         string $type,
     ): void {
@@ -123,14 +123,14 @@ final class NamespaceTreeBuilder extends ApiDocumentationPass
             // add element to namespace
             $getter = 'get' . ucfirst($type);
 
-            /** @var Collection<ElementInterface> $collection */
+            /** @var \phpDocumentor\Descriptor\Interfaces\Collection<ElementInterface> $collection */
             $collection = $namespace->{$getter}();
             $collection->add($element);
         }
     }
 
     private function addToParentNamespace(
-        DocumentationSetDescriptor $documentationSet,
+        DocumentationSetInterface $documentationSet,
         NamespaceInterface $namespace,
     ): void {
         /** @var NamespaceInterface|null $parent */

@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Guides;
 
-use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\Guides\Event\PostParseDocument;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
 final class DocumentCollector
 {
-    public function __construct(private readonly GuideSetDescriptor $guideSetDescriptor)
+    public function __construct(private readonly GuideDocumentationSet $guideSetDescriptor)
     {
     }
 
@@ -33,14 +32,6 @@ final class DocumentCollector
         string $file,
         DocumentNode $document,
     ): void {
-        $this->guideSetDescriptor->addDocument(
-            $document->getFilePath(),
-            new DocumentDescriptor(
-                $document,
-                $document->getHash(),
-                $file,
-                $document->getTitle()?->getId() ?? '',
-            ),
-        );
+        $this->guideSetDescriptor->addDocument($document);
     }
 }

@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
+use phpDocumentor\ProjectSettings;
 use Webmozart\Assert\Assert;
 
 /**
@@ -32,12 +35,12 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     use HasName;
     use HasDescription;
 
-    private Settings $settings;
+    private ProjectSettings $settings;
 
     /** @var Collection<string> $partials */
     private Collection $partials;
 
-    /** @var Collection<VersionDescriptor> $versions */
+    /** @var Collection<VersionInterface> $versions */
     private readonly Collection $versions;
 
     /**
@@ -46,9 +49,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->setSettings(new Settings());
+        $this->setSettings(new ProjectSettings());
         $this->setPartials(new Collection());
-        $this->versions = Collection::fromClassString(VersionDescriptor::class);
+        $this->versions = Collection::fromInterfaceString(VersionInterface::class);
     }
 
     /**
@@ -67,8 +70,10 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Returns all indexes in this project.
      *
      * @deprecated Please use {@see DocumentationSetDescriptor::getIndexes()}
+     *
+     * @return CollectionInterface<CollectionInterface<ElementInterface>>
      */
-    public function getIndexes(): Collection
+    public function getIndexes(): CollectionInterface
     {
         return $this->getApiDocumentationSet()->getIndexes();
     }
@@ -76,7 +81,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the settings used to build the documentation for this project.
      */
-    public function setSettings(Settings $settings): void
+    public function setSettings(ProjectSettings $settings): void
     {
         $this->settings = $settings;
     }
@@ -84,7 +89,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the settings used to build the documentation for this project.
      */
-    public function getSettings(): Settings
+    public function getSettings(): ProjectSettings
     {
         return $this->settings;
     }
@@ -95,9 +100,9 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      * Partials are blocks of text that can be inserted anywhere in a template using a special indicator. An example is
      * the introduction partial that can add a custom piece of text to the homepage.
      *
-     * @param Collection<string> $partials
+     * @param CollectionInterface<string> $partials
      */
-    public function setPartials(Collection $partials): void
+    public function setPartials(CollectionInterface $partials): void
     {
         $this->partials = $partials;
     }
@@ -107,14 +112,14 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
      *
      * @see setPartials() for more information on partials.
      *
-     * @return Collection<string>
+     * @return CollectionInterface<string>
      */
-    public function getPartials(): Collection
+    public function getPartials(): CollectionInterface
     {
         return $this->partials;
     }
 
-    /** @return Collection<VersionDescriptor> */
+    /** @return Collection<VersionInterface> */
     public function getVersions(): Collection
     {
         return $this->versions;

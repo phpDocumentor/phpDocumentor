@@ -15,12 +15,13 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Configuration\Source;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Traits\HasNamespace;
 use phpDocumentor\Descriptor\Traits\HasPackage;
 use phpDocumentor\Reflection\Fqsen;
 
-final class ApiSetDescriptor extends DocumentationSetDescriptor
+final class ApiSetDescriptor extends DocumentationSetDescriptor implements ApiDocumentationSet
 {
     use HasPackage;
     use HasNamespace;

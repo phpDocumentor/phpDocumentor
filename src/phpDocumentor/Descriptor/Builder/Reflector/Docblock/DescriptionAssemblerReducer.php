@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\Builder\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\PropertyHookDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -26,7 +27,7 @@ use Webmozart\Assert\Assert;
 /** @extends AssemblerAbstract<Descriptor, object> */
 final class DescriptionAssemblerReducer extends AssemblerAbstract implements AssemblerReducer
 {
-    /** @return ElementInterface|TagDescriptor|null */
+    /** @return ElementInterface|TagInterface|null */
     public function create(object $data, Descriptor|null $descriptor = null): Descriptor|null
     {
         if ($descriptor === null) {
@@ -38,7 +39,7 @@ final class DescriptionAssemblerReducer extends AssemblerAbstract implements Ass
             [ElementInterface::class, TagDescriptor::class, PropertyHookDescriptor::class],
         );
 
-        /** @phpstan-var ElementInterface|TagDescriptor $descriptor */
+        /** @phpstan-var ElementInterface|TagInterface $descriptor */
         $description = new DescriptionDescriptor(
             $data->getDescription(),
             $data->getDescription() !== null ? $this->createTags($data->getDescription()->getTags()) : [],

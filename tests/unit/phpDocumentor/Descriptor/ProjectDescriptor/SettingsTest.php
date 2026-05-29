@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\ProjectSettings;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor\Settings */
+/** @coversDefaultClass \phpDocumentor\ProjectSettings */
 final class SettingsTest extends TestCase
 {
     public function testItCanKeepTrackWhetherSourceIsIncluded(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertFalse($settings->shouldIncludeSource());
 
@@ -36,7 +37,7 @@ final class SettingsTest extends TestCase
 
     public function testDetectSettingsAreModifiedWhenChangingInclusionOfSource(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertFalse($settings->isModified());
 
@@ -47,7 +48,7 @@ final class SettingsTest extends TestCase
 
     public function testItCanKeepTrackWhetherVisibilityIsSpecified(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertSame(ApiSpecification::VISIBILITY_DEFAULT, $settings->getVisibility());
 
@@ -58,7 +59,7 @@ final class SettingsTest extends TestCase
 
     public function testDetectSettingsAreModifiedWhenChangingVisibility(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertFalse($settings->isModified());
 
@@ -69,7 +70,7 @@ final class SettingsTest extends TestCase
 
     public function testItCanStoreCustomSettings(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertSame([], $settings->getCustom());
 
@@ -80,7 +81,7 @@ final class SettingsTest extends TestCase
 
     public function testDetectSettingsAreModifiedWhenSettingNewCustomSettings(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertFalse($settings->isModified());
 
@@ -91,7 +92,7 @@ final class SettingsTest extends TestCase
 
     public function testThatTheModifiedFlagCanBeReset(): void
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
 
         $this->assertFalse($settings->isModified());
 

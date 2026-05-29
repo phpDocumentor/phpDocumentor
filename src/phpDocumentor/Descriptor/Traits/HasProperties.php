@@ -25,6 +25,7 @@ namespace phpDocumentor\Descriptor\Traits;
 use InvalidArgumentException;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
+use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\PropertyDescriptor;
@@ -37,21 +38,21 @@ use function sprintf;
 
 trait HasProperties
 {
-    /** @var Collection<PropertyInterface> $properties References to properties defined in this class. */
-    protected Collection $properties;
+    /** @var CollectionInterface<PropertyInterface> $properties References to properties defined in this class. */
+    protected CollectionInterface $properties;
 
     /**
      * @internal should not be called by any other class than the assamblers
      *
-     * @param Collection<PropertyInterface> $properties
+     * @param CollectionInterface<PropertyInterface> $properties
      */
-    public function setProperties(Collection $properties): void
+    public function setProperties(CollectionInterface $properties): void
     {
         $this->properties = $properties;
     }
 
-    /** @return Collection<PropertyInterface> */
-    public function getProperties(): Collection
+    /** @return CollectionInterface<PropertyInterface> */
+    public function getProperties(): CollectionInterface
     {
         if (! isset($this->properties)) {
             $this->properties = Collection::fromInterfaceString(PropertyInterface::class);
@@ -61,11 +62,11 @@ trait HasProperties
     }
 
     /**
-     * @return Collection<PropertyInterface>
+     * @return CollectionInterface<PropertyInterface>
      *
      * @todo check whether this function works properly, the business logic feels off somehow
      */
-    public function getInheritedProperties(): Collection
+    public function getInheritedProperties(): CollectionInterface
     {
         $inheritedProperties = Collection::fromInterfaceString(PropertyInterface::class);
 
@@ -97,11 +98,11 @@ trait HasProperties
         return $inheritedProperties->merge($parent->getInheritedProperties());
     }
 
-    /** @return Collection<PropertyInterface> */
-    public function getMagicProperties(): Collection
+    /** @return CollectionInterface<PropertyInterface> */
+    public function getMagicProperties(): CollectionInterface
     {
         $tags = $this->getTags();
-        /** @var Collection<Tag\PropertyDescriptor> $propertyTags */
+        /** @var CollectionInterface<Tag\PropertyDescriptor> $propertyTags */
         $propertyTags = $tags->fetch('property', new Collection())->filter(Tag\PropertyDescriptor::class)
             ->merge($tags->fetch('property-read', new Collection())->filter(Tag\PropertyDescriptor::class))
             ->merge($tags->fetch('property-write', new Collection())->filter(Tag\PropertyDescriptor::class));

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DescriptorAbstract;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
@@ -74,7 +74,7 @@ final class Linker extends ApiDocumentationPass
     ) {
     }
 
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         $this->descriptorRepository->setObjectAliasesList($subject->getIndexes()->get('elements')->getAll());
         $this->substitute($subject);
@@ -117,22 +117,22 @@ final class Linker extends ApiDocumentationPass
      * This method will return null if no substitution was possible and all of the above should not update the parent
      * item when null is passed.
      *
-     * @param string|Fqsen|Type|Collection<mixed>|array<mixed>|Descriptor|DocumentationSetDescriptor $item
+     * @param string|Fqsen|Type|\phpDocumentor\Descriptor\Interfaces\Collection<mixed>|array<mixed>|Descriptor|DocumentationSetInterface $item
      *
-     * @return string|DocumentationSetDescriptor|DescriptorAbstract|Collection<string|DescriptorAbstract>|array<string|DescriptorAbstract>|null
+     * @return string|DocumentationSetInterface|Descriptor|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor>|array<string|Descriptor>|null
      */
-    public function substitute($item, DescriptorAbstract|null $container = null)
+    public function substitute($item, Descriptor|null $container = null)
     {
         if ($item instanceof Type) {
             return null;
         }
 
         if ($item instanceof Fqsen) {
-            return $this->descriptorRepository->findAlias((string) $item, $container);
+            return $this->descriptorRepository->findAlias((string) $item, $container instanceof ElementInterface ? $container : null);
         }
 
         if (is_string($item)) {
-            return $this->descriptorRepository->findAlias($item, $container);
+            return $this->descriptorRepository->findAlias($item, $container instanceof ElementInterface ? $container : null);
         }
 
         if (is_iterable($item)) {
@@ -151,11 +151,11 @@ final class Linker extends ApiDocumentationPass
     }
 
     /**
-     * @param array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract> $collection
+     * @param array<string|Descriptor>|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor> $collection
      *
-     * @return array<string|DescriptorAbstract>|Collection<string|DescriptorAbstract>|null
+     * @return array<string|Descriptor>|\phpDocumentor\Descriptor\Interfaces\Collection<string|Descriptor>|null
      */
-    private function substituteChildrenOfCollection(iterable $collection, DescriptorAbstract|null $container): iterable|null
+    private function substituteChildrenOfCollection(iterable $collection, Descriptor|null $container): iterable|null
     {
         $isModified = false;
         foreach ($collection as $key => $element) {
@@ -190,7 +190,7 @@ final class Linker extends ApiDocumentationPass
     /**
      * Returns true if the given Descriptor is a container type.
      *
-     * @psalm-assert DescriptorAbstract $item
+     * @psalm-assert Descriptor $item
      */
     private function isDescriptorContainer(object $item): bool
     {
@@ -202,7 +202,7 @@ final class Linker extends ApiDocumentationPass
             || $item instanceof EnumInterface;
     }
 
-    private function substituteMembersOfObject(object $object, DescriptorAbstract|null $container): void
+    private function substituteMembersOfObject(object $object, Descriptor|null $container): void
     {
         $hash = spl_object_hash($object);
         if (isset($this->processedObjects[$hash])) {

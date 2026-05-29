@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -103,7 +103,7 @@ final class RemoveSourcecodeTest extends TestCase
         }
     }
 
-    private function givenFiles(ApiSetDescriptor $apiDescriptor): ApiSetDescriptor
+    private function givenFiles(ApiDocumentationSet $apiDescriptor): ApiDocumentationSet
     {
         $apiDescriptor->setFiles(
             DescriptorCollection::fromClassString(

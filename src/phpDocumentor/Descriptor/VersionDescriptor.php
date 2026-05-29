@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Compiler\CompilableSubject;
+use phpDocumentor\Descriptor\Interfaces\Collection;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 
-final class VersionDescriptor implements CompilableSubject, Descriptor
+final class VersionDescriptor implements CompilableSubject, Descriptor, VersionInterface
 {
     use HasName;
     use HasDescription;
@@ -41,7 +43,7 @@ final class VersionDescriptor implements CompilableSubject, Descriptor
     /** @return Collection<TocDescriptor> */
     public function getTableOfContents(): Collection
     {
-        $tocs = Collection::fromClassString(TocDescriptor::class);
+        $tocs = \phpDocumentor\Descriptor\Collection::fromClassString(TocDescriptor::class);
         foreach ($this->documentationSets as $documentationSet) {
             $tocs = $documentationSet->getTableOfContents()->merge($tocs);
         }

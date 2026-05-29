@@ -11,14 +11,14 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor\ProjectDescriptor;
+namespace phpDocumentor;
 
 use phpDocumentor\Configuration\ApiSpecification;
 
 /**
  * Contains the Settings for the current Project.
  */
-final class Settings
+final class ProjectSettings
 {
     /** @var bool Represents whether this settings object has been modified */
     private bool $isModified = false;

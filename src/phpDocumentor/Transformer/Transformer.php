@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Event\PostTransformationEvent;
 use phpDocumentor\Transformer\Event\PreTransformationEvent;
@@ -78,8 +78,8 @@ class Transformer
      */
     public function execute(
         FileSystem $destination,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         array $transformations,
     ): void {
         $this->destination = $destination;
@@ -95,8 +95,8 @@ class Transformer
      * @param Transformation[] $transformations
      */
     private function initializeWriters(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         array $transformations,
     ): void {
         $isInitialized = [];
@@ -131,8 +131,8 @@ class Transformer
      */
     private function initializeWriter(
         WriterAbstract $writer,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Template $template,
     ): void {
         /** @var WriterInitializationEvent $instance */
@@ -153,8 +153,8 @@ class Transformer
      * @param Transformation[] $transformations
      */
     private function transform(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         array $transformations,
     ): void {
         foreach ($transformations as $transformation) {
@@ -178,8 +178,8 @@ class Transformer
      */
     private function applyTransformation(
         Transformation $transformation,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
     ): void {
         $this->logger->log(
             LogLevel::NOTICE,
