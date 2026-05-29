@@ -15,13 +15,14 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Configuration\Source;
-use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 
-abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubject
+abstract class DocumentationSetDescriptor implements Descriptor, CompilableSubject, DocumentationSetInterface
 {
     use HasName;
     use HasDescription;

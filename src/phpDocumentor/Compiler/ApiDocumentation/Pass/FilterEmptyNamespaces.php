@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
@@ -27,7 +27,7 @@ use phpDocumentor\Pipeline\Attribute\Stage;
 )]
 final class FilterEmptyNamespaces extends ApiDocumentationPass
 {
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         /** @var Collection<NamespaceInterface> $index */
         $index = $subject->getIndex('namespaces');

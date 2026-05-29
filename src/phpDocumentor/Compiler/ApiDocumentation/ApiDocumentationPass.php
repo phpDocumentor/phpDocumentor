@@ -16,6 +16,7 @@ namespace phpDocumentor\Compiler\ApiDocumentation;
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Pipeline\Attribute\Stage;
 use ReflectionObject;
 
@@ -37,7 +38,7 @@ abstract class ApiDocumentationPass implements CompilerPassInterface
      *
      * Processes the given ApiSetDescriptor and returns the modified {@see ApiSetDescriptor}.
      */
-    abstract protected function process(ApiSetDescriptor $subject): ApiSetDescriptor;
+    abstract protected function process(ApiDocumentationSet $subject): ApiDocumentationSet;
 
     public function getDescription(): string
     {

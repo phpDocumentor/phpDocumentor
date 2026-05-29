@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Compiler;
 
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Pipeline\PipelineInterface;
 
 final class DocumentationSetCompiler
@@ -26,7 +26,7 @@ final class DocumentationSetCompiler
     ) {
     }
 
-    public function __invoke(VersionDescriptor $payload): VersionDescriptor
+    public function __invoke(VersionInterface $payload): VersionInterface
     {
         $documentationSets = $payload->getDocumentationSets();
         foreach ($documentationSets->filter($this->type) as $documentationSet) {

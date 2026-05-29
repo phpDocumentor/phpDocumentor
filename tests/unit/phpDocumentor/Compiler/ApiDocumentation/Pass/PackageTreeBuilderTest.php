@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\ConstantDescriptor;
@@ -22,6 +21,7 @@ use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
@@ -360,7 +360,7 @@ final class PackageTreeBuilderTest extends TestCase
         $file->getTags()['subpackage'] = new Collection([$packageTag]);
     }
 
-    private function givenApiSetWithFile(FileDescriptor $file): ApiSetDescriptor
+    private function givenApiSetWithFile(FileDescriptor $file): ApiDocumentationSet
     {
         $apiSet = self::faker()->apiSetDescriptor();
         $apiSet->getFiles()->add($file);
@@ -368,7 +368,7 @@ final class PackageTreeBuilderTest extends TestCase
         return $apiSet;
     }
 
-    private function givenApiSetWithFiles(array $files): ApiSetDescriptor
+    private function givenApiSetWithFiles(array $files): ApiDocumentationSet
     {
         $apiSet = self::faker()->apiSetDescriptor();
 

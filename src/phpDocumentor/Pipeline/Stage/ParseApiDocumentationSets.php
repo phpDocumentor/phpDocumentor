@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Pipeline\PipelineInterface;
 
 final class ParseApiDocumentationSets
@@ -27,7 +27,7 @@ final class ParseApiDocumentationSets
         $versions = $payload->getBuilder()->getProjectDescriptor()->getVersions();
 
         foreach ($versions as $version) {
-            foreach ($version->getDocumentationSets()->filter(ApiSetDescriptor::class) as $apiSet) {
+            foreach ($version->getDocumentationSets()->filter(ApiDocumentationSet::class) as $apiSet) {
                 $this->parseApiDocumentationSetPipeline->process(
                     new Parser\ApiSetPayload($payload->getConfig(), $payload->getBuilder(), $version, $apiSet),
                 );

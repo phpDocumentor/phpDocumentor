@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Guides\Nodes\ProjectNode;
 
@@ -49,7 +50,7 @@ final class InitializeBuilderFromConfig
         return $payload;
     }
 
-    private function buildVersion(VersionSpecification $version): VersionDescriptor
+    private function buildVersion(VersionSpecification $version): VersionInterface
     {
         $collection = Collection::fromClassString(DocumentationSetDescriptor::class);
 

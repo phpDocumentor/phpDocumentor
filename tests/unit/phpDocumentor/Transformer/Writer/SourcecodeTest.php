@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
@@ -63,7 +63,7 @@ final class SourcecodeTest extends MockeryTestCase
         $this->sourceCode->transform($transformation->reveal(), $projectDescriptor, $api);
     }
 
-    private function giveProjectDescriptor(ApiSetDescriptor $apiDescriptor): ProjectDescriptor
+    private function giveProjectDescriptor(ApiDocumentationSet $apiDescriptor): ProjectDescriptor
     {
         $projectDescriptor = self::faker()->projectDescriptor();
         $versionDescriptor = self::faker()->versionDescriptor([$apiDescriptor]);

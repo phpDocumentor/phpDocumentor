@@ -15,12 +15,12 @@ namespace phpDocumentor\Compiler\Version\Pass;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 
 final class TableOfContentsBuilder implements CompilerPassInterface
 {
-    /** @param iterable<array-key, TableOfContentsBuilder\DocumentationSetBuilder<DocumentationSetDescriptor>> $builders */
+    /** @param iterable<array-key, TableOfContentsBuilder\DocumentationSetBuilder<DocumentationSetInterface>> $builders */
     public function __construct(private readonly iterable $builders)
     {
     }
@@ -32,7 +32,7 @@ final class TableOfContentsBuilder implements CompilerPassInterface
 
     public function __invoke(CompilableSubject $subject): CompilableSubject
     {
-        if ($subject instanceof VersionDescriptor === false) {
+        if ($subject instanceof VersionInterface === false) {
             return $subject;
         }
 

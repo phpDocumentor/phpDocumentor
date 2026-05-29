@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Reflection\Fqsen;
 
 final class DescriptorRepository
 {
-    private VersionDescriptor $versionDescriptor;
+    private VersionInterface $versionDescriptor;
 
-    public function setVersionDescriptor(VersionDescriptor $versionDescriptor): void
+    public function setVersionDescriptor(VersionInterface $versionDescriptor): void
     {
         $this->versionDescriptor = $versionDescriptor;
     }
 
-    public function getVersionDescriptor(): VersionDescriptor
+    public function getVersionDescriptor(): VersionInterface
     {
         return $this->versionDescriptor;
     }
 
     public function findDescriptorByFqsen(Fqsen $fqsen): Descriptor|null
     {
-        $apis = $this->versionDescriptor->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $apis = $this->versionDescriptor->getDocumentationSets()->filter(ApiDocumentationSet::class);
 
         foreach ($apis as $api) {
             $descriptor = $api->findElement($fqsen);
@@ -48,7 +48,7 @@ final class DescriptorRepository
 
     public function findDescriptorByTypeAndFqsen(string $type, Fqsen $fqsen): Descriptor|null
     {
-        $apis = $this->versionDescriptor->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $apis = $this->versionDescriptor->getDocumentationSets()->filter(ApiDocumentationSet::class);
 
         foreach ($apis as $api) {
             $descriptor = match ($type) {

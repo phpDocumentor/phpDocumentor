@@ -15,8 +15,9 @@ namespace phpDocumentor\Descriptor\Cache;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Reflection\File;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -75,7 +76,7 @@ class ProjectDescriptorMapper
      *
      * @param File[] $files
      */
-    public function garbageCollect(VersionDescriptor $version, ApiSetDescriptor $apiSet, array $files): void
+    public function garbageCollect(VersionInterface $version, ApiDocumentationSet $apiSet, array $files): void
     {
         $fileListKey = $this->getApiSetFileListCacheKey($version, $apiSet);
         $fileListItem = $this->cache->getItem($fileListKey);
@@ -104,9 +105,9 @@ class ProjectDescriptorMapper
         $projectDescriptor->setSettings($settings);
     }
 
-    private function populateVersion(VersionDescriptor $version): void
+    private function populateVersion(VersionInterface $version): void
     {
-        /** @var ApiSetDescriptor[] $apiSets */
+        /** @var ApiDocumentationSet[] $apiSets */
         $apiSets = $version->getDocumentationSets()->filter(ApiSetDescriptor::class);
 
         foreach ($apiSets as $apiSet) {
@@ -114,7 +115,7 @@ class ProjectDescriptorMapper
         }
     }
 
-    private function populateApiSet(VersionDescriptor $version, ApiSetDescriptor $apiSet): void
+    private function populateApiSet(VersionInterface $version, ApiDocumentationSet $apiSet): void
     {
         $key = $this->getApiSetFileListCacheKey($version, $apiSet);
         $fileList = $this->cache->getItem($key)->get();
@@ -134,7 +135,7 @@ class ProjectDescriptorMapper
         }
     }
 
-    private function saveVersion(VersionDescriptor $version): void
+    private function saveVersion(VersionInterface $version): void
     {
         $apiSets = $version->getDocumentationSets()->filter(ApiSetDescriptor::class);
         foreach ($apiSets as $apiSet) {
@@ -142,7 +143,7 @@ class ProjectDescriptorMapper
         }
     }
 
-    private function saveApiSet(VersionDescriptor $version, ApiSetDescriptor $apiSet): void
+    private function saveApiSet(VersionInterface $version, ApiDocumentationSet $apiSet): void
     {
         $fileListKey = $this->getApiSetFileListCacheKey($version, $apiSet);
         $fileListItem = $this->cache->getItem($fileListKey);
@@ -173,7 +174,7 @@ class ProjectDescriptorMapper
         $this->cache->deleteItems($invalidatedKeys);
     }
 
-    private function getApiSetFileListCacheKey(VersionDescriptor $version, ApiSetDescriptor $apiSet): string
+    private function getApiSetFileListCacheKey(VersionInterface $version, ApiDocumentationSet $apiSet): string
     {
         return sprintf('%s-%s-%s', self::FILE_LIST, $version->getNumber(), $apiSet->getName());
     }

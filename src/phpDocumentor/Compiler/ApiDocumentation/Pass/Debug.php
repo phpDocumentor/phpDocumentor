@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Pipeline\Attribute\Stage;
 use Psr\Log\LoggerInterface;
@@ -47,7 +47,7 @@ final class Debug extends ApiDocumentationPass
         $this->analyzer = $analyzer;
     }
 
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         $this->analyzer->analyze($subject);
         $this->log->debug((string) $this->analyzer);

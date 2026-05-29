@@ -31,9 +31,9 @@ use function count;
  * templates becomes easier.
  *
  * @template T
- * @template-implements \phpDocumentor\Descriptor\Interfaces\Collection<T>
+ * @template-implements Interfaces\Collection<T>
  */
-class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
+class Collection implements Interfaces\Collection
 {
     /**
      * Constructs a new collection object with optionally a series of items, generally Descriptors.
@@ -225,11 +225,11 @@ class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
     /**
      * Returns a new collection with the items from this collection and the provided combined.
      *
-     * @param \phpDocumentor\Descriptor\Interfaces\Collection<T> $collection
+     * @param Interfaces\Collection<T> $collection
      *
-     * @return \phpDocumentor\Descriptor\Interfaces\Collection<T>
+     * @return Interfaces\Collection<T>
      */
-    public function merge(\phpDocumentor\Descriptor\Interfaces\Collection $collection): \phpDocumentor\Descriptor\Interfaces\Collection
+    public function merge(Interfaces\Collection $collection): Interfaces\Collection
     {
         return new self(array_merge($collection->getAll(), $this->items));
     }
@@ -237,13 +237,13 @@ class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
     /**
      * @param class-string<F> $className
      *
-     * @return \phpDocumentor\Descriptor\Interfaces\Collection<F>
+     * @return Interfaces\Collection<F>
      *
      * @template F of object
      */
-    public function filter(string $className): \phpDocumentor\Descriptor\Interfaces\Collection
+    public function filter(string $className): Interfaces\Collection
     {
-        /** @var \phpDocumentor\Descriptor\Interfaces\Collection<F> $collection */
+        /** @var Interfaces\Collection<F> $collection */
         $collection = new self(
             array_filter(
                 $this->getAll(),
@@ -257,9 +257,9 @@ class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
     /**
      * @param callable(T):bool $callback
      *
-     * @return \phpDocumentor\Descriptor\Interfaces\Collection<T>
+     * @return Interfaces\Collection<T>
      */
-    public function matches(callable $callback): \phpDocumentor\Descriptor\Interfaces\Collection
+    public function matches(callable $callback): Interfaces\Collection
     {
         return new self(
             array_filter(
@@ -273,11 +273,11 @@ class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
      * @param class-string<C> $classString
      * @param array<C> $elements
      *
-     * @return \phpDocumentor\Descriptor\Interfaces\Collection<C>
+     * @return Interfaces\Collection<C>
      *
      * @template C
      */
-    public static function fromClassString(string $classString, array $elements = []): \phpDocumentor\Descriptor\Interfaces\Collection
+    public static function fromClassString(string $classString, array $elements = []): Interfaces\Collection
     {
         Assert::classExists($classString);
 
@@ -288,11 +288,11 @@ class Collection implements \phpDocumentor\Descriptor\Interfaces\Collection
      * @param class-string<C> $interfaceString
      * @param array<C> $elements
      *
-     * @return \phpDocumentor\Descriptor\Interfaces\Collection<C>
+     * @return Interfaces\Collection<C>
      *
      * @template C
      */
-    public static function fromInterfaceString(string $interfaceString, array $elements = []): \phpDocumentor\Descriptor\Interfaces\Collection
+    public static function fromInterfaceString(string $interfaceString, array $elements = []): Interfaces\Collection
     {
         Assert::interfaceExists($interfaceString);
 

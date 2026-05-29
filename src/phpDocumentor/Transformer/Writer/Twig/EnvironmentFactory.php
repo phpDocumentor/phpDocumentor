@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\ConverterInterface;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Template;
 use Twig\Environment;
@@ -49,8 +49,8 @@ class EnvironmentFactory
     }
 
     public function create(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Template $template,
     ): Environment {
         $loaders = [];
@@ -78,8 +78,8 @@ class EnvironmentFactory
      * Adds the phpDocumentor base extension to the Twig Environment.
      */
     private function addPhpDocumentorExtension(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Environment $twigEnvironment,
     ): void {
         $extension = new Extension(

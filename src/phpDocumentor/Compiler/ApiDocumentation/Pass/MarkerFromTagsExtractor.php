@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Pipeline\Attribute\Stage;
 use UnexpectedValueException;
@@ -32,7 +32,7 @@ use UnexpectedValueException;
 )]
 final class MarkerFromTagsExtractor extends ApiDocumentationPass
 {
-    protected function process(ApiSetDescriptor $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         /** @var DescriptorAbstract $element */
         foreach ($subject->getIndexes()->fetch('elements', new Collection()) as $element) {

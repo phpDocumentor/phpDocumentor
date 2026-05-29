@@ -16,7 +16,7 @@ namespace phpDocumentor\Compiler\Version\Pass;
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Compiler\DescriptorRepository;
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 
 final class SetVersionPass implements CompilerPassInterface
 {
@@ -31,7 +31,7 @@ final class SetVersionPass implements CompilerPassInterface
 
     public function __invoke(CompilableSubject $subject): CompilableSubject
     {
-        if ($subject instanceof VersionDescriptor === false) {
+        if ($subject instanceof VersionInterface === false) {
             return $subject;
         }
 

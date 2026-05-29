@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Transformer\Template;
 
 interface Initializable
 {
     public function initialize(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Template $template,
     ): void;
 }

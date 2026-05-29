@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 
 /**
  * Describes the public interface for the description of a project.
@@ -46,6 +46,8 @@ interface ProjectInterface
     /** @return NamespaceInterface|string */
     public function getNamespace();
 
-    /** @return Collection<VersionDescriptor> */
+    /** @return Collection<VersionInterface> */
     public function getVersions(): Collection;
+
+    public function getSettings(): Settings;
 }

@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
+use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
@@ -39,7 +40,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /** @var Collection<string> $partials */
     private Collection $partials;
 
-    /** @var Collection<VersionDescriptor> $versions */
+    /** @var Collection<VersionInterface> $versions */
     private readonly Collection $versions;
 
     /**
@@ -50,7 +51,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         $this->setName($name);
         $this->setSettings(new Settings());
         $this->setPartials(new Collection());
-        $this->versions = Collection::fromClassString(VersionDescriptor::class);
+        $this->versions = Collection::fromInterfaceString(VersionInterface::class);
     }
 
     /**
@@ -118,7 +119,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
         return $this->partials;
     }
 
-    /** @return Collection<VersionDescriptor> */
+    /** @return Collection<VersionInterface> */
     public function getVersions(): Collection
     {
         return $this->versions;

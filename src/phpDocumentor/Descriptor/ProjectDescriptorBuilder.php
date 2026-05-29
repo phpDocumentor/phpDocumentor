@@ -20,7 +20,9 @@ use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\Collection;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
 use phpDocumentor\Reflection\Php\Project;
 
@@ -148,7 +150,7 @@ class ProjectDescriptorBuilder
         $this->apiSpecification = $apiSpecification;
     }
 
-    public function populateApiDocumentationSet(ApiSetDescriptor $apiSet, Project $project): void
+    public function populateApiDocumentationSet(ApiDocumentationSet $apiSet, Project $project): void
     {
         foreach ($project->getFiles() as $file) {
             $descriptor = $this->buildDescriptor($file, FileDescriptor::class);
@@ -219,7 +221,7 @@ class ProjectDescriptorBuilder
         $this->project->getSettings()->setCustom($customSettings);
     }
 
-    public function addVersion(VersionDescriptor $version): void
+    public function addVersion(VersionInterface $version): void
     {
         if ($this->project->getVersions()->count() >= 1) {
             throw new OutOfRangeException(

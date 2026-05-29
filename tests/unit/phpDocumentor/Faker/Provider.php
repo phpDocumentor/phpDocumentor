@@ -41,8 +41,10 @@ use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
@@ -163,7 +165,7 @@ final class Provider extends Base
         return $file;
     }
 
-    /** @param DocumentationSetDescriptor[] $documentationSets */
+    /** @param DocumentationSetInterface[] $documentationSets */
     public function versionDescriptor(array $documentationSets, string|null $version = null): VersionDescriptor
     {
         return new VersionDescriptor(
@@ -172,7 +174,7 @@ final class Provider extends Base
         );
     }
 
-    public function apiSetDescriptor(string|null $name = null): ApiSetDescriptor
+    public function apiSetDescriptor(string|null $name = null): ApiDocumentationSet
     {
         return new ApiSetDescriptor(
             $name ?? $this->generator->word(),

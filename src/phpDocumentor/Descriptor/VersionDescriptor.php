@@ -15,10 +15,11 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Descriptor\Interfaces\Collection;
+use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 
-final class VersionDescriptor implements CompilableSubject, Descriptor
+final class VersionDescriptor implements CompilableSubject, Descriptor, VersionInterface
 {
     use HasName;
     use HasDescription;

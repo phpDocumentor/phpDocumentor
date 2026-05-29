@@ -16,8 +16,9 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\Collection;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Transformer\Template;
@@ -114,8 +115,8 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     }
 
     public function initialize(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Template $template,
     ): void {
         $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
@@ -126,7 +127,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      * and creates a static html page at the artifact location.
      *
      * @param Transformation $transformation Transformation to execute.
-     * @param ProjectDescriptor $project        Document containing the structure.
+     * @param ProjectInterface $project        Document containing the structure.
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -134,8 +135,8 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
      */
     public function transform(
         Transformation $transformation,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
     ): void {
         // TODO: At a later stage we want to support more types of Documentation Sets using the Twig writer
         //       but at the moment this causes headaches in the migration process towards multiple sets of
@@ -191,7 +192,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     private function transformNodeCollection(
         Collection $nodes,
         Transformation $transformation,
-        DocumentationSetDescriptor $documentationSet,
+        DocumentationSetInterface $documentationSet,
         string $templatePath,
         array $extraParameters,
     ): void {
@@ -218,7 +219,7 @@ final class Twig extends WriterAbstract implements Initializable, ProjectDescrip
     private function transformNode(
         Descriptor $node,
         Transformation $transformation,
-        DocumentationSetDescriptor $documentationSet,
+        DocumentationSetInterface $documentationSet,
         string $templatePath,
         array $extraParameters,
     ): void {

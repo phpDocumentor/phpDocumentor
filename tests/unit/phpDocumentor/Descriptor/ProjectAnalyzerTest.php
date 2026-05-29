@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
 
 use function str_replace;
@@ -106,7 +107,7 @@ TEXT;
     /**
      * Ensures that the ProjectDescriptor contains and returns the provided files.
      */
-    private function whenDescriptorHasTheFollowingFiles(ApiSetDescriptor $apiSet, array $files): void
+    private function whenDescriptorHasTheFollowingFiles(ApiDocumentationSet $apiSet, array $files): void
     {
         $apiSet->setFiles(new Collection($files));
     }
@@ -115,7 +116,7 @@ TEXT;
      * Ensures that the ProjectDescriptor has an index 'elements' with the provided elements.
      */
     private function whenDescriptorHasTheFollowingElements(
-        ApiSetDescriptor $apiSet,
+        ApiDocumentationSet $apiSet,
         array $elements,
     ): void {
         $apiSet->getIndexes()->set('elements', new Collection($elements));
@@ -125,7 +126,7 @@ TEXT;
      * Ensures that the ProjectDescriptor has a root namespace with the provided array as children of that namespace.
      */
     private function whenDocumentationHasTheFollowingChildrenOfRootNamespace(
-        ApiSetDescriptor $apiSet,
+        ApiDocumentationSet $apiSet,
         array $rootNamespaceChildren,
     ): void {
         $apiSet->getNamespace()->setChildren(new Collection($rootNamespaceChildren));

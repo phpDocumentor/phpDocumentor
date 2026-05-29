@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Guides\Nodes\DocumentTree\DocumentEntryNode;
@@ -32,12 +32,12 @@ final class GuideSetBuilder implements DocumentationSetBuilder
     {
     }
 
-    public function supports(DocumentationSetDescriptor $documentationSet): bool
+    public function supports(DocumentationSetInterface $documentationSet): bool
     {
         return $documentationSet instanceof GuideSetDescriptor;
     }
 
-    public function build(DocumentationSetDescriptor $documentationSet): void
+    public function build(DocumentationSetInterface $documentationSet): void
     {
         $documents = $documentationSet->getDocuments();
         $index = $documents->fetch('index');

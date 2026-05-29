@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use Stringable;
 
@@ -43,7 +44,7 @@ class ProjectAnalyzer implements Stringable
     /**
      * Analyzes the given project descriptor and populates this object's properties.
      */
-    public function analyze(DocumentationSetDescriptor $documentationSet): void
+    public function analyze(DocumentationSetInterface $documentationSet): void
     {
         $this->unresolvedParentClassesCount = 0;
 
@@ -130,7 +131,7 @@ TEXT;
      *
      * @return Collection<ElementInterface>
      */
-    protected function findAllElements(DocumentationSetDescriptor $documentationSet): Collection
+    protected function findAllElements(DocumentationSetInterface $documentationSet): Collection
     {
         return $documentationSet->getIndexes()->fetch(
             'elements',

@@ -7,6 +7,7 @@ namespace phpDocumentor\Architecture;
 use PHPat\Selector\Selector;
 use PHPat\Test\Builder\Rule;
 use PHPat\Test\PHPat;
+use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 
 class DescriptorTest
@@ -39,6 +40,7 @@ class DescriptorTest
                     Selector::inNamespace('phpDocumentor\Descriptor'),
                     Selector::NOT(Selector::inNamespace('phpDocumentor\Descriptor\Interfaces')),
                     Selector::NOT(Selector::classname(Descriptor::class)),
+                    Selector::NOT(Selector::classname(Collection::class)),
                 )
             );
     }

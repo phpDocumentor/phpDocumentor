@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\FlySystemFactory;
@@ -56,8 +57,8 @@ final class RenderGuide extends WriterAbstract implements
     }
 
     public function initialize(
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
         Template $template,
     ): void {
         $this->environment = $this->environmentFactory->create($project, $documentationSet, $template);
@@ -65,8 +66,8 @@ final class RenderGuide extends WriterAbstract implements
 
     public function transform(
         Transformation $transformation,
-        ProjectDescriptor $project,
-        DocumentationSetDescriptor $documentationSet,
+        ProjectInterface $project,
+        DocumentationSetInterface $documentationSet,
     ): void {
         if ($documentationSet instanceof GuideSetDescriptor === false) {
             return;
