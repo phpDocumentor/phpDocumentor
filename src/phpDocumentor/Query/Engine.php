@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor\Query;
+namespace phpDocumentor\Query;
 
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\JsonPath\Executor;

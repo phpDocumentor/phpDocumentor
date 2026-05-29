@@ -19,9 +19,9 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Pipeline\Attribute\Stage;
 
@@ -67,7 +67,10 @@ final class VarTagModifier extends ApiDocumentationPass
 
     private function filterVarTags(ConstantInterface|PropertyInterface $descriptor): void
     {
-        $tags = $descriptor->getTags()->fetch('var', Collection::fromClassString(TagDescriptor::class));
+        $tags = $descriptor->getTags()->fetch(
+            'var',
+            Collection::fromInterfaceString(TagInterface::class),
+        );
 
         foreach ($tags->filter(VarDescriptor::class) as $index => $tag) {
             if ($tag->getVariableName() === '') {

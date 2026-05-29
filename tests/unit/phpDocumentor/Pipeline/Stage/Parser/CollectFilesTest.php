@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage\Parser;
 
 use phpDocumentor\Configuration\VersionSpecification;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\FileSystem\FileSystemFactory;
 use phpDocumentor\Parser\FileCollector;
+use phpDocumentor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

@@ -19,9 +19,9 @@ use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
+use phpDocumentor\ProjectSettings;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,7 +35,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     use HasName;
     use HasDescription;
 
-    private Settings $settings;
+    private ProjectSettings $settings;
 
     /** @var Collection<string> $partials */
     private Collection $partials;
@@ -49,7 +49,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     public function __construct(string $name)
     {
         $this->setName($name);
-        $this->setSettings(new Settings());
+        $this->setSettings(new ProjectSettings());
         $this->setPartials(new Collection());
         $this->versions = Collection::fromInterfaceString(VersionInterface::class);
     }
@@ -81,7 +81,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Sets the settings used to build the documentation for this project.
      */
-    public function setSettings(Settings $settings): void
+    public function setSettings(ProjectSettings $settings): void
     {
         $this->settings = $settings;
     }
@@ -89,7 +89,7 @@ class ProjectDescriptor implements Interfaces\ProjectInterface, Descriptor
     /**
      * Returns the settings used to build the documentation for this project.
      */
-    public function getSettings(): Settings
+    public function getSettings(): ProjectSettings
     {
         return $this->settings;
     }

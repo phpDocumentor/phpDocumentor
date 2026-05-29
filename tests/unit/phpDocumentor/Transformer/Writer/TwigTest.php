@@ -15,9 +15,9 @@ namespace phpDocumentor\Transformer\Writer;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\Query\Engine;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;

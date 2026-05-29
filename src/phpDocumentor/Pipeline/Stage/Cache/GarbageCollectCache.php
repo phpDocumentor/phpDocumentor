@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Cache;
 
-use phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper;
+use phpDocumentor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
 
 final class GarbageCollectCache

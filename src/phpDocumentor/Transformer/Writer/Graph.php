@@ -16,9 +16,9 @@ namespace phpDocumentor\Transformer\Writer;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Graph\Generator;
+use phpDocumentor\WithCustomSettings;
 
 /**
  * Writer responsible for generating various graphs.
@@ -30,7 +30,7 @@ use phpDocumentor\Transformer\Writer\Graph\Generator;
  *
  * * 'class' (default), a Class Diagram generated using GraphViz
  */
-final class Graph extends WriterAbstract implements ProjectDescriptor\WithCustomSettings
+final class Graph extends WriterAbstract implements WithCustomSettings
 {
     use IoTrait;
 

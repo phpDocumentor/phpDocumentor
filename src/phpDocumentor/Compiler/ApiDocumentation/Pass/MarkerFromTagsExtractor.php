@@ -18,7 +18,7 @@ use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Pipeline\Attribute\Stage;
 use UnexpectedValueException;
 
@@ -36,7 +36,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
     {
         /** @var DescriptorAbstract $element */
         foreach ($subject->getIndexes()->fetch('elements', new Collection()) as $element) {
-            /** @var TagDescriptor[] $todos */
+            /** @var TagInterface[] $todos */
             $todos = $element->getTags()->fetch('todo');
 
             if (! $todos) {
@@ -73,7 +73,7 @@ final class MarkerFromTagsExtractor extends ApiDocumentationPass
     /**
      * Adds a marker with the TO DO information to the file on a given line number.
      */
-    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagDescriptor $todo, int $lineNumber): void
+    private function addTodoMarkerToFile(FileDescriptor $fileDescriptor, TagInterface $todo, int $lineNumber): void
     {
         $fileDescriptor->getMarkers()->add(
             [

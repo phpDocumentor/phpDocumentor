@@ -11,20 +11,34 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor;
+namespace phpDocumentor;
 
 use InvalidArgumentException;
 use OutOfRangeException;
 use phpDocumentor\Configuration\ApiSpecification;
+use phpDocumentor\Configuration\VersionSpecification;
+use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\Builder;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Builder\AssemblerInterface;
+use phpDocumentor\Descriptor\Descriptor;
+use phpDocumentor\Descriptor\Descriptor as TDescriptor;
+use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\Descriptor\Filter\Filterable;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings;
+use phpDocumentor\Descriptor\NamespaceDescriptor;
+use phpDocumentor\Descriptor\ProjectDescriptor;
+use phpDocumentor\Descriptor\VersionDescriptor;
+use phpDocumentor\Guides\Nodes\ProjectNode;
 use phpDocumentor\Reflection\Php\Project;
+
+use function count;
+use function md5;
 
 /**
  * Builds a Project Descriptor and underlying tree.
@@ -78,7 +92,7 @@ class ProjectDescriptorBuilder
      *
      * @param class-string<TDescriptor> $type
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|null constructed Desciptor, null when desciptor is filtered
      *
      * @throws InvalidArgumentException If no Assembler could be found that matches the given data.
      *
@@ -127,9 +141,9 @@ class ProjectDescriptorBuilder
      * Filters a descriptor, validates it, stores the validation results and returns the transmuted object or null
      * if it is supposed to be removed.
      *
-     * @param TDescriptor $descriptor
+     * @param TDescriptor $descriptor Descriptor to filter
      *
-     * @return TDescriptor|null
+     * @return TDescriptor|null Filtered Descriptor or null if it is supposed to be removed
      *
      * @template TDescriptor as Descriptor
      */
@@ -221,7 +235,7 @@ class ProjectDescriptorBuilder
         $this->project->getSettings()->setCustom($customSettings);
     }
 
-    public function addVersion(VersionInterface $version): void
+    public function addVersion(VersionSpecification $version): void
     {
         if ($this->project->getVersions()->count() >= 1) {
             throw new OutOfRangeException(
@@ -229,6 +243,85 @@ class ProjectDescriptorBuilder
             );
         }
 
-        $this->project->getVersions()->add($version);
+        $this->project->getVersions()->add($this->buildVersion($version));
+    }
+
+    private function buildVersion(VersionSpecification $version): VersionInterface
+    {
+        $collection = \phpDocumentor\Descriptor\Collection::fromClassString(DocumentationSetDescriptor::class);
+
+        $this->guardAgainstMultipleSetsOfTheSameType($version);
+
+        foreach ($version->getGuides() as $guide) {
+            $collection->add(
+                new GuideSetDescriptor(
+                    md5((string) $guide['output']),
+                    $guide['source'],
+                    $guide['output'],
+                    $guide['format'],
+                    projectNode: new ProjectNode(null, $version->getNumber()),
+                ),
+            );
+        }
+
+        foreach ($version->getApi() as $apiSpecification) {
+            $collection->add(
+                new ApiSetDescriptor(
+                    md5((string) $apiSpecification['output']),
+                    $apiSpecification['source'],
+                    $apiSpecification['output'],
+                    $apiSpecification,
+                ),
+            );
+        }
+
+        return new VersionDescriptor(
+            $version->getNumber(),
+            $collection,
+        );
+    }
+
+    /**
+     * Until official support is added for versions, check whether there is 1 and fail when multiple is
+     * given.
+     *
+     * By adding this restriction, it should prevent confusion with users when they were to add multiple
+     * in the configuration.
+     */
+    private function guardAgainstMultipleSetsOfTheSameType(VersionSpecification $version): void
+    {
+        if (count((array) $version->getGuides()) > 1) {
+            throw new OutOfRangeException(
+                <<<'EOF'
+phpDocumentor supports 1 set of guides at the moment, support for multiple 
+sets is being worked on.
+
+If you see this message, it may be that you have defined multiple "<guide>"
+elements in your configuration file.
+
+To fix this, make sure you only have one "<guide>" element in your
+documentation.
+EOF,
+            );
+        }
+
+        if (count($version->getApi()) > 1) {
+            throw new OutOfRangeException(
+                <<<'EOF'
+phpDocumentor supports 1 set of API documentation at the moment, support for 
+multiple sets is being worked on.
+
+If you see this message, it may be that you have defined multiple "<api>" 
+elements in your configuration file, or because you have used absolute paths
+as value for the "-d" or "--directory" argument. phpDocumentor interprets 
+absolute paths as separate components, each with their own set of 
+documentation.
+
+To fix this, make sure you only have one "<api>" element in your documentation
+and/or use relative paths when using the "-d" or "--directory" command line
+argument.
+EOF,
+            );
+        }
     }
 }

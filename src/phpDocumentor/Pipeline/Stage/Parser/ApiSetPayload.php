@@ -16,7 +16,7 @@ namespace phpDocumentor\Pipeline\Stage\Parser;
 use phpDocumentor\Configuration\Configuration;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File;
 
 use function array_merge;

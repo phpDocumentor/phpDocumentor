@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Parser\Event\PreParsingEvent;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;

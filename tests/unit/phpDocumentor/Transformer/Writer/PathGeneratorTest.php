@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Descriptor\FileDescriptor;
-use phpDocumentor\Descriptor\Query\Engine;
 use phpDocumentor\FileSystem\FileSystem;
+use phpDocumentor\Query\Engine;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;

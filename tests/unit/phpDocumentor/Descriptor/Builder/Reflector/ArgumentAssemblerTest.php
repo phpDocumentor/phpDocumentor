@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Descriptor\Tag\ParamDescriptor;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;

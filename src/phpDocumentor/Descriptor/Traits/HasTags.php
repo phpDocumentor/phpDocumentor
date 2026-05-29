@@ -15,14 +15,14 @@ namespace phpDocumentor\Descriptor\Traits;
 
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\InheritsFromElement;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 
 trait HasTags
 {
-    /** @var CollectionInterface<CollectionInterface<TagDescriptor>> $tags The tags associated with this element. */
+    /** @var CollectionInterface<CollectionInterface<TagInterface>> $tags The tags associated with this element. */
     protected CollectionInterface $tags;
 
     /**
@@ -30,7 +30,7 @@ trait HasTags
      *
      * @internal should not be called by any other class than the assamblers
      *
-     * @param CollectionInterface<CollectionInterface<TagDescriptor>> $tags
+     * @param CollectionInterface<CollectionInterface<TagInterface>> $tags
      */
     public function setTags(CollectionInterface $tags): void
     {
@@ -40,7 +40,7 @@ trait HasTags
     /**
      * Returns the tags associated with this element.
      *
-     * @return CollectionInterface<CollectionInterface<TagDescriptor>>
+     * @return CollectionInterface<CollectionInterface<TagInterface>>
      */
     public function getTags(): CollectionInterface
     {
@@ -96,11 +96,11 @@ trait HasTags
     /**
      * Returns the copyrights for this element.
      *
-     * @return CollectionInterface<TagDescriptor>
+     * @return CollectionInterface<TagInterface>
      */
     public function getCopyright(): CollectionInterface
     {
-        /** @var CollectionInterface<TagDescriptor> $copyright */
+        /** @var CollectionInterface<TagInterface> $copyright */
         $copyright = $this->getTags()->fetch('copyright', new Collection());
         if ($copyright->count() !== 0) {
             return $copyright;

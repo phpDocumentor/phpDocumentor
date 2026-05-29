@@ -44,8 +44,10 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumInterface;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
@@ -53,7 +55,6 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
-use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\FileSystem\Dsn;
@@ -184,7 +185,7 @@ final class Provider extends Base
         );
     }
 
-    public function guideSetDescriptor(): GuideSetDescriptor
+    public function guideSetDescriptor(): GuideDocumentationSet
     {
         return new GuideSetDescriptor(
             $this->generator->word(),
@@ -293,7 +294,7 @@ final class Provider extends Base
         return $propertyDescriptor;
     }
 
-    public function varTagDescriptor(string $variableName = ''): TagDescriptor
+    public function varTagDescriptor(string $variableName = ''): TagInterface
     {
         $varTag = new VarDescriptor('var');
         $varTag->setVariableName($variableName);

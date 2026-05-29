@@ -15,7 +15,7 @@ namespace phpDocumentor\Compiler\Guides\Pass;
 
 use phpDocumentor\Compiler\DescriptorRepository;
 use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Compiler\CompilerPass;
@@ -80,7 +80,7 @@ final class GuidesCompilerTest extends TestCase
         $compiledDocumentNodes = $this->expectingASeriesOfCompiledDocumentNodes($originalDocumentNodes);
         $this->expectingGuidesCompilerToReturnCompiledDocumentNodes($originalDocumentNodes, $compiledDocumentNodes);
 
-        /** @var GuideSetDescriptor $result */
+        /** @var GuideDocumentationSet $result */
         $result = $this->guidesCompiler->__invoke($guideSetDescriptor);
 
         self::assertSame($guideSetDescriptor, $result);
@@ -94,7 +94,7 @@ final class GuidesCompilerTest extends TestCase
     }
 
     /** @return array<string, DocumentNode> */
-    private function givenASeriesOfDocumentNodes(GuideSetDescriptor $guideSetDescriptor): array
+    private function givenASeriesOfDocumentNodes(GuideDocumentationSet $guideSetDescriptor): array
     {
         $originalDocumentNodes = [];
         for ($i = 1; $i <= 3; $i++) {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
@@ -20,7 +21,7 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 class GenericTagAssembler extends BaseTagAssembler
 {
     /** @param Tag $data */
-    protected function buildDescriptor(object $data): TagDescriptor
+    protected function buildDescriptor(object $data): TagInterface
     {
         return new TagDescriptor($data->getName());
     }

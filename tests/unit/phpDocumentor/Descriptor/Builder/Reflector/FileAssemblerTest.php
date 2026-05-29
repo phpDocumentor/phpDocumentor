@@ -16,8 +16,8 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\ProjectDescriptor\Settings;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectSettings;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\File;
 use PHPUnit\Framework\TestCase;
@@ -86,7 +86,7 @@ DOCBLOCK,
      */
     protected function getProjectDescriptorBuilderMock(): ObjectProphecy
     {
-        $settings = new Settings();
+        $settings = new ProjectSettings();
         $settings->includeSource();
 
         $projectDescriptorBuilderMock = $this->prophesize(ProjectDescriptorBuilder::class);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\String_;

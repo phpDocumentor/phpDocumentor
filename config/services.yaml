@@ -16,7 +16,7 @@ services:
     _instanceof:
       # Tag any service that implements WithCustomSettings so that we can auto-register them
       # with the ProjectDescriptor
-      phpDocumentor\Descriptor\ProjectDescriptor\WithCustomSettings:
+      phpDocumentor\WithCustomSettings:
         tags: ['app.with_custom_settings']
 
       phpDocumentor\Descriptor\Filter\FilterInterface:
@@ -73,7 +73,7 @@ services:
 
     phpDocumentor\Console\Command\Project\RunCommand:
         arguments:
-          - '@phpDocumentor\Descriptor\ProjectDescriptorBuilder'
+          - '@phpDocumentor\ProjectDescriptorBuilder'
           - '@phpdoc.pipeline.complete'
         tags: [ { name: 'console.command' } ]
         public: true
@@ -119,7 +119,7 @@ services:
       class: phpDocumentor\JsonPath\Parser
       factory: ['phpDocumentor\JsonPath\Parser', 'createInstance']
 
-    phpDocumentor\Descriptor\Query\Engine:
+    phpDocumentor\Query\Engine:
         arguments:
           $parser: '@phpdoc.jsonpath.parser'
 
@@ -142,7 +142,7 @@ services:
     phpDocumentor\Parser\Middleware\ReEncodingMiddleware:
       tags: [ { name: 'phpdoc.parser.middleware', priority: 2000 } ]
 
-    phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper:
+    phpDocumentor\Cache\ProjectDescriptorMapper:
         arguments:
           $cache: '@descriptors'
 

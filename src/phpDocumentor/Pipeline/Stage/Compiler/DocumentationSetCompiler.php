@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage\Compiler;
 
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Pipeline\PipelineInterface;
 
 final class DocumentationSetCompiler
 {
-    /** @param class-string<DocumentationSetDescriptor> $type */
+    /** @param class-string<DocumentationSetInterface> $type */
     public function __construct(
         private readonly PipelineInterface $compilerPipeline,
         private readonly string $type,

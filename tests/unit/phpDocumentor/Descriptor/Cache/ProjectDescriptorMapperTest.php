@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Cache;
 
+use phpDocumentor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
@@ -25,9 +26,9 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * @uses \phpDocumentor\Descriptor\FileDescriptor
  * @uses \phpDocumentor\Descriptor\NamespaceDescriptor
  * @uses \phpDocumentor\Descriptor\ProjectDescriptor
- * @uses \phpDocumentor\Descriptor\ProjectDescriptor\Settings
+ * @uses \phpDocumentor\ProjectSettings
  *
- * @coversDefaultClass \phpDocumentor\Descriptor\Cache\ProjectDescriptorMapper
+ * @coversDefaultClass \phpDocumentor\Cache\ProjectDescriptorMapper
  */
 final class ProjectDescriptorMapperTest extends TestCase
 {

@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
+namespace phpDocumentor\Guides\Nodes\PHP;
+
+use phpDocumentor\Descriptor\Interfaces\DocBlock\DescriptionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
+
+final class EmptyDescription implements DescriptionInterface
+{
+    public function getBodyTemplate(): string
+    {
+        return '';
+    }
+
+    public function replaceTag(int $position, TagInterface|null $tagDescriptor): void
+    {
+    }
+
+    public function getTags(): array
+    {
+        return [];
+    }
+
+    public function isEmpty(): bool
+    {
+        return true;
+    }
+}

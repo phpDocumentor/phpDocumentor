@@ -19,11 +19,11 @@ use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\Descriptor\Interfaces\Collection;
 use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
-use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Descriptor\Query\Engine;
+use phpDocumentor\Query\Engine;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use phpDocumentor\WithCustomSettings;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -96,7 +96,7 @@ use function substr;
  * @see self::getDestinationPath() for more information about variables in the
  *     Artifact attribute.
  */
-final class Twig extends WriterAbstract implements Initializable, ProjectDescriptor\WithCustomSettings
+final class Twig extends WriterAbstract implements Initializable, WithCustomSettings
 {
     use IoTrait;
 

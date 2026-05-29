@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Interfaces;
 
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 
 interface DocblockInterface
 {
@@ -30,7 +30,7 @@ interface DocblockInterface
     /**
      * Returns all tags associated with this element.
      *
-     * @return Collection<Collection<TagDescriptor>>
+     * @return Collection<Collection<TagInterface>>
      */
     public function getTags(): Collection;
 }

@@ -30,7 +30,6 @@ use Webmozart\Assert\Assert;
  */
 class ConstantDescriptor extends DescriptorAbstract implements
     Interfaces\ConstantInterface,
-    Interfaces\VisibilityInterface,
     Interfaces\AttributedInterface
 {
     use Traits\CanBeFinal;

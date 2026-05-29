@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
-namespace phpDocumentor\Descriptor\Cache;
+namespace phpDocumentor\Cache;
 
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
+use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Reflection\File;
@@ -48,7 +48,7 @@ class ProjectDescriptorMapper
     /**
      * Returns the Project Descriptor from the cache.
      */
-    public function populate(ProjectDescriptor $projectDescriptor): void
+    public function populate(ProjectInterface $projectDescriptor): void
     {
         $this->loadCacheItemAsSettings($projectDescriptor);
 
@@ -60,7 +60,7 @@ class ProjectDescriptorMapper
     /**
      * Stores a Project Descriptor in the Cache.
      */
-    public function save(ProjectDescriptor $projectDescriptor): void
+    public function save(ProjectInterface $projectDescriptor): void
     {
         // store the settings for this Project Descriptor
         $item = $this->cache->getItem(self::KEY_SETTINGS);
@@ -94,7 +94,7 @@ class ProjectDescriptorMapper
         $this->cache->deleteItems(array_diff($cachedFileList, $realFileKeys));
     }
 
-    private function loadCacheItemAsSettings(ProjectDescriptor $projectDescriptor): void
+    private function loadCacheItemAsSettings(ProjectInterface $projectDescriptor): void
     {
         $item = $this->cache->getItem(self::KEY_SETTINGS);
         if (! $item->isHit()) {
@@ -102,13 +102,18 @@ class ProjectDescriptorMapper
         }
 
         $settings = $item->get();
+
+        if ($projectDescriptor instanceof ProjectDescriptor === false) {
+            return;
+        }
+
         $projectDescriptor->setSettings($settings);
     }
 
     private function populateVersion(VersionInterface $version): void
     {
         /** @var ApiDocumentationSet[] $apiSets */
-        $apiSets = $version->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $apiSets = $version->getDocumentationSets()->filter(ApiDocumentationSet::class);
 
         foreach ($apiSets as $apiSet) {
             $this->populateApiSet($version, $apiSet);
@@ -137,7 +142,7 @@ class ProjectDescriptorMapper
 
     private function saveVersion(VersionInterface $version): void
     {
-        $apiSets = $version->getDocumentationSets()->filter(ApiSetDescriptor::class);
+        $apiSets = $version->getDocumentationSets()->filter(ApiDocumentationSet::class);
         foreach ($apiSets as $apiSet) {
             $this->saveApiSet($version, $apiSet);
         }

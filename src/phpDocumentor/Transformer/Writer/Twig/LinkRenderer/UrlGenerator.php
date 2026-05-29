@@ -16,7 +16,7 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use InvalidArgumentException;
 use OutOfRangeException;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -92,14 +92,14 @@ class UrlGenerator
 
         // TODO: of course this is not correct, but phpDocumentor does not have a mechanism yet for determining the
         // right guide set and it is prepared for multi-guide support but doesn't actually have it yet
-        /** @var ?GuideSetDescriptor $guideSet */
-        $guideSet = $currentVersion->getDocumentationSets()->filter(GuideSetDescriptor::class)->first();
+        /** @var ?GuideDocumentationSet $guideSet */
+        $guideSet = $currentVersion->getDocumentationSets()->filter(GuideDocumentationSet::class)->first();
         if ($guideSet === null) {
             // unlinkable, thus no URL
             return null;
         }
 
-        Assert::isInstanceOf($guideSet, GuideSetDescriptor::class);
+        Assert::isInstanceOf($guideSet, GuideDocumentationSet::class);
 
         // TODO: This is copied from the TableOfContentsBuilder; once we get proper support for Versions,
         // we need to revisit this.

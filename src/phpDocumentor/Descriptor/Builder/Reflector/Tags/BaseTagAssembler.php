@@ -16,11 +16,11 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Builder\AssemblerReducer;
 use phpDocumentor\Descriptor\Builder\Reflector\AssemblerAbstract;
 use phpDocumentor\Descriptor\Builder\Reflector\Docblock\DescriptionAssemblerReducer;
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
 /**
- * @template TDescriptor of TagDescriptor
+ * @template TDescriptor of TagInterface
  * @template TInput of Tag
  * @extends  AssemblerAbstract<TDescriptor, TInput>
  */

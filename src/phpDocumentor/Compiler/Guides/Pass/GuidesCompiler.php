@@ -16,8 +16,8 @@ namespace phpDocumentor\Compiler\Guides\Pass;
 use phpDocumentor\Compiler\CompilableSubject;
 use phpDocumentor\Compiler\CompilerPassInterface;
 use phpDocumentor\Compiler\DescriptorRepository;
-use phpDocumentor\Descriptor\DocumentDescriptor;
-use phpDocumentor\Descriptor\GuideSetDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocumentInterface;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 
@@ -38,12 +38,12 @@ final class GuidesCompiler implements CompilerPassInterface
 
     public function __invoke(CompilableSubject $subject): CompilableSubject
     {
-        if ($subject instanceof GuideSetDescriptor === false) {
+        if ($subject instanceof GuideDocumentationSet === false) {
             return $subject;
         }
 
         $documentNodes = array_map(
-            static fn (DocumentDescriptor $descriptor) => $descriptor->getDocumentNode(),
+            static fn (DocumentInterface $descriptor) => $descriptor->getDocumentNode(),
             $subject->getDocuments()->getAll(),
         );
 

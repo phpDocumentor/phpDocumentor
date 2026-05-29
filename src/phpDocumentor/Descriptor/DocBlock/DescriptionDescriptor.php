@@ -13,22 +13,23 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\DocBlock;
 
-use phpDocumentor\Descriptor\TagDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\DescriptionInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Reflection\DocBlock\Description;
 use Stringable;
 
 use function trim;
 use function vsprintf;
 
-final class DescriptionDescriptor implements Stringable
+final class DescriptionDescriptor implements Stringable, DescriptionInterface
 {
     /** @var Description */
     private $description;
 
-    /** @var array<int, TagDescriptor|null> */
+    /** @var array<int, TagInterface|null> */
     private $inlineTags;
 
-    /** @param array<int, TagDescriptor|null> $tags */
+    /** @param array<int, TagInterface|null> $tags */
     public function __construct(Description|null $description, array $tags)
     {
         $this->description = $description ?? new Description('');
@@ -45,7 +46,7 @@ final class DescriptionDescriptor implements Stringable
         return $this->description->getBodyTemplate();
     }
 
-    public function replaceTag(int $position, TagDescriptor|null $tagDescriptor): void
+    public function replaceTag(int $position, TagInterface|null $tagDescriptor): void
     {
         $this->inlineTags[$position] = $tagDescriptor;
     }
@@ -53,7 +54,7 @@ final class DescriptionDescriptor implements Stringable
     /**
      * Returns the tags for this description
      *
-     * @return array<int, TagDescriptor|null>
+     * @return array<int, TagInterface|null>
      */
     public function getTags(): array
     {

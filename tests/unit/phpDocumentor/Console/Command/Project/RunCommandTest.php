@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Console\Command\Project;
 
 use phpDocumentor\Console\Application;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Pipeline\PipelineInterface;
+use phpDocumentor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

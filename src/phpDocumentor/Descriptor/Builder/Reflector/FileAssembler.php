@@ -21,6 +21,7 @@ use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Descriptor\InterfaceDescriptor;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
@@ -242,7 +243,7 @@ class FileAssembler extends AssemblerAbstract
 
     protected function overridePackageTag(File $data, FileInterface $fileDescriptor): void
     {
-        $packages = Collection::fromClassString(TagDescriptor::class);
+        $packages = Collection::fromInterfaceString(TagInterface::class);
         $package  = $this->extractPackageFromDocBlock($data->getDocBlock());
         if (! $package) {
             $package = $this->getBuilder()->getDefaultPackageName();

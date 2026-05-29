@@ -17,10 +17,8 @@ use ArrayIterator;
 use InvalidArgumentException;
 use League\CommonMark\ConverterInterface;
 use League\Uri\Uri;
-use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
-use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\EnumDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ArgumentInterface;
 use phpDocumentor\Descriptor\Interfaces\AttributedInterface;
@@ -29,6 +27,7 @@ use phpDocumentor\Descriptor\Interfaces\ClassInterface;
 use phpDocumentor\Descriptor\Interfaces\Collection as CollectionInterface;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Descriptor\Interfaces\ContainerInterface;
+use phpDocumentor\Descriptor\Interfaces\DocBlock\DescriptionInterface;
 use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ElementInterface;
 use phpDocumentor\Descriptor\Interfaces\EnumCaseInterface;
@@ -41,11 +40,11 @@ use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\Descriptor\Interfaces\PropertyInterface;
+use phpDocumentor\Descriptor\Interfaces\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Interfaces\TraitInterface;
 use phpDocumentor\Descriptor\Interfaces\VisibilityInterface;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\PackageDescriptor;
-use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
@@ -415,7 +414,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             'specializedAttributes' => new TwigFilter(
                 'specializedAttributes',
                 static function (CollectionInterface $attributes): CollectionInterface {
-                    $filtered = Collection::fromClassString(AttributeDescriptor::class);
+                    $filtered = Collection::fromInterfaceString(AttributeInterface::class);
                     foreach ($attributes as $attribute) {
                         if (in_array((string) $attribute->getFullyQualifiedStructuralElementName(), ['\Deprecated'])) {
                             continue;
@@ -431,7 +430,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
     }
 
     /** @param mixed[] $context */
-    public function renderDescription(array $context, DescriptionDescriptor|null $description): string
+    public function renderDescription(array $context, DescriptionInterface|null $description): string
     {
         if ($description === null || $description->getBodyTemplate() === '') {
             return '';

@@ -15,8 +15,8 @@ namespace phpDocumentor\Parser;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
 use phpDocumentor\Parser\Event\PreParsingEvent;
+use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;

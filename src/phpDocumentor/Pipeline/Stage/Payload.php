@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\Configuration\Configuration;
-use phpDocumentor\Descriptor\ProjectDescriptorBuilder;
+use phpDocumentor\ProjectDescriptorBuilder;
 
 /** @psalm-import-type ConfigurationMap from Configuration */
 class Payload

@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use phpDocumentor\Descriptor\Interfaces\DocumentInterface;
 use phpDocumentor\Descriptor\Traits\HasDescription;
 use phpDocumentor\Descriptor\Traits\HasName;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 
-final class DocumentDescriptor implements Descriptor
+final class DocumentDescriptor implements Descriptor, DocumentInterface
 {
     use HasName;
     use HasDescription;

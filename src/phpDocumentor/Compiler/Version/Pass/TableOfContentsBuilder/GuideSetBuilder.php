@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
-use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
+use phpDocumentor\Descriptor\Interfaces\DocumentInterface;
+use phpDocumentor\Descriptor\Interfaces\GuideDocumentationSet;
 use phpDocumentor\Descriptor\TableOfContents\Entry;
 use phpDocumentor\Descriptor\TocDescriptor;
 use phpDocumentor\Guides\Nodes\DocumentTree\DocumentEntryNode;
@@ -57,9 +58,9 @@ final class GuideSetBuilder implements DocumentationSetBuilder
     }
 
     private function createGuideEntries(
-        DocumentDescriptor $documentDescriptor,
+        DocumentInterface $documentDescriptor,
         DocumentEntryNode|SectionEntryNode $metaEntry,
-        GuideSetDescriptor $guideSetDescriptor,
+        GuideDocumentationSet $guideSetDescriptor,
         TocDescriptor $guideToc,
         Entry|null $parent = null,
     ): void {
