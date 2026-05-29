@@ -10,6 +10,8 @@ The docs can be interesting for anyone working on the codebase of phpDocumentor.
 .. toctree::
    :maxdepth: 2
 
+   adr/0001-input-and-output-formats
+   adr/0002-rendering-subsystem-strangler-migration
    project-management
    documentation-website
    configuration

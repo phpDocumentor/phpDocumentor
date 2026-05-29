@@ -36,6 +36,7 @@ help:
 	@echo "e2e-test         - runs phpDocumentor and verifies the output using Cypress";
 	@echo "build/default/index.html - builds the 'default' template's example project";
 	@echo "build/clean/index.html - builds the 'clean' template's example project";
+	@echo "build/markdown/index.html - builds the markdown guides example project";
 	@echo "cypress/integration/*.spec.js - runs e2e tests on a specific specification";
 	@echo "";
 	@echo "== Code Quality ==";
@@ -117,6 +118,9 @@ cypress/integration/default/%.spec.js: node_modules/.bin/cypress build/default/i
 cypress/integration/clean/%.spec.js: node_modules/.bin/cypress build/clean/index.html .RUN_ALWAYS
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:${CYPRESS_VERSION} -s $@
 
+cypress/integration/guides/%.spec.js: node_modules/.bin/cypress build/markdown/index.html .RUN_ALWAYS
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:${CYPRESS_VERSION} -s $@
+
 .PHONY: composer-require-checker
 composer-require-checker:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=./tools/composer-require-checker phpdoc  check --config-file /opt/phpdoc/composer-require-config.json composer.json
@@ -152,6 +156,9 @@ build/default/index.html: data/examples/MariosPizzeria/**/* data/templates/defau
 
 build/clean/index.html: data/examples/MariosPizzeria/**/* data/templates/clean/**/* .RUN_ALWAYS
 	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/MariosPizzeria/phpdoc.xml --template=clean --target=build/clean --force
+
+build/markdown/index.html: data/examples/Markdown/**/* data/templates/default/**/* .RUN_ALWAYS
+	${.DOCKER_COMPOSE_RUN} phpdoc --config=data/examples/Markdown/phpdoc.xml --template=default --target=build/markdown --force
 
 .PHONY: docs
 docs:
