@@ -208,16 +208,16 @@
         },
         {
             "name": "jawira/plantuml",
-            "version": "v1.2026.5",
+            "version": "v1.2026.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jawira/plantuml.git",
-                "reference": "757e73dbb93b9a13844240e6f45a986585bd80d6"
+                "reference": "5a8bb9b94703905229d3b6a859c8b3fefea5a8be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jawira/plantuml/zipball/757e73dbb93b9a13844240e6f45a986585bd80d6",
-                "reference": "757e73dbb93b9a13844240e6f45a986585bd80d6",
+                "url": "https://api.github.com/repos/jawira/plantuml/zipball/5a8bb9b94703905229d3b6a859c8b3fefea5a8be",
+                "reference": "5a8bb9b94703905229d3b6a859c8b3fefea5a8be",
                 "shasum": ""
             },
             "bin": [
@@ -243,9 +243,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jawira/plantuml/issues",
-                "source": "https://github.com/jawira/plantuml/tree/v1.2026.5"
+                "source": "https://github.com/jawira/plantuml/tree/v1.2026.6"
             },
-            "time": "2026-05-29T13:00:43+00:00"
+            "time": "2026-06-12T13:00:45+00:00"
         },
         {
             "name": "jawira/plantuml-encoding",
