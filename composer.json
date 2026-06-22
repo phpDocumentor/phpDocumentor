@@ -110,7 +110,7 @@
         "phpunit/phpunit": "^10.0",
         "rector/rector": "^1.2.5",
         "symfony/var-dumper": "^6.0",
-        "vincentlanglet/twig-cs-fixer": "^3.5"
+        "vincentlanglet/twig-cs-fixer": "^4.0"
     },
     "config": {
         "bin-dir": "bin/",
