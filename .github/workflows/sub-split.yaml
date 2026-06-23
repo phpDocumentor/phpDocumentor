@@ -23,7 +23,7 @@ jobs:
           user_email: "info@phpdoc.org"
       - name: "Cache splitsh-lite"
         id: "splitsh-cache"
-        uses: "actions/cache@v4"
+        uses: "actions/cache@v5"
         with:
           path: "./.splitsh"
           key: "${{ runner.os }}-splitsh-d-101"
