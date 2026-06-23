@@ -226,7 +226,7 @@ describe('Showing properties for a class', function() {
             it('Shows property with array type', function() {
                 getElementWithName('property', '$ingredients')
                     .find('.phpdocumentor-signature__type')
-                    .should('contain', 'array');
+                    .should('contain', 'string[]');
             });
 
             it('Shows doc comment type for array items', function() {

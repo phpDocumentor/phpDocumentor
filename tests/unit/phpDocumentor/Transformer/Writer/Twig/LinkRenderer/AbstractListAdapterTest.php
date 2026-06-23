@@ -16,6 +16,7 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -23,6 +24,7 @@ use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
@@ -57,6 +59,12 @@ final class AbstractListAdapterTest extends TestCase
         $this->linkRenderer
             ->render(new Compound([new Boolean(), new String_()]), Argument::any())
             ->willReturn(['bool', 'string']);
+        $this->linkRenderer
+            ->render(new Object_(new Fqsen('\MyApp\User')), Argument::any())
+            ->willReturn('<a href="classes/MyApp-User.html">\MyApp\User</a>');
+        $this->linkRenderer
+            ->render(new Array_(new String_()), Argument::any())
+            ->willReturn('string[]');
 
         $this->adapter = new AbstractListAdapter(
             $this->linkRenderer->reveal(),
@@ -88,11 +96,23 @@ final class AbstractListAdapterTest extends TestCase
         return [
             'Array with undefined key nor value' => [
                 new Array_(),
-                'array&lt;string|int, mixed&gt;',
+                'array',
             ],
             'Array with undefined key and string value' => [
                 new Array_(new String_()),
-                'array&lt;string|int, string&gt;',
+                'string[]',
+            ],
+            'Array with undefined key and a value rendered as an array of boolean and string' => [
+                new Array_(new Compound([new Boolean(), new String_()])),
+                '(bool|string)[]',
+            ],
+            'Array of linked objects keeps the link in the short form' => [
+                new Array_(new Object_(new Fqsen('\MyApp\User'))),
+                '<a href="classes/MyApp-User.html">\MyApp\User</a>[]',
+            ],
+            'Nested array of strings renders as string[][]' => [
+                new Array_(new Array_(new String_())),
+                'string[][]',
             ],
             'Array with integer key, and a value that is rendered as an array of boolean and string' => [
                 new Array_(new Compound([new Boolean(), new String_()]), new Integer()),
@@ -105,6 +125,10 @@ final class AbstractListAdapterTest extends TestCase
             'List with undefined key nor value' => [
                 new List_(),
                 'array&lt;int, mixed&gt;',
+            ],
+            'NonEmptyArray with undefined key and string value keeps long form' => [
+                new NonEmptyArray(new String_()),
+                'array&lt;string|int, string&gt;',
             ],
             'Collection with string value' => [
                 new Collection(new Fqsen('\MyAwesome\Collection'), new String_()),

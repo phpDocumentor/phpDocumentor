@@ -113,7 +113,7 @@ describe('Classes', function() {
             getTocEntry(getToc('methods', 'Methods'), 'jsonSerialize()')
                 .should('have.class', '-method')
                 .and('have.class', '-public')
-                .and('contain', ': array<string|int, mixed>'); // type including generic arguments
+                .and('contain', ': array'); // untyped array renders with the short form
         });
     });
 
