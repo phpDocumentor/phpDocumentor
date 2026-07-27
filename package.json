@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/phpDocumentor/phpDocumentor#readme",
   "devDependencies": {
-    "cypress": "^15.18.1"
+    "cypress": "^15.19.0"
   }
 }
