@@ -4,7 +4,7 @@ FROM php:8.4-trixie AS base
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
 RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
-    && apt-get install --no-install-recommends -yq libicu-dev libicu76 zlib1g-dev ca-certificates-java gpg
+    && apt-get install --no-install-recommends -yq libicu-dev libicu76 zlib1g-dev ca-certificates-java gpg unzip
 
 RUN apt-get -yq install openjdk-21-jre-headless \
     && rm -rf /var/lib/apt/lists/* /usr/share/man/man1 \
