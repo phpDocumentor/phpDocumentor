@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: "0"
           persist-credentials: "false"
-      - uses: "frankdejonge/use-github-token@1.1.0"
+      - uses: "frankdejonge/use-github-token@1.1.1"
         with:
           authentication: "phpdoc-bot:${{ secrets.BOT_TOKEN }}"
           user_name: "phpDocumentor Bot"
