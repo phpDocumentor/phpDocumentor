@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
+use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
 use function assert;
@@ -51,11 +54,38 @@ final class AbstractListAdapter implements LinkRendererInterface
         // the above would already assert this, but phpstan and phpstorm need this
         assert($value instanceof AbstractList);
 
+        if (
+            $value instanceof Array_
+            && ! $value instanceof PseudoType
+            && $value->getOriginalKeyType() === null
+        ) {
+            return $this->renderShortArray($value, $presentation);
+        }
+
         $listType = $this->renderListType($value, $presentation);
         $keyType = $this->renderKeyType($value, $presentation);
         $valueType = $this->renderValueType($value, $presentation);
 
         return sprintf('%s&lt;%s, %s&gt;', $listType, $keyType, $valueType);
+    }
+
+    /**
+     * Renders an Array_ without an explicit key type using the short form
+     * (`value[]`, `(value)[]` or `array`), mirroring Array_::__toString().
+     */
+    private function renderShortArray(Array_ $value, string $presentation): string
+    {
+        if ($value->getValueType() instanceof Mixed_) {
+            return 'array';
+        }
+
+        $valueType = $this->renderValueType($value, $presentation);
+
+        if ($value->getValueType() instanceof Compound) {
+            return sprintf('(%s)[]', $valueType);
+        }
+
+        return sprintf('%s[]', $valueType);
     }
 
     private function renderListType(AbstractList $node, string $presentation): string
