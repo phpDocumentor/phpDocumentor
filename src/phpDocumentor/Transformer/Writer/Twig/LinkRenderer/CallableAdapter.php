@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
+use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Callable_;
+use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
 
 use function assert;
 use function implode;
+use function is_array;
 use function sprintf;
 use function trim;
 
@@ -54,7 +57,7 @@ final class CallableAdapter implements LinkRendererInterface
 
         $parameters = [];
         foreach ($value->getParameters() as $parameter) {
-            $type = $this->rendererChain->render($parameter->getType(), $presentation);
+            $type = $this->renderType($parameter->getType(), $presentation);
             $extraInfo = [];
             $name = '';
 
@@ -80,13 +83,22 @@ final class CallableAdapter implements LinkRendererInterface
             );
         }
 
-        return trim(sprintf(
-            'callable(%s)%s',
-            implode(', ', $parameters),
-            $value->getReturnType() !== null ? ': ' . $this->rendererChain->render(
-                $value->getReturnType(),
-                $presentation,
-            ) : '',
-        ));
+        $returnType = $value->getReturnType() !== null
+            ? ': ' . $this->renderType($value->getReturnType(), $presentation)
+            : '';
+
+        return trim(sprintf('callable(%s)%s', implode(', ', $parameters), $returnType));
+    }
+
+    private function renderType(Type $type, string $presentation): string
+    {
+        $rendered = $this->rendererChain->render($type, $presentation);
+        if (! is_array($rendered)) {
+            return $rendered;
+        }
+
+        $separator = $type instanceof Intersection ? '&' : '|';
+
+        return implode($separator, $rendered);
     }
 }
