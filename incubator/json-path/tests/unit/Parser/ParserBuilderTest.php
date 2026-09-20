@@ -15,12 +15,15 @@ namespace phpDocumentor\JsonPath\Parser;
 
 use Generator;
 use Parsica\Parsica\Parser;
+use Parsica\Parsica\ParserHasFailed;
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
 use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
 use phpDocumentor\JsonPath\AST\FunctionCall;
+use phpDocumentor\JsonPath\AST\LogicalAnd;
+use phpDocumentor\JsonPath\AST\LogicalOr;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
@@ -85,6 +88,69 @@ class ParserBuilderTest extends TestCase
         );
     }
 
+    public function testFieldAccessArrayLikeChained(): void
+    {
+        $result = $this->parser->tryString('$[\'store\'][\'address\']');
+
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('address'),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFieldAccessMixedNotationChained(): void
+    {
+        $result = $this->parser->tryString('$.store[\'address\']');
+
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('address'),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testRootWildcard(): void
+    {
+        $result = $this->parser->tryString('$.*');
+
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(new Wildcard()),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testWildcardFollowedByFieldAccess(): void
+    {
+        $result = $this->parser->tryString('@.*.foo');
+
+        self::assertEquals(
+            new Path([
+                new CurrentNode(),
+                new FieldAccess(new Wildcard()),
+                new FieldAccess(new FieldName('foo')),
+            ]),
+            $result->output(),
+        );
+    }
+
     public function testRootFieldChildAccess(): void
     {
         $result = $this->parser->tryString('$.store.address');
@@ -140,11 +206,70 @@ class ParserBuilderTest extends TestCase
             '==',
             '!=',
             'starts_with',
+            'contains',
         ];
 
         foreach ($operators as $operator) {
             yield $operator => [$operator];
         }
+    }
+
+    public function testFilterExpressionWithSingleQuotedValue(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.title == \'phpDoc\')]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new Path([
+                            new CurrentNode(),
+                            new FieldAccess(new FieldName('title')),
+                        ]),
+                        '==',
+                        new Value(
+                            'phpDoc',
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWithoutWhitespace(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.title=="phpDoc")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new Path([
+                            new CurrentNode(),
+                            new FieldAccess(new FieldName('title')),
+                        ]),
+                        '==',
+                        new Value(
+                            'phpDoc',
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
     }
 
     public function testFilterExpressionCurrentObjectProperyWildCard(): void
@@ -278,5 +403,396 @@ class ParserBuilderTest extends TestCase
             ]),
             $result->output(),
         );
+    }
+
+    public function testFilterExpressionWithLogicalAnd(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.title == "phpDoc" && @.author == "jaapio")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new LogicalAnd(
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('title')),
+                            ]),
+                            '==',
+                            new Value(
+                                'phpDoc',
+                            ),
+                        ),
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('author')),
+                            ]),
+                            '==',
+                            new Value(
+                                'jaapio',
+                            ),
+                        ),
+                    )
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWithLogicalOr(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.title == "phpDoc" || @.author == "jaapio")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new LogicalOr(
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('title')),
+                            ]),
+                            '==',
+                            new Value(
+                                'phpDoc',
+                            ),
+                        ),
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('author')),
+                            ]),
+                            '==',
+                            new Value(
+                                'jaapio',
+                            ),
+                        ),
+                    )
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionInFilterExpression(): void
+    {
+        $this->markTestIncomplete('need to be add more support for filter expressions in filter expressions');
+        /* Problem is the parser is not able to parse the inner filter. It does not see the inner filter as a valid expression.
+         * Most likely because we expect a filter to be a comparison.
+        */
+        $result = $this->parser->tryString('$.store.books[?(@.chapters[?(@.title == "getting started")])]');
+    }
+
+    public function testFunctionCallWithoutArguments(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(foo() == "1")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new FunctionCall('foo'),
+                        '==',
+                        new Value('1'),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFunctionCallWithBareCurrentNodeArgument(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(foo(@) == "1")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new FunctionCall('foo', new CurrentNode()),
+                        '==',
+                        new Value('1'),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFunctionCallWithMultipleArguments(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(foo(@.a, @.b) == "1")]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new FunctionCall(
+                            'foo',
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('a')),
+                            ]),
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('b')),
+                            ]),
+                        ),
+                        '==',
+                        new Value('1'),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWithThreeChainedAndConditions(): void
+    {
+        $result = $this->parser->tryString(
+            '$.store.books[?(@.title == "phpDoc" && @.author == "jaapio" && @.year == "2020")]',
+        );
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new LogicalAnd(
+                        new LogicalAnd(
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('title')),
+                                ]),
+                                '==',
+                                new Value('phpDoc'),
+                            ),
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('author')),
+                                ]),
+                                '==',
+                                new Value('jaapio'),
+                            ),
+                        ),
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('year')),
+                            ]),
+                            '==',
+                            new Value('2020'),
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWithMixedAndOrPrecedence(): void
+    {
+        $result = $this->parser->tryString(
+            '$.store.books[?(@.title == "phpDoc" && @.author == "jaapio" || @.year == "2020")]',
+        );
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new LogicalOr(
+                        new LogicalAnd(
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('title')),
+                                ]),
+                                '==',
+                                new Value('phpDoc'),
+                            ),
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('author')),
+                                ]),
+                                '==',
+                                new Value('jaapio'),
+                            ),
+                        ),
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('year')),
+                            ]),
+                            '==',
+                            new Value('2020'),
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFilterExpressionWithParenthesesGrouping(): void
+    {
+        $result = $this->parser->tryString(
+            '$.store.books[?((@.title == "phpDoc" || @.author == "jaapio") && @.year == "2020")]',
+        );
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new LogicalAnd(
+                        new LogicalOr(
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('title')),
+                                ]),
+                                '==',
+                                new Value('phpDoc'),
+                            ),
+                            new Comparison(
+                                new Path([
+                                    new CurrentNode(),
+                                    new FieldAccess(new FieldName('author')),
+                                ]),
+                                '==',
+                                new Value('jaapio'),
+                            ),
+                        ),
+                        new Comparison(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('year')),
+                            ]),
+                            '==',
+                            new Value('2020'),
+                        ),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFieldAccessAfterFilterExpression(): void
+    {
+        $result = $this->parser->tryString('$.store.books[?(@.title == "phpDoc")].author');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Comparison(
+                        new Path([
+                            new CurrentNode(),
+                            new FieldAccess(new FieldName('title')),
+                        ]),
+                        '==',
+                        new Value('phpDoc'),
+                    ),
+                ),
+                new FieldAccess(
+                    new FieldName('author'),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testFieldAccessAfterWildcardFilter(): void
+    {
+        $result = $this->parser->tryString('$.store.books[*].title');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new Wildcard(),
+                ),
+                new FieldAccess(
+                    new FieldName('title'),
+                ),
+            ]),
+            $result->output(),
+        );
+    }
+
+    public function testUnclosedFilterExpressionFailsToParse(): void
+    {
+        $this->expectException(ParserHasFailed::class);
+        $this->parser->tryString('$.store.books[?(@.title == "phpDoc")');
+    }
+
+    public function testTrailingGarbageFailsToParse(): void
+    {
+        $this->expectException(ParserHasFailed::class);
+        $this->parser->tryString('$.store extra');
+    }
+
+    public function testUnknownOperatorFailsToParse(): void
+    {
+        $this->expectException(ParserHasFailed::class);
+        $this->parser->tryString('$.store.books[?(@.title <> "phpDoc")]');
     }
 }

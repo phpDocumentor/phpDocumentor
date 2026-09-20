@@ -20,6 +20,8 @@ use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
 use phpDocumentor\JsonPath\AST\FunctionCall;
+use phpDocumentor\JsonPath\AST\LogicalAnd;
+use phpDocumentor\JsonPath\AST\LogicalOr;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
@@ -28,11 +30,18 @@ use phpDocumentor\JsonPath\AST\Wildcard;
 use function is_array;
 use function Parsica\Parsica\alphaNumChar;
 use function Parsica\Parsica\any;
+use function Parsica\Parsica\assemble;
 use function Parsica\Parsica\atLeastOne;
 use function Parsica\Parsica\between;
 use function Parsica\Parsica\char;
 use function Parsica\Parsica\choice;
 use function Parsica\Parsica\collect;
+use function Parsica\Parsica\Expression\binaryOperator;
+use function Parsica\Parsica\Expression\expression;
+use function Parsica\Parsica\Expression\leftAssoc;
+use function Parsica\Parsica\Expression\prefix;
+use function Parsica\Parsica\Expression\unaryOperator;
+use function Parsica\Parsica\keepFirst;
 use function Parsica\Parsica\keepSecond;
 use function Parsica\Parsica\noneOfS;
 use function Parsica\Parsica\optional;
@@ -41,6 +50,7 @@ use function Parsica\Parsica\sepBy;
 use function Parsica\Parsica\skipHSpace;
 use function Parsica\Parsica\some;
 use function Parsica\Parsica\string;
+use function Parsica\Parsica\takeWhile;
 use function Parsica\Parsica\whitespace;
 
 final class ParserBuilder
@@ -77,6 +87,29 @@ final class ParserBuilder
     /** @return Parser<FilterNode> */
     private static function filter(): Parser
     {
+        $token = fn(Parser $parser) : Parser => keepFirst($parser, skipHSpace());
+        $parens = fn (Parser $parser): Parser =>  $token(between($token(char('(')), $token(char(')')), $parser));
+
+        $expr = recursive();
+        $expr->recurse(expression(
+            $parens($token($expr))->or($token(self::expression())),
+            [
+                leftAssoc(
+                    binaryOperator(
+                        $token(string('&&')),
+                        static fn ($left, $right) => new LogicalAnd($left, $right),
+                    )
+                ),
+                leftAssoc(
+                    binaryOperator(
+                        $token(string('||')),
+                        static fn ($left, $right) => new LogicalOr($left, $right),
+                    )
+                )
+            ]
+            )
+        );
+
         return choice(
             between(
                 string('['),
@@ -86,9 +119,8 @@ final class ParserBuilder
             between(
                 string('[?('),
                 string(')]'),
-                self::expression(),
-            )->map((static fn ($expression) => new FilterNode($expression))),
-        );
+                $expr,
+            )->map((static fn ($expression) => new FilterNode($expression))));
     }
 
     /** @return Parser<Comparison> */
@@ -149,7 +181,7 @@ final class ParserBuilder
     private static function arguments(): Parser
     {
         return sepBy(
-            char(','),
+            keepFirst(char(','), skipHSpace()),
             choice(self::currentNodeFollowUp(), self::currentNode()),
         );
     }

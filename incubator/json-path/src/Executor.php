@@ -25,6 +25,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 use function array_merge;
+use function count;
 use function current;
 use function is_array;
 use function is_iterable;
@@ -83,7 +84,6 @@ final class Executor
     ): bool {
         $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
         $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
-
         return str_starts_with((string) $leftValue, (string) $rightValue);
     }
 
@@ -172,24 +172,29 @@ final class Executor
             return;
         }
 
-        if ($currentElement instanceof Generator) {
-            foreach ($currentElement as $element) {
-                foreach ($this->evaluateFieldAccess($element, $fieldName) as $result) {
-                    yield $result;
-                }
-            }
-
-            return;
-        }
-
         if (
             (is_array($currentElement) || $currentElement instanceof ArrayAccess) &&
             isset($currentElement[$fieldName->getName()])
         ) {
             yield $currentElement[$fieldName->getName()];
-        } elseif (is_iterable($currentElement)) {
+
+            return;
+        }
+
+        if (is_iterable($currentElement)) {
+            $elements = is_array($currentElement) ? $currentElement : iterator_to_array($currentElement, false);
+
+            // A single parent element does not need merging; forward its sub-result as-is so that
+            // structures such as arrays are preserved as a single bundled value (e.g. `$.store.books`
+            // should yield the books array as one match, not its individual elements).
+            if (count($elements) === 1) {
+                yield from $this->evaluateFieldAccess(current($elements), $fieldName);
+
+                return;
+            }
+
             $result = [];
-            foreach ($currentElement as $element) {
+            foreach ($elements as $element) {
                 foreach ($this->evaluateFieldAccess($element, $fieldName) as $row) {
                     if (is_iterable($row)) {
                         $result = array_merge(
@@ -220,5 +225,10 @@ final class Executor
 
             yield $this->propertyAccessor->getValue($currentElement, new PropertyPath($fieldName->getName()));
         }
+    }
+
+    public function evaluateExpression(Expression $left, mixed $currentObject, mixed $root): bool
+    {
+        return $left->visit($this, $currentObject, $root);
     }
 }
