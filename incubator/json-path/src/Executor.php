@@ -84,6 +84,7 @@ final class Executor
     ): bool {
         $leftValue = $this->toValue($this->evaluate($left, $currentObject, $root));
         $rightValue = $this->toValue($this->evaluate($right, $currentObject, $root));
+
         return str_starts_with((string) $leftValue, (string) $rightValue);
     }
 

@@ -31,7 +31,6 @@ use phpDocumentor\JsonPath\AST\Wildcard;
 use function is_array;
 use function Parsica\Parsica\alphaNumChar;
 use function Parsica\Parsica\any;
-use function Parsica\Parsica\assemble;
 use function Parsica\Parsica\atLeastOne;
 use function Parsica\Parsica\between;
 use function Parsica\Parsica\char;
@@ -40,8 +39,6 @@ use function Parsica\Parsica\collect;
 use function Parsica\Parsica\Expression\binaryOperator;
 use function Parsica\Parsica\Expression\expression;
 use function Parsica\Parsica\Expression\leftAssoc;
-use function Parsica\Parsica\Expression\prefix;
-use function Parsica\Parsica\Expression\unaryOperator;
 use function Parsica\Parsica\keepFirst;
 use function Parsica\Parsica\keepSecond;
 use function Parsica\Parsica\noneOfS;
@@ -51,7 +48,6 @@ use function Parsica\Parsica\sepBy;
 use function Parsica\Parsica\skipHSpace;
 use function Parsica\Parsica\some;
 use function Parsica\Parsica\string;
-use function Parsica\Parsica\takeWhile;
 use function Parsica\Parsica\whitespace;
 
 final class ParserBuilder
@@ -99,8 +95,8 @@ final class ParserBuilder
         // breaks that cycle; ->recurse() below ties it to real behaviour once the body is ready.
         $parser = recursive();
 
-        $token = fn(Parser $parser) : Parser => keepFirst($parser, skipHSpace());
-        $parens = fn (Parser $parser): Parser =>  $token(between($token(char('(')), $token(char(')')), $parser));
+        $token = static fn (Parser $parser): Parser => keepFirst($parser, skipHSpace());
+        $parens = static fn (Parser $parser): Parser => $token(between($token(char('(')), $token(char(')')), $parser));
 
         $expr = recursive();
         $expr->recurse(expression(
@@ -112,17 +108,16 @@ final class ParserBuilder
                     binaryOperator(
                         $token(string('&&')),
                         static fn ($left, $right) => new LogicalAnd($left, $right),
-                    )
+                    ),
                 ),
                 leftAssoc(
                     binaryOperator(
                         $token(string('||')),
                         static fn ($left, $right) => new LogicalOr($left, $right),
-                    )
-                )
-            ]
-            )
-        );
+                    ),
+                ),
+            ],
+        ));
 
         $parser->recurse(choice(
             between(

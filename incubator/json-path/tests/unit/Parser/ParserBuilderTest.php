@@ -440,7 +440,7 @@ class ParserBuilderTest extends TestCase
                                 'jaapio',
                             ),
                         ),
-                    )
+                    ),
                 ),
             ]),
             $result->output(),
@@ -481,7 +481,7 @@ class ParserBuilderTest extends TestCase
                                 'jaapio',
                             ),
                         ),
-                    )
+                    ),
                 ),
             ]),
             $result->output(),

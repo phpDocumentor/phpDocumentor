@@ -41,6 +41,7 @@ class DescriptorTest
                 Selector::AND(
                     Selector::inNamespace('phpDocumentor\Descriptor'),
                     Selector::NOT(Selector::inNamespace('phpDocumentor\Descriptor\Interfaces')),
+                    Selector::NOT(Selector::inNamespace('phpDocumentor\Descriptor\ValueObjects')),
                     Selector::NOT(Selector::classname(Descriptor::class)),
                     Selector::NOT(Selector::classname(Collection::class)),
                 )
