@@ -16,6 +16,7 @@ namespace phpDocumentor\JsonPath\Parser;
 use Parsica\Parsica\Parser;
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
+use phpDocumentor\JsonPath\AST\ExistsExpression;
 use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
@@ -87,12 +88,25 @@ final class ParserBuilder
     /** @return Parser<FilterNode> */
     private static function filter(): Parser
     {
+        static $parser = null;
+        if ($parser !== null) {
+            return $parser;
+        }
+
+        // Assign the recursive placeholder before building the body: filter() and currentNodeFollowUp()
+        // reference each other (nested filters like `@.chapters[?(...)]`), so building the body eagerly
+        // recurses back into filter() before the previous call returns. Returning the cached placeholder
+        // breaks that cycle; ->recurse() below ties it to real behaviour once the body is ready.
+        $parser = recursive();
+
         $token = fn(Parser $parser) : Parser => keepFirst($parser, skipHSpace());
         $parens = fn (Parser $parser): Parser =>  $token(between($token(char('(')), $token(char(')')), $parser));
 
         $expr = recursive();
         $expr->recurse(expression(
-            $parens($token($expr))->or($token(self::expression())),
+            $parens($token($expr))
+                ->or($token(self::expression()))
+                ->or($token(self::existsExpression())),
             [
                 leftAssoc(
                     binaryOperator(
@@ -110,7 +124,7 @@ final class ParserBuilder
             )
         );
 
-        return choice(
+        $parser->recurse(choice(
             between(
                 string('['),
                 string(']'),
@@ -120,7 +134,10 @@ final class ParserBuilder
                 string('[?('),
                 string(')]'),
                 $expr,
-            )->map((static fn ($expression) => new FilterNode($expression))));
+            )->map(static fn ($expression) => new FilterNode($expression)),
+        ));
+
+        return $parser;
     }
 
     /** @return Parser<Comparison> */
@@ -155,11 +172,20 @@ final class ParserBuilder
     {
         $inner = choice(
             self::fieldAccess(),
+            self::filter(),
         );
 
         return self::currentNode()->followedBy(
             some($inner)->map(static fn ($args) => is_array($args) ? $args : []),
         )->map(static fn ($args) => new Path([new CurrentNode(), ...$args]));
+    }
+
+    /** @return Parser<ExistsExpression> */
+    private static function existsExpression(): Parser
+    {
+        return self::currentNodeFollowUp()->map(
+            static fn (Path $path) => new ExistsExpression($path),
+        );
     }
 
     /** @return Parser<FunctionCall> */

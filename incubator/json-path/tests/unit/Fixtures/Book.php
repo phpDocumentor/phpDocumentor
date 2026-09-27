@@ -15,6 +15,12 @@ namespace phpDocumentor\JsonPath\Fixtures;
 
 class Book
 {
+    /** @var Book[] */
+    private array $chapters = [];
+
+    /** @var Annotation[] */
+    private array $annotations = [];
+
     public function __construct(private readonly string $title)
     {
     }
@@ -22,5 +28,27 @@ class Book
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function addChapter(Book $chapter): void
+    {
+        $this->chapters[] = $chapter;
+    }
+
+    /** @return Book[] */
+    public function getChapters(): array
+    {
+        return $this->chapters;
+    }
+
+    public function addAnnotation(Annotation $annotation): void
+    {
+        $this->annotations[] = $annotation;
+    }
+
+    /** @return Annotation[] */
+    public function getAnnotations(): array
+    {
+        return $this->annotations;
     }
 }

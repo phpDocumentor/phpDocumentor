@@ -129,6 +129,29 @@ final class Executor
         return $value;
     }
 
+    public function evaluateExistsExpression(mixed $root, mixed $currentObject, QueryNode $path): bool
+    {
+        $result = $this->evaluate($path, $currentObject, $root);
+
+        if ($result instanceof Generator) {
+            foreach ($result as $ignored) {
+                return true;
+            }
+
+            return false;
+        }
+
+        if (is_iterable($result)) {
+            foreach ($result as $ignored) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return $result !== null;
+    }
+
     /** @return mixed */
     public function evaluatePath(mixed $root, mixed $currentElement, PathNode ...$nodes)
     {

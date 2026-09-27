@@ -18,6 +18,7 @@ use Parsica\Parsica\Parser;
 use Parsica\Parsica\ParserHasFailed;
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
+use phpDocumentor\JsonPath\AST\ExistsExpression;
 use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
@@ -489,11 +490,39 @@ class ParserBuilderTest extends TestCase
 
     public function testFilterExpressionInFilterExpression(): void
     {
-        $this->markTestIncomplete('need to be add more support for filter expressions in filter expressions');
-        /* Problem is the parser is not able to parse the inner filter. It does not see the inner filter as a valid expression.
-         * Most likely because we expect a filter to be a comparison.
-        */
         $result = $this->parser->tryString('$.store.books[?(@.chapters[?(@.title == "getting started")])]');
+        self::assertEquals(
+            new Path([
+                new RootNode(),
+                new FieldAccess(
+                    new FieldName('store'),
+                ),
+                new FieldAccess(
+                    new FieldName('books'),
+                ),
+                new FilterNode(
+                    new ExistsExpression(
+                        new Path([
+                            new CurrentNode(),
+                            new FieldAccess(new FieldName('chapters')),
+                            new FilterNode(
+                                new Comparison(
+                                    new Path([
+                                        new CurrentNode(),
+                                        new FieldAccess(new FieldName('title')),
+                                    ]),
+                                    '==',
+                                    new Value(
+                                        'getting started',
+                                    ),
+                                ),
+                            ),
+                        ]),
+                    ),
+                ),
+            ]),
+            $result->output(),
+        );
     }
 
     public function testFunctionCallWithoutArguments(): void

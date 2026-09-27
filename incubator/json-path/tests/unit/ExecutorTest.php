@@ -15,6 +15,7 @@ namespace phpDocumentor\JsonPath;
 
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
+use phpDocumentor\JsonPath\AST\ExistsExpression;
 use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
@@ -131,6 +132,56 @@ final class ExecutorTest extends TestCase
         );
 
         self::assertSame([$book], iterator_to_array($result, false));
+    }
+
+    public function testQuerySubPropertyByNestedFilterExistsExpression(): void
+    {
+        $bookWithMatch = new Book('phpDoc');
+        $bookWithMatch->addChapter(new Book('Introduction'));
+        $bookWithMatch->addChapter(new Book('Getting started'));
+
+        $bookWithoutMatch = new Book('Other book');
+        $bookWithoutMatch->addChapter(new Book('Introduction'));
+
+        $root = new stdClass();
+        $store = new Store();
+        $store->addBook($bookWithMatch);
+        $store->addBook($bookWithoutMatch);
+        $root->store = $store;
+
+        $executor = new Executor();
+        $result = $executor->evaluate(
+            new Path(
+                [
+                    new RootNode(),
+                    new FieldAccess(new FieldName('store')),
+                    new FieldAccess(new FieldName('books')),
+                    new FilterNode(
+                        new ExistsExpression(
+                            new Path([
+                                new CurrentNode(),
+                                new FieldAccess(new FieldName('chapters')),
+                                new FilterNode(
+                                    new Comparison(
+                                        new Path([
+                                            new CurrentNode(),
+                                            new FieldAccess(new FieldName('title')),
+                                        ]),
+                                        '==',
+                                        new Value(
+                                            'Getting started',
+                                        ),
+                                    ),
+                                ),
+                            ]),
+                        ),
+                    ),
+                ],
+            ),
+            $root,
+        );
+
+        self::assertSame([$bookWithMatch], iterator_to_array($result, false));
     }
 
     public function testQuerySubPropertyByFilterFunctionCall(): void
