@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
+use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
@@ -22,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\CallableAdapter */
 class CallableAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -105,5 +110,68 @@ class CallableAdapterTest extends TestCase
             ),
             'output' => 'callable(string ...&$foo)',
         ];
+    }
+
+    /**
+     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3995
+     *
+     * @dataProvider unionProvider
+     */
+    public function testRenderJoinsUnionTypes(Callable_ $input, string $output): void
+    {
+        $union = new Compound([new Integer(), new String_()]);
+        $this->linkRenderer->render($union, LinkRenderer::PRESENTATION_NORMAL)
+            ->willReturn(['int', 'string']);
+        $this->linkRenderer->render(new String_(), LinkRenderer::PRESENTATION_NORMAL)
+            ->willReturn('string');
+
+        self::assertSame($output, $this->adapter->render($input, LinkRenderer::PRESENTATION_NORMAL));
+    }
+
+    /** @return iterable<string, array{input: Callable_, output: string}> */
+    public static function unionProvider(): iterable
+    {
+        $union = new Compound([new Integer(), new String_()]);
+
+        yield 'union parameter' => [
+            'input' => new Callable_([new CallableParameter($union)]),
+            'output' => 'callable(int|string)',
+        ];
+
+        yield 'union return type' => [
+            'input' => new Callable_([], $union),
+            'output' => 'callable(): int|string',
+        ];
+
+        yield 'named union parameter' => [
+            'input' => new Callable_([new CallableParameter($union, 'foo')]),
+            'output' => 'callable(int|string $foo)',
+        ];
+
+        yield 'variadic union parameter' => [
+            'input' => new Callable_([new CallableParameter($union, 'foo', false, true)]),
+            'output' => 'callable(int|string ...$foo)',
+        ];
+
+        yield 'union parameter mixed with scalar' => [
+            'input' => new Callable_([new CallableParameter($union), new CallableParameter(new String_())]),
+            'output' => 'callable(int|string, string)',
+        ];
+    }
+
+    /** @link https://github.com/phpDocumentor/phpDocumentor/issues/3995 */
+    public function testRenderJoinsIntersectionTypesWithAmpersand(): void
+    {
+        $intersection = new Intersection([new String_(), new Boolean()]);
+        $this->linkRenderer->render($intersection, LinkRenderer::PRESENTATION_NORMAL)
+            ->willReturn(['string', 'bool']);
+
+        self::assertSame(
+            'callable(string&bool)',
+            $this->adapter->render(
+                new Callable_([new CallableParameter($intersection)]),
+                LinkRenderer::PRESENTATION_NORMAL,
+            ),
+        );
     }
 }
