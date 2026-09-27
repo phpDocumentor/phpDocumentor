@@ -99,36 +99,44 @@ final class SourceTest extends TestCase
         unset($source['paths']);
     }
 
-    /** @dataProvider pathProvider */
-    public function testSourceGlobPathsNormalizesPaths(Path $input, string $glob): void
+    /**
+     * @param list<string> $globs
+     *
+     * @dataProvider pathProvider
+     */
+    public function testSourceGlobPathsNormalizesPaths(Path $input, array $globs): void
     {
         $source = new Source(self::faker()->dsn(), [$input]);
 
-        self::assertEquals([$glob], $source->globPatterns());
+        self::assertEquals($globs, $source->globPatterns());
     }
 
     public static function pathProvider(): array
     {
         return [
-            [
+            'directory' => [
                 new Path('src'),
-                '/src/**/*',
+                ['/src', '/src/**/*'],
             ],
-            [
+            'current directory' => [
                 new Path('.'),
-                '/**/*',
+                ['/**/*'],
             ],
-            [
+            'relative directory' => [
                 new Path('./src'),
-                '/src/**/*',
+                ['/src', '/src/**/*'],
             ],
-            [
+            'glob with trailing wildcard' => [
                 new Path('/src/*'),
-                '/src/*',
+                ['/src/*'],
             ],
-            [
+            'single file' => [
                 new Path('src/dir/test.php'),
-                '/src/dir/test.php',
+                ['/src/dir/test.php', '/src/dir/test.php/**/*'],
+            ],
+            'directory containing a dot' => [
+                new Path('test.1'),
+                ['/test.1', '/test.1/**/*'],
             ],
         ];
     }
