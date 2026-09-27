@@ -16,10 +16,13 @@ namespace phpDocumentor\JsonPath\Parser;
 use Parsica\Parsica\Parser;
 use phpDocumentor\JsonPath\AST\Comparison;
 use phpDocumentor\JsonPath\AST\CurrentNode;
+use phpDocumentor\JsonPath\AST\ExistsExpression;
 use phpDocumentor\JsonPath\AST\FieldAccess;
 use phpDocumentor\JsonPath\AST\FieldName;
 use phpDocumentor\JsonPath\AST\FilterNode;
 use phpDocumentor\JsonPath\AST\FunctionCall;
+use phpDocumentor\JsonPath\AST\LogicalAnd;
+use phpDocumentor\JsonPath\AST\LogicalOr;
 use phpDocumentor\JsonPath\AST\Path;
 use phpDocumentor\JsonPath\AST\RootNode;
 use phpDocumentor\JsonPath\AST\Value;
@@ -33,6 +36,10 @@ use function Parsica\Parsica\between;
 use function Parsica\Parsica\char;
 use function Parsica\Parsica\choice;
 use function Parsica\Parsica\collect;
+use function Parsica\Parsica\Expression\binaryOperator;
+use function Parsica\Parsica\Expression\expression;
+use function Parsica\Parsica\Expression\leftAssoc;
+use function Parsica\Parsica\keepFirst;
 use function Parsica\Parsica\keepSecond;
 use function Parsica\Parsica\noneOfS;
 use function Parsica\Parsica\optional;
@@ -77,7 +84,42 @@ final class ParserBuilder
     /** @return Parser<FilterNode> */
     private static function filter(): Parser
     {
-        return choice(
+        static $parser = null;
+        if ($parser !== null) {
+            return $parser;
+        }
+
+        // Assign the recursive placeholder before building the body: filter() and currentNodeFollowUp()
+        // reference each other (nested filters like `@.chapters[?(...)]`), so building the body eagerly
+        // recurses back into filter() before the previous call returns. Returning the cached placeholder
+        // breaks that cycle; ->recurse() below ties it to real behaviour once the body is ready.
+        $parser = recursive();
+
+        $token = static fn (Parser $parser): Parser => keepFirst($parser, skipHSpace());
+        $parens = static fn (Parser $parser): Parser => $token(between($token(char('(')), $token(char(')')), $parser));
+
+        $expr = recursive();
+        $expr->recurse(expression(
+            $parens($token($expr))
+                ->or($token(self::expression()))
+                ->or($token(self::existsExpression())),
+            [
+                leftAssoc(
+                    binaryOperator(
+                        $token(string('&&')),
+                        static fn ($left, $right) => new LogicalAnd($left, $right),
+                    ),
+                ),
+                leftAssoc(
+                    binaryOperator(
+                        $token(string('||')),
+                        static fn ($left, $right) => new LogicalOr($left, $right),
+                    ),
+                ),
+            ],
+        ));
+
+        $parser->recurse(choice(
             between(
                 string('['),
                 string(']'),
@@ -86,9 +128,11 @@ final class ParserBuilder
             between(
                 string('[?('),
                 string(')]'),
-                self::expression(),
-            )->map((static fn ($expression) => new FilterNode($expression))),
-        );
+                $expr,
+            )->map(static fn ($expression) => new FilterNode($expression)),
+        ));
+
+        return $parser;
     }
 
     /** @return Parser<Comparison> */
@@ -123,11 +167,20 @@ final class ParserBuilder
     {
         $inner = choice(
             self::fieldAccess(),
+            self::filter(),
         );
 
         return self::currentNode()->followedBy(
             some($inner)->map(static fn ($args) => is_array($args) ? $args : []),
         )->map(static fn ($args) => new Path([new CurrentNode(), ...$args]));
+    }
+
+    /** @return Parser<ExistsExpression> */
+    private static function existsExpression(): Parser
+    {
+        return self::currentNodeFollowUp()->map(
+            static fn (Path $path) => new ExistsExpression($path),
+        );
     }
 
     /** @return Parser<FunctionCall> */
@@ -149,7 +202,7 @@ final class ParserBuilder
     private static function arguments(): Parser
     {
         return sepBy(
-            char(','),
+            keepFirst(char(','), skipHSpace()),
             choice(self::currentNodeFollowUp(), self::currentNode()),
         );
     }
