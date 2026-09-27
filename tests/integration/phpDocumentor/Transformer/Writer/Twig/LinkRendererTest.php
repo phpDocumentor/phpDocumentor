@@ -260,7 +260,7 @@ final class LinkRendererTest extends TestCase
                     new String_()
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
-                'array&lt;string|int, string&gt;',
+                'string[]',
             ],
             'iterable with scalar only' => [
                 new Iterable_(
