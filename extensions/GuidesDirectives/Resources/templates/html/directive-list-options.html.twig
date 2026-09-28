@@ -1,0 +1,25 @@
+{% if node.directiveOptions is not empty %}
+<h3>Options</h3>
+
+{% for option in node.directiveOptions %}
+    <article class="phpdocumentor-element">
+        <h4 class="phpdocumentor-element__name" id="property_children">
+            :{{ option.argument('name') | attribute_value }}:
+            <a href="classes/phpDocumentor-Descriptor-NamespaceDescriptor.html#property_children" class="headerlink"><i class="fas fa-link"></i></a>
+        </h4>
+        <code class="phpdocumentor-code phpdocumentor-signature ">
+            <span class="phpdocumentor-signature__name">:{{ option.argument('name') | attribute_value }}:</span>
+            {% if option.argument('type') is not null %}
+            <span class="phpdocumentor-signature__type">&lt;{{ option.argument('type') | attribute_value }}&gt;</span>
+            {% else %}
+            <span class="phpdocumentor-signature__type">&lt;string&gt;</span>
+            {% endif %}
+
+            {% if option.argument('default') is not null %} <span class="phpdocumentor-signature__default-value">{{ option.argument('default') | attribute_value }}</span>{% endif %}
+        </code>
+        <section class="phpdocumentor-description">
+        {{ option.argument('description') | attribute_value | markdown }}
+        </section>
+    </article>
+{% endfor %}
+{% endif %}

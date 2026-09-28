@@ -26,3 +26,5 @@ This example will include a class diagram with all classes, interfaces, and trai
 .. code-block:: rst
 
     .. phpdoc:class-diagram:: [?(@.namespace starts_with "\phpDocumentor\Descriptor")]
+
+.. phpdoc-guides:directive-options-list:: phpdoc:class-diagram

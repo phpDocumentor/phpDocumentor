@@ -48,6 +48,7 @@ use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
 use phpDocumentor\Descriptor\Tag\LinkDescriptor;
 use phpDocumentor\Descriptor\Tag\SeeDescriptor;
+use phpDocumentor\Descriptor\ValueObjects\CallArgument;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
@@ -69,6 +70,7 @@ use function method_exists;
 use function sprintf;
 use function str_replace;
 use function strtolower;
+use function trim;
 use function var_export;
 use function vsprintf;
 
@@ -424,6 +426,12 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     }
 
                     return $filtered;
+                },
+            ),
+            'attribute_value' => new TwigFilter(
+                'attribute_value',
+                static function (CallArgument $attribute): string {
+                    return trim($attribute->getValue(), '\'');
                 },
             ),
         ];

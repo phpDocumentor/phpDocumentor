@@ -1,0 +1,25 @@
+{
+  "name": "phpdocumentor/guides-directives-e2e-fixture",
+  "description": "Fixture project used to exercise the guides-directives extension end-to-end via the real composer-based extension install mechanism (mirrors tests/cli/tests/project_with_vendor_extensions).",
+  "type": "project",
+  "license": "MIT",
+  "private": true,
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../..",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "phpdocumentor/extension-guides-directives": "dev-master@dev"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpdocumentor/shim": true
+    }
+  }
+}

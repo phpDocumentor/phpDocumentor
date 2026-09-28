@@ -17,5 +17,5 @@ services:
     user: ${CURRENT_UID}
     volumes:
       - ./:/opt/phpdoc
-      - /opt/phpdoc/vendor
+#      - /opt/phpdoc/vendor
     working_dir: "/opt/phpdoc"

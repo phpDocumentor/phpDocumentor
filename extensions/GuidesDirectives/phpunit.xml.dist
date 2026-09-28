@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This extension depends on classes from the phpDocumentor core (Descriptor, Guides, Query\Engine)
+    that are only available once phpDocumentor itself is installed. Rather than duplicating that whole
+    dependency tree via a separate `composer install` in this directory, these tests are bootstrapped
+    through the monorepo root's vendor/autoload.php, which already autoloads this extension (it is wired
+    in via a path repository in the root composer.json).
+
+    Run with: ./bin/phpunit -c extensions/GuidesDirectives/phpunit.xml.dist
+    (from the repository root, or via `make unit-test-extension-guides-directives`)
+-->
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        bootstrap="../../vendor/autoload.php"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+        colors="true"
+        cacheDirectory="../../.phpunit.cache">
+  <testsuites>
+    <testsuite name="unit">
+      <directory>./tests/unit</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">./Directives/</directory>
+      <directory suffix=".php">./Nodes/</directory>
+    </include>
+  </source>
+</phpunit>
