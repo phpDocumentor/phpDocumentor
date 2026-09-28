@@ -10,3 +10,4 @@ Guides
    inheritance
    continuous-integration
    generate-diagrams
+   extensions/index

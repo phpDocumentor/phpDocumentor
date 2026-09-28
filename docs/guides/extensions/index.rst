@@ -4,29 +4,10 @@ Extensions
 
 .. include:: include.rst.txt
 
-**********
-Installing
-**********
+.. note::
 
-PhpDocumentor can be extended with additional functionality by installing extensions. By default the application
-will search for an ``extensions``` folder in the ``.phpdoc`` folder in your working directory.
-
-Supported extension styles:
-
-- folder
-
-Once extensions are correctly loaded phpDocumentor will print a message in the console:
-
-    Loaded extensions:
-    [OK] phpdocumentor/directives:1.0.0
-
-    Failed to load extensions:
-    [WARNING] phpdocumentor/invalid:1.0.0
-
-Extensions are validated before they are actually loaded. If an extension is invalid it will not be loaded and a warning
-will be printed in the console. Like in the example above. To load an extension it must be valid and compatible with
-the current version of phpDocumentor. Extension developers must specify the phpDocumentor version they are compatible
-with in the manifest file.
+    Not sure what extensions are or how to install one? Read :doc:`the extensions feature overview
+    </features/extensions>` first.
 
 .. _setup-extension:
 
@@ -85,11 +66,18 @@ Services that are registered in the application can be used in the extension.
 Extension points
 ----------------
 
-phpDocumentor does not have real extension points right now. As the extensions feature is under development extensions
-might break without warning.
+phpDocumentor is still under active development, so extension points might change without warning. The following
+extension points are currently available and documented:
+
+- :doc:`Twig extensions <twig-extension>`, to customize the rendering of output.
+- :doc:`Custom directives <custom-directive>`, to add new RestructuredText directives, together with
+  :doc:`custom nodes <custom-node>` and :doc:`node templates <node-templates>` to render them.
 
 .. toctree::
    :caption: Common use-cases
    :titlesonly:
 
    twig-extension
+   custom-directive
+   custom-node
+   node-templates
