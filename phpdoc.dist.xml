@@ -22,6 +22,7 @@
                 <path>var/**/*</path>
                 <path>vendor/**/*</path>
             </ignore>
+            <include-source>true</include-source>
             <extensions>
                 <extension>php</extension>
             </extensions>
@@ -43,5 +44,6 @@
     </version>
     <setting name="guides.enabled" value="true"/>
     <setting name="graphs.enabled" value="true"/>
-    <template name=".phpdoc/template" />
+    <setting name="renderer.enabled" value="true"/>
+    <template name="./.phpdoc/template" />
 </phpdocumentor>
