@@ -4,6 +4,7 @@
 
     <file>src</file>
     <file>incubator/json-path/src</file>
+    <file>extensions</file>
     <file>tests/unit</file>
     <file>incubator/json-path/tests/unit</file>
     <arg value="p"/>

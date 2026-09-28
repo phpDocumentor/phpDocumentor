@@ -9,6 +9,7 @@ parameters:
     - vendor/phpdocumentor/guides/src/DependencyInjection/GuidesExtension.php
   paths:
     - src
+    - extensions
     - tests
 
   ignoreErrors:
@@ -41,6 +42,7 @@ parameters:
     - %currentWorkingDirectory%/tests/functional/**/*.php
     - %currentWorkingDirectory%/incubator/*/tests/unit/*.php
     - %currentWorkingDirectory%/incubator/*/tests/unit/**/*.php
+    - %currentWorkingDirectory%/extensions/*/tests/e2e/**
     - %currentWorkingDirectory%/tests/cli/tests/project_with_vendor_extensions/*.php
 
 services:
