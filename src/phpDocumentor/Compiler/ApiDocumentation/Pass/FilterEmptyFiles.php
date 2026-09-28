@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Compiler\ApiDocumentation\ApiDocumentationPass;
-use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Pipeline\Attribute\Stage;
@@ -26,7 +25,7 @@ use phpDocumentor\Pipeline\Attribute\Stage;
 )]
 final class FilterEmptyFiles extends ApiDocumentationPass
 {
-    protected function process(ApiDocumentationSet $subject): ApiSetDescriptor
+    protected function process(ApiDocumentationSet $subject): ApiDocumentationSet
     {
         $files = $subject->getFiles();
 
