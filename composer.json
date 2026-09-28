@@ -37,7 +37,7 @@
         {
             "type": "path",
             "url": "incubator/json-path",
-            "canonical": true
+            "canonical": false
         },
         {
             "type": "path",
@@ -68,10 +68,10 @@
         "phpdocumentor/filesystem": "^1.10",
         "phpdocumentor/flyfinder": "^1.0",
         "phpdocumentor/graphviz": "^2.0",
-        "phpdocumentor/guides": "^1.10",
-        "phpdocumentor/guides-graphs": "^1.9",
-        "phpdocumentor/guides-markdown": "^1.10",
-        "phpdocumentor/guides-restructured-text": "^1.10",
+        "phpdocumentor/guides": "^1.11",
+        "phpdocumentor/guides-graphs": "^1.11",
+        "phpdocumentor/guides-markdown": "^1.11",
+        "phpdocumentor/guides-restructured-text": "^1.11",
         "phpdocumentor/json-path": "^0.2.1||^0.2.1@dev",
         "phpdocumentor/reflection": "^6.6.0",
         "phpdocumentor/reflection-common": "^2.0",

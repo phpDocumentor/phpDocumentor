@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\GuidesDirectives\Tests\Unit\Directives;
 
+use ArrayIterator;
 use phpDocumentor\Descriptor\AttributeDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Interfaces\VersionInterface;
@@ -46,7 +47,7 @@ final class DirectiveOptionsListTest extends TestCase
     public function itReturnsNullWhenNoDirectiveMatchesTheGivenName(): void
     {
         $engine = $this->createMock(Engine::class);
-        $engine->method('perform')->willReturn(new \ArrayIterator([]));
+        $engine->method('perform')->willReturn(new ArrayIterator([]));
 
         $directive = new DirectiveOptionsList($engine);
 
@@ -66,7 +67,7 @@ final class DirectiveOptionsListTest extends TestCase
         $classDescriptor->addAttribute($this->optionAttribute('name', 'force'));
 
         $engine = $this->createMock(Engine::class);
-        $engine->method('perform')->willReturn(new \ArrayIterator([$classDescriptor]));
+        $engine->method('perform')->willReturn(new ArrayIterator([$classDescriptor]));
 
         $directive = new DirectiveOptionsList($engine);
 

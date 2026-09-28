@@ -32,14 +32,17 @@ final class DirectiveOptionsList extends BaseDirective
     {
     }
 
-    public function createNode(DirectiveNode $directiveNode, CompilerContextInterface|null $compilerContext = null): Node|null
-    {
+    public function createNode(
+        DirectiveNode $directiveNode,
+        CompilerContextInterface|null $compilerContext = null,
+    ): Node|null {
         if ($compilerContext instanceof DescriptorAwareCompilerContext === false) {
             return null;
         }
 
         $result = iterator_to_array($this->engine->perform(
             $compilerContext->getVersionDescriptor(),
+            //phpcs:ignore Generic.Files.LineLength.TooLong
             '$.documentationSets[*][?(type(@) == \'ApiSetDescriptor\')].indexes.classes[*][?(@.attributes[?(@.attribute == "\phpDocumentor\Guides\RestructuredText\Directives\Attributes\Directive" && @.arguments[?(@.name == "name" && @.value == "\'' . $directiveNode->getDirective()->getData() . '\'")])])]',
         ));
 

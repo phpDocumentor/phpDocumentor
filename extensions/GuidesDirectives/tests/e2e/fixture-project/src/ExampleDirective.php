@@ -27,12 +27,23 @@ use phpDocumentor\Guides\RestructuredText\Nodes\DirectiveNode;
  * `phpdoc-guides:directive-options-list` directive documents.
  */
 #[Directive(name: 'example-directive')]
-#[Option(name: 'template', type: OptionType::String, description: 'The name of the template to render.')]
-#[Option(name: 'force', type: OptionType::Boolean, default: false, description: 'Overwrite the output when it already exists.')]
+#[Option(
+    name: 'template',
+    type: OptionType::String,
+    description: 'The name of the template to render.',
+)]
+#[Option(
+    name: 'force',
+    type: OptionType::Boolean,
+    default: false,
+    description: 'Overwrite the output when it already exists.',
+)]
 final class ExampleDirective extends BaseDirective
 {
-    public function createNode(DirectiveNode $directiveNode, CompilerContextInterface|null $compilerContext = null): Node|null
-    {
+    public function createNode(
+        DirectiveNode $directiveNode,
+        CompilerContextInterface|null $compilerContext = null,
+    ): Node|null {
         return null;
     }
 }
