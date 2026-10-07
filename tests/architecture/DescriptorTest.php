@@ -10,6 +10,7 @@ use PHPat\Test\PHPat;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\Descriptor;
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\TestCase;
 
 class DescriptorTest
 {
@@ -30,6 +31,7 @@ class DescriptorTest
             ->classes(
                 Selector::AND(
                     Selector::inNamespace('phpDocumentor'),
+                    Selector::NOT(Selector::extends(TestCase::class)),
                     Selector::NOT(Selector::inNamespace('phpDocumentor\Descriptor')),
                     Selector::NOT(Selector::inNamespace('phpDocumentor\Compiler\ApiDocumentation\Pass')),
                     Selector::NOT(Selector::inNamespace('phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder')),

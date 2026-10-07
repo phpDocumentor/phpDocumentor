@@ -5,6 +5,12 @@
       "directory": "incubator/json-path",
       "target": "git@github.com:phpDocumentor/json-path.git",
       "target-branch": "main"
+    },
+    {
+      "name": "ext-guides-directives",
+      "directory": "extensions/GuidesDirectives",
+      "target": "git@github.com:phpDocumentor/ext-guides-directives.git",
+      "target-branch": "main"
     }
   ]
 }

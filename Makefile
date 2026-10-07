@@ -38,6 +38,10 @@ help:
 	@echo "build/clean/index.html - builds the 'clean' template's example project";
 	@echo "cypress/integration/*.spec.js - runs e2e tests on a specific specification";
 	@echo "";
+	@echo "unit-test-extension-guides-directives - runs the GuidesDirectives extension's own PHPUnit suite";
+	@echo "e2e-test-guides-directives - installs the GuidesDirectives extension via composer into a fixture project and verifies the rendered output using Cypress";
+	@echo "test-extension-guides-directives - runs both of the above";
+	@echo "";
 	@echo "== Code Quality ==";
 	@echo "lint             - performs all linting on the code";
 	@echo "phpcs            - performs code-style checks";
@@ -116,6 +120,23 @@ cypress/integration/default/%.spec.js: node_modules/.bin/cypress build/default/i
 
 cypress/integration/clean/%.spec.js: node_modules/.bin/cypress build/clean/index.html .RUN_ALWAYS
 	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:${CYPRESS_VERSION} -s $@
+
+.PHONY: unit-test-extension-guides-directives
+unit-test-extension-guides-directives:
+	${.DOCKER_COMPOSE_RUN} --entrypoint=bin/phpunit phpdoc-pcov -c extensions/GuidesDirectives/phpunit.xml.dist --no-coverage
+
+extensions/GuidesDirectives/tests/e2e/fixture-project/vendor/autoload.php: extensions/GuidesDirectives/composer.json extensions/GuidesDirectives/tests/e2e/fixture-project/composer.json
+	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc -c "cd extensions/GuidesDirectives/tests/e2e/fixture-project && composer install"
+
+build/guides-directives/guide/index.html: extensions/GuidesDirectives/tests/e2e/fixture-project/vendor/autoload.php extensions/GuidesDirectives/**/*.php extensions/GuidesDirectives/tests/e2e/fixture-project/**/* .RUN_ALWAYS
+	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc -c "cd extensions/GuidesDirectives/tests/e2e/fixture-project && ../../../../../bin/phpdoc --config=phpdoc.xml --target=/opt/phpdoc/build/guides-directives --force"
+
+.PHONY: e2e-test-guides-directives
+e2e-test-guides-directives: node_modules/.bin/cypress build/guides-directives/guide/index.html
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:${CYPRESS_VERSION} --spec "extensions/GuidesDirectives/tests/e2e/cypress/integration/*.spec.js"
+
+.PHONY: test-extension-guides-directives
+test-extension-guides-directives: unit-test-extension-guides-directives e2e-test-guides-directives
 
 .PHONY: composer-require-checker
 composer-require-checker:

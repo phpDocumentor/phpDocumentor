@@ -1,0 +1,20 @@
+{
+  "name": "phpdocumentor/extension-guides-directives",
+  "description": "Extension for phpdocumentor to document directives for phpdocumentor/guides-restructured-text",
+  "type": "phpdoc-extension",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "phpDocumentor\\GuidesDirectives\\": "./"
+    }
+  },
+  "authors": [
+    {
+      "name": "jaapio",
+      "email": "jaap@phpdoc.org"
+    }
+  ],
+  "require": {
+    "php": "8.1.*|8.2.*|8.3.*|8.4.*"
+  }
+}

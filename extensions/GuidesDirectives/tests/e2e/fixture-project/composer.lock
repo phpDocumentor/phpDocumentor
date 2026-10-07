@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "37184114f9debdb9b333ba2ac400a669",
+    "packages": [
+        {
+            "name": "phpdocumentor/extension-guides-directives",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../..",
+                "reference": "8052cb777e9398b3055b39d0449933f1c5df81ae"
+            },
+            "require": {
+                "php": "8.1.*|8.2.*|8.3.*|8.4.*"
+            },
+            "type": "phpdoc-extension",
+            "autoload": {
+                "psr-4": {
+                    "phpDocumentor\\GuidesDirectives\\": "./"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jaapio",
+                    "email": "jaap@phpdoc.org"
+                }
+            ],
+            "description": "Extension for phpdocumentor to document directives for phpdocumentor/guides-restructured-text",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "phpdocumentor/extension-guides-directives": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^8.1"
+    },
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+}

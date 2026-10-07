@@ -4,6 +4,7 @@
 
     <file>src</file>
     <file>incubator/json-path/src</file>
+    <file>extensions</file>
     <file>tests/unit</file>
     <file>incubator/json-path/tests/unit</file>
     <arg value="p"/>
@@ -15,9 +16,11 @@
          This should be kept in sync with the requirements in the composer.json file. -->
     <config name="testVersion" value="8.1-"/>
 
+    <exclude-pattern>extensions/**/vendor/**</exclude-pattern>
     <rule ref="./coding-standard/PhpDocumentorStandard/Sniffs/Commenting/FileHeaderSniff.php"/>
 
     <rule ref="Doctrine">
+
         <!-- Should be removed/fixed again once we pass the round of checks -->
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />

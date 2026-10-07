@@ -1,0 +1,18 @@
+{
+    "main": "Extension.php",
+    "output": "guides-directives.phar",
+    "files": [
+        "manifest.xml",
+        "composer.json"
+    ],
+    "directories-bin": [
+        "Resources"
+    ],
+    "git-version": "package_version",
+    "exclude-composer-files": false,
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
+    ]
+}
