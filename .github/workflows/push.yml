@@ -316,6 +316,7 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           record: true
+          ci-build-id: ${{ github.run_id }}-${{ github.run_attempt }}-pre-flight
           group: 'template/${{ matrix.template }}'
           spec: cypress/integration/${{ matrix.template }}/*
         env:
@@ -443,6 +444,7 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           record: true
+          ci-build-id: ${{ github.run_id }}-${{ github.run_attempt }}-matrix
           group: 'template/${{ matrix.template }}/${{ matrix.php-versions }}/${{ matrix.operating-system }}'
           spec: cypress/integration/${{ matrix.template }}/*
         env:
