@@ -279,6 +279,25 @@ describe('Showing methods for a class', function() {
                         .should('not.exist');
                 });
         })
+
+        it.skip('Will render class-string<T> without resolving the template as a class', function () {
+            getElementWithName('method', 'makeInstance()')
+                .find('.phpdocumentor-signature')
+                .should('contain.text', 'class-string<T>');
+
+            getElementWithName('method', 'makeInstance()')
+                .find('.phpdocumentor-signature .phpdocumentor-signature__argument__type')
+                .contains('class-string<T>')
+                .find('a')
+                .should('not.exist');
+
+            getElementWithName('method', 'makeInstance()')
+                .find('.phpdocumentor-tag-list__heading')
+                .contains('Tags')
+                .next()
+                .contains('.phpdocumentor-tag-list__entry', '@template')
+                .should('contain.text', 'T of object');
+        })
     });
 
     describe ('Shows what a method returns', function () {

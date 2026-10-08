@@ -65,4 +65,17 @@ final class Pizzeria implements \JsonSerializable
     public function setBestPizzaEver(Pizza|null $pizza = null): void
     {
     }
+
+    /**
+     * Create an instance of a class.
+     *
+     * @template T of object
+     * @param class-string<T> $className
+     * @param mixed ...$constructorArguments
+     * @return T
+     */
+    public static function makeInstance(string $className, mixed ...$constructorArguments): object
+    {
+        return new $className(...$constructorArguments);
+    }
 }
