@@ -2,12 +2,16 @@
 Compiler
 ########
 
-The compiler is simple step by step process that takes the parsed AST and transforms it into a
-usable form for the transformers. Where the result of the parser is a cachable format the compiler
-creates a lot of links between the different elements in the AST. And also transforms the AST into
-different structures like UML diagrams, and referenses to external documentation pages.
+The compiler is the step in phpDocumentor that prepares the parsed project model for transformation.
+It takes the descriptors produced by the parsing stage and turns them into a more connected and usable
+form for the rest of the application.
 
-Each :php:interface:`\phpDocumentor\Compiler\CompilterPassInterface` is responsible for a single
-task. These tasks are executed by priority. This make the compiler very flexible and easy to extend.
-The diagram below shows the different compiler passes and the order in which they are executed.
+At a high level, the compiler links related elements together and derives additional structure that the
+transformers can use later. This is where phpDocumentor starts to work with the project as a whole
+rather than as individual parsed files.
 
+The compiler is built from small compiler passes. Each pass is responsible for one task, and the passes
+are executed in priority order. This keeps the compiler flexible and makes it easy to extend without
+changing the overall structure.
+
+The diagram below shows the compiler passes and the order in which they are executed.

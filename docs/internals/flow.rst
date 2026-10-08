@@ -18,28 +18,23 @@ Activity Diagram.
    :Transform AST into artifacts;
    stop
 
-This three step process enables phpDocumentor to break down a project into its most basic components, called Structural
-Elements, and depending on which template was selected generate various types of output.
+This three-step process shows the overall path from starting the application to producing documentation output.
 
 An example of such output may be a website that documents the project's internal API. Another example could be a
-checkstyle XML document that describes which errors in the project's DocBlocks were found.
+Checkstyle XML document that describes which errors were found in the project's DocBlocks.
 
 ***********************
 The flow in more detail
 ***********************
 
-The complete application flow is perhaps best described with the Activity Diagram below. It should cover most of the
-large activities that occur in the application, including when and which events are emitted. This Activity Diagram does
-not include detailed activities such as logging or translating.
+The complete application flow is best described by the Activity Diagram below. It covers the main activities that occur
+in the application. The diagram stays at a high level and does not include every internal detail.
 
-Another thing to note is that the impact of Service Providers is not visible in this flow. That is not because Service
-Providers don't have their effect but because Service Providers blend in with the complete application flow and are
-mainly used to add writers, filters validators and other components that can are automatically used during the
-transformation process.
+Another thing to note is that Symfony dependency injection is not shown explicitly in this flow. It is part of the
+application setup and wiring, but the diagram focuses on the user-visible stages of the run.
 
-In the subchapters I will provide more detail on the individual sections and show the activities that are collapsed in
-this diagram (such as *Boot the application*, *Add File Representation to Project* and other activities that are
-surrounded by an additional border)
+The sections below provide more detail on the individual activities shown in the diagram, including the ones that are
+collapsed there for readability.
 
 .. uml:: flow.puml
 
@@ -51,22 +46,22 @@ Boot the Application
    :Initialize dependencies using Application;
    :Load configuration;
    :Add logging;
-   :Register phpDocumentor's Service Providers;
+   :Register Symfony services;
 
 Parse files into an AST
 =======================
 
 .. note::
 
-   The following Activity Diagram below is an excerpt from the Diagram at the beginning of the chapter and is repeated
-   to support the text.
+    The following activity diagram is an excerpt from the diagram at the beginning of the chapter and is repeated here
+    to support the text.
 
 .. uml::
 
    :Set parsing parameters;
    :Find project files;
-   :Load Descriptor Cache;
-   :Remove stale items from Descriptor Cache;
+    :Load descriptor cache;
+    :Remove stale items from descriptor cache;
 
    while (There are unprocessed files?) is (Yes)
        if (File is cached and cache is valid) then (Yes)
@@ -76,33 +71,28 @@ Parse files into an AST
        endif;
    endwhile (No);
 
-   :Write partial texts to Project;
-   :Save Cache to Disk;
+    :Write partial text to project;
+    :Save cache to disk;
 
-In order to be able to properly generate documentation phpDocumentor needs to find all files in the project that you
-would want to document. There are several properties that influence which files are eligible for your documentation
-based on provided parameters and options, such as directories and a listing describing which files are ignored.
+To generate documentation properly, phpDocumentor needs to find all files in the project that should be documented.
+Several options influence which files are eligible, such as source directories and the list of ignored files.
 
-If the given target folder contains a cache of a previous run of phpDocumentor then this is loaded. phpDocumentor
-will remove all files from that cache that are not present in the file listing that was found earlier so that it doesn't
-contain any entries that are not intended to be documented.
+If the target folder contains a cache from a previous run, phpDocumentor loads it and removes entries that no longer
+match the current file list.
 
-Once that is done phpDocumentor should have a description of your Project, represented by an instance of the
-ProjectDescriptor class, that may be pre-populated with the Abstract Syntax Tree (other Descriptors) that were
-discovered during a previous run.
+Once that is done, phpDocumentor has a description of the project, represented by an instance of the
+ProjectDescriptor class. It may already contain descriptors that were discovered during a previous run.
 
-When phpDocumentor is ready to create, or actually refresh, the AST it will iterate over all files that were
-discovered. A hash is generated of each file and checked with the cache if this file is still *fresh*. Should the hash
-not exist in the Cache or it differs for a given file then phpDocumentor will create a new representation of that file
-and overwrite the previous one.
+When phpDocumentor is ready to create or refresh the AST, it iterates over all discovered files. A hash is generated
+for each file and checked against the cache to determine whether the file is still *fresh*. If the hash is missing or
+different, phpDocumentor creates a new representation of that file.
 
 .. important::
 
-   At this stage all links between elements, such as that of an ``@see`` tag, are still strings containing the
-   FQSEN that references another element. It is not until much later, in the Linker, where the text references
-   are converted into actual references to other objects.
+    At this stage, links between elements are still stored as strings. They are turned into actual references later in
+    the process.
 
-   This is done because:
+    This is done because:
 
    - caching references to objects can easily disconnect the two objects
    - if a file is refreshed then all links are lost and should be re-made
@@ -117,16 +107,16 @@ Add File Representation to Project
    start
 
    :Reflect file;
-   :Create File representation as FileDescriptor;
+    :Create file representation as FileDescriptor;
 
    while (For each Structural Element in File)
-       :Map reflected information onto new Descriptor;
-       :Filter Descriptor;
-       :Validate Descriptor;
-       :Add Element Descriptor to File;
+        :Map reflected information onto new descriptor;
+        :Filter Descriptor;
+        :Validate Descriptor;
+        :Add element descriptor to file;
    endwhile;
 
-   :Add File representation to Project;
+    :Add file representation to project;
 
    stop
 
@@ -140,10 +130,10 @@ Transform all files
 
    start
 
-   #f9f9f9:Emit event "transformer.transform.pre">
-   #f9f9f9:Emit event "transformer.writer.initialization.pre">
-   :Boot involved writers;
-   #f9f9f9:Emit event "transformer.writer.initialization.post">
+    #f9f9f9:Emit event "transformer.transform.pre"> 
+    #f9f9f9:Emit event "transformer.writer.initialization.pre">
+    :Boot involved writers;
+    #f9f9f9:Emit event "transformer.writer.initialization.post">
 
    while (For each Transformation)
        #f9f9f9:Emit event "transformer.transformation.pre">
@@ -151,6 +141,11 @@ Transform all files
        #f9f9f9:Emit event "transformer.transformation.pre">
    endwhile;
 
-   #f9f9f9:Emit event "transformer.transform.post">
+    #f9f9f9:Emit event "transformer.transform.post">
 
-   stop
+    stop
+
+The transformation step is where phpDocumentor turns the prepared project model into the final output.
+
+Taken together, the steps in this chapter show how phpDocumentor moves from a command-line invocation to rendered
+documentation output.
