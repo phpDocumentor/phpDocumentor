@@ -107,6 +107,15 @@ final class ApplicationExtension extends Extension implements PrependExtensionIn
             ? $factory->createFromFile($configFile)
             : $factory->createDefault();
 
+        // Extension options are not part of the phpdocumentor configuration; route them to the extension
+        // that is registered with the alias used as key, so that it receives them in its load() method.
+        $extensionConfigs = $config['phpdocumentor']['extensions'] ?? [];
+        unset($config['phpdocumentor']['extensions']);
+
+        foreach ($extensionConfigs as $alias => $options) {
+            $container->prependExtensionConfig((string) $alias, $options);
+        }
+
         $container->prependExtensionConfig('phpdocumentor', $config['phpdocumentor']);
 
         if (! $this->hasMarkdownGuides($config['phpdocumentor'])) {

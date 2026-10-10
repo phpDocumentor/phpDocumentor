@@ -37,6 +37,28 @@ final class Version3Test extends TestCase
         $this->assertEquals($expectedConfig, $finalizedConfig);
     }
 
+    // Scenario: An extension block is accepted by the configuration schema
+    // See docs/internals/features/extension-configuration.feature
+    public function testAnExtensionBlockIsAcceptedAndOtherSettingsKeepTheirValues(): void
+    {
+        $configuration = new Version3(self::DEFAULT_TEMPLATE_NAME);
+        $node = $configuration->getConfigTreeBuilder()->buildTree();
+
+        $inputConfig = [
+            'title' => 'My project',
+            'extension' => [
+                ['name' => 'my_extension', 'custom-option' => 'hello'],
+            ],
+        ];
+
+        $finalizedConfig = $node->finalize($node->normalize($inputConfig));
+
+        $expected = array_merge(self::defaultConfigurationOutput(), ['title' => 'My project']);
+        $expected['extensions'] = ['my_extension' => ['custom-option' => 'hello']];
+
+        $this->assertEquals($expected, $finalizedConfig);
+    }
+
     public function testNormalizingTheOutputTransformsTheConfig(): void
     {
         $definition = new Version3(self::DEFAULT_TEMPLATE_NAME);
@@ -202,6 +224,7 @@ final class Version3Test extends TestCase
                 ],
             ],
             'settings' => [],
+            'extensions' => [],
             'templates' => [
                 [
                     'name' => self::DEFAULT_TEMPLATE_NAME,

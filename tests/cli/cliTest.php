@@ -69,6 +69,16 @@ final class cliTest extends TestCase
             "stderr" => "",
             "cwd" => __DIR__ . "/tests/project_with_vendor_extensions",
         ];
+        // Scenario: An extension receives the options configured in phpdoc.xml
+        // See docs/internals/features/extension-configuration.feature
+        yield "run project with extensions from config" => [
+            "command" => [
+                "--no-progress",
+            ],
+            "stdout" => file_get_contents(__DIR__ . "/tests/project_with_config_extensions/stdout.txt"),
+            "stderr" => "",
+            "cwd" => __DIR__ . "/tests/project_with_config_extensions",
+        ];
     }
 
     /** @param string[] $command */

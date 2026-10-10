@@ -40,8 +40,22 @@
             <xs:element name="version" type="pd:versionType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="setting" type="pd:settingType" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="template" type="pd:templateType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="extension" type="pd:extensionType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="configVersion" type="pd:version" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="extensionType">
+        <xs:annotation>
+            <xs:documentation>
+                Options for an extension; the name is the DI alias of the extension. The options are
+                validated by the extension itself.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="pathsType">
