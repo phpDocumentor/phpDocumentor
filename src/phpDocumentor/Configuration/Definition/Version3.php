@@ -69,6 +69,7 @@ use function var_export;
  *     >,
  *     use_cache: bool,
  *     settings: array<string, mixed>,
+ *     extensions: array<string, mixed>,
  *     templates: non-empty-array<
  *         array{
  *             name: string,
@@ -94,6 +95,7 @@ final class Version3 implements ConfigurationInterface, Normalizable
             ->fixXmlConfig('version')
             ->fixXmlConfig('setting')
             ->fixXmlConfig('template')
+            ->fixXmlConfig('extension')
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode(SymfonyConfigFactory::FIELD_CONFIG_VERSION)->defaultValue('3')->end()
@@ -161,6 +163,11 @@ final class Version3 implements ConfigurationInterface, Normalizable
                             ->end()
                         ->end()
                     ->end()
+                ->end()
+                ->arrayNode('extensions')
+                    ->info('Options for extensions, keyed by the alias of the extension')
+                    ->useAttributeAsKey('name')
+                    ->variablePrototype()->end()
                 ->end()
             ->end();
 

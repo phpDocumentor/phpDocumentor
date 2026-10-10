@@ -1,0 +1,12 @@
+my_extension custom-option: hello
+Loaded extensions:
+
+ [OK] MyExtension/Configurable:1.0.0%w
+
+phpDocumentor 3.%d.%d-%a
+
+Parsing source files
+
+Applying transformations (can take a while)
+
+All done in %d seconds!

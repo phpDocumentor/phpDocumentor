@@ -84,6 +84,38 @@ array to the latest version by using the upgrade method of the 'old' definition.
 another configuration definition and the process starts all over again. This will loop until no newer configuration is
 found.
 
+Extension configuration
+-----------------------
+
+Extensions can be configured from the version 3 configuration file with an ``<extension>`` element, next to
+``<version>``. The ``name`` attribute is the alias of the Dependency Injection extension
+(:php:meth:`Symfony\\Component\\DependencyInjection\\Extension\\Extension::getAlias`); the content of the element is
+defined by the extension.
+
+.. code-block:: xml
+
+   <phpdocumentor configVersion="3">
+       <version number="1.0.0">...</version>
+       <extension name="my_extension">
+           <custom-option>value</custom-option>
+       </extension>
+   </phpdocumentor>
+
+The ``Version3`` definition accepts these elements in an ``extensions`` node, keyed by the name; the options
+themselves are not validated by phpDocumentor. The remainder of the schema stays strict. Extension configuration is only
+supported in version 3 configuration files.
+
+``ApplicationExtension::prepend()`` removes the ``extensions`` node from the ``phpdocumentor`` configuration and
+prepends each entry to the extension with that alias using ``prependExtensionConfig()``. Because this happens before the
+container is compiled, the extension receives its options in the ``$configs`` argument of its ``load()`` method, where it
+can validate them, for example with its own ``ConfigurationInterface``.
+
+.. note::
+   Extension authors should override ``getAlias()`` instead of relying on the alias derived from the class name; the alias
+   is the name users write in their configuration file, so changing it is a breaking change.
+
+See :doc:`adr/0002-user-config-before-extension-loading` for the reasoning behind this design.
+
 Adding a new version of the configuration
 -----------------------------------------
 
