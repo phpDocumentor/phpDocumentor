@@ -2,7 +2,7 @@ Extension configuration in phpdoc.xml
 =====================================
 
 :Related ADR: ``adr/0002-user-config-before-extension-loading.rst``
-:Status: Implemented (first slice)
+:Status: In progress
 
 Requirements
 ------------
@@ -55,24 +55,23 @@ Out of scope
 * extension configuration in the version 2 upgrade path
 * configuration of extensions through command line options
 * referring to extensions by their manifest (package) name
-
-The following behaviours are part of ADR 0002 but are deferred to follow-up
-slices: failing on an unregistered alias, ignoring ``<extension>`` blocks when
-``--no-extensions`` is used, and rejecting ``<extension>`` in version 2 files.
+* a dedicated error for an ``<extension>`` block of an alias that is not registered while extensions are enabled
+* a dedicated error for ``<extension>`` blocks in version 2 configuration files
 
 Feature
 -------
 
 As a project owner, I want to set options for an extension in ``phpdoc.xml``, so
-that the extension behaves as I configured it.
+that the extension behaves as I configured it, and I want that same file to keep
+working when extensions are disabled.
 
 Scope
    A version 3 configuration with an ``<extension name>`` block that is routed
-   to the extension with that DI alias, observable in the CLI output.
+   to the extension with that DI alias, observable in the CLI output. When
+   extensions are disabled with ``--no-extensions``, the block is ignored.
 
 Out of scope
-   Unknown alias error, ``--no-extensions`` handling, version 2 behaviour, CLI
-   flags and manifest-name lookup.
+   Unknown alias error, version 2 behaviour, CLI flags and manifest-name lookup.
 
 Acceptance criteria
    * A version 3 ``phpdoc.xml`` with an ``<extension name="...">`` block is
@@ -81,6 +80,8 @@ Acceptance criteria
      ``load()``.
    * The CLI output of a fixture extension shows a value derived from the
      configured option.
+   * Running with ``--no-extensions`` on the same configuration succeeds, lists
+     no loaded extensions and shows no option of the extension.
 
 Decisions
 ---------
@@ -92,3 +93,6 @@ Decisions
 * The fixture extension of the CLI test writes the option to ``STDOUT`` in ``load()``, because extensions have no
   other simple hook to produce output.
 * The stray ``<extension-nama>`` sketch in the repository's ``phpdoc.dist.xml`` was removed.
+* Ignoring ``<extension>`` blocks with ``--no-extensions`` needs no explicit code: Symfony accepts prepended configuration
+  for an alias that is not registered, so the blocks are ignored as long as no extension with that alias is loaded. The
+  CLI test documents this behaviour.

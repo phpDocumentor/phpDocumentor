@@ -1,0 +1,7 @@
+phpDocumentor 3.%d.%d-%a
+
+Parsing source files
+
+Applying transformations (can take a while)
+
+All done in %d seconds!
