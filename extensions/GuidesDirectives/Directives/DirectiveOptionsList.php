@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace phpDocumentor\GuidesDirectives\Directives;
 
+use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Guides\Compiler\CompilerContextInterface;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Nodes\Node;
 use phpDocumentor\Guides\RestructuredText\Directives\Attributes\Directive;
 use phpDocumentor\Guides\RestructuredText\Directives\BaseDirective;
 use phpDocumentor\Guides\RestructuredText\Nodes\DirectiveNode;
-use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionsList as OptionsNode;
+use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionsListNode;
 use phpDocumentor\Query\Engine;
 
-use function count;
 use function iterator_to_array;
 
 #[Directive(name: 'phpdoc-guides:directive-options-list')]
 final class DirectiveOptionsList extends BaseDirective
 {
-    public function __construct(private Engine $engine)
+    public function __construct(private Engine $engine, private DirectiveOptionNodeFactory $optionFactory)
     {
     }
 
@@ -44,12 +44,12 @@ final class DirectiveOptionsList extends BaseDirective
             $compilerContext->getVersionDescriptor(),
             //phpcs:ignore Generic.Files.LineLength.TooLong
             '$.documentationSets[*][?(type(@) == \'ApiSetDescriptor\')].indexes.classes[*][?(@.attributes[?(@.attribute == "\phpDocumentor\Guides\RestructuredText\Directives\Attributes\Directive" && @.arguments[?(@.name == "name" && @.value == "\'' . $directiveNode->getDirective()->getData() . '\'")])])]',
-        ));
+        ), false);
 
-        if (count($result) === 0) {
+        if ($result === [] || $result[0] instanceof ClassDescriptor === false) {
             return null;
         }
 
-        return (new OptionsNode(''))->withDescriptor($result[0]);
+        return new DirectiveOptionsListNode($this->optionFactory->createFromClass($result[0]));
     }
 }

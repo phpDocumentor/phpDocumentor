@@ -1,0 +1,20 @@
+<article class="phpdocumentor-element phpdocumentor-directive" id="{{ node.anchor }}" data-directive-name="{{ node.name }}">
+    <h3 class="phpdocumentor-element__name">
+        .. {{ node.name }}::
+        <a href="#{{ node.anchor }}" class="headerlink"><i class="fas fa-link"></i></a>
+    </h3>
+    {% if node.aliases is not empty %}
+        <p class="phpdocumentor-directive__aliases">Aliases: {% for alias in node.aliases %}<code>{{ alias }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+    {% endif %}
+    {% if node.description is not empty %}
+        <section class="phpdocumentor-description">
+            {{ node.description | markdown }}
+        </section>
+    {% endif %}
+    {% if node.children is not empty %}
+        <h4>Options</h4>
+        {% for child in node.children %}
+            {{ renderNode(child) }}
+        {% endfor %}
+    {% endif %}
+</article>

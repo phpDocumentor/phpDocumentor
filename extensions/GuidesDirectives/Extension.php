@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\GuidesDirectives;
 
-use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionsList;
+use phpDocumentor\GuidesDirectives\Nodes\DirectiveInfoNode;
+use phpDocumentor\GuidesDirectives\Nodes\DirectiveListNode;
+use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionNode;
+use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionsListNode;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -40,7 +43,10 @@ class Extension extends \phpDocumentor\Extension\Extension
         $baseDirs[] = __DIR__ . '/Resources/templates/html';
         $container->setParameter('phpdoc.guides.base_template_paths', $baseDirs);
         $templates = $container->getParameter('phpdoc.guides.node_templates');
-        $templates[] = template(DirectiveOptionsList::class, 'directive-list-options.html.twig');
+        $templates[] = template(DirectiveOptionsListNode::class, 'directive-options-list.html.twig');
+        $templates[] = template(DirectiveListNode::class, 'directive-list.html.twig');
+        $templates[] = template(DirectiveInfoNode::class, 'directive-info.html.twig');
+        $templates[] = template(DirectiveOptionNode::class, 'directive-option.html.twig');
         $container->setParameter('phpdoc.guides.node_templates', $templates);
     }
 }

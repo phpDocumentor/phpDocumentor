@@ -11,6 +11,8 @@ declare(strict_types=1);
  * @link https://phpdoc.org
  */
 
+use phpDocumentor\GuidesDirectives\Directives\DirectiveList;
+use phpDocumentor\GuidesDirectives\Directives\DirectiveOptionNodeFactory;
 use phpDocumentor\GuidesDirectives\Directives\DirectiveOptionsList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -19,6 +21,9 @@ return static function (ContainerConfigurator $container): void {
         ->defaults()
         ->autowire()
         ->autoconfigure()
+        ->set(DirectiveOptionNodeFactory::class)
         ->set(DirectiveOptionsList::class)
+        ->tag('phpdoc.guides.directive')
+        ->set(DirectiveList::class)
         ->tag('phpdoc.guides.directive');
 };
