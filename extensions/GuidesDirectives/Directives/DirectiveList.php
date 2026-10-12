@@ -30,7 +30,7 @@ use function count;
 use function implode;
 use function iterator_to_array;
 use function preg_match_all;
-use function strcmp;
+use function strcasecmp;
 use function usort;
 
 use const PREG_SET_ORDER;
@@ -75,7 +75,10 @@ final class DirectiveList extends BaseDirective
         }
 
         $infos = array_values($infos);
-        usort($infos, static fn (DirectiveInfoNode $a, DirectiveInfoNode $b) => strcmp($a->getName(), $b->getName()));
+        usort(
+            $infos,
+            static fn (DirectiveInfoNode $a, DirectiveInfoNode $b) => strcasecmp($a->getName(), $b->getName()),
+        );
 
         return new DirectiveListNode($infos);
     }

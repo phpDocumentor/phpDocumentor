@@ -59,8 +59,31 @@ final class DirectiveListTest extends TestCase
         self::assertInstanceOf(DirectiveListNode::class, $node);
         $infos = $this->infoNodes($node);
         self::assertSame(['alpha', 'zeta'], array_map(static fn (DirectiveInfoNode $i) => $i->getName(), $infos));
-        self::assertSame('directive-alpha', $infos[0]->getAnchor());
-        self::assertSame('directive-zeta', $infos[1]->getAnchor());
+        self::assertSame('alpha', $infos[0]->getAnchor());
+        self::assertSame('zeta', $infos[1]->getAnchor());
+    }
+
+    #[Test]
+    public function itSortsDirectiveNamesCaseInsensitively(): void
+    {
+        $node = $this->createListNode(
+            $this->directiveClass('Zeta'),
+            $this->directiveClass('alpha'),
+            $this->directiveClass('Beta'),
+        );
+
+        self::assertSame(
+            ['alpha', 'Beta', 'Zeta'],
+            array_map(static fn (DirectiveInfoNode $i) => $i->getName(), $this->infoNodes($node)),
+        );
+    }
+
+    #[Test]
+    public function itCreatesAnAnchorThatIsSafeToUseInAUrlFragment(): void
+    {
+        $node = $this->createListNode($this->directiveClass('phpdoc-guides:Directive List'));
+
+        self::assertSame('phpdoc-guides-directive-list', $this->infoNodes($node)[0]->getAnchor());
     }
 
     // Scenario: Aliases are shown

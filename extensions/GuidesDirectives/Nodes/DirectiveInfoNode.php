@@ -15,6 +15,10 @@ namespace phpDocumentor\GuidesDirectives\Nodes;
 
 use phpDocumentor\Guides\Nodes\CompoundNode;
 
+use function preg_replace;
+use function strtolower;
+use function trim;
+
 /** @extends CompoundNode<DirectiveOptionNode> */
 final class DirectiveInfoNode extends CompoundNode
 {
@@ -38,7 +42,7 @@ final class DirectiveInfoNode extends CompoundNode
 
     public function getAnchor(): string
     {
-        return 'directive-' . $this->name;
+        return trim(preg_replace('/[^a-z0-9_-]+/', '-', strtolower($this->name)) ?? '', '-');
     }
 
     /** @return string[] */
