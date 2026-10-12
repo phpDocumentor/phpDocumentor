@@ -16,3 +16,12 @@ Feature: Extension configuration in phpdoc.xml
     When the configuration is loaded
     Then no configuration error is reported
     And the other configuration settings keep their values
+
+  Scenario: Extension blocks are ignored when extensions are disabled
+    Given a project with a version 3 configuration file
+    And the extension "my_extension" is installed in the project
+    And the configuration contains an extension block for "my_extension" with the option "custom-option" set to "hello"
+    When phpDocumentor runs with extensions disabled
+    Then the run succeeds
+    And no extension is reported as loaded
+    And the extension "my_extension" does not report any option

@@ -79,6 +79,17 @@ final class cliTest extends TestCase
             "stderr" => "",
             "cwd" => __DIR__ . "/tests/project_with_config_extensions",
         ];
+        // Scenario: Extension blocks are ignored when extensions are disabled
+        // See docs/internals/features/extension-configuration.feature
+        yield "run project with extensions from config disable extensions" => [
+            "command" => [
+                "--no-progress",
+                "--no-extensions",
+            ],
+            "stdout" => file_get_contents(__DIR__ . "/tests/project_with_config_extensions/no_extensions_stdout.txt"),
+            "stderr" => "",
+            "cwd" => __DIR__ . "/tests/project_with_config_extensions",
+        ];
     }
 
     /** @param string[] $command */
