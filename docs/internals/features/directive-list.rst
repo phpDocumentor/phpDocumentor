@@ -144,11 +144,19 @@ Verification
 * A read-only review found three issues, all fixed: docblock placeholders, attribute matching on
   the short name, and duplicate directive names.
 
+Follow-up: DirectiveOptionsList refactor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Done. ``DirectiveOptionsList`` now builds ``DirectiveOptionNode`` children
+through the shared ``DirectiveOptionNodeFactory``, its node is renamed
+``DirectiveOptionsListNode``, and ``directive-list-options.html.twig`` is
+replaced by ``directive-options-list.html.twig``, which renders the options
+through the shared ``directive-option`` template. The existing unit and e2e
+tests keep passing.
+
 Known follow-ups
 ~~~~~~~~~~~~~~~~
 
-* Refactor ``DirectiveOptionsList`` onto ``DirectiveOptionNode`` and remove
-  the duplicated ``directive-list-options.html.twig`` markup.
 * Quote handling in ``unquote()`` strips all outer quote characters and does
   not unescape.
 * Sorting is case-sensitive, and anchors are not slugified.

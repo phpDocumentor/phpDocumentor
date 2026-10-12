@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\GuidesDirectives\Directives;
 
 use phpDocumentor\Descriptor\ClassDescriptor;
-use phpDocumentor\Descriptor\Interfaces\AttributeInterface;
 use phpDocumentor\Guides\Compiler\CompilerContextInterface;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Nodes\Node;
@@ -23,7 +22,6 @@ use phpDocumentor\Guides\RestructuredText\Directives\BaseDirective;
 use phpDocumentor\Guides\RestructuredText\Nodes\DirectiveNode;
 use phpDocumentor\GuidesDirectives\Nodes\DirectiveInfoNode;
 use phpDocumentor\GuidesDirectives\Nodes\DirectiveListNode;
-use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionNode;
 use phpDocumentor\Query\Engine;
 
 use function array_map;
@@ -33,10 +31,6 @@ use function implode;
 use function iterator_to_array;
 use function preg_match_all;
 use function strcmp;
-use function strrchr;
-use function strtolower;
-use function substr;
-use function trim;
 use function usort;
 
 use const PREG_SET_ORDER;
@@ -44,10 +38,7 @@ use const PREG_SET_ORDER;
 #[Directive(name: 'phpdoc-guides:directive-list')]
 final class DirectiveList extends BaseDirective
 {
-    private const DIRECTIVE_ATTRIBUTE = '\\phpDocumentor\\Guides\\RestructuredText\\Directives\\Attributes\\Directive';
-    private const OPTION_ATTRIBUTE = '\\phpDocumentor\\Guides\\RestructuredText\\Directives\\Attributes\\Option';
-
-    public function __construct(private Engine $engine)
+    public function __construct(private Engine $engine, private DirectiveOptionNodeFactory $optionFactory)
     {
     }
 
@@ -92,14 +83,13 @@ final class DirectiveList extends BaseDirective
     private function createInfoNode(ClassDescriptor $class): DirectiveInfoNode|null
     {
         $directive = null;
-        $options = [];
         foreach ($class->getAttributes() as $attribute) {
             $fqsen = (string) $attribute->getFullyQualifiedStructuralElementName();
-            if ($fqsen === self::DIRECTIVE_ATTRIBUTE) {
-                $directive = $attribute;
-            } elseif ($fqsen === self::OPTION_ATTRIBUTE) {
-                $options[] = $this->createOptionNode($attribute);
+            if ($fqsen !== DirectiveOptionNodeFactory::DIRECTIVE_ATTRIBUTE) {
+                continue;
             }
+
+            $directive = $attribute;
         }
 
         $name = $directive?->getArgument('name');
@@ -110,24 +100,10 @@ final class DirectiveList extends BaseDirective
         $aliases = $directive->getArgument('aliases');
 
         return new DirectiveInfoNode(
-            $this->unquote($name->getValue()),
+            $this->optionFactory->unquote($name->getValue()),
             $aliases === null ? [] : $this->parseStringList($aliases->getValue()),
             $this->createDescription($class),
-            $options,
-        );
-    }
-
-    private function createOptionNode(AttributeInterface $attribute): DirectiveOptionNode
-    {
-        $type = $attribute->getArgument('type');
-        $default = $attribute->getArgument('default');
-        $description = $attribute->getArgument('description');
-
-        return new DirectiveOptionNode(
-            $this->unquote($attribute->getArgument('name')?->getValue() ?? ''),
-            $type === null ? 'string' : $this->enumCaseName($type->getValue()),
-            $default === null ? null : $this->unquote($default->getValue()),
-            $description === null ? '' : $this->unquote($description->getValue()),
+            $this->optionFactory->createFromClass($class),
         );
     }
 
@@ -144,18 +120,6 @@ final class DirectiveList extends BaseDirective
         }
 
         return implode("\n\n", $parts);
-    }
-
-    private function unquote(string $value): string
-    {
-        return trim($value, '\'"');
-    }
-
-    private function enumCaseName(string $value): string
-    {
-        $case = strrchr($value, ':');
-
-        return strtolower($case === false ? $this->unquote($value) : substr($case, 1));
     }
 
     /** @return string[] */

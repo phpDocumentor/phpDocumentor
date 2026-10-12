@@ -24,6 +24,7 @@ use phpDocumentor\Guides\Nodes\ProjectNode;
 use phpDocumentor\Guides\RestructuredText\Nodes\DirectiveNode;
 use phpDocumentor\Guides\RestructuredText\Parser\Directive;
 use phpDocumentor\GuidesDirectives\Directives\DirectiveList;
+use phpDocumentor\GuidesDirectives\Directives\DirectiveOptionNodeFactory;
 use phpDocumentor\GuidesDirectives\Nodes\DirectiveInfoNode;
 use phpDocumentor\GuidesDirectives\Nodes\DirectiveListNode;
 use phpDocumentor\GuidesDirectives\Nodes\DirectiveOptionNode;
@@ -212,7 +213,7 @@ final class DirectiveListTest extends TestCase
         $engine = $this->createMock(Engine::class);
         $engine->expects(self::never())->method('perform');
 
-        $directive = new DirectiveList($engine);
+        $directive = new DirectiveList($engine, new DirectiveOptionNodeFactory());
 
         self::assertNull($directive->createNode($this->directiveNode(), null));
     }
@@ -222,7 +223,8 @@ final class DirectiveListTest extends TestCase
         $engine = $this->createMock(Engine::class);
         $engine->method('perform')->willReturn(new ArrayIterator($classes));
 
-        $node = (new DirectiveList($engine))->createNode($this->directiveNode(), $this->compilerContext());
+        $directive = new DirectiveList($engine, new DirectiveOptionNodeFactory());
+        $node = $directive->createNode($this->directiveNode(), $this->compilerContext());
         self::assertTrue($node === null || $node instanceof DirectiveListNode);
 
         return $node;
