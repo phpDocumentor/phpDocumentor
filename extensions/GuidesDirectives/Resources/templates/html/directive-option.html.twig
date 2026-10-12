@@ -1,0 +1,11 @@
+<div class="phpdocumentor-directive-option">
+    <h5 class="phpdocumentor-element__name">:{{ node.name }}:</h5>
+    <code class="phpdocumentor-code phpdocumentor-signature">
+        <span class="phpdocumentor-signature__name">:{{ node.name }}:</span>
+        <span class="phpdocumentor-signature__type">&lt;{{ node.type }}&gt;</span>
+        {% if node.default is not null %}<span class="phpdocumentor-signature__default-value">{{ node.default }}</span>{% endif %}
+    </code>
+    <section class="phpdocumentor-description">
+        {{ node.description | markdown }}
+    </section>
+</div>
