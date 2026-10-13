@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phar xmlns="https://phar.io/xml/manifest/1.0">
+    <contains name="phpDocumentor\WordpressHooks" version="1.0" type="extension">
+        <extension for="phpdocumentor/phpdocumentor" compatible="^3.5"/>
+    </contains>
+
+    <copyright>
+        <author name="You" email="you@example.com"/>
+        <license type="MIT" url="https://example.com/LICENSE"/>
+    </copyright>
+
+    <requires>
+        <php version="^8.1"/>
+    </requires>
+
+    <bundles>
+        <component name="phpDocumentor\WordpressHooks\Extension" version="1.0" />
+    </bundles>
+</phar>
