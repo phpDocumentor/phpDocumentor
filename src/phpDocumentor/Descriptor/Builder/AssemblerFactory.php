@@ -159,11 +159,14 @@ class AssemblerFactory
             Matcher::forType(Constant::class),
             new ConstantAssembler($attributeReducer, $visibilityReducer),
         );
-        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler($attributeReducer));
-        $factory->register(Matcher::forType(Class_::class), new ClassAssembler($attributeReducer));
-        $factory->register(Matcher::forType(Enum_::class), new EnumAssembler($attributeReducer));
+        $factory->register(Matcher::forType(Trait_::class), new TraitAssembler($attributeReducer, $metadataReducer));
+        $factory->register(Matcher::forType(Class_::class), new ClassAssembler($attributeReducer, $metadataReducer));
+        $factory->register(Matcher::forType(Enum_::class), new EnumAssembler($attributeReducer, $metadataReducer));
         $factory->register(Matcher::forType(EnumCase::class), new EnumCaseAssembler($attributeReducer));
-        $factory->register(Matcher::forType(Interface_::class), new InterfaceAssembler($attributeReducer));
+        $factory->register(
+            Matcher::forType(Interface_::class),
+            new InterfaceAssembler($attributeReducer, $metadataReducer),
+        );
         $factory->register(
             Matcher::forType(Property::class),
             new PropertyAssembler($attributeReducer, $visibilityReducer),
@@ -177,12 +180,14 @@ class AssemblerFactory
             $argumentAssembler,
             $attributeReducer,
             $visibilityReducer,
+            $metadataReducer,
         ));
         $factory->register(Matcher::forType(Function_::class), new FunctionAssembler(
             $argumentAssembler,
             $attributeReducer,
+            $metadataReducer,
         ));
-        $factory->register(Matcher::forType(Namespace_::class), new NamespaceAssembler());
+        $factory->register(Matcher::forType(Namespace_::class), new NamespaceAssembler($metadataReducer));
 
         $factory->register(Matcher::forType(Author::class), new AuthorAssembler());
         $factory->register(Matcher::forType(Deprecated::class), new DeprecatedAssembler());

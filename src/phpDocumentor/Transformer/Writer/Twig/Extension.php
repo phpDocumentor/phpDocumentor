@@ -35,6 +35,7 @@ use phpDocumentor\Descriptor\Interfaces\EnumInterface;
 use phpDocumentor\Descriptor\Interfaces\FileInterface;
 use phpDocumentor\Descriptor\Interfaces\FunctionInterface;
 use phpDocumentor\Descriptor\Interfaces\InterfaceInterface;
+use phpDocumentor\Descriptor\Interfaces\MetadataAwareInterface;
 use phpDocumentor\Descriptor\Interfaces\MethodInterface;
 use phpDocumentor\Descriptor\Interfaces\NamespaceInterface;
 use phpDocumentor\Descriptor\Interfaces\PackageInterface;
@@ -52,6 +53,7 @@ use phpDocumentor\Descriptor\ValueObjects\CallArgument;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Reflection\DocBlock\Tags\Reference;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Metadata\Metadata;
 use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use Twig\Environment;
@@ -109,6 +111,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
         private LinkRenderer $routeRenderer,
         private readonly RelativePathToRootConverter $relativePathToRootConverter,
         private readonly PathBuilder $pathBuilder,
+        private readonly MetadataTemplateResolver|null $metadataTemplateResolver = null,
     ) {
         $this->routeRenderer = $this->routeRenderer->withProject($project)->forDocumentationSet($documentationSet);
     }
@@ -159,6 +162,7 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
             new TwigTest('argument', static fn (Descriptor $el) => $el instanceof ArgumentInterface),
             new TwigTest('attribute', static fn (Descriptor $el) => $el instanceof AttributeInterface),
             new TwigTest('attributed', static fn (Descriptor $el) => $el instanceof AttributedInterface),
+            new TwigTest('metadataAware', static fn (Descriptor $el) => $el instanceof MetadataAwareInterface),
             new TwigTest('function', static fn (Descriptor $el) => $el instanceof FunctionInterface),
             new TwigTest('constant', static fn (Descriptor $el) => $el instanceof ConstantInterface),
         ];
@@ -194,6 +198,17 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                     return '<base href="' . $absolutePath . '">';
                 },
                 ['is_safe' => ['all'], 'needs_context' => true],
+            ),
+            new TwigFunction(
+                'metadata_template',
+                function (Environment $environment, Metadata $metadata, Descriptor $node): string|null {
+                    return $this->metadataTemplateResolver?->resolve(
+                        $metadata,
+                        (string) $node->getName(),
+                        $environment->getLoader(),
+                    );
+                },
+                ['needs_environment' => true],
             ),
             new TwigFunction(
                 'path',
