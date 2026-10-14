@@ -45,8 +45,9 @@ would not follow the tag anymore.
 This tag is useful for functions that have many optional parameters, for
 example the constructor of a value object.
 
-When the tag is used on a class, interface, trait or enum, it applies to all
-the methods of that element.
+When the tag is used on a class, interface, trait or enum, it applies to the
+public and protected methods of that element. In a trait, it applies to private
+methods too, because the classes that use the trait can call them.
 
 A method that implements or overrides a tagged method has the same contract,
 even when its PHPDoc does not repeat the tag. When you write such a method, you

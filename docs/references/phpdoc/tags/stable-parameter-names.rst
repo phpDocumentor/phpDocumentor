@@ -34,8 +34,9 @@ Callers MAY pass arguments by name or by position.
 For maintainers, both the names and the order of parameters are covered by the
 backward compatibility promise. Parameters are never renamed or reordered.
 
-When the tag is used on a class, interface, trait or enum, it applies to all
-the methods of that element.
+When the tag is used on a class, interface, trait or enum, it applies to the
+public and protected methods of that element. In a trait, it applies to private
+methods too, because the classes that use the trait can call them.
 
 A method that implements or overrides a tagged method has the same contract,
 even when its PHPDoc does not repeat the tag. When you write such a method, you
