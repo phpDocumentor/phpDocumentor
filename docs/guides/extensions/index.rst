@@ -72,6 +72,7 @@ extension points are currently available and documented:
 - :doc:`Twig extensions <twig-extension>`, to customize the rendering of output.
 - :doc:`Custom directives <custom-directive>`, to add new RestructuredText directives, together with
   :doc:`custom nodes <custom-node>` and :doc:`node templates <node-templates>` to render them.
+- :doc:`Extend api docs <metadata>`, to attach extra information to descriptors and render it with your own templates.
 
 .. toctree::
    :caption: Common use-cases
@@ -81,3 +82,4 @@ extension points are currently available and documented:
    custom-directive
    custom-node
    node-templates
+   metadata

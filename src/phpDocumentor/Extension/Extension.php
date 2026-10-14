@@ -21,8 +21,32 @@ abstract class Extension extends BaseExtension
      * The constructor of extensions should not be used.
      *
      * Extensions are loaded by the {@see ExtensionHandler}. An extension should not apply any logic in its
+     * constructor; use {@see load()} to register services and parameters instead.
      */
     final public function __construct()
     {
+    }
+
+    /**
+     * Directory with the Twig templates of this extension.
+     *
+     * The directory is registered in the Twig namespace named after the alias of the extension, for example
+     * `@my-extension/metadata/my_key.html.twig`.
+     */
+    public function getTemplatePath(): string|null
+    {
+        return null;
+    }
+
+    /**
+     * The keys of the metadata objects this extension can render.
+     *
+     * The template that renders a key is expected at `<template path>/metadata/<key>.html.twig`.
+     *
+     * @return string[]
+     */
+    public function getMetadataKeys(): array
+    {
+        return [];
     }
 }

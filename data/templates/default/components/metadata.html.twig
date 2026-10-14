@@ -1,0 +1,15 @@
+{% if node is metadataAware and node.metadata is not empty %}
+    {% set rendered %}
+        {% for metadata in node.metadata %}
+            {% set template = metadata_template(metadata, node) %}
+            {% if template %}
+                {{ include(template, {'metadata': metadata, 'node': node}, with_context = false) }}
+            {% endif %}
+        {% endfor %}
+    {% endset %}
+    {% if rendered|trim is not empty %}
+        <section class="phpdocumentor-metadata">
+            {{ rendered }}
+        </section>
+    {% endif %}
+{% endif %}

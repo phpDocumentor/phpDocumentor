@@ -16,6 +16,7 @@ namespace phpDocumentor\Console;
 use phpDocumentor\DependencyInjection\ApplicationExtension;
 use phpDocumentor\DependencyInjection\GuidesCommandsPass;
 use phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass;
+use phpDocumentor\Extension\Extension as PhpDocumentorExtension;
 use phpDocumentor\Extension\ExtensionHandler;
 use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
 use phpDocumentor\Guides\Graphs\DependencyInjection\GraphsExtension;
@@ -80,9 +81,22 @@ final class ContainerFactory
         $this->container->setParameter('guides.graphs.plantuml_binary', '%env(PHPDOC_PLANTUML_BIN)%');
         $this->container->setParameter('guides.graphs.plantuml_server', '%env(PHPDOC_PLANTUML_SERVER)%');
 
-        foreach ($extensionHandler->loadExtensions() as $extension) {
-            $this->registerExtension(new $extension());
+        $metadataTemplates = [];
+        foreach ($extensionHandler->loadExtensions() as $extensionClass) {
+            $extension = new $extensionClass();
+            $this->registerExtension($extension);
+
+            if (! $extension instanceof PhpDocumentorExtension || $extension->getTemplatePath() === null) {
+                continue;
+            }
+
+            $metadataTemplates[$extension->getAlias()] = [
+                'path' => $extension->getTemplatePath(),
+                'keys' => $extension->getMetadataKeys(),
+            ];
         }
+
+        $this->container->setParameter('phpdoc.extension.metadata_templates', $metadataTemplates);
 
         $this->container->compile(true);
 

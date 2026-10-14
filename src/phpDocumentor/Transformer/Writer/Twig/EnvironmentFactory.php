@@ -18,11 +18,16 @@ use phpDocumentor\Descriptor\Interfaces\DocumentationSetInterface;
 use phpDocumentor\Descriptor\Interfaces\ProjectInterface;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Transformer\Template;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Extension\ExtensionInterface as TwigExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
+
+use function is_dir;
+use function sprintf;
 
 class EnvironmentFactory
 {
@@ -31,6 +36,8 @@ class EnvironmentFactory
     /**
      * @param string[] $guidesTemplateBasePath,
      * @param iterable<TwigExtension> $extensions
+     * @param array<string, array{path: string, keys: string[]}> $extensionTemplates indexed by the alias of the
+     *     extension that provides them
      */
     public function __construct(
         private readonly LinkRenderer $renderer,
@@ -40,6 +47,8 @@ class EnvironmentFactory
         private iterable $extensions,
         private readonly array $guidesTemplateBasePath,
         private readonly string $globalTemplatesPath,
+        private readonly array $extensionTemplates = [],
+        private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
 
@@ -62,6 +71,11 @@ class EnvironmentFactory
         $loaders[] = new FileSystemLoader($template->files(), 'guides', 'base');
         $loaders[] = new TwigFilesystemLoader($this->globalTemplatesPath, '');
         $loaders[] = new TwigFilesystemLoader($this->guidesTemplateBasePath);
+
+        $extensionTemplatesLoader = $this->createExtensionTemplatesLoader();
+        if ($extensionTemplatesLoader !== null) {
+            $loaders[] = $extensionTemplatesLoader;
+        }
 
         $env = new Environment(new ChainLoader($loaders));
         foreach ($this->extensions as $extension) {
@@ -89,8 +103,33 @@ class EnvironmentFactory
             $this->renderer,
             $this->relativePathToRootConverter,
             $this->pathBuilder,
+            new MetadataTemplateResolver($this->extensionTemplates, $this->logger),
         );
         $twigEnvironment->addExtension($extension);
+    }
+
+    private function createExtensionTemplatesLoader(): TwigFilesystemLoader|null
+    {
+        $loader = new TwigFilesystemLoader();
+        $hasPaths = false;
+        foreach ($this->extensionTemplates as $alias => $templates) {
+            if (! is_dir($templates['path'])) {
+                $this->logger->warning(
+                    sprintf(
+                        'The template path "%s" of extension "%s" is not a directory, its templates are ignored',
+                        $templates['path'],
+                        $alias,
+                    ),
+                );
+
+                continue;
+            }
+
+            $loader->addPath($templates['path'], $alias);
+            $hasPaths = true;
+        }
+
+        return $hasPaths ? $loader : null;
     }
 
     private function enableDebug(Environment $twigEnvironment): void

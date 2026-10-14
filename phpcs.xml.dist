@@ -17,6 +17,7 @@
     <config name="testVersion" value="8.1-"/>
 
     <exclude-pattern>extensions/**/vendor/**</exclude-pattern>
+    <exclude-pattern>extensions/**/tests/e2e/**</exclude-pattern>
     <rule ref="./coding-standard/PhpDocumentorStandard/Sniffs/Commenting/FileHeaderSniff.php"/>
 
     <rule ref="Doctrine">

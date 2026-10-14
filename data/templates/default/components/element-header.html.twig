@@ -3,4 +3,5 @@
 {{ include('components/description.html.twig') }}
 {{ include('components/tags.html.twig', {node: node}) }}
 {% include 'components/attributes.html.twig' with {'node': node} only %}
+{{ include('components/metadata.html.twig', {'node': node}) }}
 {{ include ('components/table-of-contents.html.twig') }}

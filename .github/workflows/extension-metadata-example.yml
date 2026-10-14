@@ -1,0 +1,70 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'extensions/MetadataExample/**'
+      - 'src/phpDocumentor/Extension/**'
+      - 'src/phpDocumentor/Guides/**'
+      - 'src/phpDocumentor/Descriptor/**'
+      - 'src/phpDocumentor/Query/**'
+      - '.github/workflows/extension-metadata-example.yml'
+  pull_request:
+    paths:
+      - 'extensions/MetadataExample/**'
+      - 'src/phpDocumentor/Extension/**'
+      - 'src/phpDocumentor/Guides/**'
+      - 'src/phpDocumentor/Descriptor/**'
+      - 'src/phpDocumentor/Query/**'
+      - '.github/workflows/extension-metadata-example.yml'
+  workflow_dispatch:
+name: Extension - MetadataExample
+
+env:
+  extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
+  key: cache-v1
+  defaultPHPVersion: '8.1'
+
+jobs:
+  e2e:
+    name: E2E (Cypress)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.defaultPHPVersion }}
+          extensions: ${{ env.extensions }}
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: composer:v2
+
+      - name: Install phpDocumentor's own Composer dependencies
+        uses: "ramsey/composer-install@v4"
+        with:
+          composer-options: --optimize-autoloader
+
+      - name: Build the fixture project's docs
+        working-directory: extensions/MetadataExample/tests/e2e/fixture-project
+        run: ../../../../../bin/phpdoc --config=phpdoc.xml --target=${{ github.workspace }}/build/metadata-example --extensions-dir=${{ github.workspace }}/extensions/MetadataExample --template=default --force -vvv
+
+      - name: Test the rendered output using Cypress
+        uses: cypress-io/github-action@v7
+        with:
+          spec: extensions/MetadataExample/tests/e2e/cypress/integration/*.spec.js

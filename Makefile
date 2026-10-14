@@ -41,6 +41,7 @@ help:
 	@echo "unit-test-extension-guides-directives - runs the GuidesDirectives extension's own PHPUnit suite";
 	@echo "e2e-test-guides-directives - installs the GuidesDirectives extension via composer into a fixture project and verifies the rendered output using Cypress";
 	@echo "test-extension-guides-directives - runs both of the above";
+	@echo "e2e-test-metadata-example - builds the MetadataExample extension's fixture project and verifies the rendered output using Cypress";
 	@echo "";
 	@echo "== Code Quality ==";
 	@echo "lint             - performs all linting on the code";
@@ -108,7 +109,10 @@ integration-test: SUITE=--testsuite=integration --no-coverage
 .PHONY: functional-test
 functional-test: SUITE=--testsuite=functional --no-coverage
 
-unit-test integration-test functional-test:
+.PHONY: cli-test
+cli-test: SUITE=--testsuite=cli --no-coverage
+
+unit-test integration-test functional-test cli-test:
 	${.DOCKER_COMPOSE_RUN} --entrypoint=bin/phpunit phpdoc-pcov $(SUITE) $(ARGS)
 
 .PHONY: e2e-test
@@ -137,6 +141,13 @@ e2e-test-guides-directives: node_modules/.bin/cypress build/guides-directives/gu
 
 .PHONY: test-extension-guides-directives
 test-extension-guides-directives: unit-test-extension-guides-directives e2e-test-guides-directives
+
+build/metadata-example/index.html: extensions/MetadataExample/**/* data/templates/default/**/* .RUN_ALWAYS
+	${.DOCKER_COMPOSE_RUN} --entrypoint=/bin/bash phpdoc -c "cd extensions/MetadataExample/tests/e2e/fixture-project && ../../../../../bin/phpdoc --config=phpdoc.xml --target=/opt/phpdoc/build/metadata-example --extensions-dir=/opt/phpdoc/extensions/MetadataExample --template=default --force"
+
+.PHONY: e2e-test-metadata-example
+e2e-test-metadata-example: node_modules/.bin/cypress build/metadata-example/index.html
+	docker run -it --rm -eCYPRESS_CACHE_FOLDER="/e2e/var/cache/.cypress" -v ${CURDIR}:/e2e -w /e2e cypress/included:${CYPRESS_VERSION} --spec "extensions/MetadataExample/tests/e2e/cypress/integration/*.spec.js"
 
 .PHONY: composer-require-checker
 composer-require-checker:

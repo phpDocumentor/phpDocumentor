@@ -30,6 +30,13 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
+use function file_put_contents;
+use function mkdir;
+use function rmdir;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
+
 /** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory */
 final class EnvironmentFactoryTest extends TestCase
 {
@@ -44,10 +51,17 @@ final class EnvironmentFactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->router = $this->prophesize(Router::class);
+        $this->factory = $this->createFactory();
+    }
+
+    /** @param array<string, array{path: string, keys: string[]}> $extensionTemplates */
+    private function createFactory(array $extensionTemplates = []): EnvironmentFactory
+    {
         $markDownConverter = $this->prophesize(ConverterInterface::class);
 
         $relativePathToRootConverter = new RelativePathToRootConverter($this->router->reveal());
-        $this->factory = new EnvironmentFactory(
+
+        return new EnvironmentFactory(
             new LinkRenderer($this->router->reveal(), new HtmlFormatter()),
             $markDownConverter->reveal(),
             $relativePathToRootConverter,
@@ -63,6 +77,7 @@ final class EnvironmentFactoryTest extends TestCase
             ],
             ['./data/templates'],
             './data/templates',
+            $extensionTemplates,
         );
     }
 
@@ -137,5 +152,53 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertCount(8, $environment->getExtensions());
         $this->assertTrue($environment->hasExtension(Extension::class));
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
+    }
+
+    /**
+     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
+     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
+     */
+    public function testItIgnoresTheTemplatePathOfAnExtensionThatDoesNotExist(): void
+    {
+        $factory = $this->createFactory(['my-extension' => ['path' => '/does/not/exist', 'keys' => ['my_key']]]);
+
+        $apiSetDescriptor = self::faker()->apiSetDescriptor();
+        $projectDescriptor = self::faker()->projectDescriptor(
+            [self::faker()->versionDescriptor([$apiSetDescriptor])],
+        );
+        $environment = $factory->create($projectDescriptor, $apiSetDescriptor, self::faker()->template());
+
+        $this->assertFalse($environment->getLoader()->exists('@my-extension/metadata/my_key.html.twig'));
+    }
+
+    /**
+     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
+     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
+     */
+    public function testItRegistersTheTemplatePathOfAnExtensionUnderItsAlias(): void
+    {
+        $directory = sys_get_temp_dir() . '/phpdoc-extension-templates-' . uniqid();
+        mkdir($directory . '/metadata', 0777, true);
+        file_put_contents($directory . '/metadata/my_key.html.twig', 'rendered by my-extension');
+
+        try {
+            $factory = $this->createFactory(['my-extension' => ['path' => $directory, 'keys' => ['my_key']]]);
+
+            $apiSetDescriptor = self::faker()->apiSetDescriptor();
+            $projectDescriptor = self::faker()->projectDescriptor(
+                [self::faker()->versionDescriptor([$apiSetDescriptor])],
+            );
+            $environment = $factory->create($projectDescriptor, $apiSetDescriptor, self::faker()->template());
+
+            $this->assertTrue($environment->getLoader()->exists('@my-extension/metadata/my_key.html.twig'));
+            $this->assertSame(
+                'rendered by my-extension',
+                $environment->render('@my-extension/metadata/my_key.html.twig'),
+            );
+        } finally {
+            unlink($directory . '/metadata/my_key.html.twig');
+            rmdir($directory . '/metadata');
+            rmdir($directory);
+        }
     }
 }

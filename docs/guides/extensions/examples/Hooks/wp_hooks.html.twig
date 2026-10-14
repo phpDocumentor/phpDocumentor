@@ -1,0 +1,11 @@
+<h4 class="phpdocumentor-wp-hooks__title">Hooks</h4>
+<ul class="phpdocumentor-wp-hooks">
+    {% for action in metadata.actions %}
+        <li>
+            <code>{{ action.name }}</code>
+            {% if action.docBlock.summary %}
+                &mdash; {{ action.docBlock.summary }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
