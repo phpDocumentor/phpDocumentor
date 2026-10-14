@@ -30,12 +30,18 @@ compatibility promise.
 
 Callers MUST pass every argument by name. Variadic parameters are not affected.
 
-For maintainers, parameter names are stable but their order is not. This means
-you can reorder parameters without breaking callers.
+For maintainers, parameters are never renamed, but their order can change.
+This means you can reorder parameters without breaking callers. You can also
+make a required parameter optional.
 
 When the tag is used on a class, interface, trait or enum, it applies to all
-the methods of that element. A method that overrides or implements a tagged
-method has the same contract, even when its PHPDoc does not repeat the tag.
+the methods of that element.
+
+A method that implements or overrides a tagged method has the same contract,
+even when its PHPDoc does not repeat the tag. When you write such a method, you
+MUST keep the same parameter names. Code that calls your method through the
+interface or the parent class can pass arguments by name. This does not apply
+to constructors.
 
 This tag cannot be combined with :doc:`optional-arguments-by-name`,
 :doc:`stable-parameter-names` or ``@no-named-arguments``. The
