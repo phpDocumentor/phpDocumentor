@@ -211,6 +211,16 @@ final class Extension extends AbstractExtension implements ExtensionInterface, G
                 ['needs_environment' => true],
             ),
             new TwigFunction(
+                'metadata_on_this_page_template',
+                function (Environment $environment, Metadata $metadata): string|null {
+                    return $this->metadataTemplateResolver?->resolveOnThisPage(
+                        $metadata,
+                        $environment->getLoader(),
+                    );
+                },
+                ['needs_environment' => true],
+            ),
+            new TwigFunction(
                 'path',
                 function (string $url): string {
                     $path = $this->relativePathToRootConverter->convert('', $url);

@@ -1,0 +1,8 @@
+{% if node is metadataAware %}
+    {% for metadata in node.metadata %}
+        {% set template = metadata_on_this_page_template(metadata) %}
+        {% if template %}
+            {{ include(template, {'metadata': metadata, 'node': node}, with_context = false) }}
+        {% endif %}
+    {% endfor %}
+{% endif %}
