@@ -29,6 +29,23 @@ phpDocumentor enables Twig's compilation cache by default. When developing Twig 
 
 This will also make the Twig debug extension available, which provides the `dump()`_ function.
 
+Adding entries to "On this page"
+--------------------------------
+
+The pages of classes, interfaces, traits, enums, files, namespaces, and packages have an "On this page" box. Its
+"Table Of Contents" list is the block ``on_this_page_table_of_contents``. A template that extends the default template
+can add entries to it. Call ``parent()`` to keep the entries of the default template, including the entries that
+extensions add for their metadata:
+
+.. code-block:: twig
+
+    {% extends 'default/class.html.twig' %}
+
+    {% block on_this_page_table_of_contents %}
+        <li><a href="{{ link(node) }}#examples">Examples</a></li>
+        {{ parent() }}
+    {% endblock %}
+
 Reference
 ---------
 

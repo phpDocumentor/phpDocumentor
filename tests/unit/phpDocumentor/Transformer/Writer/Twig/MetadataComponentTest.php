@@ -49,13 +49,20 @@ final class MetadataComponentTest extends TestCase
     {
         $this->directory = sys_get_temp_dir() . '/phpdoc-metadata-component-' . uniqid();
         mkdir($this->directory . '/metadata', 0777, true);
+        mkdir($this->directory . '/on-this-page', 0777, true);
         file_put_contents($this->directory . '/metadata/my_key.html.twig', '<b>{{ metadata.key }}</b>');
+        file_put_contents(
+            $this->directory . '/on-this-page/my_key.html.twig',
+            '<li>{{ metadata.key }} of {{ node.name }}</li>',
+        );
     }
 
     protected function tearDown(): void
     {
         unlink($this->directory . '/metadata/my_key.html.twig');
+        unlink($this->directory . '/on-this-page/my_key.html.twig');
         rmdir($this->directory . '/metadata');
+        rmdir($this->directory . '/on-this-page');
         rmdir($this->directory);
     }
 
@@ -90,7 +97,26 @@ final class MetadataComponentTest extends TestCase
         $this->assertStringContainsString('<b>my_key</b>', $output);
     }
 
-    private function render(object $node): string
+    // Scenario: Metadata adds the entry of its extension to "On this page"
+    public function testOnThisPageListsTheEntriesOfTheMetadata(): void
+    {
+        $node = self::faker()->classDescriptor(new Fqsen('\\Foo'));
+        $node->setMetadata([$this->metadata('my_key'), $this->metadata('unknown_key')]);
+
+        $output = $this->render($node, 'default/components/on-this-page-metadata.html.twig');
+
+        $this->assertSame('<li>my_key of Foo</li>', trim($output));
+    }
+
+    // Scenario: A descriptor without metadata adds nothing to "On this page"
+    public function testOnThisPageListsNothingForADescriptorWithoutMetadata(): void
+    {
+        $node = self::faker()->classDescriptor(new Fqsen('\\Foo'));
+
+        $this->assertSame('', trim($this->render($node, 'default/components/on-this-page-metadata.html.twig')));
+    }
+
+    private function render(object $node, string $template = 'default/components/metadata.html.twig'): string
     {
         $router = $this->prophesize(Router::class);
         $relativePathToRootConverter = new RelativePathToRootConverter($router->reveal());
@@ -121,7 +147,7 @@ final class MetadataComponentTest extends TestCase
         /** @var Environment $environment */
         $environment = $factory->create($projectDescriptor, $apiSetDescriptor, self::faker()->template());
 
-        return $environment->render('default/components/metadata.html.twig', ['node' => $node]);
+        return $environment->render($template, ['node' => $node]);
     }
 
     private function metadata(string $key): Metadata

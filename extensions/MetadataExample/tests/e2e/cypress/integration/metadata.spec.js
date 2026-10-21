@@ -127,4 +127,23 @@ describe('Extension metadata', function () {
             cy.contains('notemplate-for-Foo').should('not.exist');
         });
     });
+
+    // Scenario: Metadata adds the entry of its extension to "On this page"
+    describe('On this page', function () {
+        [
+            ['classes/Fixture-Foo.html', 'Foo'],
+            ['classes/Fixture-Contract.html', 'Contract'],
+            ['classes/Fixture-Reusable.html', 'Reusable'],
+            ['classes/Fixture-Status.html', 'Status'],
+            ['files/src-foo.html', 'Foo.php'],
+        ].forEach(function ([page, name]) {
+            it(`Links to the metadata on ${page}`, function () {
+                cy.visit(`build/metadata-example/${page}`);
+                cy.get('.phpdocumentor-on-this-page__content .metadata-example-entry a')
+                    .should('have.attr', 'href')
+                    .and('contain', `#metadata-example-${name}`);
+                cy.get(`[id="metadata-example-${name}"]`).should('exist');
+            });
+        });
+    });
 });

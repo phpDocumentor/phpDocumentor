@@ -25,6 +25,9 @@ use function sprintf;
  *
  * Extensions declare the metadata keys they handle. The template of a key is found by convention in the Twig
  * namespace of the extension: `@<alias>/metadata/<key>.html.twig`.
+ *
+ * A key can also have an entry in "On this page", which links to the rendered metadata:
+ * `@<alias>/on-this-page/<key>.html.twig`. That template is optional, so a missing one is not reported.
  */
 final class MetadataTemplateResolver
 {
@@ -65,6 +68,27 @@ final class MetadataTemplateResolver
         $this->logger->warning(
             sprintf('Metadata with key "%s" on "%s" is not rendered, no extension declares this key', $key, $nodeName),
         );
+
+        return null;
+    }
+
+    /**
+     * The template of the entry in "On this page" for a metadata object, if the extension that declares its key
+     * provides one.
+     */
+    public function resolveOnThisPage(Metadata $metadata, LoaderInterface $loader): string|null
+    {
+        $key = $metadata->key();
+
+        foreach ($this->extensions as $alias => $extension) {
+            if (! in_array($key, $extension['keys'], true)) {
+                continue;
+            }
+
+            $template = sprintf('@%s/on-this-page/%s.html.twig', $alias, $key);
+
+            return $loader->exists($template) ? $template : null;
+        }
 
         return null;
     }

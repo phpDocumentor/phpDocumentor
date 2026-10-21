@@ -98,6 +98,23 @@ The template receives two variables:
 The output of all templates is placed in a ``<section class="phpdocumentor-metadata">`` on the page. When nothing
 is rendered, the section is left out.
 
+Step 3 (optional): Link to it from "On this page"
+-------------------------------------------------
+
+The pages of classes, interfaces, traits, enums, and files list their sections in the "On this page" box. Metadata
+on the element of the page, such as a class, can add an entry there. Metadata on a method, like our hooks, cannot:
+methods have no entries of their own in the box. To add an entry, provide the template
+``@<alias>/on-this-page/<key>.html.twig``. It receives the same ``metadata`` and ``node`` variables, and renders a list
+item:
+
+.. code-block:: twig
+
+    <li><a href="{{ link(node) }}#wp-hooks">Hooks</a></li>
+
+The link needs an anchor in the template of step 2, such as ``id="wp-hooks"``. The template is optional: without it,
+the metadata has no entry in "On this page", and no warning is logged. Each extension adds the entries for its own
+keys, so several extensions can add entries to the same page.
+
 Try it
 ------
 

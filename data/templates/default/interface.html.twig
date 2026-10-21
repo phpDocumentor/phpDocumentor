@@ -31,6 +31,8 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                    {% block on_this_page_table_of_contents %}
+                    {{ include('components/on-this-page-metadata.html.twig', {'node': node}) }}
                     {% if constants is not empty %}
                     <li><a href="{{ link(node) }}#toc-constants">Constants</a></li>
                     {% endif %}
@@ -40,6 +42,7 @@
                     {% if methods is not empty %}
                     <li><a href="{{ link(node) }}#toc-methods">Methods</a></li>
                     {% endif %}
+                    {% endblock %}
                 </ul>
             </li>
             {% if properties is not empty %}

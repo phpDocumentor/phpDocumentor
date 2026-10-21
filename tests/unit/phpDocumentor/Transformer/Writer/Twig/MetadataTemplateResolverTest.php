@@ -25,6 +25,7 @@ final class MetadataTemplateResolverTest extends TestCase
 {
     private const EXTENSIONS = [
         'my-extension' => ['path' => '/extensions/my-extension/templates', 'keys' => ['my_key']],
+        'other-extension' => ['path' => '/extensions/other-extension/templates', 'keys' => ['other_key']],
     ];
 
     /** @var list<array{level: string, message: string, context: array<mixed>}> */
@@ -97,6 +98,43 @@ final class MetadataTemplateResolverTest extends TestCase
         $this->assertCount(2, $this->records);
         $this->assertStringContainsString('Foo', $this->records[0]['message']);
         $this->assertStringContainsString('Bar', $this->records[1]['message']);
+    }
+
+    // Scenario: Each extension provides the entry in "On this page" for its own key
+    public function testItResolvesTheOnThisPageTemplateOfTheExtensionThatDeclaresEachKey(): void
+    {
+        $loader = new ArrayLoader([
+            '@my-extension/on-this-page/my_key.html.twig' => '',
+            '@other-extension/on-this-page/other_key.html.twig' => '',
+        ]);
+
+        $this->assertSame(
+            '@my-extension/on-this-page/my_key.html.twig',
+            $this->resolver->resolveOnThisPage($this->metadata('my_key'), $loader),
+        );
+        $this->assertSame(
+            '@other-extension/on-this-page/other_key.html.twig',
+            $this->resolver->resolveOnThisPage($this->metadata('other_key'), $loader),
+        );
+        $this->assertSame([], $this->records);
+    }
+
+    // Scenario: Metadata without a template for "On this page" has no entry there
+    public function testItResolvesNoOnThisPageTemplateWhenTheExtensionHasNoneAndLogsNothing(): void
+    {
+        $loader = $this->loaderWithTemplate('@my-extension/metadata/my_key.html.twig');
+
+        $this->assertNull($this->resolver->resolveOnThisPage($this->metadata('my_key'), $loader));
+        $this->assertSame([], $this->records);
+    }
+
+    // Scenario: Metadata of an undeclared key has no entry in "On this page"
+    public function testItResolvesNoOnThisPageTemplateForAnUndeclaredKey(): void
+    {
+        $loader = $this->loaderWithTemplate('@my-extension/on-this-page/unknown_key.html.twig');
+
+        $this->assertNull($this->resolver->resolveOnThisPage($this->metadata('unknown_key'), $loader));
+        $this->assertSame([], $this->records);
     }
 
     private function loaderWithTemplate(string|null $name = null): LoaderInterface
