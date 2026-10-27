@@ -27,6 +27,7 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                    {% block on_this_page_table_of_contents %}
                     {% if node.packages is not empty %}
                         <li><a href="{{ link(node) }}#packages">Packages</a></li>
                     {% endif %}
@@ -51,6 +52,7 @@
                     {% if node.functions is not empty %}
                         <li><a href="{{ link(node) }}#toc-functions">Functions</a></li>
                     {% endif %}
+                    {% endblock %}
                 </ul>
             </li>
 
