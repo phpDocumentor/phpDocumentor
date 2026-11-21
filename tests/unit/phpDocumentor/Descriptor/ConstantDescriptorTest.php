@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
@@ -26,14 +24,18 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
  */
 #[CoversClass(ConstantDescriptor::class)]
 #[CoversClass(DescriptorAbstract::class)]
-final class ConstantDescriptorTest extends MockeryTestCase
+final class ConstantDescriptorTest extends TestCase
 {
+    use ProphecyTrait;
+
     private ConstantDescriptor $fixture;
 
     /**
@@ -50,9 +52,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
     {
         self::assertNull($this->fixture->getParent());
 
-        $parentMock = m::mock(ClassDescriptor::class);
-        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\TestClass'));
+        $parentMock = new ClassDescriptor();
+        $parentMock->setFullyQualifiedStructuralElementName(new Fqsen('\TestClass'));
 
         $this->fixture->setParent($parentMock);
 
@@ -63,9 +64,8 @@ final class ConstantDescriptorTest extends MockeryTestCase
     {
         self::assertNull($this->fixture->getParent());
 
-        $parentMock = m::mock(InterfaceDescriptor::class);
-        $parentMock->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\TestInterface'));
+        $parentMock = new InterfaceDescriptor();
+        $parentMock->setFullyQualifiedStructuralElementName(new Fqsen('\TestInterface'));
         $this->fixture->setParent($parentMock);
 
         self::assertSame($parentMock, $this->fixture->getParent());
@@ -245,30 +245,25 @@ final class ConstantDescriptorTest extends MockeryTestCase
      * The created ParentClass can be used to test the inheritance of properties of a constant descriptor, such as
      * inheriting type information.
      *
-     * @return m\MockInterface|ClassDescriptor
+     * @return ClassDescriptor
      */
     protected function createParentClassWithSuperClassAndConstant(Type $type, string $constantName)
     {
         // construct the to-be-inherited constant and its @var tag
-        $varTag = m::mock(VarDescriptor::class);
-        $varTag->shouldReceive('getType')->andReturn($type);
+        $varTag = $this->prophesize(VarDescriptor::class);
+        $varTag->getType()->willReturn($type);
 
-        $parentConstant = m::mock(ConstantDescriptor::class);
-        $parentConstant->shouldReceive('getVar')->andReturn(new Collection([$varTag]));
+        $parentConstant = new ConstantDescriptor();
+        $parentConstant->setTags(new Collection(['var' => new Collection([$varTag->reveal()])]));
 
         // create SuperClassMock and add a Constant collection with out to-be-inherited constant
-        $superClass = m::mock(ClassDescriptor::class);
-        $superClass->shouldReceive('getConstants')->andReturn(
-            new Collection(
-                [$constantName => $parentConstant],
-            ),
-        );
+        $superClass = new ClassDescriptor();
+        $superClass->setConstants(new Collection([$constantName => $parentConstant]));
 
         // create and set the parent class for our fixture
-        $parentClass = m::mock(ClassDescriptor::class);
-        $parentClass->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\TestClass'));
-        $parentClass->shouldReceive('getParent')->andReturn($superClass);
+        $parentClass = new ClassDescriptor();
+        $parentClass->setFullyQualifiedStructuralElementName(new Fqsen('\TestClass'));
+        $parentClass->setParent($superClass);
 
         return $parentClass;
     }
@@ -276,11 +271,11 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * Sets up mocks as such that the fixture has a file.
      *
-     * @return m\MockInterface|FileDescriptor
+     * @return FileDescriptor
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock(FileDescriptor::class);
+        $file = new FileDescriptor('path');
         $this->fixture->setFile($file);
 
         return $file;
@@ -289,15 +284,14 @@ final class ConstantDescriptorTest extends MockeryTestCase
     /**
      * Sets up mocks as such that the fixture has a parent class, with a file.
      *
-     * @return m\MockInterface|FileDescriptor
+     * @return FileDescriptor
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock(FileDescriptor::class);
-        $parent = m::mock(ClassDescriptor::class);
-        $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')
-            ->andReturn(new Fqsen('\Class1'));
+        $file = new FileDescriptor('path');
+        $parent = new ClassDescriptor();
+        $parent->setFile($file);
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;

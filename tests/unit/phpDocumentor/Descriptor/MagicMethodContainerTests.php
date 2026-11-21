@@ -13,16 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 trait MagicMethodContainerTests
 {
+    use ProphecyTrait;
+
     #[DataProvider('provideMagicMethodProperties')]
     public function testGetMagicMethods(bool $isStatic): void
     {
@@ -30,18 +33,18 @@ trait MagicMethodContainerTests
         $description = new DescriptionDescriptor(new Description('description'), []);
         $response = new ReturnDescriptor('return');
         $response->setType(new String_());
-        $argument = m::mock(ArgumentDescriptor::class);
-        $argument->shouldReceive('setMethod');
+        $argument = $this->prophesize(ArgumentDescriptor::class);
+        $argument->setMethod(Argument::any())->shouldBeCalled();
 
-        $methodMock = m::mock(TagMethodDescriptor::class);
-        $methodMock->shouldReceive('getMethodName')->andReturn($methodName);
-        $methodMock->shouldReceive('getDescription')->andReturn($description);
-        $methodMock->shouldReceive('getResponse')->andReturn($response);
-        $methodMock->shouldReceive('getArguments')->andReturn(new Collection(['argument1' => $argument]));
-        $methodMock->shouldReceive('isStatic')->andReturn($isStatic);
-        $methodMock->shouldReceive('getHasReturnByReference')->andReturn(false);
+        $methodMock = $this->prophesize(TagMethodDescriptor::class);
+        $methodMock->getMethodName()->willReturn($methodName);
+        $methodMock->getDescription()->willReturn($description);
+        $methodMock->getResponse()->willReturn($response);
+        $methodMock->getArguments()->willReturn(new Collection(['argument1' => $argument->reveal()]));
+        $methodMock->isStatic()->willReturn($isStatic);
+        $methodMock->getHasReturnByReference()->willReturn(false);
 
-        $this->fixture->getTags()->fetch('method', new Collection())->add($methodMock);
+        $this->fixture->getTags()->fetch('method', new Collection())->add($methodMock->reveal());
 
         $magicMethods = $this->fixture->getMagicMethods();
 

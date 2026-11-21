@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
  */
 #[CoversClass(EnumDescriptor::class)]
-final class EnumDescriptorTest extends MockeryTestCase
+final class EnumDescriptorTest extends TestCase
 {
     /** @var EnumDescriptor $fixture */
     private $fixture;
@@ -42,7 +41,7 @@ final class EnumDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setInterfaces($mock);
 
@@ -53,7 +52,7 @@ final class EnumDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setMethods($mock);
 

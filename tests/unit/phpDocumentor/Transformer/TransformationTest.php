@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer;
 
-use Mockery as m;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template\Parameter;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 #[CoversClass(Transformation::class)]
-final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
+final class TransformationTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     private Transformation $fixture;
 
@@ -110,7 +112,7 @@ final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 
     public function testSetAndGetTransformer(): void
     {
-        $transformer = m::mock(Transformer::class);
+        $transformer = $this->prophesize(Transformer::class)->reveal();
         $this->fixture->setTransformer($transformer);
 
         $this->assertSame($transformer, $this->fixture->getTransformer());

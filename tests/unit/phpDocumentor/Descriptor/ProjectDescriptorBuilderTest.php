@@ -13,27 +13,31 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\ProjectDescriptorBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
  */
 #[CoversClass(ProjectDescriptorBuilder::class)]
-class ProjectDescriptorBuilderTest extends MockeryTestCase
+class ProjectDescriptorBuilderTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ProjectDescriptorBuilder $fixture */
     protected $fixture;
 
     /**
      * Mock of the required AssemblerFactory dependency of the $fixture.
      *
-     * @var AssemblerFactory|m\MockInterface
+     * @var AssemblerFactory|ObjectProphecy
      */
     protected $assemblerFactory;
 
@@ -43,9 +47,9 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     protected function setUp(): void
     {
         $this->assemblerFactory = $this->createAssemblerFactoryMock();
-        $filterMock = m::mock(Filter::class);
+        $filterMock = $this->prophesize(Filter::class)->reveal();
 
-        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory, $filterMock);
+        $this->fixture = new ProjectDescriptorBuilder($this->assemblerFactory->reveal(), $filterMock);
     }
 
     public function testCreatesAnEmptyProjectDescriptorWhenCalledFor(): void
@@ -62,26 +66,24 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
     /**
      * Creates a new FileReflector mock that can be used as input for the builder.
      */
-    protected function createFileReflectorMock(): m\MockInterface
+    protected function createFileReflectorMock(): object
     {
-        return m::mock('phpDocumentor\Reflection\FileReflector');
+        return $this->prophesize('phpDocumentor\Reflection\FileReflector')->reveal();
     }
 
     protected function createFileDescriptorCreationMock(): void
     {
-        $fileDescriptor = m::mock(FileDescriptor::class);
-        $fileDescriptor->shouldReceive('setErrors');
-        $fileDescriptor->shouldReceive('getPath')->andReturn('abc');
+        $fileDescriptor = $this->prophesize(FileDescriptor::class);
+        $fileDescriptor->setErrors(Argument::any())->willReturn(null);
+        $fileDescriptor->getPath()->willReturn('abc');
 
-        $fileAssembler = m::mock('stdClass');
-        $fileAssembler->shouldReceive('setBuilder')->withAnyArgs();
-        $fileAssembler->shouldReceive('create')
-            ->with('phpDocumentor\Reflection\FileReflector')
-            ->andReturn($fileDescriptor);
+        $fileAssembler = $this->prophesize('stdClass');
+        $fileAssembler->setBuilder(Argument::cetera())->willReturn(null);
+        $fileAssembler->create('phpDocumentor\Reflection\FileReflector')
+            ->willReturn($fileDescriptor->reveal());
 
-        $this->assemblerFactory->shouldReceive('get')
-            ->with('phpDocumentor\Reflection\FileReflector')
-            ->andReturn($fileAssembler);
+        $this->assemblerFactory->get('phpDocumentor\Reflection\FileReflector')
+            ->willReturn($fileAssembler->reveal());
     }
 
     /**
@@ -90,11 +92,11 @@ class ProjectDescriptorBuilderTest extends MockeryTestCase
      * When a FileReflector (or mock thereof) is passed to the 'get' method this mock will return an
      * empty instance of the FileDescriptor class.
      *
-     * @return m\MockInterface|AssemblerFactory
+     * @return ObjectProphecy
      */
     protected function createAssemblerFactoryMock()
     {
-        return m::mock(AssemblerFactory::class);
+        return $this->prophesize(AssemblerFactory::class);
     }
 
     public function testSetVisibility(): void

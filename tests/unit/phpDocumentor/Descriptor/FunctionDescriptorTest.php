@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 #[CoversClass(FunctionDescriptor::class)]
-final class FunctionDescriptorTest extends MockeryTestCase
+final class FunctionDescriptorTest extends TestCase
 {
+    use ProphecyTrait;
+
     private FunctionDescriptor $fixture;
 
     /**
@@ -40,8 +42,8 @@ final class FunctionDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getArguments());
 
-        $mockInstance = m::mock(Collection::class);
-        $mock = &$mockInstance;
+        $mockInstance = $this->prophesize(Collection::class)->reveal();
+        $mock = $mockInstance;
 
         $this->fixture->setArguments($mock);
 

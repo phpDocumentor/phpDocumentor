@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
  */
 #[CoversClass(InterfaceDescriptor::class)]
 #[CoversClass(DescriptorAbstract::class)]
-final class InterfaceDescriptorTest extends MockeryTestCase
+final class InterfaceDescriptorTest extends TestCase
 {
+    use ProphecyTrait;
+
     private InterfaceDescriptor $fixture;
 
     /**
@@ -51,7 +53,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setConstants($mock);
 
@@ -62,7 +64,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setProperties($mock);
 
@@ -73,7 +75,7 @@ final class InterfaceDescriptorTest extends MockeryTestCase
     {
         $this->assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setMethods($mock);
 

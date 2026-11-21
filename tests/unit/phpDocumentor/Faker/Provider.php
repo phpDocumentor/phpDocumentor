@@ -17,7 +17,6 @@ use Faker\Provider\Base;
 use League\Flysystem\Adapter\NullAdapter;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
-use Mockery as m;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\AuthorCollection;
 use PharIo\Manifest\BundledComponentCollection;
@@ -95,22 +94,20 @@ final class Provider extends Base
     public function transformer(Template\Collection|null $templateCollection = null): Transformer
     {
         if ($templateCollection === null) {
-            $templateCollection = m::mock(Template\Collection::class);
-            $templateCollection->shouldIgnoreMissing();
+            $templateCollection = new Template\Collection();
         }
 
-        $writerCollectionMock = m::mock(Collection::class);
-        $writerCollectionMock->shouldIgnoreMissing();
+        $writerCollection = new Collection();
 
         return new Transformer(
             $templateCollection,
-            $writerCollectionMock,
+            $writerCollection,
             new NullLogger(),
             $this->flySystemFactory(),
         );
     }
 
-    /** @return m\LegacyMockInterface|m\MockInterface|FlySystemFactory */
+    /** @return FlySystemFactory */
     public function flySystemFactory()
     {
         return new FlySystemFactory(new MountManager());

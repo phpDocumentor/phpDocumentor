@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
@@ -24,6 +22,7 @@ use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
 
@@ -32,7 +31,7 @@ use function iterator_to_array;
  */
 #[CoversClass(MethodDescriptor::class)]
 #[CoversClass(DescriptorAbstract::class)]
-final class MethodDescriptorTest extends MockeryTestCase
+final class MethodDescriptorTest extends TestCase
 {
     use AttributedTestTrait;
 
@@ -404,10 +403,10 @@ final class MethodDescriptorTest extends MockeryTestCase
      */
     private function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock(FileDescriptor::class);
-        $parent = m::mock(ClassDescriptor::class);
-        $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn(new Fqsen('\My\Class1'));
+        $file = new FileDescriptor('path');
+        $parent = new ClassDescriptor();
+        $parent->setFile($file);
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;

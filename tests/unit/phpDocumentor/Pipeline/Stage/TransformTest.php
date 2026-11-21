@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline\Stage;
 
-use Mockery\LegacyMockInterface;
-use Mockery\MockInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\Dsn;
@@ -28,7 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\ProphecyMock;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -38,19 +36,19 @@ final class TransformTest extends TestCase
     use ProphecyTrait;
     use Faker;
 
-    /** @var ProjectDescriptorBuilder|ProphecyMock */
+    /** @var ProjectDescriptorBuilder|ObjectProphecy */
     private $projectDescriptorBuilder;
 
-    /** @var Transformer|ProphecyMock */
+    /** @var Transformer|ObjectProphecy */
     private $transformer;
 
-    /** @var LoggerInterface|ProphecyMock */
+    /** @var LoggerInterface|ObjectProphecy */
     private $logger;
 
     /** @var Compile */
     private Transform $transform;
 
-    /** @var LegacyMockInterface|MockInterface|FlySystemFactory */
+    /** @var FlySystemFactory|ObjectProphecy */
     private $flySystemFactory;
 
     public function setUp(): void

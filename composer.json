@@ -106,7 +106,6 @@
         "doctrine/coding-standard": "^13.0",
         "fakerphp/faker": "^1.21",
         "mikey179/vfsstream": "^1.2",
-        "mockery/mockery": "^1.0",
         "phpat/phpat": "^0.10.20",
         "phpdocumentor/extension-guides-directives": "dev-master@dev",
         "phpspec/prophecy-phpunit": "^2.2",

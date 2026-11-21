@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VarDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
@@ -24,13 +22,14 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\Array_;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
 #[CoversClass(PropertyDescriptor::class)]
 #[CoversClass(DescriptorAbstract::class)]
-final class PropertyDescriptorTest extends MockeryTestCase
+final class PropertyDescriptorTest extends TestCase
 {
     protected PropertyDescriptor $fixture;
 
@@ -232,11 +231,11 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * Sets up mocks as such that the fixture has a file.
      *
-     * @return m\MockInterface|FileDescriptor
+     * @return FileDescriptor
      */
     protected function whenFixtureIsDirectlyRelatedToAFile()
     {
-        $file = m::mock(FileDescriptor::class);
+        $file = new FileDescriptor('path');
         $this->fixture->setFile($file);
 
         return $file;
@@ -245,14 +244,14 @@ final class PropertyDescriptorTest extends MockeryTestCase
     /**
      * Sets up mocks as such that the fixture has a parent class, with a file.
      *
-     * @return m\MockInterface|FileDescriptor
+     * @return FileDescriptor
      */
     protected function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock(FileDescriptor::class);
-        $parent = m::mock(ClassDescriptor::class);
-        $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn(new Fqsen('\Class1'));
+        $file = new FileDescriptor('path');
+        $parent = new ClassDescriptor();
+        $parent->setFile($file);
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;

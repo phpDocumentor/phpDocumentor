@@ -13,22 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
-use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Validation\Error;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Location;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the DescriptorAbstract class.
  */
 #[CoversClass(DescriptorAbstract::class)]
-class DescriptorAbstractTest extends MockeryTestCase
+class DescriptorAbstractTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -45,7 +43,6 @@ class DescriptorAbstractTest extends MockeryTestCase
 
     public function testInitialize(): void
     {
-        /** @var m\MockInterface|DescriptorAbstract $mock */
         $mock = $this->getMockBuilder(DescriptorAbstract::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -76,7 +73,7 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         self::assertEquals('', $this->fixture->getNamespace());
 
-        $mock = m::mock(NamespaceDescriptor::class);
+        $mock = new NamespaceDescriptor();
 
         $this->fixture->setNamespace($mock);
 
@@ -143,55 +140,40 @@ class DescriptorAbstractTest extends MockeryTestCase
 
     public function testGetAuthor(): void
     {
-        /** @var m\MockInterface|DescriptorAbstract $mock */
-        $mock = m::mock(
-            DescriptorAbstract::class,
-            ChildInterface::class,
-        );
-        $mock->makePartial();
+        $mock = new TestSubjectDescriptor();
 
         $author = new Collection(['author']);
 
         $collection = new Collection();
         $collection->offsetSet('author', $author);
 
-        $mock->shouldReceive('getTags')->andReturn($collection);
+        $mock->setTags($collection);
         self::assertSame($author, $mock->getAuthor());
     }
 
     public function testGetVersion(): void
     {
-        /** @var m\MockInterface|DescriptorAbstract $mock */
-        $mock = m::mock(
-            DescriptorAbstract::class,
-            ChildInterface::class,
-        );
-        $mock->makePartial();
+        $mock = new TestSubjectDescriptor();
 
         $version = new Collection(['version']);
 
         $collection = new Collection();
         $collection->offsetSet('version', $version);
 
-        $mock->shouldReceive('getTags')->andReturn($collection);
+        $mock->setTags($collection);
         self::assertSame($version, $mock->getVersion());
     }
 
     public function testGetCopyRight(): void
     {
-        /** @var m\MockInterface|DescriptorAbstract $mock */
-        $mock = m::mock(
-            DescriptorAbstract::class,
-            ChildInterface::class,
-        );
-        $mock->makePartial();
+        $mock = new TestSubjectDescriptor();
 
         $copyright = new Collection(['copyright']);
 
         $collection = new Collection();
         $collection->offsetSet('copyright', $copyright);
 
-        $mock->shouldReceive('getTags')->andReturn($collection);
+        $mock->setTags($collection);
         self::assertSame($copyright, $mock->getCopyright());
     }
 
@@ -201,7 +183,7 @@ class DescriptorAbstractTest extends MockeryTestCase
         self::assertSame(0, $this->fixture->getLine());
 
         $startLocation = new Location(5, 100);
-        $this->fixture->setLocation(m::mock(FileDescriptor::class), $startLocation);
+        $this->fixture->setLocation(new FileDescriptor('path'), $startLocation);
 
         self::assertInstanceOf(FileDescriptor::class, $this->fixture->getFile());
         self::assertSame($startLocation, $this->fixture->getStartLocation());
@@ -231,9 +213,8 @@ class DescriptorAbstractTest extends MockeryTestCase
     {
         self::assertSame('', $this->fixture->getPath());
 
-        /** @var m\MockInterface $file */
-        $file = m::mock(FileDescriptor::class);
-        $file->shouldReceive('getPath')->andReturn('path');
+        $file = new FileDescriptor('path');
+        $file->setPath('path');
         $this->fixture->setLocation($file, new Location(10));
 
         self::assertSame('path', $this->fixture->getPath());
@@ -241,8 +222,7 @@ class DescriptorAbstractTest extends MockeryTestCase
 
     public function testSettingAndGettingTags(): void
     {
-        /** @var Collection $mock */
-        $mock = m::mock(Collection::class);
+        $mock = new Collection();
         $this->fixture->setTags($mock);
 
         self::assertSame($mock, $this->fixture->getTags());
