@@ -67,6 +67,15 @@ final class Pizzeria implements \JsonSerializable
     }
 
     /**
+     * Consumes a collection of pizzas and products.
+     *
+     * @param Collection<Pizza, Product> $collection The collection to consume.
+     */
+    public function consumeCollection(Collection $collection): void
+    {
+    }
+
+    /**
      * Create an instance of a class.
      *
      * @template T of object

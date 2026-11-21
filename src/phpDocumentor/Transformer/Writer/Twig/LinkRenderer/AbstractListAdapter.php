@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoType;
-use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;

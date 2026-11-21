@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -197,6 +198,35 @@ final class LinkRendererTest extends TestCase
         $this->assertSame(
             '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
             $result,
+        );
+    }
+
+    public function testRenderGenericLinksTheNameAndItsTypes(): void
+    {
+        $collection = self::createClassDescriptor(new Fqsen('\\Collection'));
+        $foo = self::createClassDescriptor(new Fqsen('\\Foo'));
+        $bar = self::createClassDescriptor(new Fqsen('\\Bar'));
+
+        foreach ([$collection, $foo, $bar] as $descriptor) {
+            $this->apiSetDescriptor->getIndexes()->get('elements')
+                ->set((string) $descriptor->getFullyQualifiedStructuralElementName(), $descriptor);
+        }
+
+        $this->router->generate($collection)->willReturn('/classes/Collection.html');
+        $this->router->generate($foo)->willReturn('/classes/Foo.html');
+        $this->router->generate($bar)->willReturn('/classes/Bar.html');
+
+        self::assertSame(
+            '<a href="classes/Collection.html"><abbr title="\\Collection">Collection</abbr></a>&lt;' .
+            '<a href="classes/Foo.html"><abbr title="\\Foo">Foo</abbr></a>, ' .
+            '<a href="classes/Bar.html"><abbr title="\\Bar">Bar</abbr></a>&gt;',
+            $this->renderer->render(
+                new Generic(
+                    new Fqsen('\\Collection'),
+                    [new Object_(new Fqsen('\\Foo')), new Object_(new Fqsen('\\Bar'))],
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+            ),
         );
     }
 
