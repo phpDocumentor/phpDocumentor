@@ -215,7 +215,6 @@ jobs:
           - macOS-latest
         php-versions:
           - '8.2'
-          - '8.2'
           - '8.3'
           - '8.4'
           - '8.5'
@@ -329,7 +328,6 @@ jobs:
       matrix:
         php-versions:
           - '8.2'
-          - '8.2'
           - '8.3'
           - '8.4'
           - '8.5'
@@ -391,7 +389,6 @@ jobs:
           - 'clean'
           - 'default'
         php-versions:
-          - '8.2'
           - '8.2'
           - '8.3'
           - '8.4'
