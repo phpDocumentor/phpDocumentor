@@ -217,24 +217,6 @@ final class LinkRendererTest extends TestCase
     public static function typeRouteProvider(): array
     {
         return [
-            'collection with class' => [
-                new \phpDocumentor\Reflection\Types\Collection(
-                    new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\Class')),
-                ),
-                LinkRenderer::PRESENTATION_CLASS_SHORT,
-                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
-                '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>&gt;',
-            ],
-            'collection with not existing class' => [
-                new \phpDocumentor\Reflection\Types\Collection(
-                    new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\OtherClass')),
-                ),
-                LinkRenderer::PRESENTATION_CLASS_SHORT,
-                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
-                '<abbr title="\My\Namespace\OtherClass">OtherClass</abbr>&gt;',
-            ],
             'array with scalar only' => [
                 new Array_(
                     new String_(),
@@ -268,7 +250,7 @@ final class LinkRendererTest extends TestCase
                 'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
             ],
             'callable with union parameter' => [
-                new Callable_([
+                new Callable_(parameters: [
                     new CallableParameter(new Compound([new Integer(), new String_()])),
                 ]),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
@@ -276,14 +258,13 @@ final class LinkRendererTest extends TestCase
             ],
             'callable with union return type' => [
                 new Callable_(
-                    [],
-                    new Compound([new Integer(), new String_()]),
+                    returnType: new Compound([new Integer(), new String_()]),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'callable(): int|string',
             ],
             'callable with intersection parameter' => [
-                new Callable_([
+                new Callable_(parameters: [
                     new CallableParameter(new Intersection([new String_(), new Boolean()])),
                 ]),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,

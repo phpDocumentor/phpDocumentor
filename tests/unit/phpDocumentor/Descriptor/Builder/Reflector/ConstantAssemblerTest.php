@@ -92,7 +92,11 @@ DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
-        $constantReflectorMock = new Constant(new Fqsen('\\' . $namespace . '::' . $name), $docBlockMock, $pi);
+        $constantReflectorMock = new Constant(
+            new Fqsen('\\' . $namespace . '::' . $name),
+            $docBlockMock,
+            new Expression($pi),
+        );
 
         $descriptor = $this->fixture->create($constantReflectorMock);
 
@@ -124,7 +128,11 @@ DOCBLOCK,
         );
 
         $docBlockMock = new DocBlock('This is a example description', $docBlockDescription);
-        $constantReflectorMock = new Constant(new Fqsen('\\' . $namespace . '\\' . $name), $docBlockMock, $pi);
+        $constantReflectorMock = new Constant(
+            new Fqsen('\\' . $namespace . '\\' . $name),
+            $docBlockMock,
+            new Expression($pi),
+        );
 
         $descriptor = $this->fixture->create($constantReflectorMock);
 

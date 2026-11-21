@@ -62,7 +62,7 @@ final class MethodAssemblerTest extends TestCase
         array $arguments = [],
         Description|null $description = null,
     ): void {
-        $tag = new Method($name, [], $returnType, false, $description, false, $arguments);
+        $tag = new Method($name, $arguments, $returnType, false, $description, false);
 
         $descriptor = $this->fixture->create($tag);
 

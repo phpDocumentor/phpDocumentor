@@ -70,10 +70,6 @@ final class PropertyHookAssembler extends AssemblerAbstract
             };
         }
 
-        if ($data->getVisibility() === null) {
-            return new Visibility(VisibilityModifier::PUBLIC);
-        }
-
         return new Visibility(
             VisibilityModifier::from((string) $data->getVisibility()),
         );

@@ -43,7 +43,7 @@ class ArgumentAssembler extends BaseAssembler
             $this->overwriteTypeAndDescriptionFromParamTag($data, $paramDescriptor, $argumentDescriptor);
         }
 
-        $argumentDescriptor->setDefault($data->getDefault(false));
+        $argumentDescriptor->setDefault($data->getDefault());
         $argumentDescriptor->setByReference(IsApplicable::fromBoolean($data->isByReference()));
         $argumentDescriptor->setVariadic(IsApplicable::fromBoolean($data->isVariadic()));
 

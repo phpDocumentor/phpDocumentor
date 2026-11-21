@@ -15,9 +15,9 @@ namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoType;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -62,7 +62,7 @@ final class AbstractListAdapter implements LinkRendererInterface
             return $this->renderShortArray($value, $presentation);
         }
 
-        $listType = $this->renderListType($value, $presentation);
+        $listType = $this->renderListType($value);
         $keyType = $this->renderKeyType($value, $presentation);
         $valueType = $this->renderValueType($value, $presentation);
 
@@ -88,25 +88,15 @@ final class AbstractListAdapter implements LinkRendererInterface
         return sprintf('%s[]', $valueType);
     }
 
-    private function renderListType(AbstractList $node, string $presentation): string
+    private function renderListType(AbstractList $node): string
     {
         $listType = 'mixed';
-        if ($node instanceof Collection) {
-            $listType = $node->getFqsen()
-                ? $this->rendererChain->render($node->getFqsen(), $presentation)
-                : 'object';
-        }
-
         if ($node instanceof Array_) {
             $listType = 'array';
         }
 
         if ($node instanceof Iterable_) {
             $listType = 'iterable';
-        }
-
-        if (is_array($listType)) {
-            $listType = implode('|', $listType);
         }
 
         return $listType;

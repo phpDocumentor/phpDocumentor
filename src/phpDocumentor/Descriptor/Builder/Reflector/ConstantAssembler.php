@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector;
 use phpDocumentor\Descriptor\ConstantDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ConstantInterface;
 use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Expression;
 
 use function str_contains;
 use function strlen;
@@ -39,7 +40,7 @@ class ConstantAssembler extends AssemblerAbstract
     {
         $constantDescriptor = new ConstantDescriptor();
         $constantDescriptor->setName($data->getName());
-        $constantDescriptor->setValue($data->getValue(false));
+        $constantDescriptor->setValue($data->getValue() ?? new Expression('?'));
         $constantDescriptor->setFinal($data->isFinal());
 
         if ($data->getType()) {
