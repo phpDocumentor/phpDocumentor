@@ -247,6 +247,25 @@ describe('Showing methods for a class', function() {
                 });
         })
 
+        it('Will link the generic type and its generic arguments', function () {
+            getElementWithName('method', 'consumeCollection()')
+                .find('.phpdocumentor-argument-list__heading')
+                .next()
+                .should('have.class', 'phpdocumentor-argument-list')
+                .within(function () {
+                    cy.contains('.phpdocumentor-argument-list__entry', '$collection')
+                        .find('.phpdocumentor-argument-list__argument__type')
+                        .within(function () {
+                            cy.contains('a', 'Collection')
+                                .should('have.attr', 'href', 'classes/Marios-Collection.html');
+                            cy.contains('a', 'Pizza')
+                                .should('have.attr', 'href', 'classes/Marios-Pizza.html');
+                            cy.contains('a', 'Product')
+                                .should('have.attr', 'href', 'classes/Marios-Product.html');
+                        });
+                });
+        });
+
         it('Will show a parameter with a description', function () {
             getElementWithName('method', 'doOrder()')
                 .find('.phpdocumentor-argument-list__heading')

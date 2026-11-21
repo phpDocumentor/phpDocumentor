@@ -20,7 +20,6 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\Types\AbstractList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -132,16 +131,12 @@ final class AbstractListAdapterTest extends TestCase
                 new NonEmptyArray(new String_()),
                 'array&lt;string|int, string&gt;',
             ],
-            'Collection with string value' => [
-                new Collection(new Fqsen('\MyAwesome\Collection'), new String_()),
-                '\MyAwesome\Collection&lt;string|int, string&gt;',
-            ],
-            'Collection of unknown type' => [
-                new Collection(null, new String_()),
-                'object&lt;string|int, string&gt;',
-            ],
             'Unknown AbstractList with string key and int value' => [
                 new class (new Integer(), new String_()) extends AbstractList {
+                    public function __toString(): string
+                    {
+                        return 'mixed';
+                    }
                 },
                 'mixed&lt;string, int&gt;',
             ],

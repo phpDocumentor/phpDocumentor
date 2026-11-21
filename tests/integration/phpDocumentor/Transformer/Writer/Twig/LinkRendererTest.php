@@ -19,6 +19,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -200,6 +201,35 @@ final class LinkRendererTest extends TestCase
         );
     }
 
+    public function testRenderGenericLinksTheNameAndItsTypes(): void
+    {
+        $collection = self::createClassDescriptor(new Fqsen('\\Collection'));
+        $foo = self::createClassDescriptor(new Fqsen('\\Foo'));
+        $bar = self::createClassDescriptor(new Fqsen('\\Bar'));
+
+        foreach ([$collection, $foo, $bar] as $descriptor) {
+            $this->apiSetDescriptor->getIndexes()->get('elements')
+                ->set((string) $descriptor->getFullyQualifiedStructuralElementName(), $descriptor);
+        }
+
+        $this->router->generate($collection)->willReturn('/classes/Collection.html');
+        $this->router->generate($foo)->willReturn('/classes/Foo.html');
+        $this->router->generate($bar)->willReturn('/classes/Bar.html');
+
+        self::assertSame(
+            '<a href="classes/Collection.html"><abbr title="\\Collection">Collection</abbr></a>&lt;' .
+            '<a href="classes/Foo.html"><abbr title="\\Foo">Foo</abbr></a>, ' .
+            '<a href="classes/Bar.html"><abbr title="\\Bar">Bar</abbr></a>&gt;',
+            $this->renderer->render(
+                new Generic(
+                    new Fqsen('\\Collection'),
+                    [new Object_(new Fqsen('\\Foo')), new Object_(new Fqsen('\\Bar'))],
+                ),
+                LinkRenderer::PRESENTATION_CLASS_SHORT,
+            ),
+        );
+    }
+
     #[DataProvider('typeRouteProvider')]
     public function testRenderType(Type $input, string $presentation, string $output): void
     {
@@ -217,24 +247,6 @@ final class LinkRendererTest extends TestCase
     public static function typeRouteProvider(): array
     {
         return [
-            'collection with class' => [
-                new \phpDocumentor\Reflection\Types\Collection(
-                    new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\Class')),
-                ),
-                LinkRenderer::PRESENTATION_CLASS_SHORT,
-                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
-                '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>&gt;',
-            ],
-            'collection with not existing class' => [
-                new \phpDocumentor\Reflection\Types\Collection(
-                    new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\OtherClass')),
-                ),
-                LinkRenderer::PRESENTATION_CLASS_SHORT,
-                '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
-                '<abbr title="\My\Namespace\OtherClass">OtherClass</abbr>&gt;',
-            ],
             'array with scalar only' => [
                 new Array_(
                     new String_(),
@@ -268,7 +280,7 @@ final class LinkRendererTest extends TestCase
                 'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
             ],
             'callable with union parameter' => [
-                new Callable_([
+                new Callable_(parameters: [
                     new CallableParameter(new Compound([new Integer(), new String_()])),
                 ]),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
@@ -276,14 +288,13 @@ final class LinkRendererTest extends TestCase
             ],
             'callable with union return type' => [
                 new Callable_(
-                    [],
-                    new Compound([new Integer(), new String_()]),
+                    returnType: new Compound([new Integer(), new String_()]),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'callable(): int|string',
             ],
             'callable with intersection parameter' => [
-                new Callable_([
+                new Callable_(parameters: [
                     new CallableParameter(new Intersection([new String_(), new Boolean()])),
                 ]),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,

@@ -65,50 +65,49 @@ class CallableAdapterTest extends TestCase
 
         yield 'callable with parameters' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_()), new CallableParameter(new String_())],
+                parameters: [new CallableParameter(new String_()), new CallableParameter(new String_())],
             ),
             'output' => 'callable(string, string)',
         ];
 
         yield 'callable with return type' => [
             'input' => new Callable_(
-                [],
-                new String_(),
+                returnType: new String_(),
             ),
             'output' => 'callable(): string',
         ];
 
         yield 'callable with named parameters' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo'), new CallableParameter(new String_(), 'bar')],
+                parameters: [new CallableParameter(new String_(), 'foo'), new CallableParameter(new String_(), 'bar')],
             ),
             'output' => 'callable(string $foo, string $bar)',
         ];
 
         yield 'callable with variadic parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), null, false, true)],
+                parameters: [new CallableParameter(new String_(), null, false, true)],
             ),
             'output' => 'callable(string...)',
         ];
 
         yield 'callable with named variadic parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo', false, true)],
+                parameters: [new CallableParameter(new String_(), 'foo', false, true)],
             ),
             'output' => 'callable(string ...$foo)',
         ];
 
         yield 'callable with reference parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), null, true)],
+                parameters: [new CallableParameter(new String_(), null, true)],
             ),
             'output' => 'callable(string&)',
         ];
 
         yield 'callable with named variadic reference parameter' => [
             'input' => new Callable_(
-                [new CallableParameter(new String_(), 'foo', true, true)],
+                parameters: [new CallableParameter(new String_(), 'foo', true, true)],
             ),
             'output' => 'callable(string ...&$foo)',
         ];
@@ -133,27 +132,27 @@ class CallableAdapterTest extends TestCase
         $union = new Compound([new Integer(), new String_()]);
 
         yield 'union parameter' => [
-            'input' => new Callable_([new CallableParameter($union)]),
+            'input' => new Callable_(parameters: [new CallableParameter($union)]),
             'output' => 'callable(int|string)',
         ];
 
         yield 'union return type' => [
-            'input' => new Callable_([], $union),
+            'input' => new Callable_(returnType: $union),
             'output' => 'callable(): int|string',
         ];
 
         yield 'named union parameter' => [
-            'input' => new Callable_([new CallableParameter($union, 'foo')]),
+            'input' => new Callable_(parameters: [new CallableParameter($union, 'foo')]),
             'output' => 'callable(int|string $foo)',
         ];
 
         yield 'variadic union parameter' => [
-            'input' => new Callable_([new CallableParameter($union, 'foo', false, true)]),
+            'input' => new Callable_(parameters: [new CallableParameter($union, 'foo', false, true)]),
             'output' => 'callable(int|string ...$foo)',
         ];
 
         yield 'union parameter mixed with scalar' => [
-            'input' => new Callable_([new CallableParameter($union), new CallableParameter(new String_())]),
+            'input' => new Callable_(parameters: [new CallableParameter($union), new CallableParameter(new String_())]),
             'output' => 'callable(int|string, string)',
         ];
     }
@@ -168,7 +167,7 @@ class CallableAdapterTest extends TestCase
         self::assertSame(
             'callable(string&bool)',
             $this->adapter->render(
-                new Callable_([new CallableParameter($intersection)]),
+                new Callable_(parameters: [new CallableParameter($intersection)]),
                 LinkRenderer::PRESENTATION_NORMAL,
             ),
         );

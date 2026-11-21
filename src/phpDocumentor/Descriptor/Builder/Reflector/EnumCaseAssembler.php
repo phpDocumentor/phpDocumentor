@@ -33,7 +33,7 @@ final class EnumCaseAssembler extends AssemblerAbstract
         $descriptor->setName($data->getName());
         $descriptor->setStartLocation($data->getLocation());
         $descriptor->setEndLocation($data->getEndLocation());
-        $descriptor->setValue($data->getValue(false));
+        $descriptor->setValue($data->getValue());
         $this->assembleDocBlock($data->getDocBlock() ?? new DocBlock(), $descriptor);
 
         return $descriptor;
