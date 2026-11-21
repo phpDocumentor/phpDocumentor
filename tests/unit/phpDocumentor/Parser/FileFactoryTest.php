@@ -19,12 +19,13 @@ use phpDocumentor\Parser\FileFactory;
 use phpDocumentor\Parser\Middleware\EmittingMiddleware;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use phpDocumentor\Reflection\Php\NodesFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/** @coversDefaultClass \phpDocumentor\Parser\FileFactory */
+#[CoversClass(FileFactory::class)]
 final class FileFactoryTest extends TestCase
 {
     use ProphecyTrait;

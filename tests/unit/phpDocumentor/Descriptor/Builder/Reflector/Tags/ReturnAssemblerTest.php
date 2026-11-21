@@ -17,10 +17,12 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(ReturnAssembler::class)]
 class ReturnAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -40,10 +42,6 @@ class ReturnAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ReturnAssembler::buildDescriptor
-     */
     public function testCreatingReturnDescriptorFromReflector(): void
     {
         $reflector = new Return_(new String_(), new Description('This is a description'));

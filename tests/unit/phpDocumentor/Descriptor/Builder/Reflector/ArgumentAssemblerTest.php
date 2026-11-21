@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -27,6 +28,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler
  */
+#[CoversClass(ArgumentAssembler::class)]
 class ArgumentAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -47,7 +49,6 @@ class ArgumentAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /** @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create */
     public function testCreateArgumentDescriptorFromReflector(): void
     {
         // Arrange
@@ -66,12 +67,6 @@ class ArgumentAssemblerTest extends TestCase
         $this->assertFalse($descriptor->isByReference());
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\Tag\ParamDescriptor
-     *
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::overwriteTypeAndDescriptionFromParamTag
-     */
     public function testIfTypeAndDescriptionAreSetFromParamDescriptor(): void
     {
         // Arrange
@@ -99,11 +94,6 @@ class ArgumentAssemblerTest extends TestCase
         $this->assertFalse($descriptor->isVariadic());
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\Tag\ParamDescriptor
-     *
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ArgumentAssembler::create
-     */
     public function testIfVariadicArgumentsAreDetected(): void
     {
         // Arrange

@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the VersionDescriptor class.
  */
+#[CoversClass(VersionDescriptor::class)]
 class VersionDescriptorTest extends TestCase
 {
     final public const EXAMPLE_VERSION = '2.0';
@@ -33,10 +35,6 @@ class VersionDescriptorTest extends TestCase
         $this->fixture = new VersionDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::setVersion
-     * @covers \phpDocumentor\Descriptor\Tag\VersionDescriptor::getVersion
-     */
     public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());

@@ -16,6 +16,7 @@ namespace phpDocumentor\Console\Command\Project;
 use phpDocumentor\Console\Application;
 use phpDocumentor\Pipeline\PipelineInterface;
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -27,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function array_keys;
 
-/** @coversDefaultClass \phpDocumentor\Console\Command\Project\RunCommand */
+#[CoversClass(RunCommand::class)]
 class RunCommandTest extends TestCase
 {
     use ProphecyTrait;

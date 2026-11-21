@@ -25,6 +25,7 @@ use phpDocumentor\Guides\Nodes\PHP\ClassDiagram;
 use phpDocumentor\Guides\Nodes\ProjectNode;
 use phpDocumentor\Query\Engine;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -34,7 +35,7 @@ final class ClassDiagramNodeTransformerTest extends TestCase
     use ProphecyTrait;
     use Faker;
 
-    /** @dataProvider simpleClassProvider */
+    #[DataProvider('simpleClassProvider')]
     public function testSimpleClassTransformation(array $queryResult, string $uml): void
     {
         $queryEngine = $this->prophesize(Engine::class);

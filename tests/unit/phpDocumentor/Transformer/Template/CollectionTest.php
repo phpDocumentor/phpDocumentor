@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Template;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Template\Collection */
-final class CollectionTest extends MockeryTestCase
+#[CoversClass(Collection::class)]
+final class CollectionTest extends TestCase
 {
     use Faker;
 

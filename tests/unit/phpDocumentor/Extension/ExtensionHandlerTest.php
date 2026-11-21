@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Extension;
 
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 use function iterator_to_array;
 
-/** @coversDefaultClass \phpDocumentor\Extension\ExtensionHandler */
+#[CoversClass(ExtensionHandler::class)]
 final class ExtensionHandlerTest extends TestCase
 {
     protected function setUp(): void

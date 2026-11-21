@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Validation\Error;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\FileDescriptor
- * @covers \phpDocumentor\Descriptor\DescriptorAbstract
- */
-final class FileDescriptorTest extends MockeryTestCase
+#[CoversClass(FileDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
+final class FileDescriptorTest extends TestCase
 {
     private const EXAMPLE_HASH = 'a-hash-string';
 
@@ -84,7 +82,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getNamespaceAliases());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setNamespaceAliases($mock);
@@ -96,7 +94,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getIncludes());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setIncludes($mock);
@@ -108,7 +106,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setConstants($mock);
@@ -120,7 +118,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getFunctions());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setFunctions($mock);
@@ -132,7 +130,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getClasses());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setClasses($mock);
@@ -144,7 +142,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setInterfaces($mock);
@@ -156,7 +154,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getTraits());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setTraits($mock);
@@ -168,7 +166,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getEnums());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setEnums($mock);
@@ -180,7 +178,7 @@ final class FileDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getMarkers());
 
-        $mockInstance = m::mock(Collection::class);
+        $mockInstance = new Collection();
         $mock = $mockInstance;
 
         $this->fixture->setMarkers($mock);
@@ -237,68 +235,65 @@ final class FileDescriptorTest extends MockeryTestCase
         $this->fixture->setErrors($collection);
 
         // setup class-property check
-        $mockClassProperties = m::mock(PropertyDescriptor::class);
-        $mockClassProperties->shouldReceive('getErrors')->andReturn(new Collection($errorClassProperties));
+        $mockClassProperties = new PropertyDescriptor();
+        $mockClassProperties->setErrors(new Collection($errorClassProperties));
 
         // setup class-constant check
-        $mockClassConstants = m::mock(ConstantDescriptor::class);
-        $mockClassConstants->shouldReceive('getErrors')->andReturn(new Collection($errorClassConstants));
+        $mockClassConstants = new ConstantDescriptor();
+        $mockClassConstants->setErrors(new Collection($errorClassConstants));
 
         // setup class-method check
-        $mockClassMethods = m::mock(MethodDescriptor::class);
-        $mockClassMethods->shouldReceive('getErrors')->andReturn(new Collection($errorClassMethods));
+        $mockClassMethods = new MethodDescriptor();
+        $mockClassMethods->setErrors(new Collection($errorClassMethods));
 
         // setup class check
-        $mockClasses = m::mock(ClassDescriptor::class);
-        $mockClasses->shouldReceive('getProperties')->andReturn(new Collection([$mockClassProperties]));
-        $mockClasses->shouldReceive('getConstants')->andReturn(new Collection([$mockClassConstants]));
-        $mockClasses->shouldReceive('getMethods')->andReturn(new Collection([$mockClassMethods]));
-        $mockClasses->shouldReceive('getErrors')->andReturn(new Collection($errorClasses));
+        $mockClasses = new ClassDescriptor();
+        $mockClasses->setProperties(new Collection([$mockClassProperties]));
+        $mockClasses->setConstants(new Collection([$mockClassConstants]));
+        $mockClasses->setMethods(new Collection([$mockClassMethods]));
+        $mockClasses->setErrors(new Collection($errorClasses));
 
         $this->fixture->getClasses()->set('my-test-class', $mockClasses);
 
         // setup interface-constant check
-        $mockInterfaceConstants = m::mock(ConstantDescriptor::class);
-        $mockInterfaceConstants->shouldReceive('getErrors')->andReturn(new Collection($errorInterfacesConstants));
+        $mockInterfaceConstants = new ConstantDescriptor();
+        $mockInterfaceConstants->setErrors(new Collection($errorInterfacesConstants));
 
         // setup interface-method check
-        $mockInterfaceMethods = m::mock(MethodDescriptor::class);
-        $mockInterfaceMethods->shouldReceive('getErrors')->andReturn(new Collection($errorInterfacesMethods));
+        $mockInterfaceMethods = new MethodDescriptor();
+        $mockInterfaceMethods->setErrors(new Collection($errorInterfacesMethods));
 
         // setup interface check
-        $mockInterfaces = m::mock(ClassDescriptor::class);
-        $mockInterfaces->shouldReceive('getProperties')->andReturn(new Collection());
-        $mockInterfaces->shouldReceive('getConstants')->andReturn(new Collection([$mockInterfaceConstants]));
-        $mockInterfaces->shouldReceive('getMethods')->andReturn(new Collection([$mockInterfaceMethods]));
-        $mockInterfaces->shouldReceive('getErrors')->andReturn(new Collection($errorInterfaces));
+        $mockInterfaces = new ClassDescriptor();
+        $mockInterfaces->setProperties(new Collection());
+        $mockInterfaces->setConstants(new Collection([$mockInterfaceConstants]));
+        $mockInterfaces->setMethods(new Collection([$mockInterfaceMethods]));
+        $mockInterfaces->setErrors(new Collection($errorInterfaces));
 
         $this->fixture->getClasses()->set('my-test-interface', $mockInterfaces);
 
         // setup traits-constant check
-        $mockTraitsProperties = m::mock(ConstantDescriptor::class);
-        $mockTraitsProperties->shouldReceive('getErrors')->andReturn(new Collection($errorTraitsProperties));
+        $mockTraitsProperties = new ConstantDescriptor();
+        $mockTraitsProperties->setErrors(new Collection($errorTraitsProperties));
 
         // setup traits-method check
-        $mockTraitsMethods = m::mock(MethodDescriptor::class);
-        $mockTraitsMethods->shouldReceive('getErrors')->andReturn(new Collection($errorTraitsMethods));
+        $mockTraitsMethods = new MethodDescriptor();
+        $mockTraitsMethods->setErrors(new Collection($errorTraitsMethods));
 
         // setup traits check
-        $mockTraits = m::mock(ClassDescriptor::class);
-        $mockTraits->shouldReceive('getConstants')->andReturn(new Collection());
-        $mockTraits->shouldReceive('getProperties')->andReturn(new Collection([$mockTraitsProperties]));
-        $mockTraits->shouldReceive('getMethods')->andReturn(new Collection([$mockTraitsMethods]));
-        $mockTraits->shouldReceive('getErrors')->andReturn(new Collection($errorTraits));
+        $mockTraits = new ClassDescriptor();
+        $mockTraits->setConstants(new Collection());
+        $mockTraits->setProperties(new Collection([$mockTraitsProperties]));
+        $mockTraits->setMethods(new Collection([$mockTraitsMethods]));
+        $mockTraits->setErrors(new Collection($errorTraits));
 
         $this->fixture->getClasses()->set('my-test-traits', $mockTraits);
 
         // setup functions check
-        $mockFunctions = m::mock(FunctionDescriptor::class);
+        $mockFunctions = new FunctionDescriptor();
 
         // create dummy instances of constants/methods
-        $mockFunctions->shouldReceive('getConstants')->andReturn(new Collection());
-        $mockFunctions->shouldReceive('getProperties')->andReturn(new Collection());
-        $mockFunctions->shouldReceive('getMethods')->andReturn(new Collection());
-        $mockFunctions->shouldReceive('getErrors')->andReturn(new Collection($errorFunctions));
+        $mockFunctions->setErrors(new Collection($errorFunctions));
 
         $this->fixture->getClasses()->set('my-test-function', $mockFunctions);
 

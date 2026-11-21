@@ -10,7 +10,7 @@ name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '8.1'
+  defaultPHPVersion: '8.2'
 
 jobs:
 
@@ -214,7 +214,6 @@ jobs:
           - windows-latest
           - macOS-latest
         php-versions:
-          - '8.1'
           - '8.2'
           - '8.3'
           - '8.4'
@@ -225,7 +224,7 @@ jobs:
 #          - 'cli'
         exclude: # already covered in pre-test with coverage above
           - operating-system: 'ubuntu-latest'
-            php-versions: '8.1'
+            php-versions: '8.2'
     name: Unit tests
     needs:
     - phpunit-with-coverage
@@ -328,7 +327,6 @@ jobs:
     strategy:
       matrix:
         php-versions:
-          - '8.1'
           - '8.2'
           - '8.3'
           - '8.4'
@@ -391,7 +389,6 @@ jobs:
           - 'clean'
           - 'default'
         php-versions:
-          - '8.1'
           - '8.2'
           - '8.3'
           - '8.4'

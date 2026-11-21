@@ -20,14 +20,14 @@ use phpDocumentor\Descriptor\DescriptorAbstract;
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description as DocBlockDescription;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripInternal class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripInternal
  */
+#[CoversClass(StripInternal::class)]
 final class StripInternalTest extends TestCase
 {
     use ProphecyTrait;
@@ -42,7 +42,6 @@ final class StripInternalTest extends TestCase
         $this->fixture = new StripInternal();
     }
 
-    /** @uses \phpDocumentor\Descriptor\ClassDescriptor */
     public function testStripsInternalTagFromDescription(): void
     {
         $otherTag = new TagDescriptor('other');
@@ -67,7 +66,6 @@ final class StripInternalTest extends TestCase
         );
     }
 
-    /** @uses \phpDocumentor\Descriptor\ClassDescriptor */
     public function testKeepsInternalTagsInDescription(): void
     {
         $tags = [

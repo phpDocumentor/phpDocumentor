@@ -20,12 +20,14 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\IterableAdapter */
+#[CoversClass(IterableAdapter::class)]
 final class IterableAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -63,7 +65,7 @@ final class IterableAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /** @dataProvider renderingVariations */
+    #[DataProvider('renderingVariations')]
     public function testRenderProducesExpectedOutputBasedOn(iterable $list, iterable $expected): void
     {
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));

@@ -34,7 +34,7 @@ First you need to create a manifest file called ``manifest.xml``. This file cont
         </copyright>
 
         <requires>
-            <php version="^8.1"/>
+            <php version="^8.2"/>
         </requires>
 
         <bundles>

@@ -15,12 +15,13 @@ namespace phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder\GuideSetBuilder */
+#[CoversClass(GuideSetBuilder::class)]
 final class GuideSetBuilderTest extends TestCase
 {
     use Faker;
@@ -35,7 +36,6 @@ final class GuideSetBuilderTest extends TestCase
         $this->builder = new GuideSetBuilder($this->router->reveal());
     }
 
-    /** @covers ::supports */
     public function testItSupportsApiSetDescriptors(): void
     {
         self::assertTrue($this->builder->supports($this->faker()->guideSetDescriptor()));

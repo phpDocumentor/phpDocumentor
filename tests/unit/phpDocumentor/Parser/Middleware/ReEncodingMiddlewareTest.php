@@ -19,12 +19,13 @@ use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File as PhpFile;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\String\Exception\InvalidArgumentException;
 use Symfony\Component\String\UnicodeString;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Middleware\ReEncodingMiddleware */
+#[CoversClass(ReEncodingMiddleware::class)]
 final class ReEncodingMiddlewareTest extends TestCase
 {
     use Faker;

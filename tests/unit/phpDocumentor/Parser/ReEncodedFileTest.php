@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\String\UnicodeString;
 
 use function md5;
 
-/** @coversDefaultClass \phpDocumentor\Parser\ReEncodedFile */
+#[CoversClass(ReEncodedFile::class)]
 final class ReEncodedFileTest extends TestCase
 {
     public function testReEncodedFileExposesPath(): void

@@ -15,13 +15,14 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Pass;
 
 use phpDocumentor\Descriptor\ProjectAnalyzer;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-/** @covers \phpDocumentor\Compiler\ApiDocumentation\Pass\Debug */
+#[CoversClass(Debug::class)]
 final class DebugTest extends TestCase
 {
     use Faker;

@@ -28,12 +28,14 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\AbstractListAdapter */
+#[CoversClass(AbstractListAdapter::class)]
 final class AbstractListAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -84,7 +86,7 @@ final class AbstractListAdapterTest extends TestCase
         $this->adapter->render(new String_(), LinkRenderer::PRESENTATION_NORMAL);
     }
 
-    /** @dataProvider renderingVariations */
+    #[DataProvider('renderingVariations')]
     public function testRenderProducesExpectedOutputBasedOn(AbstractList $list, string $expected): void
     {
         self::assertSame($expected, $this->adapter->render($list, LinkRenderer::PRESENTATION_NORMAL));

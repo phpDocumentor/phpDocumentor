@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser;
 
 use phpDocumentor\FileSystem\FileSystem;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 use function md5;
 
-/** @coversDefaultClass \phpDocumentor\Parser\FlySystemFile */
+#[CoversClass(FlySystemFile::class)]
 final class FlySystemFileTest extends TestCase
 {
     use ProphecyTrait;

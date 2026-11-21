@@ -65,7 +65,7 @@ phpDocumentor supports the following:
 Installation
 ------------
 
-PhpDocumentor requires PHP 8.1 or higher to run.
+PhpDocumentor requires PHP 8.2 or higher to run.
 However, code of earlier PHP versions can be analyzed.
 
 All templates provided with phpDocumentor have support for Class diagrams based on the read code base.

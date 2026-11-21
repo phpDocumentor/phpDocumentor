@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
@@ -23,11 +22,13 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode */
-final class SourcecodeTest extends MockeryTestCase
+#[CoversClass(Sourcecode::class)]
+final class SourcecodeTest extends TestCase
 {
     use Faker;
     use ProphecyTrait;

@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\ClassDescriptor
  */
-final class ClassDescriptorTest extends MockeryTestCase
+#[CoversClass(ClassDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
+final class ClassDescriptorTest extends TestCase
 {
     protected ClassDescriptor $fixture;
     use MagicPropertyContainerTests;
@@ -54,7 +55,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         self::assertNull($this->fixture->getParent());
 
-        $mock = m::mock(ClassDescriptor::class);
+        $mock = $this->prophesize(ClassDescriptor::class)->reveal();
 
         $this->fixture->setParent($mock);
 
@@ -74,7 +75,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getInterfaces());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setInterfaces($mock);
 
@@ -85,7 +86,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getConstants());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setConstants($mock);
 
@@ -96,7 +97,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getProperties());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setProperties($mock);
 
@@ -107,7 +108,7 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getMethods());
 
-        $mock = m::mock(Collection::class);
+        $mock = $this->prophesize(Collection::class)->reveal();
 
         $this->fixture->setMethods($mock);
 
@@ -182,13 +183,11 @@ final class ClassDescriptorTest extends MockeryTestCase
 
     public function testGetInheritedConstantsWithClassDescriptorParent(): void
     {
-        $collectionMock = m::mock(Collection::class);
-        $collectionMock->shouldReceive('get');
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getConstants')->andReturn(new Collection([new ConstantDescriptor()]));
-        $mock->shouldReceive('getInheritedConstants')->andReturn(new Collection([new ConstantDescriptor()]));
+        $mock = $this->prophesize(ClassDescriptor::class);
+        $mock->getConstants()->willReturn(new Collection([new ConstantDescriptor()]));
+        $mock->getInheritedConstants()->willReturn(new Collection([new ConstantDescriptor()]));
 
-        $this->fixture->setParent($mock);
+        $this->fixture->setParent($mock->reveal());
         $result = $this->fixture->getInheritedConstants();
 
         self::assertInstanceOf(Collection::class, $result);
@@ -210,11 +209,11 @@ final class ClassDescriptorTest extends MockeryTestCase
         $privateProperty = new PropertyDescriptor();
         $privateProperty->setVisibility(new Visibility(VisibilityModifier::PRIVATE));
 
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldReceive('getProperties')->andReturn(new Collection([new PropertyDescriptor(), $privateProperty]));
-        $mock->shouldReceive('getInheritedProperties')->andReturn(new Collection([new PropertyDescriptor()]));
+        $mock = $this->prophesize(ClassDescriptor::class);
+        $mock->getProperties()->willReturn(new Collection([new PropertyDescriptor(), $privateProperty]));
+        $mock->getInheritedProperties()->willReturn(new Collection([new PropertyDescriptor()]));
 
-        $this->fixture->setParent($mock);
+        $this->fixture->setParent($mock->reveal());
         $result = $this->fixture->getInheritedProperties();
 
         self::assertInstanceOf(Collection::class, $result);
@@ -226,9 +225,9 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         // Arrange
         $expected = ['properties'];
-        $traitDescriptorMock = m::mock(TraitDescriptor::class);
-        $traitDescriptorMock->shouldReceive('getProperties')->andReturn(new Collection(['properties']));
-        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock]));
+        $traitDescriptorMock = $this->prophesize(TraitDescriptor::class);
+        $traitDescriptorMock->getProperties()->willReturn(new Collection(['properties']));
+        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock->reveal()]));
 
         // Act
         $result = $this->fixture->getInheritedProperties();
@@ -238,7 +237,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /** @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307 */
+    #[Ticket('https://github.com/phpDocumentor/phpDocumentor2/issues/1307')]
     public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange
@@ -258,43 +257,13 @@ final class ClassDescriptorTest extends MockeryTestCase
     {
         $package = 'Package';
 
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldDeferMissing();
-
-        $constantDescriptor = m::mock(ConstantDescriptor::class);
-
-        /** @var m\mockInterface|Collection $constantCollection */
-        $constantCollection = m::mock(Collection::class);
-        $constantCollection->shouldDeferMissing();
-        $constantCollection->add($constantDescriptor);
-
-        $propertyDescriptor = m::mock(PropertyDescriptor::class);
-
-        /** @var m\mockInterface|Collection $propertyCollection */
-        $propertyCollection = m::mock(Collection::class);
-        $propertyCollection->shouldDeferMissing();
-        $propertyCollection->add($propertyDescriptor);
-
-        $methodDescriptor = m::mock(MethodDescriptor::class);
-
-        /** @var m\mockInterface|Collection $methodCollection */
-        $methodCollection = m::mock(Collection::class);
-        $methodCollection->shouldDeferMissing();
-        $methodCollection->add($methodDescriptor);
-
-        /** @var m\mockInterface|ClassDescriptor $mock */
-        $mock = m::mock(ClassDescriptor::class);
-        $mock->shouldDeferMissing();
-        $mock->shouldReceive('getProperties')->andReturn($propertyCollection);
-
-        $mock->shouldReceive('getConstants')->andReturn($constantCollection);
-        $constantDescriptor->shouldReceive('setPackage')->with($package);
-
-        $mock->shouldReceive('getProperties')->andReturn($propertyCollection);
-        $propertyDescriptor->shouldReceive('setPackage')->with($package);
-
-        $mock->shouldReceive('getMethods')->andReturn($methodCollection);
-        $methodDescriptor->shouldReceive('setPackage')->with($package);
+        $constantDescriptor = new ConstantDescriptor();
+        $propertyDescriptor = new PropertyDescriptor();
+        $methodDescriptor = new MethodDescriptor();
+        $mock = new ClassDescriptor();
+        $mock->setConstants(new Collection([$constantDescriptor]));
+        $mock->setProperties(new Collection([$propertyDescriptor]));
+        $mock->setMethods(new Collection([$methodDescriptor]));
 
         $mock->setPackage($package);
 
@@ -303,8 +272,6 @@ final class ClassDescriptorTest extends MockeryTestCase
 
     /**
      * Test to cover magic method of parent abstract class
-     *
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__call
      */
     public function testCall(): void
     {
@@ -312,7 +279,6 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange

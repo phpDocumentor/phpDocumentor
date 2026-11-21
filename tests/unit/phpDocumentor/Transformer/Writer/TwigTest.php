@@ -22,6 +22,7 @@ use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,11 +30,9 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig
- * @covers \phpDocumentor\Transformer\Writer\IoTrait
- * @covers \phpDocumentor\Transformer\Writer\WriterAbstract
- */
+#[CoversClass(Twig::class)]
+#[CoversClass(IoTrait::class)]
+#[CoversClass(WriterAbstract::class)]
 final class TwigTest extends TestCase
 {
     use ProphecyTrait;
@@ -80,7 +79,6 @@ final class TwigTest extends TestCase
         );
     }
 
-    /** @covers \phpDocumentor\Transformer\Writer\WriterAbstract::__toString */
     public function testReturnsClassNameAsDescription(): void
     {
         $this->assertSame(Twig::class, (string) $this->writer);

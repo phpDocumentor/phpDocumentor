@@ -17,11 +17,12 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AssemblerAbstractTest extends TestCase
 {
-    /** @dataProvider typeProvider */
+    #[DataProvider('typeProvider')]
     public function testDeduplicateTypes(Type|null $type, string $expected): void
     {
         $type = AssemblerAbstract::deduplicateTypes($type);

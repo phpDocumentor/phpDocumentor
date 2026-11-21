@@ -20,6 +20,7 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\ProjectFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -33,9 +34,8 @@ use function sys_get_temp_dir;
 
 /**
  * Test class for \phpDocumentor\Parser\Parser.
- *
- * @coversDefaultClass \phpDocumentor\Parser\Parser
  */
+#[CoversClass(Parser::class)]
 final class ParserTest extends TestCase
 {
     use ProphecyTrait;

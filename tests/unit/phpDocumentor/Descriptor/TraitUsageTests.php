@@ -13,17 +13,20 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
+use PHPUnit\Framework\Attributes\Ticket;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 trait TraitUsageTests
 {
+    use ProphecyTrait;
+
     public function testRetrievingInheritedMethodsReturnsTraitMethods(): void
     {
         // Arrange
         $expected            = ['methods'];
-        $traitDescriptorMock = m::mock(TraitDescriptor::class);
-        $traitDescriptorMock->shouldReceive('getMethods')->andReturn(new Collection(['methods']));
-        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock]));
+        $traitDescriptorMock = $this->prophesize(TraitDescriptor::class);
+        $traitDescriptorMock->getMethods()->willReturn(new Collection(['methods']));
+        $this->fixture->setUsedTraits(new Collection([$traitDescriptorMock->reveal()]));
 
         // Act
         $result = $this->fixture->getInheritedMethods();
@@ -33,7 +36,7 @@ trait TraitUsageTests
         $this->assertSame($expected, $result->getAll());
     }
 
-    /** @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307 */
+    #[Ticket('https://github.com/phpDocumentor/phpDocumentor2/issues/1307')]
     public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange

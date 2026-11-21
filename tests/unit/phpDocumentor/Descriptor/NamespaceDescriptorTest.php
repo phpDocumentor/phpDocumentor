@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the NamespaceDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\NamespaceDescriptor
  */
+#[CoversClass(NamespaceDescriptor::class)]
 final class NamespaceDescriptorTest extends TestCase
 {
     private NamespaceDescriptor $fixture;

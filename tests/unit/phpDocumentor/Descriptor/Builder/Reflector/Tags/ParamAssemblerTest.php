@@ -17,10 +17,12 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(ParamAssembler::class)]
 class ParamAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -40,10 +42,6 @@ class ParamAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ParamAssembler::buildDescriptor
-     */
     public function testCreatingParamDescriptorFromReflector(): void
     {
         $reflector = new Param(

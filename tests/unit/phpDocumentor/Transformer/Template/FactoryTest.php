@@ -20,11 +20,12 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection as WriterCollection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Template\Factory */
+#[CoversClass(Factory::class)]
 final class FactoryTest extends TestCase
 {
     use ProphecyTrait;

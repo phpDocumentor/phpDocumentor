@@ -2,7 +2,7 @@ ARGS ?=
 
 .USER = CURRENT_UID=$(shell id -u):$(shell id -g)
 .DOCKER_COMPOSE_RUN = ${.USER} docker compose run --rm
-.PHP = docker run --user=$(shell id -u):$(shell id -g) -it --rm -v${CURDIR}:/data -w /data php:8.1
+.PHP = docker run --user=$(shell id -u):$(shell id -g) -it --rm -v${CURDIR}:/data -w /data php:8.2
 
 CYPRESS_VERSION = 15.6.0
 
@@ -78,7 +78,7 @@ setup: install-phive
 .PHONY: pull-containers
 pull-containers:
 	docker pull phpdoc/phpcs-ga
-	docker pull php:8.1
+	docker pull php:8.2
 	docker pull node
 
 .PHONY: phpcs

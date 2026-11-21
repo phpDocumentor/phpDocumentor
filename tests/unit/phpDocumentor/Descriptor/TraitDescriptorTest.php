@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the TraitDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\TraitDescriptor
  */
-final class TraitDescriptorTest extends MockeryTestCase
+#[CoversClass(TraitDescriptor::class)]
+final class TraitDescriptorTest extends TestCase
 {
     use MagicPropertyContainerTests;
     use MagicMethodContainerTests;

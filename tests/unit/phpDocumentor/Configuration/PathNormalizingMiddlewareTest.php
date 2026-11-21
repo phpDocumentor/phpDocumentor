@@ -24,11 +24,13 @@ namespace phpDocumentor\Configuration;
 
 use League\Uri\Uri;
 use phpDocumentor\FileSystem\Path;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function dirname;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\PathNormalizingMiddleware */
+#[CoversClass(PathNormalizingMiddleware::class)]
 final class PathNormalizingMiddlewareTest extends TestCase
 {
     private ConfigurationFactory $configurationFactory;
@@ -48,7 +50,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertEquals($configuration, $outputConfig);
     }
 
-    /** @dataProvider pathProvider */
+    #[DataProvider('pathProvider')]
     public function testNormalizedIgnoreToGlob(string $input, string $output): void
     {
         $configuration = $this->givenAConfiguration();
@@ -63,7 +65,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         );
     }
 
-    /** @dataProvider cachePathProvider */
+    #[DataProvider('cachePathProvider')]
     public function testNormalizeCachePath(string $input, string $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();
@@ -78,7 +80,7 @@ final class PathNormalizingMiddlewareTest extends TestCase
         self::assertSame($output, (string) $outputConfig['phpdocumentor']['paths']['cache']);
     }
 
-    /** @dataProvider templateLocationProvider */
+    #[DataProvider('templateLocationProvider')]
     public function testNormalizeTemplateLocations(string|null $input, string|null $output, string $configPath): void
     {
         $configuration = $this->givenAConfiguration();

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\DependencyInjection;
 
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/** @coversDefaultClass \phpDocumentor\DependencyInjection\ReflectionProjectFactoryStrategyPass */
+#[CoversClass(ReflectionProjectFactoryStrategyPass::class)]
 final class ReflectionProjectFactoryStrategyPassTest extends TestCase
 {
     use ProphecyTrait;

@@ -16,9 +16,10 @@ namespace phpDocumentor\Compiler\ApiDocumentation\Linker;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\DescriptorRepository */
+#[CoversClass(DescriptorRepository::class)]
 final class DescriptorRepositoryTest extends TestCase
 {
     public function testFindObjectUsingWithFqsen(): void

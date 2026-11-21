@@ -2,18 +2,28 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace functional\phpDocumentor\core;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class VisibilityFilterFunctionalTest extends FunctionalTestCase
 {
-    public function testDefaultVisibilityFilter() : void
+    public function testDefaultVisibilityFilter(): void
     {
-        $this->runPHPDocWithFile(__DIR__ .'/../../assets/core/visibility.php');
+        $this->runPHPDocWithFile(__DIR__ . '/../../assets/core/visibility.php');
         $project = $this->loadAst();
 
         $versions = $project->getVersions();
@@ -33,12 +43,10 @@ final class VisibilityFilterFunctionalTest extends FunctionalTestCase
         $this->assertCount(3, $classDescriptor->getConstants());
     }
 
-    /**
-     * @dataProvider visibilityProvider
-     */
-    public function testVisibilityFilterByCli(string $visability, int $expectedCount) : void
+    #[DataProvider('visibilityProvider')]
+    public function testVisibilityFilterByCli(string $visability, int $expectedCount): void
     {
-        $this->runPHPDocWithFile(__DIR__ .'/../../assets/core/visibility.php', ['--visibility='.$visability]);
+        $this->runPHPDocWithFile(__DIR__ . '/../../assets/core/visibility.php', ['--visibility=' . $visability]);
         $project = $this->loadAst();
 
         $versions = $project->getVersions();
@@ -58,25 +66,25 @@ final class VisibilityFilterFunctionalTest extends FunctionalTestCase
         $this->assertCount($expectedCount, $classDescriptor->getConstants());
     }
 
-    public static function visibilityProvider() : array
+    public static function visibilityProvider(): array
     {
         return [
             [
                 'public',
-                1
+                1,
             ],
             [
                 'public,protected',
-                2
+                2,
             ],
             [
                 'protected',
-                1
+                1,
             ],
             [
                 'private',
-                1
-            ]
+                1,
+            ],
         ];
     }
 }

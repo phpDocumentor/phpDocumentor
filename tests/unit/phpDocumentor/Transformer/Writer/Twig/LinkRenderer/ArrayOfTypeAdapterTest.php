@@ -18,9 +18,11 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\ArrayOfTypeAdapter */
+#[CoversClass(ArrayOfTypeAdapter::class)]
 final class ArrayOfTypeAdapterTest extends TestCase
 {
     private ArrayOfTypeAdapter $adapter;
@@ -46,7 +48,7 @@ final class ArrayOfTypeAdapterTest extends TestCase
         );
     }
 
-    /** @dataProvider renderingVariations */
+    #[DataProvider('renderingVariations')]
     public function testRenderProducesExpectedOutputBasedOn(array $value, iterable $expected): void
     {
         self::assertSame($expected, $this->adapter->render($value, LinkRenderer::PRESENTATION_NORMAL));

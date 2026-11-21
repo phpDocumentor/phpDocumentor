@@ -22,11 +22,13 @@ use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\CallableAdapter */
+#[CoversClass(CallableAdapter::class)]
 class CallableAdapterTest extends TestCase
 {
     use ProphecyTrait;
@@ -46,7 +48,7 @@ class CallableAdapterTest extends TestCase
         self::assertFalse($this->adapter->supports(new String_()));
     }
 
-    /** @dataProvider callableProvider */
+    #[DataProvider('callableProvider')]
     public function testRenderProducesExpectedOutput(Callable_ $input, string $output): void
     {
         $this->linkRenderer->render(new String_(), LinkRenderer::PRESENTATION_NORMAL)->willReturn('string');
@@ -112,11 +114,8 @@ class CallableAdapterTest extends TestCase
         ];
     }
 
-    /**
-     * @link https://github.com/phpDocumentor/phpDocumentor/issues/3995
-     *
-     * @dataProvider unionProvider
-     */
+    /** @link https://github.com/phpDocumentor/phpDocumentor/issues/3995 */
+    #[DataProvider('unionProvider')]
     public function testRenderJoinsUnionTypes(Callable_ $input, string $output): void
     {
         $union = new Compound([new Integer(), new String_()]);

@@ -15,6 +15,8 @@ namespace phpDocumentor\Configuration;
 
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function current;
@@ -23,7 +25,7 @@ use function str_replace;
 
 use const DIRECTORY_SEPARATOR;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\CommandlineOptionsMiddleware */
+#[CoversClass(CommandlineOptionsMiddleware::class)]
 final class CommandlineOptionsMiddlewareTest extends TestCase
 {
     private ConfigurationFactory $configurationFactory;
@@ -34,7 +36,7 @@ final class CommandlineOptionsMiddlewareTest extends TestCase
         $this->configurationFactory = new ConfigurationFactory([], new SymfonyConfigFactory(['3' => $definition]));
     }
 
-    /** @dataProvider targetPathProvider */
+    #[DataProvider('targetPathProvider')]
     public function testItShouldOverwriteTheDestinationFolderBasedOnTheTargetOption(
         string $argument,
         string $workingDir,

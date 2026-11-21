@@ -17,10 +17,12 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(PropertyAssembler::class)]
 class PropertyAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -40,10 +42,6 @@ class PropertyAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\PropertyAssembler::buildDescriptor
-     */
     public function testCreatingPropertyDescriptorFromReflector(): void
     {
         $reflector = new Property(

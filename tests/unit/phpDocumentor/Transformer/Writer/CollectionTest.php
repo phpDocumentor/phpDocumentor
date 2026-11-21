@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Collection */
+#[CoversClass(Collection::class)]
 final class CollectionTest extends TestCase
 {
     use ProphecyTrait;

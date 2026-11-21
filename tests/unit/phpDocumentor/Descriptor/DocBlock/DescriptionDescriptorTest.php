@@ -17,9 +17,11 @@ use phpDocumentor\Descriptor\Interfaces\DocBlock\TagInterface;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor */
+#[CoversClass(DescriptionDescriptor::class)]
 final class DescriptionDescriptorTest extends TestCase
 {
     public function testBodyTemplateIsProxiedToDescription(): void
@@ -56,7 +58,7 @@ final class DescriptionDescriptorTest extends TestCase
         self::assertSame((string) $description, (string) $descriptor);
     }
 
-    /** @dataProvider replacementProvider */
+    #[DataProvider('replacementProvider')]
     public function testTagsCanBeReplaced(TagInterface|null $tagDescriptorReplacement, string $expected): void
     {
         $bodyTemplate = 'my template %1$s';

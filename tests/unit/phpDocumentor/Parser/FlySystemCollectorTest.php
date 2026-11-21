@@ -16,6 +16,7 @@ namespace phpDocumentor\Parser;
 use phpDocumentor\FileSystem\Finder\Exclude;
 use phpDocumentor\FileSystem\Finder\SpecificationFactory;
 use phpDocumentor\FileSystem\FlySystemAdapter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
@@ -24,15 +25,11 @@ use function stripos;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
 
-/** @coversDefaultClass \phpDocumentor\Parser\FlySystemCollector */
+#[CoversClass(FlySystemCollector::class)]
 final class FlySystemCollectorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @uses \phpDocumentor\FileSystem\Finder\SpecificationFactory
-     * @uses \phpDocumentor\FileSystem\FlySystemFactory
-     */
     public function testSingleSourceDir(): void
     {
         $fileCollector = new FlySystemCollector(

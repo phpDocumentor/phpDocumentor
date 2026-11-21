@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Interfaces\ChildInterface;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
@@ -23,15 +21,17 @@ use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 use function iterator_to_array;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
  */
-final class MethodDescriptorTest extends MockeryTestCase
+#[CoversClass(MethodDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
+final class MethodDescriptorTest extends TestCase
 {
     use AttributedTestTrait;
 
@@ -348,7 +348,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($interfaceMethod, $this->fixture->getInheritedElement());
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -365,7 +364,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($authorCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -382,7 +380,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($versionCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -406,10 +403,10 @@ final class MethodDescriptorTest extends MockeryTestCase
      */
     private function whenFixtureIsRelatedToAClassWithFile()
     {
-        $file = m::mock(FileDescriptor::class);
-        $parent = m::mock(ClassDescriptor::class);
-        $parent->shouldReceive('getFile')->andReturn($file);
-        $parent->shouldReceive('getFullyQualifiedStructuralElementName')->andReturn(new Fqsen('\My\Class1'));
+        $file = new FileDescriptor('path');
+        $parent = new ClassDescriptor();
+        $parent->setFile($file);
+        $parent->setFullyQualifiedStructuralElementName(new Fqsen('\My\Class1'));
         $this->fixture->setParent($parent);
 
         return $file;

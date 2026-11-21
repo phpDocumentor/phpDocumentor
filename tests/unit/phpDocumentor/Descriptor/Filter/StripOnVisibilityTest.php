@@ -20,14 +20,14 @@ use phpDocumentor\Descriptor\MethodDescriptor;
 use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripOnVisibility class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripOnVisibility
  */
+#[CoversClass(StripOnVisibility::class)]
 final class StripOnVisibilityTest extends TestCase
 {
     use ProphecyTrait;

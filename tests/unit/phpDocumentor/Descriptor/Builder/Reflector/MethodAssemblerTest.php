@@ -22,11 +22,13 @@ use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(MethodAssembler::class)]
 class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -56,14 +58,6 @@ class MethodAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
-     */
     public function testCreateMethodDescriptorFromReflector(): void
     {
         // Arrange
@@ -115,14 +109,6 @@ class MethodAssemblerTest extends TestCase
         $this->assertSame($argument->getName(), $argumentDescriptor->getName());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
-     */
     public function testCreateMethodDescriptorFromReflectorWhenDocblockIsAbsent(): void
     {
         // Arrange
@@ -153,14 +139,6 @@ class MethodAssemblerTest extends TestCase
         $this->assertSame($argumentDescriptor, $argument);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
-     */
     public function testCreateMethodDescriptorFromReflectorWhenParamTagsAreAbsent(): void
     {
         // Arrange
@@ -192,14 +170,6 @@ class MethodAssemblerTest extends TestCase
         $this->assertSame($argumentDescriptor, $argument);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::mapReflectorToDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArguments
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addArgument
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\MethodAssembler::addVirualVariadicArgument
-     */
     public function testCreateMethodDescriptorFromReflectorWithReturnByReference(): void
     {
         // Arrange

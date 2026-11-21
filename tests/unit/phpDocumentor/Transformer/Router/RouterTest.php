@@ -25,16 +25,18 @@ use phpDocumentor\Descriptor\PackageDescriptor;
 use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Router\Router */
+#[CoversClass(Router::class)]
 final class RouterTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @dataProvider provideNodesWithExpectedUrls */
+    #[DataProvider('provideNodesWithExpectedUrls')]
     public function testItCanGenerateUrlsForAGivenNode(
         $node,
         string $expected,

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\CommonMarkFactory */
+#[CoversClass(CommonMarkFactory::class)]
 final class CommonMarkFactoryTest extends TestCase
 {
     public function testCreateAddsExtensions(): void

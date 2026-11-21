@@ -17,7 +17,6 @@ use Generator;
 use phpDocumentor\Descriptor\ApiSetDescriptor;
 use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\Collection;
-use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
@@ -35,18 +34,16 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-use function get_class;
-use function gettype;
-use function is_object;
+use function get_debug_type;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 final class LinkRendererTest extends TestCase
 {
     use Faker;
@@ -70,14 +67,11 @@ final class LinkRendererTest extends TestCase
             ->forDocumentationSet($this->apiSetDescriptor);
     }
 
-    /**
-     * @param ClassDescriptor|Fqsen $input
-     *
-     * @dataProvider descriptorLinkProvider
-     */
+    /** @param ClassDescriptor|Fqsen $input */
+    #[DataProvider('descriptorLinkProvider')]
     public function testRenderLinkFromDescriptor($input, string $presentation, string $output): void
     {
-        $classDescriptor = LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
+        $classDescriptor = self::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
@@ -92,7 +86,7 @@ final class LinkRendererTest extends TestCase
     public static function descriptorLinkProvider(): Generator
     {
         $inputs = [
-            LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class')),
+            self::createClassDescriptor(new Fqsen('\My\Namespace\Class')),
             new Fqsen('\My\Namespace\Class'),
             new \phpDocumentor\Reflection\DocBlock\Tags\Reference\Fqsen(new Fqsen('\My\Namespace\Class')),
             '\My\Namespace\Class',
@@ -202,16 +196,14 @@ final class LinkRendererTest extends TestCase
 
         $this->assertSame(
             '<a href="classes/My.Namespace.Class.html"><abbr title="\My\Namespace\Class">Class</abbr></a>',
-            $result
+            $result,
         );
     }
 
-    /**
-     * @dataProvider typeRouteProvider
-     */
+    #[DataProvider('typeRouteProvider')]
     public function testRenderType(Type $input, string $presentation, string $output): void
     {
-        $classDescriptor = LinkRendererTest::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
+        $classDescriptor = self::createClassDescriptor(new Fqsen('\My\Namespace\Class'));
         $this->apiSetDescriptor->getIndexes()->get('elements')
             ->set((string) $classDescriptor->getFullyQualifiedStructuralElementName(), $classDescriptor);
 
@@ -228,7 +220,7 @@ final class LinkRendererTest extends TestCase
             'collection with class' => [
                 new \phpDocumentor\Reflection\Types\Collection(
                     new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\Class'))
+                    new Object_(new Fqsen('\My\Namespace\Class')),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
@@ -237,7 +229,7 @@ final class LinkRendererTest extends TestCase
             'collection with not existing class' => [
                 new \phpDocumentor\Reflection\Types\Collection(
                     new Fqsen('\My\Namespace\Collection'),
-                    new Object_(new Fqsen('\My\Namespace\OtherClass'))
+                    new Object_(new Fqsen('\My\Namespace\OtherClass')),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 '<abbr title="\My\Namespace\Collection">Collection</abbr>&lt;string|int, ' .
@@ -246,7 +238,7 @@ final class LinkRendererTest extends TestCase
             'array with scalar only' => [
                 new Array_(
                     new String_(),
-                    new Array_(new String_(), new Mixed_())
+                    new Array_(new String_(), new Mixed_()),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array&lt;array&lt;mixed, string&gt;, string&gt;',
@@ -254,7 +246,7 @@ final class LinkRendererTest extends TestCase
             'array with class link' => [
                 new Array_(
                     new Object_(new Fqsen('\My\Namespace\Class')),
-                    new String_()
+                    new String_(),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'array&lt;string, <a href="classes/My.Namespace.Class.html">' .
@@ -262,7 +254,7 @@ final class LinkRendererTest extends TestCase
             ],
             'array without key' => [
                 new Array_(
-                    new String_()
+                    new String_(),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'string[]',
@@ -270,7 +262,7 @@ final class LinkRendererTest extends TestCase
             'iterable with scalar only' => [
                 new Iterable_(
                     new String_(),
-                    new Iterable_(new String_(), new Mixed_())
+                    new Iterable_(new String_(), new Mixed_()),
                 ),
                 LinkRenderer::PRESENTATION_CLASS_SHORT,
                 'iterable&lt;iterable&lt;mixed, string&gt;, string&gt;',
@@ -300,9 +292,7 @@ final class LinkRendererTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideUrls
-     */
+    #[DataProvider('provideUrls')]
     public function testRenderWithUrl(string $url): void
     {
         $result = $this->renderer->render($url, LinkRenderer::PRESENTATION_URL);

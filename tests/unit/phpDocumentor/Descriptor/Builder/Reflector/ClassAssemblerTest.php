@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,9 +30,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
- *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler
  */
+#[CoversClass(ClassAssembler::class)]
 class ClassAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -50,8 +50,6 @@ class ClassAssemblerTest extends TestCase
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      */
     public function testCreateClassDescriptorFromReflector(): void
     {
@@ -77,8 +75,6 @@ DOCBLOCK;
 
     /**
      * Creates a Descriptor from a provided class.
-     *
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\ClassAssembler::create
      */
     public function testParentIsOmittedWhenEqualToItself(): void
     {

@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Event\EventAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Event\PostTransformationEvent */
+#[CoversClass(PostTransformationEvent::class)]
 final class PostTransformationEventTest extends TestCase
 {
     private PostTransformationEvent|EventAbstract $fixture;

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Pipeline;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-/** @coversDefaultClass \phpDocumentor\Pipeline\PipelineFactory */
+#[CoversClass(PipelineFactory::class)]
 final class PipelineFactoryTest extends TestCase
 {
     public function test_creates_a_pipeline_with_the_given_series_of_stages(): void

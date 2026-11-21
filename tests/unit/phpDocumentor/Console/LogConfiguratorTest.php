@@ -16,6 +16,8 @@ namespace phpDocumentor\Console;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger as MonologLogger;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleEvent;
@@ -36,7 +38,7 @@ use function unlink;
 
 use const DIRECTORY_SEPARATOR;
 
-/** @coversDefaultClass \phpDocumentor\Console\LogConfigurator */
+#[CoversClass(LogConfigurator::class)]
 final class LogConfiguratorTest extends TestCase
 {
     /** @return iterable<string, array{array<string, string|bool|null>}> */
@@ -46,11 +48,8 @@ final class LogConfiguratorTest extends TestCase
         yield 'empty string'   => [['--log' => '']];
     }
 
-    /**
-     * @param array<string, string|bool|null> $options
-     *
-     * @dataProvider noFileHandlerCases
-     */
+    /** @param array<string, string|bool|null> $options */
+    #[DataProvider('noFileHandlerCases')]
     public function testAttachSkipsFileHandlerWhenLogOptionHasNoUsableValue(array $options): void
     {
         $logger = new MonologLogger('test');
@@ -153,7 +152,7 @@ final class LogConfiguratorTest extends TestCase
         ];
     }
 
-    /** @dataProvider verbosityLevelMap */
+    #[DataProvider('verbosityLevelMap')]
     public function testAttachMapsVerbosityToFileLogLevel(int $verbosity, Level $expected): void
     {
         $this->withTempLogFile(function (string $logFile) use ($verbosity, $expected): void {

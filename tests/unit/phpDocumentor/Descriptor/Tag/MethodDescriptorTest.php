@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Descriptor\Collection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
  */
+#[CoversClass(MethodDescriptor::class)]
 class MethodDescriptorTest extends TestCase
 {
     final public const EXAMPLE_NAME = 'methodname';
@@ -34,11 +36,6 @@ class MethodDescriptorTest extends TestCase
         $this->fixture = new MethodDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setMethodName
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getMethodName
-     */
     public function testSetAndGetMethodName(): void
     {
         self::assertEmpty($this->fixture->getMethodName());
@@ -49,10 +46,6 @@ class MethodDescriptorTest extends TestCase
         self::assertSame(self::EXAMPLE_NAME, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setArguments()
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getArguments()
-     */
     public function testSetAndGetArguments(): void
     {
         $expected = new Collection(['a' => 'b']);
@@ -64,10 +57,6 @@ class MethodDescriptorTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setResponse
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::getResponse
-     */
     public function testSetAndGetResponse(): void
     {
         $expected = new ReturnDescriptor('a');
@@ -79,10 +68,6 @@ class MethodDescriptorTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::setStatic
-     * @covers \phpDocumentor\Descriptor\Tag\MethodDescriptor::isStatic
-     */
     public function testRecordIfAMethodIsStatic(): void
     {
         self::assertFalse($this->fixture->isStatic());

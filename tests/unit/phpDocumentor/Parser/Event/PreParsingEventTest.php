@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Parser\Event;
 
 use phpDocumentor\Event\EventAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Event\PreParsingEvent */
+#[CoversClass(PreParsingEvent::class)]
 final class PreParsingEventTest extends TestCase
 {
     private EventAbstract|null $fixture = null;

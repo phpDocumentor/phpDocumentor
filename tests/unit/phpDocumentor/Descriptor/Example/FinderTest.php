@@ -15,6 +15,7 @@ namespace phpDocumentor\Descriptor\Example;
 
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Descriptor\Tag\ExampleDescriptor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -24,6 +25,7 @@ use function sys_get_temp_dir;
 /**
  * Tests for the \phpDocumentor\Descriptor\Example\Finder class.
  */
+#[CoversClass(Finder::class)]
 final class FinderTest extends TestCase
 {
     public const EXAMPLE_TEXT = 'This is an example';
@@ -41,10 +43,6 @@ final class FinderTest extends TestCase
         $this->fixture = new Finder();
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::setSourceDirectory
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getSourceDirectory
-     */
     public function testGetAndSetSourceDirectory(): void
     {
         $this->assertSame('', $this->fixture->getSourceDirectory());
@@ -54,10 +52,6 @@ final class FinderTest extends TestCase
         $this->assertSame('this/is/a/test', $this->fixture->getSourceDirectory());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::setExampleDirectories
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleDirectories
-     */
     public function testGetAndSetExampleDirectories(): void
     {
         $this->assertSame([], $this->fixture->getExampleDirectories());
@@ -67,11 +61,6 @@ final class FinderTest extends TestCase
         $this->assertSame(['this/is/a/test'], $this->fixture->getExampleDirectories());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::find
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers \phpDocumentor\Descriptor\Example\Finder::constructExamplePath
-     */
     public function testFindExampleContentsInExampleDirectory(): void
     {
         $directories = [vfsStream::url('root/exampleDirectory'), vfsStream::url('root/exampleDirectory2')];
@@ -92,11 +81,6 @@ final class FinderTest extends TestCase
         $this->assertSame(self::EXAMPLE_TEXT, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::find
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromSource
-     */
     public function testFindExampleContentsInSourceDirectory(): void
     {
         $descriptor = $this->givenADescriptorWithExamplePath('example.txt');
@@ -108,11 +92,6 @@ final class FinderTest extends TestCase
         $this->assertSame(self::EXAMPLE_TEXT, $result);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::find
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExamplePathFromExampleDirectory
-     */
     public function testFindExampleContentsInExamplesDirectoryOfWorkingDirectory(): void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
@@ -131,10 +110,6 @@ final class FinderTest extends TestCase
         $this->filesystem->remove($workingDirectory);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::find
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     */
     public function testFindExampleContentsInCurrentWorkingDirectory(): void
     {
         // can't use vfsStream because we are working from the Current Working Directory, which is not
@@ -153,10 +128,6 @@ final class FinderTest extends TestCase
         $this->filesystem->remove($workingDirectory);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Example\Finder::find
-     * @covers \phpDocumentor\Descriptor\Example\Finder::getExampleFileContents
-     */
     public function testErrorMessageIsReturnedIfFileIsNotFound(): void
     {
         $filename = 'doesNotExist.txt';

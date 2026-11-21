@@ -18,10 +18,12 @@ use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(ThrowsAssembler::class)]
 class ThrowsAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -41,10 +43,6 @@ class ThrowsAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\ThrowsAssembler::buildDescriptor
-     */
     public function testCreatingThrowsDescriptorFromReflector(): void
     {
         $types = new Object_(new Fqsen('\InvalidAgumentException'));

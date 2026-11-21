@@ -5,7 +5,7 @@ name: Website
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo, gnupg
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '7.4'
+  defaultPHPVersion: '8.2'
 jobs:
   docs:
     runs-on: ubuntu-latest

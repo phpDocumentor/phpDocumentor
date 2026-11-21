@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Router;
 
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,14 +24,13 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * Test for the MethodDescriptor URL Generator with the Standard Router
- *
- * @coversDefaultClass \phpDocumentor\Transformer\Router\ClassBasedFqsenUrlGenerator
  */
+#[CoversClass(ClassBasedFqsenUrlGenerator::class)]
 class ClassBasedFqsenUrlGeneratorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @dataProvider provideFqsens */
+    #[DataProvider('provideFqsens')]
     public function testGenerateUrlForFqsenDescriptor(string $fromFqsen, string $toPath): void
     {
         $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);

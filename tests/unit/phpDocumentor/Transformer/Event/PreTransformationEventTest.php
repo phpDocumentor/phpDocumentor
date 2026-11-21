@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Tests the functionality for the PreTransformationEvent class.
- *
- * @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformationEvent
  */
+#[CoversClass(PreTransformationEvent::class)]
 final class PreTransformationEventTest extends TestCase
 {
     use Faker;

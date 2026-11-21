@@ -21,9 +21,10 @@ use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ArgumentDescriptor */
+#[CoversClass(ArgumentDescriptor::class)]
 final class ArgumentDescriptorTest extends TestCase
 {
     public function testCanHaveAName(): void

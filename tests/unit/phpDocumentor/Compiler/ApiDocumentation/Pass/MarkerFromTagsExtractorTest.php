@@ -23,9 +23,10 @@ use phpDocumentor\Descriptor\TagDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Location;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\MarkerFromTagsExtractor */
+#[CoversClass(MarkerFromTagsExtractor::class)]
 final class MarkerFromTagsExtractorTest extends TestCase
 {
     use Faker;

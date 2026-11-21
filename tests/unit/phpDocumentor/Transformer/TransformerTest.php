@@ -18,6 +18,7 @@ use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\FileSystem\FlySystemFactory;
 use phpDocumentor\Transformer\Writer\Collection;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -27,7 +28,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 use function strlen;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Transformer */
+#[CoversClass(Transformer::class)]
 final class TransformerTest extends TestCase
 {
     use ProphecyTrait;

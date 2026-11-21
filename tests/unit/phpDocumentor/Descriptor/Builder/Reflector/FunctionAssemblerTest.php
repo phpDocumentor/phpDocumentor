@@ -21,11 +21,13 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Argument;
 use phpDocumentor\Reflection\Php\Function_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument as ProphecyArgument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(FunctionAssembler::class)]
 class FunctionAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -64,14 +66,6 @@ class FunctionAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::__construct
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::mapReflectorPropertiesOntoDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentsToFunctionDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::createArgumentDescriptor
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\FunctionAssembler::addArgumentDescriptorToFunction
-     */
     public function testCreateFunctionDescriptorFromReflector(): void
     {
         // Arrange

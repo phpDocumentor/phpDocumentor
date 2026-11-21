@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
-use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function str_replace;
 
 use const PHP_EOL;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer */
-final class ProjectAnalyzerTest extends MockeryTestCase
+#[CoversClass(ProjectAnalyzer::class)]
+final class ProjectAnalyzerTest extends TestCase
 {
     use Faker;
+    use ProphecyTrait;
 
     private ProjectAnalyzer $fixture;
 
@@ -99,9 +101,9 @@ TEXT;
     /**
      * Returns a mocked ProjectDescriptor object.
      */
-    private function givenAProjectMock(): m\MockInterface
+    private function givenAProjectMock(): ProjectDescriptor
     {
-        return m::mock(ProjectDescriptor::class)->shouldIgnoreMissing();
+        return $this->prophesize(ProjectDescriptor::class)->reveal();
     }
 
     /**

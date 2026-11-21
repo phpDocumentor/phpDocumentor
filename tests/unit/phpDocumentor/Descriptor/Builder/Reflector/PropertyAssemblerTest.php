@@ -20,11 +20,13 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Visibility;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(PropertyAssembler::class)]
 final class PropertyAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -47,7 +49,6 @@ final class PropertyAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builderMock->reveal());
     }
 
-    /** @covers \phpDocumentor\Descriptor\Builder\Reflector\PropertyAssembler::create */
     public function testCreatePropertyDescriptorFromReflector(): void
     {
         // Arrange

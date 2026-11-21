@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Tag;
 
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the UsesDescriptor class.
  */
+#[CoversClass(UsesDescriptor::class)]
 class UsesDescriptorTest extends TestCase
 {
     final public const EXAMPLE_REFERENCE = '\Reference';
@@ -34,10 +36,6 @@ class UsesDescriptorTest extends TestCase
         $this->fixture = new UsesDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::setReference
-     * @covers \phpDocumentor\Descriptor\Tag\UsesDescriptor::getReference
-     */
     public function testSetAndGetReference(): void
     {
         $this->assertNull($this->fixture->getReference());

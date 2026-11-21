@@ -16,14 +16,15 @@ namespace phpDocumentor\Configuration;
 use BadMethodCallException;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\Path;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\Source */
+#[CoversClass(Source::class)]
 final class SourceTest extends TestCase
 {
     use Faker;
 
-    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testSourceReturnsDsn(): void
     {
         $dsn = self::faker()->dsn();
@@ -32,7 +33,6 @@ final class SourceTest extends TestCase
         self::assertSame($dsn, $source->dsn());
     }
 
-    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testWithDsnReturnsNewInstanceOfSource(): void
     {
         $dsn = self::faker()->dsn();
@@ -44,7 +44,6 @@ final class SourceTest extends TestCase
         self::assertNotSame($newSource, $source);
     }
 
-    /** @uses \phpDocumentor\FileSystem\Dsn */
     public function testWithDsnReturnsSetsNewDsn(): void
     {
         $dsn = self::faker()->dsn();
@@ -99,11 +98,8 @@ final class SourceTest extends TestCase
         unset($source['paths']);
     }
 
-    /**
-     * @param list<string> $globs
-     *
-     * @dataProvider pathProvider
-     */
+    /** @param list<string> $globs */
+    #[DataProvider('pathProvider')]
     public function testSourceGlobPathsNormalizesPaths(Path $input, array $globs): void
     {
         $source = new Source(self::faker()->dsn(), [$input]);

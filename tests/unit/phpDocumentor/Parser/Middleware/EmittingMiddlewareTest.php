@@ -19,6 +19,7 @@ use phpDocumentor\Parser\Event\PreFileEvent;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -26,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use function md5;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Middleware\EmittingMiddleware */
+#[CoversClass(EmittingMiddleware::class)]
 final class EmittingMiddlewareTest extends TestCase
 {
     use ProphecyTrait;

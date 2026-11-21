@@ -19,17 +19,17 @@ use phpDocumentor\Query\Engine;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use RuntimeException;
 
-/**
- * @uses \phpDocumentor\Transformer\Template
- *
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\PathGenerator
- */
+#[CoversClass(PathGenerator::class)]
+#[UsesClass('\phpDocumentor\Transformer\Template')]
 final class PathGeneratorTest extends TestCase
 {
     use ProphecyTrait;
@@ -61,7 +61,7 @@ final class PathGeneratorTest extends TestCase
         );
     }
 
-    /** @dataProvider providePathsToUrlEncode */
+    #[DataProvider('providePathsToUrlEncode')]
     public function testWhenAnArtifactIsProvidedGenerateAPathToThatLocation($artifact, $variable, $expected): void
     {
         $transformation = $this->givenATransformationWithArtifact($artifact);

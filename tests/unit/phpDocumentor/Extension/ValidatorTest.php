@@ -16,9 +16,10 @@ namespace phpDocumentor\Extension;
 use PharIo\Manifest\ApplicationName;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Version;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Extension\Validator */
+#[CoversClass(Validator::class)]
 final class ValidatorTest extends TestCase
 {
     use Faker;

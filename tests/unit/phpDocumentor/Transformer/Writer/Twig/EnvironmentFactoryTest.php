@@ -22,6 +22,7 @@ use phpDocumentor\Guides\Renderer\UrlGenerator\UrlGeneratorInterface;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Transformer\Router\Router;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer\HtmlFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
@@ -37,7 +38,7 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory */
+#[CoversClass(EnvironmentFactory::class)]
 final class EnvironmentFactoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -81,10 +82,6 @@ final class EnvironmentFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
-     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     */
     public function testItCreatesATwigEnvironmentWithThephpDocumentorExtension(): void
     {
         $template = self::faker()->template();
@@ -100,10 +97,6 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->hasExtension(Extension::class));
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
-     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     */
     public function testItCreatesATwigEnvironmentWithTheCorrectTemplateLoaders(): void
     {
         $template = self::faker()->template();
@@ -130,11 +123,6 @@ final class EnvironmentFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
-     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     * @uses \phpDocumentor\Transformer\Template\Parameter
-     */
     public function testTheCreatedEnvironmentHasTheDebugExtension(): void
     {
         $template = self::faker()->template();
@@ -154,10 +142,6 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertTrue($environment->hasExtension(DebugExtension::class));
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
-     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     */
     public function testItIgnoresTheTemplatePathOfAnExtensionThatDoesNotExist(): void
     {
         $factory = $this->createFactory(['my-extension' => ['path' => '/does/not/exist', 'keys' => ['my_key']]]);
@@ -171,10 +155,6 @@ final class EnvironmentFactoryTest extends TestCase
         $this->assertFalse($environment->getLoader()->exists('@my-extension/metadata/my_key.html.twig'));
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\ProjectDescriptor
-     * @uses \phpDocumentor\Transformer\Writer\Twig\LinkRenderer
-     */
     public function testItRegistersTheTemplatePathOfAnExtensionUnderItsAlias(): void
     {
         $directory = sys_get_temp_dir() . '/phpdoc-extension-templates-' . uniqid();

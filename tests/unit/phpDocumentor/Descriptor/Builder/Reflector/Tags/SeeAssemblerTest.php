@@ -17,15 +17,16 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SeeAssembler
  */
+#[CoversClass(SeeAssembler::class)]
 class SeeAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -65,7 +66,7 @@ class SeeAssemblerTest extends TestCase
         $this->assertSame([], $descriptor->getErrors()->getAll());
     }
 
-    /** @dataProvider provideReferences */
+    #[DataProvider('provideReferences')]
     public function testCreateSeeDescriptorFromSeeTagWhenReferenceIsUrl($reference): void
     {
         // Arrange

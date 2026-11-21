@@ -17,15 +17,15 @@ use phpDocumentor\Descriptor\Tag\SinceDescriptor;
 use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\SinceAssembler
  */
+#[CoversClass(SinceAssembler::class)]
 final class SinceAssemblerTest extends TestCase
 {
     use ProphecyTrait;
