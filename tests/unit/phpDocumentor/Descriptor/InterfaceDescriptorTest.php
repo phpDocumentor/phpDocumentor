@@ -17,12 +17,13 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Descriptor\Tag\VersionDescriptor;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests the functionality for the InterfaceDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\InterfaceDescriptor
  */
+#[CoversClass(InterfaceDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class InterfaceDescriptorTest extends MockeryTestCase
 {
     private InterfaceDescriptor $fixture;
@@ -88,7 +89,6 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertInstanceOf(Collection::class, $descriptor->getInheritedConstants());
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
@@ -104,7 +104,6 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($summary, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -121,7 +120,6 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($authorCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -138,7 +136,6 @@ final class InterfaceDescriptorTest extends MockeryTestCase
         $this->assertSame($copyrightCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange

@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\File;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File as ReflectedFile;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -27,7 +28,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use function base64_encode;
 use function serialize;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Middleware\CacheMiddleware */
+#[CoversClass(CacheMiddleware::class)]
 final class CacheMiddlewareTest extends TestCase
 {
     use Faker;

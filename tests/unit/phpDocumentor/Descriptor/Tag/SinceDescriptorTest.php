@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the SinceDescriptor class.
  */
+#[CoversClass(SinceDescriptor::class)]
 class SinceDescriptorTest extends TestCase
 {
     final public const EXAMPLE_VERSION = 'version';
@@ -33,10 +35,6 @@ class SinceDescriptorTest extends TestCase
         $this->fixture = new SinceDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::setVersion
-     * @covers \phpDocumentor\Descriptor\Tag\SinceDescriptor::getVersion
-     */
     public function testSetAndGetVersion(): void
     {
         $this->assertEmpty($this->fixture->getVersion());

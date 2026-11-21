@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
  */
+#[CoversClass(TypedVariableAbstract::class)]
 class PropertyDescriptorTest extends TestCase
 {
     final public const EXAMPLE_NAME = 'variableName';
@@ -33,10 +36,6 @@ class PropertyDescriptorTest extends TestCase
         $this->fixture = new PropertyDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::setVariableName
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedVariableAbstract::getVariableName
-     */
     public function testSetAndGetVariableName(): void
     {
         $this->assertEmpty($this->fixture->getVariableName());

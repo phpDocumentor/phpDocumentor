@@ -17,12 +17,13 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 use function str_replace;
 
 use const PHP_EOL;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ProjectAnalyzer */
+#[CoversClass(ProjectAnalyzer::class)]
 final class ProjectAnalyzerTest extends MockeryTestCase
 {
     use Faker;

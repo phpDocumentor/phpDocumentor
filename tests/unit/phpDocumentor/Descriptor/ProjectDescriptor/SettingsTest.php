@@ -15,9 +15,10 @@ namespace phpDocumentor\Descriptor\ProjectDescriptor;
 
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\ProjectSettings;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\ProjectSettings */
+#[CoversClass(ProjectSettings::class)]
 final class SettingsTest extends TestCase
 {
     public function testItCanKeepTrackWhetherSourceIsIncluded(): void

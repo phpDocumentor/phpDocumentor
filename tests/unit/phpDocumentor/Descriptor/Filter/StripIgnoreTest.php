@@ -16,14 +16,14 @@ namespace phpDocumentor\Descriptor\Filter;
 use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Collection;
 use phpDocumentor\Descriptor\DescriptorAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the StripIgnore class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Filter\StripIgnore
  */
+#[CoversClass(StripIgnore::class)]
 final class StripIgnoreTest extends TestCase
 {
     use ProphecyTrait;

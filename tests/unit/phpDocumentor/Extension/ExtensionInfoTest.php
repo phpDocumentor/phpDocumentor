@@ -25,9 +25,10 @@ use PharIo\Manifest\RequirementCollection;
 use PharIo\Manifest\Url;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\Version;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Extension\ExtensionInfo */
+#[CoversClass(ExtensionInfo::class)]
 final class ExtensionInfoTest extends TestCase
 {
     public function testExtensionIsCreatedCorrectlyFromManifest(): void

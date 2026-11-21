@@ -19,13 +19,11 @@ use phpDocumentor\Descriptor\Tag\MethodDescriptor as TagMethodDescriptor;
 use phpDocumentor\Descriptor\Tag\ReturnDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 trait MagicMethodContainerTests
 {
-    /**
-     * @covers       ::getMagicMethods
-     * @dataProvider provideMagicMethodProperties
-     */
+    #[DataProvider('provideMagicMethodProperties')]
     public function testGetMagicMethods(bool $isStatic): void
     {
         $methodName = 'methodName';

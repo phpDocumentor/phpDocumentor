@@ -16,17 +16,19 @@ namespace phpDocumentor\Configuration\Definition;
 use phpDocumentor\Configuration\SymfonyConfigFactory;
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge;
 use function array_replace_recursive;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\Definition\Version3 */
+#[CoversClass(Version3::class)]
 final class Version3Test extends TestCase
 {
     private const DEFAULT_TEMPLATE_NAME = 'default';
 
-    /** @dataProvider provideTestConfiguration */
+    #[DataProvider('provideTestConfiguration')]
     public function testLoadingADefaultConfigWorks($inputConfig, $expectedConfig): void
     {
         $configuration = new Version3(self::DEFAULT_TEMPLATE_NAME);

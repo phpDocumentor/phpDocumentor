@@ -16,6 +16,7 @@ namespace phpDocumentor\Guides\RestructuredText\TextRoles;
 use phpDocumentor\Guides\Nodes\InlineToken\PHPReferenceNode;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParserContext;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -28,7 +29,7 @@ final class PHPReferenceTest extends TestCase
         $this->textRole = new PHPReference(new NullLogger());
     }
 
-    /** @dataProvider phpRefrenceProvider */
+    #[DataProvider('phpRefrenceProvider')]
     public function testProcessNodeReturnsNode(string $role, string $content, PHPReferenceNode $expected): void
     {
         $node = $this->textRole->processNode(

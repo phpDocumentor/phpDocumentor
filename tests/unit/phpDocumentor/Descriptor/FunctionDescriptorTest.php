@@ -16,8 +16,9 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\FunctionDescriptor */
+#[CoversClass(FunctionDescriptor::class)]
 final class FunctionDescriptorTest extends MockeryTestCase
 {
     private FunctionDescriptor $fixture;

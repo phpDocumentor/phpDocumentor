@@ -15,8 +15,10 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\DocBlock\DescriptionDescriptor;
 use phpDocumentor\Reflection\DocBlock\Description;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(TagDescriptor::class)]
 class TagDescriptorTest extends TestCase
 {
     final public const TAG_NAME = 'test';
@@ -31,30 +33,17 @@ class TagDescriptorTest extends TestCase
         $this->fixture = new TagDescriptor(self::TAG_NAME);
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::getName
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::setName
-     */
     public function testNameIsRegisteredOnInstantiationAndReturned(): void
     {
         self::assertSame(self::TAG_NAME, $this->fixture->getName());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
-     */
     public function testIfErrorsAreInitializedToAnEmptyCollectionOnInstantiation(): void
     {
         self::assertInstanceOf(Collection::class, $this->fixture->getErrors());
         self::assertEmpty($this->fixture->getErrors()->getAll());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::setErrors
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::getErrors
-     */
     public function testOverridingErrorsCollectionWithNewCollection(): void
     {
         // Arrange
@@ -67,10 +56,6 @@ class TagDescriptorTest extends TestCase
         self::assertSame($collection, $this->fixture->getErrors());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::setDescription
-     * @covers \phpDocumentor\Descriptor\TagDescriptor::getDescription
-     */
     public function testSettingAndReturningADescription(): void
     {
         // Arrange

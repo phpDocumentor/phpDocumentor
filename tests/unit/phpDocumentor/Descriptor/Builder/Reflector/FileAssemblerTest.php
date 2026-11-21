@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\File;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -31,9 +32,8 @@ use function md5;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Builder
- *
- * @covers \phpDocumentor\Descriptor\Builder\Reflector\FileAssembler
  */
+#[CoversClass(FileAssembler::class)]
 final class FileAssemblerTest extends TestCase
 {
     use ProphecyTrait;

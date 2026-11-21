@@ -17,6 +17,7 @@ use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\FunctionDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /** @link https://github.com/phpDocumentor/phpDocumentor/issues/3997 */
@@ -41,7 +42,7 @@ final class FilterEmptyFilesTest extends TestCase
         self::assertSame($documentedFile, $apiSet->getFiles()->get($documentedFile->getPath()));
     }
 
-    /** @dataProvider filesWithSingleElementProvider */
+    #[DataProvider('filesWithSingleElementProvider')]
     public function testFilesWithAnyKindOfDocumentedElementAreKept(callable $populate): void
     {
         $apiSet = self::faker()->apiSetDescriptor();

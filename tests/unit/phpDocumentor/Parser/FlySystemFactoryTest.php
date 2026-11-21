@@ -16,12 +16,13 @@ namespace phpDocumentor\Parser;
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\FileSystem\FlySystemFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 use function sys_get_temp_dir;
 
-/** @coversDefaultClass \phpDocumentor\FileSystem\FlySystemFactory */
+#[CoversClass(FlySystemFactory::class)]
 final class FlySystemFactoryTest extends TestCase
 {
     use ProphecyTrait;

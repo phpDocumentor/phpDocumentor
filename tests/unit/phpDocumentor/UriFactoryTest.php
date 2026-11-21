@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\UriFactory */
+#[CoversClass(UriFactory::class)]
 final class UriFactoryTest extends TestCase
 {
-    /** @dataProvider pathProvider */
+    #[DataProvider('pathProvider')]
     public function testCreate(string $input, string|null $scheme, string $path): void
     {
         $uri = UriFactory::createUri($input);

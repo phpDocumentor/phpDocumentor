@@ -15,13 +15,13 @@ namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\ProjectSettings;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ProjectDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\ProjectDescriptor
  */
+#[CoversClass(ProjectDescriptor::class)]
 final class ProjectDescriptorTest extends TestCase
 {
     use Faker;

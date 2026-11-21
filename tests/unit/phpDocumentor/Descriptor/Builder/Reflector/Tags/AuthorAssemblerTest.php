@@ -15,9 +15,10 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Descriptor\Tag\AuthorDescriptor;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\AuthorAssembler */
+#[CoversClass(AuthorAssembler::class)]
 class AuthorAssemblerTest extends TestCase
 {
     public function testCreate(): void

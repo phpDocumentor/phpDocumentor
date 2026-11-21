@@ -18,13 +18,15 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Ticket;
 use stdClass;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\ClassDescriptor
  */
+#[CoversClass(ClassDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class ClassDescriptorTest extends MockeryTestCase
 {
     protected ClassDescriptor $fixture;
@@ -238,7 +240,7 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertSame($expected, $result->getAll());
     }
 
-    /** @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307 */
+    #[Ticket('https://github.com/phpDocumentor/phpDocumentor2/issues/1307')]
     public function testRetrievingInheritedPropertiesDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange
@@ -303,8 +305,6 @@ final class ClassDescriptorTest extends MockeryTestCase
 
     /**
      * Test to cover magic method of parent abstract class
-     *
-     * @covers \phpDocumentor\Descriptor\DescriptorAbstract::__call
      */
     public function testCall(): void
     {
@@ -312,7 +312,6 @@ final class ClassDescriptorTest extends MockeryTestCase
         self::assertInstanceOf(Collection::class, $this->fixture->__call('getNotexisting', []));
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange

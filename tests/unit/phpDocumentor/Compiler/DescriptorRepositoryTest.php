@@ -15,10 +15,11 @@ namespace phpDocumentor\Compiler;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @covers \phpDocumentor\Compiler\DescriptorRepository */
+#[CoversClass(DescriptorRepository::class)]
 final class DescriptorRepositoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -33,10 +34,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->descriptorRepository = new DescriptorRepository();
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\VersionDescriptor
-     * @uses \phpDocumentor\Descriptor\Collection
-     */
     public function testSetVersionDescriptorMethod(): void
     {
         $versionDescriptor = self::faker()->versionDescriptor([]);
@@ -50,10 +47,6 @@ final class DescriptorRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\VersionDescriptor
-     * @uses \phpDocumentor\Descriptor\Collection
-     */
     public function testGetVersionDescriptorMethod(): void
     {
         $versionDescriptor = self::faker()->versionDescriptor([]);
@@ -66,10 +59,6 @@ final class DescriptorRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses phpDocumentor\Descriptor\VersionDescriptor
-     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     */
     public function testItCanFindDescriptorByFqsen(): void
     {
         $classDescriptor = self::faker()->classDescriptor($this->fqsen);
@@ -85,10 +74,6 @@ final class DescriptorRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @uses phpDocumentor\Descriptor\VersionDescriptor
-     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     */
     public function testItReturnsNullWhenNoDescriptorIsFoundByFqsen(): void
     {
         $this->descriptorRepository->setVersionDescriptor(
@@ -98,10 +83,6 @@ final class DescriptorRepositoryTest extends TestCase
         $this->assertNull($this->descriptorRepository->findDescriptorByFqsen($this->fqsen));
     }
 
-    /**
-     * @uses phpDocumentor\Descriptor\VersionDescriptor
-     * @uses \phpDocumentor\Descriptor\ApiSetDescriptor
-     */
     public function testItCanFindDescriptorByTypeAndFqsen(): void
     {
         $classDescriptor = self::faker()->classDescriptor($this->fqsen);

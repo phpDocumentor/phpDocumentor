@@ -19,12 +19,12 @@ use phpDocumentor\Configuration\ApiSpecification;
 use phpDocumentor\Descriptor\Builder\AssemblerFactory;
 use phpDocumentor\Descriptor\Filter\Filter;
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests the functionality for the ProjectDescriptorBuilder class.
- *
- * @coversDefaultClass \phpDocumentor\ProjectDescriptorBuilder
  */
+#[CoversClass(ProjectDescriptorBuilder::class)]
 class ProjectDescriptorBuilderTest extends MockeryTestCase
 {
     /** @var ProjectDescriptorBuilder $fixture */

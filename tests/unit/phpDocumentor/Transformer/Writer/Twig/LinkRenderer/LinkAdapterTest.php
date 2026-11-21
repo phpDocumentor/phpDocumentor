@@ -24,11 +24,13 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 use phpDocumentor\Transformer\Writer\Twig\LinkRendererInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\LinkAdapter */
+#[CoversClass(LinkAdapter::class)]
 final class LinkAdapterTest extends TestCase
 {
     use Faker;
@@ -80,11 +82,8 @@ final class LinkAdapterTest extends TestCase
         self::assertTrue($this->adapter->supports(new ClassDescriptor()));
     }
 
-    /**
-     * @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value
-     *
-     * @dataProvider renderingVariations
-     */
+    /** @param array<Type>|Type|DescriptorAbstract|Fqsen|Reference\Reference|Path|string|iterable<mixed> $value */
+    #[DataProvider('renderingVariations')]
     public function testRenderProducesExpectedOutputBasedOn($value, Target $expectedTarget): void
     {
         $this->htmlFormatter->format($expectedTarget)->shouldBeCalledOnce()->willReturn('HTML');

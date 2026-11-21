@@ -17,8 +17,9 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Template\Collection */
+#[CoversClass(Collection::class)]
 final class CollectionTest extends MockeryTestCase
 {
     use Faker;

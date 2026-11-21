@@ -15,9 +15,10 @@ namespace phpDocumentor\Extension;
 
 use DirectoryIterator;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Extension\DirectoryLoader */
+#[CoversClass(DirectoryLoader::class)]
 final class DirectoryLoaderTest extends TestCase
 {
     public function testSupportsReturnsFalseWhenNoManifestFileFoundInEmptyDir(): void

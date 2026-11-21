@@ -17,19 +17,18 @@ use phpDocumentor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-/**
- * @uses \phpDocumentor\Descriptor\Collection
- * @uses \phpDocumentor\Descriptor\DescriptorAbstract
- * @uses \phpDocumentor\Descriptor\FileDescriptor
- * @uses \phpDocumentor\Descriptor\NamespaceDescriptor
- * @uses \phpDocumentor\Descriptor\ProjectDescriptor
- * @uses \phpDocumentor\ProjectSettings
- *
- * @coversDefaultClass \phpDocumentor\Cache\ProjectDescriptorMapper
- */
+#[CoversClass(ProjectDescriptorMapper::class)]
+#[UsesClass('\phpDocumentor\Descriptor\Collection')]
+#[UsesClass('\phpDocumentor\Descriptor\DescriptorAbstract')]
+#[UsesClass('\phpDocumentor\Descriptor\FileDescriptor')]
+#[UsesClass('\phpDocumentor\Descriptor\NamespaceDescriptor')]
+#[UsesClass('\phpDocumentor\Descriptor\ProjectDescriptor')]
+#[UsesClass('\phpDocumentor\ProjectSettings')]
 final class ProjectDescriptorMapperTest extends TestCase
 {
     use Faker;

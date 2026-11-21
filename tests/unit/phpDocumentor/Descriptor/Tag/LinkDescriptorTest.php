@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the LinkDescriptor class.
  */
+#[CoversClass(LinkDescriptor::class)]
 final class LinkDescriptorTest extends TestCase
 {
     public const EXAMPLE_LINK = 'https://phpdoc.org';
@@ -33,10 +35,6 @@ final class LinkDescriptorTest extends TestCase
         $this->fixture = new LinkDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::setLink
-     * @covers \phpDocumentor\Descriptor\Tag\LinkDescriptor::getLink
-     */
     public function testSetAndGetLink(): void
     {
         $this->assertEmpty($this->fixture->getLink());

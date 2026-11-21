@@ -23,12 +23,13 @@ use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\Array_;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests the functionality for the PropertyDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\PropertyDescriptor
  */
+#[CoversClass(PropertyDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class PropertyDescriptorTest extends MockeryTestCase
 {
     protected PropertyDescriptor $fixture;
@@ -151,7 +152,6 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertEquals($varCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -168,7 +168,6 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($authorCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -185,7 +184,6 @@ final class PropertyDescriptorTest extends MockeryTestCase
         self::assertSame($versionCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange

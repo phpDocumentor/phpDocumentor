@@ -25,12 +25,13 @@ use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests the functionality for the ConstantDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\ConstantDescriptor
  */
+#[CoversClass(ConstantDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class ConstantDescriptorTest extends MockeryTestCase
 {
     private ConstantDescriptor $fixture;
@@ -144,7 +145,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($file, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getSummary */
     public function testSummaryInheritsWhenNoneIsPresent(): void
     {
         // Arrange
@@ -176,7 +176,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($varCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getPackage */
     public function testPackageInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -192,7 +191,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($packageTagDescriptor, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -209,7 +207,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($authorCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -226,7 +223,6 @@ final class ConstantDescriptorTest extends MockeryTestCase
         self::assertSame($versionCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange

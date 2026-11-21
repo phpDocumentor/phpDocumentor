@@ -20,13 +20,14 @@ use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Middleware\ErrorHandlingMiddleware */
+#[CoversClass(ErrorHandlingMiddleware::class)]
 final class ErrorHandlingMiddlewareTest extends TestCase
 {
     use Faker;

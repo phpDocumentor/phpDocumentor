@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use phpDocumentor\Transformer\Writer\Graph\Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Graph */
+#[CoversClass(Graph::class)]
 final class GraphTest extends TestCase
 {
     use ProphecyTrait;

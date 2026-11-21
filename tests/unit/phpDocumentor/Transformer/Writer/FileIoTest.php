@@ -24,13 +24,12 @@ use phpDocumentor\FileSystem\MountManager;
 use phpDocumentor\Transformer\Template;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @coversDefaultClass \phpDocumentor\Transformer\Writer\FileIo
- * @covers \phpDocumentor\Transformer\Writer\IoTrait
- */
+#[CoversClass(FileIo::class)]
+#[CoversClass(IoTrait::class)]
 final class FileIoTest extends TestCase
 {
     use Faker;

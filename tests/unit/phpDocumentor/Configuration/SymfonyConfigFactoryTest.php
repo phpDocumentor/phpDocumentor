@@ -18,12 +18,13 @@ use phpDocumentor\Configuration\Definition\Upgradable;
 use phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException;
 use phpDocumentor\Configuration\Exception\UpgradeFailedException;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\SymfonyConfigFactory */
+#[CoversClass(SymfonyConfigFactory::class)]
 final class SymfonyConfigFactoryTest extends TestCase
 {
     use Faker;
@@ -40,7 +41,6 @@ final class SymfonyConfigFactoryTest extends TestCase
         );
     }
 
-    /** @uses \phpDocumentor\Configuration\Exception\UpgradeFailedException::create */
     public function testThrowsExceptionWhenUpgradeFails(): void
     {
         $this->expectException(UpgradeFailedException::class);
@@ -57,7 +57,6 @@ final class SymfonyConfigFactoryTest extends TestCase
         );
     }
 
-    /** @uses \phpDocumentor\Configuration\Exception\UnsupportedConfigVersionException::create */
     public function testThrowsExceptionWhenConfigVersionIsNotSupported(): void
     {
         $this->expectException(UnsupportedConfigVersionException::class);

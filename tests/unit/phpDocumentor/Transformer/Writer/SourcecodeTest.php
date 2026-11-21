@@ -23,10 +23,11 @@ use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Transformation;
 use phpDocumentor\Transformer\Transformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Sourcecode */
+#[CoversClass(Sourcecode::class)]
 final class SourcecodeTest extends MockeryTestCase
 {
     use Faker;

@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Pipeline\Stage;
 
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/**
- * @uses \phpDocumentor\Pipeline\Stage\Payload
- *
- * @coversDefaultClass \phpDocumentor\Pipeline\Stage\TransformToPayload
- */
+#[CoversClass(TransformToPayload::class)]
+#[UsesClass('\phpDocumentor\Pipeline\Stage\Payload')]
 final class TransformToPayloadTest extends TestCase
 {
     use ProphecyTrait;

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\InvalidTagAssembler */
+#[CoversClass(InvalidTagAssembler::class)]
 final class InvalidTagAssemblerTest extends TestCase
 {
     public function testCreateWithError(): void

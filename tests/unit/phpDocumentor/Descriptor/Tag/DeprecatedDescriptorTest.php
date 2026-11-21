@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the DeprecatedDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Tag\DeprecatedDescriptor
  */
+#[CoversClass(DeprecatedDescriptor::class)]
 final class DeprecatedDescriptorTest extends TestCase
 {
     public const EXAMPLE_VERSION = '2.0';

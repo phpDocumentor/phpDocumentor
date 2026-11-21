@@ -14,18 +14,16 @@ declare(strict_types=1);
 namespace phpDocumentor\Event;
 
 use phpDocumentor\Event\Mock\EventAbstract as EventAbstractMock;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Test for the EventAbstract class.
  */
+#[CoversClass(EventAbstract::class)]
 class EventAbstractTest extends TestCase
 {
-    /**
-     * @covers \phpDocumentor\Event\EventAbstract::__construct
-     * @covers \phpDocumentor\Event\EventAbstract::getSubject
-     */
     public function testSubjectMustBeProvidedAndCanBeRead(): void
     {
         $subject = new stdClass();
@@ -35,7 +33,6 @@ class EventAbstractTest extends TestCase
         $this->assertSame($subject, $fixture->getSubject());
     }
 
-    /** @covers \phpDocumentor\Event\EventAbstract::createInstance */
     public function testCanBeConstructedUsingAStaticFactoryMethod(): void
     {
         $subject = new stdClass();

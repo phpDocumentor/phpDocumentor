@@ -14,17 +14,19 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\FileSystem\FileSystem;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Twig\Error\LoaderError;
 use Twig\Source;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\FileSystemLoader */
+#[CoversClass(FileSystemLoader::class)]
 final class FileSystemLoaderTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @dataProvider fileProvider */
+    #[DataProvider('fileProvider')]
     public function testExists(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FileSystem::class);
@@ -35,7 +37,7 @@ final class FileSystemLoaderTest extends TestCase
         $this->assertTrue($loader->exists($filename));
     }
 
-    /** @dataProvider fileProvider */
+    #[DataProvider('fileProvider')]
     public function testGetSourceContext(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FileSystem::class);
@@ -54,7 +56,7 @@ final class FileSystemLoaderTest extends TestCase
         );
     }
 
-    /** @dataProvider fileProvider */
+    #[DataProvider('fileProvider')]
     public function testGetCacheKey(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FileSystem::class);
@@ -65,7 +67,7 @@ final class FileSystemLoaderTest extends TestCase
         $this->assertSame($filename, $loader->getCacheKey($filename));
     }
 
-    /** @dataProvider fileProvider */
+    #[DataProvider('fileProvider')]
     public function testIsFresh(string $filename, string $resolvedName, string|null $overloadPrefix): void
     {
         $fileSystem = $this->prophesize(FileSystem::class);

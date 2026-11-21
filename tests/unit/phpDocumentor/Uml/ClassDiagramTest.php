@@ -20,6 +20,7 @@ use phpDocumentor\Descriptor\InterfaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\TestCase;
 
 class ClassDiagramTest extends TestCase
@@ -312,7 +313,7 @@ UML;
         $this->assertSame($expected, $diagram->generateUml([$namespace]));
     }
 
-    /** @requires OS Linux */
+    #[RequiresOperatingSystem('Linux')]
     public function testAddsTraitsToNamespaces(): void
     {
         $namespace = self::faker()->namespaceDescriptor(new Fqsen('\phpDocumentor\MyNamespace'));

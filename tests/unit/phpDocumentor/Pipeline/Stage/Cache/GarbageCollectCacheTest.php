@@ -17,10 +17,11 @@ use phpDocumentor\Cache\ProjectDescriptorMapper;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Pipeline\Stage\Parser\ApiSetPayload;
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Cache\GarbageCollectCache */
+#[CoversClass(GarbageCollectCache::class)]
 final class GarbageCollectCacheTest extends TestCase
 {
     use Faker;

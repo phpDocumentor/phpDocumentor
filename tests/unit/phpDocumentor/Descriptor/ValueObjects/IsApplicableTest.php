@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\ValueObjects;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\ValueObjects\IsApplicable */
+#[CoversClass(IsApplicable::class)]
 final class IsApplicableTest extends TestCase
 {
     public function testIndicatingPresenceOfFeature(): void

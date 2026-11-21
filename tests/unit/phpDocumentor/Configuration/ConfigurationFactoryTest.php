@@ -17,10 +17,11 @@ use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri;
 use org\bovigo\vfs\vfsStream;
 use phpDocumentor\Configuration\Exception\InvalidConfigPathException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\ConfigurationFactory */
+#[CoversClass(ConfigurationFactory::class)]
 final class ConfigurationFactoryTest extends TestCase
 {
     use ProphecyTrait;
@@ -43,8 +44,6 @@ final class ConfigurationFactoryTest extends TestCase
      * Creating a default configuration is used to create a baseline and can be used in middlewares.
      *
      * If we execute a middleware as part of this step then we end up in an infinite loop.
-     *
-     * @uses \phpDocumentor\Configuration\ConfigurationFactory::addMiddleware
      */
     public function testCreatingTheDefaultConfigurationDoesNotApplyAnyMiddleware(): void
     {
@@ -69,7 +68,6 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /** @uses \phpDocumentor\Configuration\ConfigurationFactory::fromUri */
     public function testCreatingAConfigurationByScanningTheDefaultLocations(): void
     {
         // only create the actual configuration file phpdoc.xml, explicitly do not define phpdoc.dist.xml
@@ -99,7 +97,6 @@ final class ConfigurationFactoryTest extends TestCase
         $this->assertSame($configuration, $response->getArrayCopy());
     }
 
-    /** @uses \phpDocumentor\Configuration\ConfigurationFactory::createDefault */
     public function testWhenTheDefaultLocationsAreNotFoundCreateDefaultConfiguration(): void
     {
         // explicitly create _no_ configuration file

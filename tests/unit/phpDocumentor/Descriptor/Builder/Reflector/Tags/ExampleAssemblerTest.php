@@ -16,6 +16,7 @@ namespace phpDocumentor\Descriptor\Builder\Reflector\Tags;
 use phpDocumentor\Descriptor\Example\Finder;
 use phpDocumentor\Reflection\DocBlock\ExampleFinder;
 use phpDocumentor\Reflection\DocBlock\Tags\Example;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -23,9 +24,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests for the \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\ExampleAssembler
  */
+#[CoversClass(ExampleAssembler::class)]
 class ExampleAssemblerTest extends TestCase
 {
     use ProphecyTrait;

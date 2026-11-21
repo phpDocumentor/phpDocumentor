@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
  * Tests the functionality for the Collection class.
- *
- * @coversDefaultClass Collection
  */
+#[CoversClass(Collection::class)]
 final class CollectionTest extends TestCase
 {
     private Collection|array $fixture;

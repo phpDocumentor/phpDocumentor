@@ -16,12 +16,12 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Tests the functionality for the ClassDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\EnumDescriptor
  */
+#[CoversClass(EnumDescriptor::class)]
 final class EnumDescriptorTest extends MockeryTestCase
 {
     /** @var EnumDescriptor $fixture */

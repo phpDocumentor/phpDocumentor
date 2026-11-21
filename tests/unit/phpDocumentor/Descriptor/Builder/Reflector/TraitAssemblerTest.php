@@ -23,18 +23,17 @@ use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 use function sprintf;
 
-/**
- * @uses \phpDocumentor\Descriptor\DescriptorAbstract
- * @uses \phpDocumentor\Descriptor\TraitDescriptor
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\TraitAssembler
- */
+#[CoversClass(TraitAssembler::class)]
+#[UsesClass('\phpDocumentor\Descriptor\DescriptorAbstract')]
+#[UsesClass('\phpDocumentor\Descriptor\TraitDescriptor')]
 final class TraitAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -81,10 +80,6 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($endLocation, $result->getEndLocation());
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\Collection
-     * @uses \phpDocumentor\Descriptor\ConstantDescriptor
-     */
     public function testTraitWillHaveConstants(): void
     {
         $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));
@@ -97,10 +92,6 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($method, $result->getConstants()->fetch($reflectedConstant->getName(), false));
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\Collection
-     * @uses \phpDocumentor\Descriptor\PropertyDescriptor
-     */
     public function testTraitWillHaveProperties(): void
     {
         $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));
@@ -113,10 +104,6 @@ final class TraitAssemblerTest extends TestCase
         self::assertSame($method, $result->getProperties()->fetch($reflectedProperty->getName(), false));
     }
 
-    /**
-     * @uses \phpDocumentor\Descriptor\Collection
-     * @uses \phpDocumentor\Descriptor\MethodDescriptor
-     */
     public function testTraitWillHaveMethods(): void
     {
         $reflectedTrait = new Trait_(new Fqsen('\My\Space\MyTrait'));

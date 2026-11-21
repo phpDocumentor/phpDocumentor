@@ -27,10 +27,11 @@ use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Parser\Parser;
 use phpDocumentor\Reflection\DocBlock\Description;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\PackageTreeBuilder */
+#[CoversClass(PackageTreeBuilder::class)]
 final class PackageTreeBuilderTest extends TestCase
 {
     use Faker;

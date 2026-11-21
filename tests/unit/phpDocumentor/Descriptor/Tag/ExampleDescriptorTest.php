@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function sys_get_temp_dir;
 
+#[CoversClass(ExampleDescriptor::class)]
 final class ExampleDescriptorTest extends TestCase
 {
     /** @var ExampleDescriptor $fixture */
@@ -27,19 +29,11 @@ final class ExampleDescriptorTest extends TestCase
         $this->fixture = new ExampleDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::__construct
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getName
-     */
     public function testGetName(): void
     {
         self::assertSame('name', $this->fixture->getName());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getFilePath
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setFilePath
-     */
     public function testItCanHaveAPathToAnExampleFile(): void
     {
         self::assertSame('', $this->fixture->getFilePath());
@@ -49,10 +43,6 @@ final class ExampleDescriptorTest extends TestCase
         self::assertSame(sys_get_temp_dir(), $this->fixture->getFilePath());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getStartingLine
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setStartingLine
-     */
     public function testItCanDescribeFromWhichLineToShowTheExampleOrNullToShowAll(): void
     {
         self::assertNull($this->fixture->getStartingLine());
@@ -62,10 +52,6 @@ final class ExampleDescriptorTest extends TestCase
         self::assertSame(100, $this->fixture->getStartingLine());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getLineCount
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setLineCount
-     */
     public function testItCanDescribeHowManyLinesToShowOrNullToShowAll(): void
     {
         self::assertNull($this->fixture->getLineCount());
@@ -75,10 +61,6 @@ final class ExampleDescriptorTest extends TestCase
         self::assertSame(100, $this->fixture->getLineCount());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::getExample
-     * @covers \phpDocumentor\Descriptor\Tag\ExampleDescriptor::setExample
-     */
     public function testItCanHaveTheExampleContents(): void
     {
         self::assertSame('', $this->fixture->getExample());

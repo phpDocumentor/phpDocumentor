@@ -23,14 +23,15 @@ use phpDocumentor\Descriptor\ValueObjects\Visibility;
 use phpDocumentor\Descriptor\ValueObjects\VisibilityModifier;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 use function iterator_to_array;
 
 /**
  * Tests the functionality for the MethodDescriptor class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\MethodDescriptor
  */
+#[CoversClass(MethodDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class MethodDescriptorTest extends MockeryTestCase
 {
     use AttributedTestTrait;
@@ -348,7 +349,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($interfaceMethod, $this->fixture->getInheritedElement());
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getAuthor */
     public function testAuthorTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -365,7 +365,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($authorCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getVersion */
     public function testVersionTagsInheritWhenNoneArePresent(): void
     {
         // Arrange
@@ -382,7 +381,6 @@ final class MethodDescriptorTest extends MockeryTestCase
         $this->assertSame($versionCollection, $result);
     }
 
-    /** @covers \phpDocumentor\Descriptor\DescriptorAbstract::getCopyright */
     public function testCopyrightTagsInheritWhenNoneArePresent(): void
     {
         // Arrange

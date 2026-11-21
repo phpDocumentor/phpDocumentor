@@ -16,8 +16,9 @@ namespace phpDocumentor\Transformer;
 use Mockery as m;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Template\Parameter;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Transformation */
+#[CoversClass(Transformation::class)]
 final class TransformationTest extends m\Adapter\Phpunit\MockeryTestCase
 {
     use Faker;

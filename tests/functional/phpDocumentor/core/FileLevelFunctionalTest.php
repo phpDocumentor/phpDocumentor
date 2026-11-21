@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace functional\phpDocumentor\core;
 
 use phpDocumentor\Descriptor\ApiSetDescriptor;
+use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\FunctionalTestCase;
-use phpDocumentor\Descriptor\FileDescriptor;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class FileLevelFunctionalTest extends FunctionalTestCase
 {
-    /**
-     * @dataProvider emptishFileProvider
-     */
-    public function testEmptyPHPFileContainsFileLevelDocBlock(string $file) : void
+    #[DataProvider('emptishFileProvider')]
+    public function testEmptyPHPFileContainsFileLevelDocBlock(string $file): void
     {
         $this->runPHPDocWithFile($file);
         $project = $this->loadAst();
@@ -38,25 +37,19 @@ final class FileLevelFunctionalTest extends FunctionalTestCase
         $apiSet = $apiSets->first();
         $this->assertCount(1, $apiSet->getFiles());
 
-        $this->assertFileSummary('This file is part of phpDocumentor.',  $apiSet->getFiles()['test.php']);
+        $this->assertFileSummary('This file is part of phpDocumentor.', $apiSet->getFiles()['test.php']);
     }
 
-    public static function emptishFileProvider() : array
+    public static function emptishFileProvider(): array
     {
         return [
-            [
-                __DIR__ . '/../../assets/core/fileLevel/emptyFile.php'
-            ],
-            [
-                __DIR__ . '/../../assets/core/fileLevel/requireOnly.php'
-            ],
-            [
-                __DIR__ . '/../../assets/core/fileLevel/shebang.php'
-            ]
+            [__DIR__ . '/../../assets/core/fileLevel/emptyFile.php'],
+            [__DIR__ . '/../../assets/core/fileLevel/requireOnly.php'],
+            [__DIR__ . '/../../assets/core/fileLevel/shebang.php'],
         ];
     }
 
-    private function assertFileSummary(string $string, FileDescriptor $file) : void
+    private function assertFileSummary(string $string, FileDescriptor $file): void
     {
         self::assertSame($string, $file->getSummary());
     }

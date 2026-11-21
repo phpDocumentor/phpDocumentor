@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig;
 
 use phpDocumentor\Reflection\Metadata\Metadata;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\LoaderInterface;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\MetadataTemplateResolver */
+#[CoversClass(MetadataTemplateResolver::class)]
 final class MetadataTemplateResolverTest extends TestCase
 {
     private const EXTENSIONS = [

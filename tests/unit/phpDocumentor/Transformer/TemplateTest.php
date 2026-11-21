@@ -18,13 +18,14 @@ use InvalidArgumentException;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\Transformer\Template\Parameter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 use function count;
 use function iterator_to_array;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Template */
+#[CoversClass(Template::class)]
 final class TemplateTest extends TestCase
 {
     use Faker;

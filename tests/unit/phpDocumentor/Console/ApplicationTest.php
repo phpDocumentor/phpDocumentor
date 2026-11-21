@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Console;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 use function str_repeat;
 
-/** @coversDefaultClass \phpDocumentor\Console\Application */
+#[CoversClass(Application::class)]
 final class ApplicationTest extends TestCase
 {
     use ProphecyTrait;

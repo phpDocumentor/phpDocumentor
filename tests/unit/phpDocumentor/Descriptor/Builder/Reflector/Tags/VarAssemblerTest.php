@@ -17,10 +17,12 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
+#[CoversClass(VarAssembler::class)]
 class VarAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -40,10 +42,6 @@ class VarAssemblerTest extends TestCase
         $this->fixture->setBuilder($this->builder->reveal());
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::create
-     * @covers \phpDocumentor\Descriptor\Builder\Reflector\Tags\VarAssembler::buildDescriptor
-     */
     public function testCreatingVarDescriptorFromReflector(): void
     {
         $reflector = new Var_('$myParameter', new String_(), new Description('This is a description'));

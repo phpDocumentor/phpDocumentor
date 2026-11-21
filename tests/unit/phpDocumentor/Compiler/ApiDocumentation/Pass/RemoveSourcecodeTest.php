@@ -17,10 +17,11 @@ use phpDocumentor\Descriptor\Collection as DescriptorCollection;
 use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\Interfaces\ApiDocumentationSet;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\RemoveSourcecode */
+#[CoversClass(RemoveSourcecode::class)]
 final class RemoveSourcecodeTest extends TestCase
 {
     use Faker;

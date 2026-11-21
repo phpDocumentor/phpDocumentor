@@ -19,12 +19,13 @@ use phpDocumentor\FileSystem\FileSystem;
 use phpDocumentor\FileSystem\FileSystemFactory;
 use phpDocumentor\Parser\FileCollector;
 use phpDocumentor\ProjectDescriptorBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 
-/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Parser\CollectFiles */
+#[CoversClass(CollectFiles::class)]
 final class CollectFilesTest extends TestCase
 {
     use Faker;

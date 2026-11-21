@@ -15,9 +15,10 @@ namespace phpDocumentor\Compiler\Version\Pass;
 
 use phpDocumentor\Compiler\DescriptorRepository;
 use phpDocumentor\Faker\Faker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\SetVersionPass */
+#[CoversClass(SetVersionPass::class)]
 final class SetVersionPassTest extends TestCase
 {
     use Faker;
@@ -31,7 +32,6 @@ final class SetVersionPassTest extends TestCase
         $this->setVersionPass = new SetVersionPass($this->descriptorRepository);
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $description = $this->setVersionPass->getDescription();
@@ -39,7 +39,6 @@ final class SetVersionPassTest extends TestCase
         $this->assertSame('Prepare version in repository', $description);
     }
 
-    /** @covers ::__invoke */
     public function testInvokeReturnsAnythingOtherThanAVersionDescriptorUnchanged(): void
     {
         $apiSetDescriptor = $this->faker()->apiSetDescriptor();
@@ -49,7 +48,6 @@ final class SetVersionPassTest extends TestCase
         $this->assertSame($apiSetDescriptor, $result);
     }
 
-    /** @covers ::__invoke */
     public function testInvoke(): void
     {
         $versionDescriptor = $this->faker()->versionDescriptor([]);

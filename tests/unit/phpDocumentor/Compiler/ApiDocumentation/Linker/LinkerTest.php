@@ -18,6 +18,7 @@ use phpDocumentor\Descriptor\ClassDescriptor;
 use phpDocumentor\Descriptor\FileDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -25,9 +26,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the functionality for the Linker class.
- *
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Linker\Linker
  */
+#[CoversClass(Linker::class)]
 final class LinkerTest extends TestCase
 {
     use Faker;

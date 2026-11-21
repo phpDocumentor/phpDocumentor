@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor\Filter;
 
 use phpDocumentor\Configuration\ApiSpecification;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests the functionality for the Filter class.
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Filter\Filter
  */
+#[CoversClass(Filter::class)]
 final class FilterTest extends TestCase
 {
     use ProphecyTrait;

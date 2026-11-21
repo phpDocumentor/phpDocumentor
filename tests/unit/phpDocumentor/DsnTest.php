@@ -15,16 +15,14 @@ namespace phpDocumentor;
 
 use phpDocumentor\FileSystem\Dsn;
 use phpDocumentor\FileSystem\Path;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\FileSystem\Dsn */
+#[CoversClass(Dsn::class)]
 class DsnTest extends TestCase
 {
-    /**
-     * @uses         \phpDocumentor\FileSystem\Path
-     *
-     * @dataProvider provideDsnsToTestAgainst
-     */
+    #[DataProvider('provideDsnsToTestAgainst')]
     public function testValidDsnWithScheme(
         string $dsn,
         string $normalizedDsn,
@@ -161,7 +159,7 @@ class DsnTest extends TestCase
         ];
     }
 
-    /** @dataProvider resolveDsnProvider */
+    #[DataProvider('resolveDsnProvider')]
     public function testResolve(string $baseDsn, string $srcDsn, string $expected, string|null $scheme): void
     {
         $baseDsn   = Dsn::createFromString($baseDsn);

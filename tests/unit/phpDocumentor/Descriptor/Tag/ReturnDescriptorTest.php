@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Descriptor\Tag;
 
+use phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract;
 use phpDocumentor\Reflection\Types\Array_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests the functionality for the ReturnDescriptor class.
  */
+#[CoversClass(TypedAbstract::class)]
 class ReturnDescriptorTest extends TestCase
 {
     /** @var ReturnDescriptor $fixture */
@@ -32,12 +35,6 @@ class ReturnDescriptorTest extends TestCase
         $this->fixture = new ReturnDescriptor('name');
     }
 
-    /**
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::setType
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
-     * @covers \phpDocumentor\Descriptor\Tag\BaseTypes\TypedAbstract::getType
-     */
     public function testSetAndGetType(): void
     {
         $expected = new Array_();

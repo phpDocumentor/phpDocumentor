@@ -23,12 +23,13 @@ use phpDocumentor\Descriptor\NamespaceDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
 use function sort;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\NamespaceTreeBuilder */
+#[CoversClass(NamespaceTreeBuilder::class)]
 final class NamespaceTreeBuilderTest extends TestCase
 {
     use Faker;

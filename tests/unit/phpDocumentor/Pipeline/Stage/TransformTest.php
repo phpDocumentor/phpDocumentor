@@ -24,6 +24,7 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Transformer\Template\Collection;
 use phpDocumentor\Transformer\Template\Factory;
 use phpDocumentor\Transformer\Transformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -31,7 +32,7 @@ use Prophecy\ProphecyMock;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Transform */
+#[CoversClass(Transform::class)]
 final class TransformTest extends TestCase
 {
     use ProphecyTrait;

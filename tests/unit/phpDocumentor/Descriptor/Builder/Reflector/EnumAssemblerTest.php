@@ -22,12 +22,13 @@ use phpDocumentor\Reflection\Php\Enum_;
 use phpDocumentor\Reflection\Php\EnumCase;
 use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\EnumAssembler */
+#[CoversClass(EnumAssembler::class)]
 final class EnumAssemblerTest extends TestCase
 {
     use ProphecyTrait;

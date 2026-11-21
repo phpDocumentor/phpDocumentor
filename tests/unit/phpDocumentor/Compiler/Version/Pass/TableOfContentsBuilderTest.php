@@ -15,11 +15,12 @@ namespace phpDocumentor\Compiler\Version\Pass;
 
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Transformer\Router\Router;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\Version\Pass\TableOfContentsBuilder */
+#[CoversClass(TableOfContentsBuilder::class)]
 final class TableOfContentsBuilderTest extends TestCase
 {
     use Faker;
@@ -35,7 +36,6 @@ final class TableOfContentsBuilderTest extends TestCase
         $this->builder = new TableOfContentsBuilder([$this->builderAdapter->reveal()]);
     }
 
-    /** @covers ::getDescription */
     public function testGetDescription(): void
     {
         $description = $this->builder->getDescription();
@@ -43,7 +43,6 @@ final class TableOfContentsBuilderTest extends TestCase
         $this->assertSame('Builds table of contents for documentation sets', $description);
     }
 
-    /** @covers ::__invoke */
     public function testPassingAnythingElseThanAVersionDescriptorIsPassedThroughTransparently(): void
     {
         $apiDocumentationSet = $this->faker()->apiSetDescriptor();

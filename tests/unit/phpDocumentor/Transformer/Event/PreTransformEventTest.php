@@ -15,11 +15,12 @@ namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Event\EventAbstract;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Event\PreTransformEvent */
+#[CoversClass(PreTransformEvent::class)]
 final class PreTransformEventTest extends TestCase
 {
     use ProphecyTrait;

@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
 
 use phpDocumentor\Transformer\Writer\Twig\LinkRenderer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Writer\Twig\LinkRenderer\Target */
+#[CoversClass(Target::class)]
 final class TargetTest extends TestCase
 {
     public function testTitleIsPersistedInObject(): void
@@ -54,7 +56,7 @@ final class TargetTest extends TestCase
         self::assertSame(LinkRenderer::PRESENTATION_NORMAL, $target->getPresentation());
     }
 
-    /** @dataProvider abbreviationPerTitleAndPresentationStyle */
+    #[DataProvider('abbreviationPerTitleAndPresentationStyle')]
     public function testAbbreviationIsDerivedFromTitleAndPresentation(
         string $title,
         string $presentation,

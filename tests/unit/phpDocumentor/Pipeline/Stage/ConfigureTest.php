@@ -20,6 +20,7 @@ use phpDocumentor\Configuration\ConfigurationFactory;
 use phpDocumentor\FileSystem\Path;
 use phpDocumentor\Parser\Cache\Locator;
 use phpDocumentor\Transformer\Writer\Twig\EnvironmentFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -28,7 +29,7 @@ use Psr\Log\LoggerInterface;
 use function getcwd;
 use function sys_get_temp_dir;
 
-/** @coversDefaultClass \phpDocumentor\Pipeline\Stage\Configure */
+#[CoversClass(Configure::class)]
 final class ConfigureTest extends TestCase
 {
     use ProphecyTrait;

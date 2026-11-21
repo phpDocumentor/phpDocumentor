@@ -21,14 +21,14 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Php\Expression;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Test class for \phpDocumentor\Descriptor\Reflector\ConstantAssembler
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\ConstantAssembler
  */
+#[CoversClass(ConstantAssembler::class)]
 final class ConstantAssemblerTest extends TestCase
 {
     use ProphecyTrait;

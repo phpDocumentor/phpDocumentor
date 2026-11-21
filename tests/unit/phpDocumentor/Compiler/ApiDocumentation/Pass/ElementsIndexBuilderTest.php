@@ -24,6 +24,7 @@ use phpDocumentor\Descriptor\PropertyDescriptor;
 use phpDocumentor\Descriptor\TraitDescriptor;
 use phpDocumentor\Faker\Faker;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 use function array_keys;
@@ -31,9 +32,8 @@ use function array_values;
 
 /**
  * Tests the functionality for the ElementsIndexBuilder
- *
- * @coversDefaultClass \phpDocumentor\Compiler\ApiDocumentation\Pass\ElementsIndexBuilder
  */
+#[CoversClass(ElementsIndexBuilder::class)]
 class ElementsIndexBuilderTest extends TestCase
 {
     use Faker;

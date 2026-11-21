@@ -2,14 +2,22 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of phpDocumentor.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @link https://phpdoc.org
+ */
+
 namespace phpDocumentor\Descriptor;
 
 use phpDocumentor\Descriptor\Validation\Error;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 final class FileDescriptorIntegrationTest extends TestCase
 {
     public function testClassMethodWithInvalidTag()
@@ -18,7 +26,7 @@ final class FileDescriptorIntegrationTest extends TestCase
 
         $tag = new TagDescriptor('test');
         $tag->getErrors()->add(
-            $expectedError
+            $expectedError,
         );
 
         $methodDescriptor = new MethodDescriptor();

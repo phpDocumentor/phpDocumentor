@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Parser\Event;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Event\PreFileEvent */
+#[CoversClass(PreFileEvent::class)]
+#[CoversClass(PreFileEvent::class)]
 class PreFileEventTest extends TestCase
 {
     /** @var PreFileEvent $fixture */
@@ -37,10 +39,6 @@ class PreFileEventTest extends TestCase
         $this->assertSame($subject, $this->fixture->getSubject());
     }
 
-    /**
-     * @covers \phpDocumentor\Parser\Event\PreFileEvent::getFile
-     * @covers \phpDocumentor\Parser\Event\PreFileEvent::setFile
-     */
     public function testRemembersFileThatTriggersIt(): void
     {
         $filename = 'myfile.txt';

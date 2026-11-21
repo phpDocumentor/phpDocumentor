@@ -22,12 +22,13 @@ use phpDocumentor\Guides\Compiler\CompilerPass;
 use phpDocumentor\Guides\Compiler\DescriptorAwareCompilerContext;
 use phpDocumentor\Guides\Compiler\NodeTransformers\NodeTransformerFactory;
 use phpDocumentor\Guides\Nodes\DocumentNode;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/** @coversDefaultClass \phpDocumentor\Compiler\Guides\Pass\GuidesCompiler */
+#[CoversClass(GuidesCompiler::class)]
 final class GuidesCompilerTest extends TestCase
 {
     use ProphecyTrait;

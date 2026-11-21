@@ -15,10 +15,11 @@ namespace phpDocumentor\Transformer\Event;
 
 use phpDocumentor\Event\EventAbstract;
 use phpDocumentor\Transformer\Writer\FileIo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/** @coversDefaultClass \phpDocumentor\Transformer\Event\WriterInitializationEvent */
+#[CoversClass(WriterInitializationEvent::class)]
 final class WriterInitializationEventTest extends TestCase
 {
     private WriterInitializationEvent|EventAbstract $fixture;

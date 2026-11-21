@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Configuration;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \phpDocumentor\Configuration\ApiSpecification */
+#[CoversClass(ApiSpecification::class)]
 final class ApiSpecificationTest extends TestCase
 {
-    /** @dataProvider visibilityProvider */
+    #[DataProvider('visibilityProvider')]
     public function testVisibility(array $settings, array $expected)
     {
         $apiSpec = ApiSpecification::createDefault();

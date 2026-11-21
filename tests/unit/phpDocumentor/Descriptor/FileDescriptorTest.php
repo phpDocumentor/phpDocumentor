@@ -16,11 +16,10 @@ namespace phpDocumentor\Descriptor;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use phpDocumentor\Descriptor\Validation\Error;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @coversDefaultClass \phpDocumentor\Descriptor\FileDescriptor
- * @covers \phpDocumentor\Descriptor\DescriptorAbstract
- */
+#[CoversClass(FileDescriptor::class)]
+#[CoversClass(DescriptorAbstract::class)]
 final class FileDescriptorTest extends MockeryTestCase
 {
     private const EXAMPLE_HASH = 'a-hash-string';

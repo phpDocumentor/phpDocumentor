@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Configuration\Definition;
 
 use phpDocumentor\Configuration\SymfonyConfigFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function current;
@@ -23,7 +24,7 @@ final class Version2Test extends TestCase
 {
     private const DEFAULT_TEMPLATE_NAME = 'default';
 
-    /** @dataProvider provideTestConfiguration */
+    #[DataProvider('provideTestConfiguration')]
     public function testLoadingADefaultConfigWorks(array $inputConfig, array $expectedConfig): void
     {
         $configuration = new Version2(self::DEFAULT_TEMPLATE_NAME);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Descriptor;
 
 use Mockery as m;
+use PHPUnit\Framework\Attributes\Ticket;
 
 trait TraitUsageTests
 {
@@ -33,7 +34,7 @@ trait TraitUsageTests
         $this->assertSame($expected, $result->getAll());
     }
 
-    /** @ticket https://github.com/phpDocumentor/phpDocumentor2/issues/1307 */
+    #[Ticket('https://github.com/phpDocumentor/phpDocumentor2/issues/1307')]
     public function testRetrievingInheritedMethodsDoesNotCrashWhenUsedTraitIsNotInProject(): void
     {
         // Arrange

@@ -17,15 +17,15 @@ use phpDocumentor\ProjectDescriptorBuilder;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Test class for phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
- *
- * @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\UsesAssembler
  */
+#[CoversClass(UsesAssembler::class)]
 class UsesAssemblerTest extends TestCase
 {
     use ProphecyTrait;

@@ -23,13 +23,15 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Types\Void_;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 use function count;
 
-/** @coversDefaultClass \phpDocumentor\Descriptor\Builder\Reflector\Tags\MethodAssembler */
+#[CoversClass(MethodAssembler::class)]
 final class MethodAssemblerTest extends TestCase
 {
     use ProphecyTrait;
@@ -52,11 +54,8 @@ final class MethodAssemblerTest extends TestCase
     /**
      * @param MethodParameter[] $arguments
      * @param string $description
-     *
-     * @dataProvider provideNotations
-     * @covers       ::create
-     * @covers       ::buildDescriptor
      */
+    #[DataProvider('provideNotations')]
     public function testCreateMethodDescriptorFromVariousNotations(
         Type $returnType,
         string $name,

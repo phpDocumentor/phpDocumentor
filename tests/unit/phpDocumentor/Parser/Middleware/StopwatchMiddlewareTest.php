@@ -18,6 +18,7 @@ use phpDocumentor\Parser\Middleware\StopwatchMiddleware;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\File\CreateCommand;
 use phpDocumentor\Reflection\Php\ProjectFactoryStrategies;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 use Symfony\Component\Stopwatch\StopwatchPeriod;
 
-/** @coversDefaultClass \phpDocumentor\Parser\Middleware\StopwatchMiddleware */
+#[CoversClass(StopwatchMiddleware::class)]
 final class StopwatchMiddlewareTest extends TestCase
 {
     use Faker;

@@ -27,10 +27,11 @@ if (defined('PHP_CODESNIFFER_VERBOSITY') === false) {
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Ruleset;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-use function defined;
 use function define;
+use function defined;
 use function end;
 use function explode;
 use function preg_replace;
@@ -108,11 +109,8 @@ EOT;
         ];
     }
 
-    /**
-     * @param list<string> $expectedCodes
-     *
-     * @dataProvider provideScenarios
-     */
+    /** @param list<string> $expectedCodes */
+    #[DataProvider('provideScenarios')]
     public function testSniffReportsExpectedViolations(string $source, array $expectedCodes): void
     {
         $config = new Config([], false);
