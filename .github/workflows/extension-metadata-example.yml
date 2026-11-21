@@ -23,7 +23,7 @@ name: Extension - MetadataExample
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1
-  defaultPHPVersion: '8.1'
+  defaultPHPVersion: '8.2'
 
 jobs:
   e2e:

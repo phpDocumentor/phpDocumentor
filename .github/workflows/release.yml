@@ -5,7 +5,7 @@ on:
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
   key: cache-v1 # can be any string, change to clear the extension cache.
-  defaultPHPVersion: '8.1'
+  defaultPHPVersion: '8.2'
 
 name: Release
 jobs:
